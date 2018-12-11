@@ -1,0 +1,2 @@
+debian/bin/alphacond usr/bin
+src/alphacond usr/lib/alphacon
