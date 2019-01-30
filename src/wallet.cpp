@@ -1698,7 +1698,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
 
     // Calculate reward
     {
-        int64_t nReward = GetProofOfStakeReward(pindexPrev, nFees);
+        int64_t nReward = GetBlockSubsidy(pindexPrev->nHeight + 1, nFees);
         if (nReward <= 0) {
             return false;
         }
@@ -1706,17 +1706,17 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
         nCredit += nReward;
     }
 
-    if (nCredit >= GetStakeSplitThreshold())
+    if (nCredit >= GetStakeSplitThreshold()) {
         txNew.vout.push_back(CTxOut(0, txNew.vout[1].scriptPubKey)); //split stake
+    }
 
     // Set output amount
-    if (txNew.vout.size() == 3)
-    {
+    if (txNew.vout.size() == 3) {
         txNew.vout[1].nValue = (nCredit / 2 / CENT) * CENT;
         txNew.vout[2].nValue = nCredit - txNew.vout[1].nValue;
-    }
-    else
+    } else {
         txNew.vout[1].nValue = nCredit;
+    }
 
     // Sign
     int nIn = 0;
@@ -1728,8 +1728,9 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
 
     // Limit size
     unsigned int nBytes = ::GetSerializeSize(txNew, SER_NETWORK, PROTOCOL_VERSION);
-    if (nBytes >= MAX_BLOCK_SIZE_GEN/5)
+    if (nBytes >= MAX_BLOCK_SIZE_GEN / 5) {
         return error("CreateCoinStake : exceeded coinstake size limit");
+    }
 
     // Successfully generated coinstake
     return true;

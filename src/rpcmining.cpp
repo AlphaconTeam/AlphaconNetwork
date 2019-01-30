@@ -39,40 +39,9 @@ void ShutdownRPCMining()
     delete pMiningKey; pMiningKey = NULL;
 }
 
-Value getsubsidy(const Array& params, bool fHelp)
-{
-    if (fHelp || params.size() > 1)
-        throw runtime_error(
-            "getsubsidy [nTarget]\n"
-            "Returns proof-of-work subsidy value for the specified value of target.");
-
-    return (uint64_t)GetProofOfWorkReward(0);
-}
-
-Value getstakesubsidy(const Array& params, bool fHelp)
-{
-    if (fHelp || params.size() != 1)
-        throw runtime_error(
-            "getstakesubsidy <hex string>\n"
-            "Returns proof-of-stake subsidy value for the specified coinstake.");
-
-    RPCTypeCheck(params, list_of(str_type));
-
-    vector<unsigned char> txData(ParseHex(params[0].get_str()));
-    CDataStream ssData(txData, SER_NETWORK, PROTOCOL_VERSION);
-    CTransaction tx;
-    try {
-        ssData >> tx;
-    }
-    catch (std::exception &e) {
-        throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "TX decode failed");
-    }
-
-    return (uint64_t)GetProofOfStakeReward(pindexBest, 0);
-}
-
 Value getmininginfo(const Array& params, bool fHelp)
 {
+    int nHeight = (int)nBestHeight;
     if (fHelp || params.size() != 0)
         throw runtime_error(
             "getmininginfo\n"
@@ -83,28 +52,27 @@ Value getmininginfo(const Array& params, bool fHelp)
         nWeight = pwalletMain->GetStakeWeight();
 
     Object obj, diff, weight;
-    obj.push_back(Pair("blocks",        (int)nBestHeight));
-    obj.push_back(Pair("currentblocksize",(uint64_t)nLastBlockSize));
-    obj.push_back(Pair("currentblocktx",(uint64_t)nLastBlockTx));
+    obj.push_back(Pair("blocks",            nHeight));
+    obj.push_back(Pair("currentblocksize",  (uint64_t)nLastBlockSize));
+    obj.push_back(Pair("currentblocktx",    (uint64_t)nLastBlockTx));
 
-    diff.push_back(Pair("proof-of-work",        GetDifficulty()));
-    diff.push_back(Pair("proof-of-stake",       GetDifficulty(GetLastBlockIndex(pindexBest, true))));
-    diff.push_back(Pair("search-interval",      (int)nLastCoinStakeSearchInterval));
-    obj.push_back(Pair("difficulty",    diff));
+    diff.push_back(Pair("proof-of-work",    GetDifficulty()));
+    diff.push_back(Pair("proof-of-stake",   GetDifficulty(GetLastBlockIndex(pindexBest, true))));
+    diff.push_back(Pair("search-interval",  (int)nLastCoinStakeSearchInterval));
+    obj.push_back(Pair("difficulty",        diff));
 
-    obj.push_back(Pair("blockvalue",    (uint64_t)GetProofOfWorkReward(0)));
-    obj.push_back(Pair("netmhashps",     GetPoWMHashPS()));
-    obj.push_back(Pair("netstakeweight", GetPoSKernelPS()));
-    obj.push_back(Pair("errors",        GetWarnings("statusbar")));
-    obj.push_back(Pair("pooledtx",      (uint64_t)mempool.size()));
+    obj.push_back(Pair("blockvalue",        (uint64_t)GetBlockSubsidy(nHeight + 1, 0)));
+    obj.push_back(Pair("netmhashps",        GetPoWMHashPS()));
+    obj.push_back(Pair("netstakeweight",    GetPoSKernelPS()));
+    obj.push_back(Pair("errors",            GetWarnings("statusbar")));
+    obj.push_back(Pair("pooledtx",          (uint64_t)mempool.size()));
 
-    weight.push_back(Pair("minimum",    (uint64_t)nWeight));
-    weight.push_back(Pair("maximum",    (uint64_t)0));
-    weight.push_back(Pair("combined",  (uint64_t)nWeight));
-    obj.push_back(Pair("stakeweight", weight));
+    weight.push_back(Pair("minimum",        (uint64_t)nWeight));
+    weight.push_back(Pair("maximum",        (uint64_t)0));
+    weight.push_back(Pair("combined",       (uint64_t)nWeight));
+    obj.push_back(Pair("stakeweight",       weight));
 
-    obj.push_back(Pair("stakeinterest",    (uint64_t)COIN_YEAR_REWARD));
-    obj.push_back(Pair("testnet",       TestNet()));
+    obj.push_back(Pair("testnet", TestNet()));
     return obj;
 }
 
