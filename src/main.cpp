@@ -1062,7 +1062,7 @@ bool IsInitialBlockDownload()
         nLastUpdate = GetTime();
     }
     return (GetTime() - nLastUpdate < 15 &&
-            pindexBest->GetBlockTime() < GetTime() - 60); // Wait 1 minute before start staking
+            pindexBest->GetBlockTime() < GetTime() - 60 * 60); // Wait 1 hour before start staking
 }
 
 void static InvalidChainFound(CBlockIndex* pindexNew)
