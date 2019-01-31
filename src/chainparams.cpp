@@ -61,7 +61,7 @@ static CBlock CreateGenesisBlock(const char* pszTimestamp, uint32_t nTime, uint3
 
 static CBlock CreateGenesisBlock(uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion)
 {
-    const char* pszTimestamp = "Scientists Find Three New Genes Linked to Age-Related Macular Degeneration | Jan 18, 2019 Sci News";
+    const char* pszTimestamp = "Study: Sleep Deprivation May Damage Your DNA | Jan 29, 2019 Sci News";
     return CreateGenesisBlock(pszTimestamp, nTime, nNonce, nBits, nVersion);
 }
 
@@ -72,7 +72,7 @@ public:
         pchMessageStart[0] = 0x41;
         pchMessageStart[1] = 0x4c;
         pchMessageStart[2] = 0x50;
-        pchMessageStart[3] = 0x56;
+        pchMessageStart[3] = 0x01;
         vAlertPubKey = ParseHex("04e7ed5e7037bb0938fc60b9164d9784d82ef56107f39c50095dfb3af06388960e6f2c6ec611fe82e7153cd0df0e65ed1a8d472a840180a7f85519e2eab3eddf0d");
         nDefaultPort = 19427;
         nRPCPort = 19428;
@@ -83,14 +83,14 @@ public:
         blockRewardHalvings = 2; // Only 2 times
         blockReward = 120 * COIN;
 
-        rewardReceiverALP = "";
+        rewardReceiverALP = "ALAHHWQvbzWjCj2UZrCzT7TMn6JyN8ogQm";
         rewardHeighALP = 1;
         
-        genesis = CreateGenesisBlock(1547922160, 1595144, bnProofOfWorkLimit.GetCompact(), 1);
+        genesis = CreateGenesisBlock(1548853998, 2004344, bnProofOfWorkLimit.GetCompact(), 1);
         hashGenesisBlock = genesis.GetHash();
 
-        assert(hashGenesisBlock == uint256("0x00000534696db02cc02f1c82dd18998039ede642f6a3d377dcdd33db1cf01232"));
-        assert(genesis.hashMerkleRoot == uint256("0x4d4369c8e9ec1e10c979db9675e25f557198aa1333187877f98a53e317094df6"));
+        assert(hashGenesisBlock == uint256("0x00000bd194e16e8dc4bb9d3b6684c7757b203b3eec769e14e1492796736f304d"));
+        assert(genesis.hashMerkleRoot == uint256("0xd40bfd444aa3049d8aaf3a212f4653ea81f5ad44b7d2fb94d3fc56b133b641f2"));
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1, 23);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1, 48);
@@ -100,7 +100,7 @@ public:
 
         convertSeed6(vFixedSeeds, pnSeed6_main, ARRAYLEN(pnSeed6_main));
 
-        nLastPOWBlock = 10000;
+        nLastPOWBlock = 1440;
     }
 
     virtual const CBlock& GenesisBlock() const { return genesis; }
@@ -129,11 +129,11 @@ public:
         nRPCPort = 29428;
         strDataDir = "testnet";
 
-        genesis = CreateGenesisBlock(1547942400, 107100, bnProofOfWorkLimit.GetCompact(), 1);
+        genesis = CreateGenesisBlock(1547942400, 214286, bnProofOfWorkLimit.GetCompact(), 1);
         hashGenesisBlock = genesis.GetHash();
 
-        assert(hashGenesisBlock == uint256("0x0000532a9fddd7171871331faa37cdf0d894af5100e54350f36f7915448dd768"));
-        assert(genesis.hashMerkleRoot == uint256("0xeb2f26878bf1447159d0fbf960e0b68189fac82d2a7b3be589e2dacbf48ea1c7"));
+        assert(hashGenesisBlock == uint256("0x0000c9f2bf15e9c3c286a24f5f1e5e1c868f77e8b91e6ea4caf7078a88c3cb34"));
+        assert(genesis.hashMerkleRoot == uint256("0xe342a42f9f219923b128bc14f1e513ce2a7bf0dd4666cc11e877464fc2cc3ace"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
@@ -171,7 +171,7 @@ public:
         bnProofOfWorkLimit = CBigNum(~uint256(0) >> 1);
         genesis.nTime = 1000000000;
         genesis.nBits  = bnProofOfWorkLimit.GetCompact();
-        genesis.nNonce = 12;
+        genesis.nNonce = 13;
         hashGenesisBlock = genesis.GetHash();
         nDefaultPort = 39427;
         strDataDir = "regtest";
@@ -184,7 +184,7 @@ public:
         rewardReceiverALP = "";
         rewardHeighALP = 1;
 
-        assert(hashGenesisBlock == uint256("0x42e5caf921dbaef56b01af85076a00b85eab989575d62a05f410744c9801f4ca"));
+        assert(hashGenesisBlock == uint256("0x3922ac35c5b702b0be23f911c2921ac5c8b9c97243087f8d8aaf5fa29e30e602"));
 
         vSeeds.clear();  // Regtest mode doesn't have any DNS seeds.
     }
@@ -219,7 +219,7 @@ void SelectParams(CChainParams::Network network) {
 
 bool SelectParamsFromCommandLine() {
     bool fRegTest = GetBoolArg("-regtest", false);
-    bool fTestNet = GetBoolArg("-testnet", true);
+    bool fTestNet = GetBoolArg("-testnet", false);
 
     if (fTestNet && fRegTest) {
         return false;

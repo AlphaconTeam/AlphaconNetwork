@@ -164,7 +164,7 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     frameBlocksLayout->addStretch();
     toolbar->addWidget(frameBlocks);
 
-    if (GetBoolArg("-staking", true))
+    if (GetBoolArg("-staking", false))
     {
         QTimer *timerStakingIcon = new QTimer(labelStakingIcon);
         connect(timerStakingIcon, SIGNAL(timeout()), this, SLOT(updateStakingIcon()));
@@ -1004,7 +1004,7 @@ void BitcoinGUI::updateStakingIcon()
     {
         uint64_t nWeight = this->nWeight;
         uint64_t nNetworkWeight = GetPoSKernelPS();
-        unsigned nEstimateTime = GetTargetSpacing(nBestHeight) * nNetworkWeight / nWeight;
+        unsigned nEstimateTime = GetTargetSpacing() * nNetworkWeight / nWeight;
 
         QString text;
         if (nEstimateTime < 60)

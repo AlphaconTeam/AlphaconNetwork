@@ -25,7 +25,7 @@ class CReserveKey;
 class CWallet;
 
 /** The maximum allowed size for a serialized block, in bytes (network rule) */
-static const unsigned int MAX_BLOCK_SIZE = 1000000;
+static const unsigned int MAX_BLOCK_SIZE = 8000000;
 /** The maximum size for mined blocks */
 static const unsigned int MAX_BLOCK_SIZE_GEN = MAX_BLOCK_SIZE / 2;
 /** The maximum size for transactions we're willing to relay/mine **/
@@ -54,7 +54,7 @@ static const unsigned int LOCKTIME_THRESHOLD = 500000000; // Tue Nov  5 00:53:20
 
 inline int64_t FutureDrift(int64_t nTime) { return nTime + 10 * 60; }
 
-inline unsigned int GetTargetSpacing(int nHeight) { return 64; }
+inline unsigned int GetTargetSpacing() { return 64; }
 
 extern CScript COINBASE_FLAGS;
 extern CCriticalSection cs_main;

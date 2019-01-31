@@ -30,7 +30,7 @@ static void accountingDeprecationCheck()
             "If you still want to enable it, add to your config file enableaccounts=1\n");
     }
 
-    if (GetBoolArg("-staking", true)) {
+    if (GetBoolArg("-staking", false)) {
         throw runtime_error("If you want to use accounting API, staking must be disabled, add to your config file staking=0\n");
     }
 }

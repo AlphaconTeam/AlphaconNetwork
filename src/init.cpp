@@ -805,7 +805,7 @@ bool AppInit2(boost::thread_group& threadGroup)
         StartRPCThreads();
 
     // Mine proof-of-stake blocks in the background
-    if (!GetBoolArg("-staking", true))
+    if (!GetBoolArg("-staking", false))
         LogPrintf("Staking disabled\n");
     else if (pwalletMain)
         threadGroup.create_thread(boost::bind(&ThreadStakeMiner, pwalletMain));
