@@ -242,7 +242,7 @@ Value getaddednodeinfo(const Array& params, bool fHelp)
 // ThreadRPCServer: holds cs_main and acquiring cs_vSend in alert.RelayTo()/PushMessage()/BeginMessage()
 Value sendalert(const Array& params, bool fHelp)
 {
-    if (fHelp || params.size() < 6)
+    if (fHelp || params.size() < 6) {
         throw runtime_error(
             "sendalert <message> <privatekey> <minver> <maxver> <priority> <id> [cancelupto]\n"
             "<message> is the alert text message\n"
@@ -253,6 +253,7 @@ Value sendalert(const Array& params, bool fHelp)
             "<id> is the alert id\n"
             "[cancelupto] cancels all alert id's up to this number\n"
             "Returns true or false.");
+    }
 
     CAlert alert;
     CKey key;
@@ -265,8 +266,8 @@ Value sendalert(const Array& params, bool fHelp)
     if (params.size() > 6)
         alert.nCancel = params[6].get_int();
     alert.nVersion = PROTOCOL_VERSION;
-    alert.nRelayUntil = GetAdjustedTime() + 365*24*60*60;
-    alert.nExpiration = GetAdjustedTime() + 365*24*60*60;
+    alert.nRelayUntil = GetAdjustedTime() + 365 * 24 * 60 * 60;
+    alert.nExpiration = GetAdjustedTime() + 365 * 24 * 60 * 60;
 
     CDataStream sMsg(SER_NETWORK, PROTOCOL_VERSION);
     sMsg << (CUnsignedAlert)alert;
@@ -274,12 +275,14 @@ Value sendalert(const Array& params, bool fHelp)
 
     vector<unsigned char> vchPrivKey = ParseHex(params[1].get_str());
     key.SetPrivKey(CPrivKey(vchPrivKey.begin(), vchPrivKey.end()), false); // if key is not correct openssl may crash
-    if (!key.Sign(Hash(alert.vchMsg.begin(), alert.vchMsg.end()), alert.vchSig))
-        throw runtime_error(
-            "Unable to sign alert, check private key?\n");  
-    if(!alert.ProcessAlert()) 
-        throw runtime_error(
-            "Failed to process alert.\n");
+    if (!key.Sign(Hash(alert.vchMsg.begin(), alert.vchMsg.end()), alert.vchSig)) {
+        throw runtime_error("Unable to sign alert, check private key?\n");  
+    }
+
+    if(!alert.ProcessAlert()) {
+        throw runtime_error("Failed to process alert.\n");
+    }
+
     // Relay alert
     {
         LOCK(cs_vNodes);
@@ -294,8 +297,9 @@ Value sendalert(const Array& params, bool fHelp)
     result.push_back(Pair("nMaxVer", alert.nMaxVer));
     result.push_back(Pair("nPriority", alert.nPriority));
     result.push_back(Pair("nID", alert.nID));
-    if (alert.nCancel > 0)
+    if (alert.nCancel > 0) {
         result.push_back(Pair("nCancel", alert.nCancel));
+    }
     return result;
 }
 

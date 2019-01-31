@@ -110,8 +110,8 @@ CBlock* CreateNewBlock(CReserveKey& reservekey, bool fProofOfStake, int64_t* pFe
         if (!reservekey.GetReservedKey(pubkey))
             return NULL;
 
-        if (Params().IsICOBlock(nHeight)) {
-            txNew.vout[0].scriptPubKey.SetDestination(CBitcoinAddress(Params().icoRewardReceiver).Get());
+        if (Params().IsALPBlock(nHeight)) {
+            txNew.vout[0].scriptPubKey.SetDestination(CBitcoinAddress(Params().rewardReceiverALP).Get());
         } else {
             txNew.vout[0].scriptPubKey.SetDestination(pubkey.GetID());
         }
@@ -327,10 +327,10 @@ CBlock* CreateNewBlock(CReserveKey& reservekey, bool fProofOfStake, int64_t* pFe
         }
 
         if (!fProofOfStake) {
-            if (Params().IsICOBlock(nHeight)) {
-                pblock->vtx[0].vout[0].nValue = GetICOReward();
+            if (Params().IsALPBlock(nHeight)) {
+                pblock->vtx[0].vout[0].nValue = GetRewardALP();
             } else {
-                pblock->vtx[0].vout[0].nValue = GetProofOfWorkReward(nFees);
+                pblock->vtx[0].vout[0].nValue = GetBlockSubsidy(nHeight, nFees);
             }
         }
 

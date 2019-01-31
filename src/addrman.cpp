@@ -30,20 +30,16 @@ int CAddrInfo::GetBucketPosition(const uint256 &nKey, bool fNew, int nBucket) co
 
 bool CAddrInfo::IsTerrible(int64_t nNow) const
 {
-    if (nLastTry && nLastTry >= nNow-60) // never remove things tried the last minute
-        return false;
-
-    if (nTime > nNow + 10*60) // came in a flying DeLorean
-        return true;
-
-    if (nTime==0 || nNow-nTime > ADDRMAN_HORIZON_DAYS*24*60*60) // not seen in recent history
-        return true;
-
-    if (nLastSuccess==0 && nAttempts>=ADDRMAN_RETRIES) // tried N times and never a success
-        return true;
-
-    if (nNow-nLastSuccess > ADDRMAN_MIN_FAIL_DAYS*24*60*60 && nAttempts>=ADDRMAN_MAX_FAILURES) // N successive failures in the last week
-        return true;
+    // Never remove things tried the last minute
+    if (nLastTry && nLastTry >= nNow - 60) { return false; }
+    // Came in a flying DeLorean
+    if (nTime > nNow + 10 * 60) { return true; }
+    // Not seen in recent history
+    if (nTime == 0 || nNow - nTime > ADDRMAN_HORIZON_DAYS * 24 * 60 * 60) { return true; }
+    // Tried N times and never a success
+    if (nLastSuccess == 0 && nAttempts >= ADDRMAN_RETRIES) { return true; }
+    // N successive failures in the last week
+    if (nNow - nLastSuccess > ADDRMAN_MIN_FAIL_DAYS * 24 * 60 * 60 && nAttempts >= ADDRMAN_MAX_FAILURES) { return true; }
 
     return false;
 }
@@ -55,14 +51,15 @@ double CAddrInfo::GetChance(int64_t nNow) const
     int64_t nSinceLastSeen = nNow - nTime;
     int64_t nSinceLastTry = nNow - nLastTry;
 
-    if (nSinceLastSeen < 0) nSinceLastSeen = 0;
-    if (nSinceLastTry < 0) nSinceLastTry = 0;
+    if (nSinceLastSeen < 0) { nSinceLastSeen = 0; }
+    if (nSinceLastTry < 0) { nSinceLastTry = 0; }
 
-    // deprioritize very recent attempts away
-    if (nSinceLastTry < 60*10)
+    // Deprioritize very recent attempts away
+    if (nSinceLastTry < 60 * 10) {
         fChance *= 0.01;
+    }
 
-    // deprioritize 66% after each failed attempt, but at most 1/28th to avoid the search taking forever or overly penalizing outages.
+    // Deprioritize 66% after each failed attempt, but at most 1/28th to avoid the search taking forever or overly penalizing outages.
     fChance *= pow(0.66, min(nAttempts, 8));
 
     return fChance;
@@ -71,13 +68,12 @@ double CAddrInfo::GetChance(int64_t nNow) const
 CAddrInfo* CAddrMan::Find(const CNetAddr& addr, int *pnId)
 {
     std::map<CNetAddr, int>::iterator it = mapAddr.find(addr);
-    if (it == mapAddr.end())
-        return NULL;
-    if (pnId)
-        *pnId = (*it).second;
+    if (it == mapAddr.end()) { return NULL; }
+    if (pnId) { *pnId = (*it).second; }
+
     std::map<int, CAddrInfo>::iterator it2 = mapInfo.find((*it).second);
-    if (it2 != mapInfo.end())
-        return &(*it2).second;
+    if (it2 != mapInfo.end()) { return &(*it2).second; }
+
     return NULL;
 }
 
@@ -88,8 +84,11 @@ CAddrInfo* CAddrMan::Create(const CAddress &addr, const CNetAddr &addrSource, in
     mapAddr[addr] = nId;
     mapInfo[nId].nRandomPos = vRandom.size();
     vRandom.push_back(nId);
-    if (pnId)
+
+    if (pnId) {
         *pnId = nId;
+    }
+    
     return &mapInfo[nId];
 }
 
@@ -417,22 +416,28 @@ int CAddrMan::Check_()
     for (int n = 0; n < ADDRMAN_NEW_BUCKET_COUNT; n++) {
         for (int i = 0; i < ADDRMAN_BUCKET_SIZE; i++) {
             if (vvNew[n][i] != -1) {
-                if (!mapNew.count(vvNew[n][i]))
+                if (!mapNew.count(vvNew[n][i])) {
                     return -12;
-                if (mapInfo[vvNew[n][i]].GetBucketPosition(nKey, true, n) != i)
+                }
+                if (mapInfo[vvNew[n][i]].GetBucketPosition(nKey, true, n) != i) {
                     return -19;
-                if (--mapNew[vvNew[n][i]] == 0)
+                }
+                if (--mapNew[vvNew[n][i]] == 0) {
                     mapNew.erase(vvNew[n][i]);
+                }
             }
         }
     }
 
-    if (setTried.size())
+    if (setTried.size()) {
         return -13;
-    if (mapNew.size())
+    }
+    if (mapNew.size()) {
         return -15;
-    if (nKey.IsNull())
+    }
+    if (nKey.IsNull()) {
         return -16;
+    }
 
     return 0;
 }
@@ -441,22 +446,25 @@ int CAddrMan::Check_()
 void CAddrMan::GetAddr_(std::vector<CAddress> &vAddr)
 {
     unsigned int nNodes = ADDRMAN_GETADDR_MAX_PCT * vRandom.size() / 100;
-    if (nNodes > ADDRMAN_GETADDR_MAX)
+    if (nNodes > ADDRMAN_GETADDR_MAX) {
         nNodes = ADDRMAN_GETADDR_MAX;
+    }
 
     // gather a list of random nodes, skipping those of low quality
     for (unsigned int n = 0; n < vRandom.size(); n++)
     {
-        if (vAddr.size() >= nNodes)
+        if (vAddr.size() >= nNodes) {
             break;
+        }
 
         int nRndPos = GetRandInt(vRandom.size() - n) + n;
         SwapRandom(n, nRndPos);
         assert(mapInfo.count(vRandom[n]) == 1);
 
         const CAddrInfo& ai = mapInfo[vRandom[n]];
-        if (!ai.IsTerrible())
+        if (!ai.IsTerrible()) {
             vAddr.push_back(ai);
+        }
     }
 }
 
@@ -465,17 +473,20 @@ void CAddrMan::Connected_(const CService &addr, int64_t nTime)
     CAddrInfo *pinfo = Find(addr);
 
     // if not found, bail out
-    if (!pinfo)
+    if (!pinfo) {
         return;
+    }
 
     CAddrInfo &info = *pinfo;
 
     // check whether we are talking about the exact same CService (including same port)
-    if (info != addr)
+    if (info != addr) {
         return;
+    }
 
     // update info
     int64_t nUpdateInterval = 20 * 60;
-    if (nTime - info.nTime > nUpdateInterval)
+    if (nTime - info.nTime > nUpdateInterval) {
         info.nTime = nTime;
+    }
 }

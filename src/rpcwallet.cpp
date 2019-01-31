@@ -23,14 +23,16 @@ extern void TxToJSON(const CTransaction& tx, const uint256 hashBlock, json_spiri
 
 static void accountingDeprecationCheck()
 {
-    if (!GetBoolArg("-enableaccounts", false))
+    if (!GetBoolArg("-enableaccounts", false)) {
         throw runtime_error(
             "Accounting API is deprecated and will be removed in future.\n"
             "It can easily result in negative or odd balances if misused or misunderstood, which has happened in the field.\n"
             "If you still want to enable it, add to your config file enableaccounts=1\n");
+    }
 
-    if (GetBoolArg("-staking", true))
+    if (GetBoolArg("-staking", false)) {
         throw runtime_error("If you want to use accounting API, staking must be disabled, add to your config file staking=0\n");
+    }
 }
 
 std::string HelpRequiringPassphrase()

@@ -318,8 +318,9 @@ CNode* FindNode(const CNetAddr& ip)
     {
         LOCK(cs_vNodes);
         BOOST_FOREACH(CNode* pnode, vNodes)
-            if ((CNetAddr)pnode->addr == ip)
+            if ((CNetAddr)pnode->addr == ip) {
                 return (pnode);
+            }
     }
     return NULL;
 }
@@ -328,8 +329,9 @@ CNode* FindNode(const std::string& addrName)
 {
     LOCK(cs_vNodes);
     BOOST_FOREACH(CNode* pnode, vNodes)
-        if (pnode->addrName == addrName)
+        if (pnode->addrName == addrName) {
             return (pnode);
+        }
     return NULL;
 }
 
@@ -338,8 +340,9 @@ CNode* FindNode(const CService& addr)
     {
         LOCK(cs_vNodes);
         BOOST_FOREACH(CNode* pnode, vNodes)
-            if ((CService)pnode->addr == addr)
+            if ((CService)pnode->addr == addr) {
                 return (pnode);
+            }
     }
     return NULL;
 }
@@ -347,8 +350,9 @@ CNode* FindNode(const CService& addr)
 CNode* ConnectNode(CAddress addrConnect, const char *pszDest)
 {
     if (pszDest == NULL) {
-        if (IsLocal(addrConnect))
+        if (IsLocal(addrConnect)) {
             return NULL;
+        }
 
         // Look for an existing connection
         CNode* pnode = FindNode((CService)addrConnect);
@@ -436,10 +440,6 @@ void CNode::PushVersion()
     PushMessage("version", PROTOCOL_VERSION, nLocalServices, nTime, addrYou, addrMe,
                 nLocalHostNonce, FormatSubVersion(CLIENT_NAME, CLIENT_VERSION, std::vector<string>()), nBestHeight);
 }
-
-
-
-
 
 std::map<CNetAddr, int64_t> CNode::setBanned;
 CCriticalSection CNode::cs_setBanned;
