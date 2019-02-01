@@ -15,6 +15,7 @@
 
 using namespace std;
 using namespace json_spirit;
+extern bool fEnableStaking;
 
 int64_t nWalletUnlockTime;
 static CCriticalSection cs_nWalletUnlockTime;
@@ -30,7 +31,7 @@ static void accountingDeprecationCheck()
             "If you still want to enable it, add to your config file enableaccounts=1\n");
     }
 
-    if (GetBoolArg("-staking", false)) {
+    if (fEnableStaking) {
         throw runtime_error("If you want to use accounting API, staking must be disabled, add to your config file staking=0\n");
     }
 }

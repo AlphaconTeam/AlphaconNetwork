@@ -164,8 +164,7 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     frameBlocksLayout->addStretch();
     toolbar->addWidget(frameBlocks);
 
-    if (GetBoolArg("-staking", false))
-    {
+    if (fEnableStaking) {
         QTimer *timerStakingIcon = new QTimer(labelStakingIcon);
         connect(timerStakingIcon, SIGNAL(timeout()), this, SLOT(updateStakingIcon()));
         timerStakingIcon->start(30 * 1000);

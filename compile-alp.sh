@@ -8,10 +8,10 @@
 
 # Basic path bindings
 
-PATH=/home/vova/Shared/ALP/mxe/usr/bin:$PATH
-MXE_PATH=/home/vova/Shared/ALP/mxe
-MXE_INCLUDE_PATH=/home/vova/Shared/ALP/mxe/usr/i686-w64-mingw32.static/include
-MXE_LIB_PATH=/home/vova/Shared/ALP/mxe/usr/i686-w64-mingw32.static/lib
+PATH=/home/username/Shared/ALP/mxe/usr/bin:$PATH
+MXE_PATH=/home/username/Shared/ALP/mxe
+MXE_INCLUDE_PATH=/home/username/Shared/ALP/mxe/usr/i686-w64-mingw32.static/include
+MXE_LIB_PATH=/home/username/Shared/ALP/mxe/usr/i686-w64-mingw32.static/lib
 
 # Belt and braces
 

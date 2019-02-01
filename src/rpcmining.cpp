@@ -14,6 +14,8 @@
 
 #include <boost/assign/list_of.hpp>
 
+extern bool fEnableStaking;
+
 using namespace json_spirit;
 using namespace std;
 using namespace boost::assign;
@@ -56,7 +58,10 @@ Value getmininginfo(const Array& params, bool fHelp)
     obj.push_back(Pair("currentblocksize",  (uint64_t)nLastBlockSize));
     obj.push_back(Pair("currentblocktx",    (uint64_t)nLastBlockTx));
 
-    diff.push_back(Pair("proof-of-work",    GetDifficulty()));
+    if (nBestHeight < Params().LastPOWBlock()) {
+        diff.push_back(Pair("proof-of-work",    GetDifficulty()));
+    }
+    
     diff.push_back(Pair("proof-of-stake",   GetDifficulty(GetLastBlockIndex(pindexBest, true))));
     diff.push_back(Pair("search-interval",  (int)nLastCoinStakeSearchInterval));
     obj.push_back(Pair("difficulty",        diff));
@@ -93,7 +98,7 @@ Value getstakinginfo(const Array& params, bool fHelp)
 
     Object obj;
 
-    obj.push_back(Pair("enabled", GetBoolArg("-staking", false)));
+    obj.push_back(Pair("enabled", fEnableStaking));
     obj.push_back(Pair("staking", staking));
     obj.push_back(Pair("errors", GetWarnings("statusbar")));
 

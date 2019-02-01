@@ -7,6 +7,7 @@
 #include "main.h"
 #include "kernel.h"
 #include "checkpoints.h"
+#include "chainparams.h"
 
 using namespace json_spirit;
 using namespace std;
@@ -189,7 +190,10 @@ Value getdifficulty(const Array& params, bool fHelp)
             "Returns the difficulty as a multiple of the minimum difficulty.");
 
     Object obj;
-    obj.push_back(Pair("proof-of-work",        GetDifficulty()));
+    if (nBestHeight < Params().LastPOWBlock()) {
+        obj.push_back(Pair("proof-of-work",        GetDifficulty()));
+    }
+    
     obj.push_back(Pair("proof-of-stake",       GetDifficulty(GetLastBlockIndex(pindexBest, true))));
     return obj;
 }
