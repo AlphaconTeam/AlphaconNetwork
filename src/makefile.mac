@@ -149,10 +149,11 @@ alphacond: $(OBJS:obj/%=obj/%)
 
 clean:
 	-rm -f alphacond
-	-rm -f leveldb/libleveldb.a leveldb/libmemenv.a
+	-rm -f leveldb/libleveldb.a leveldb/libmemenv.a Makefile
 	-rm -f obj/*.d
 	-rm -f obj/*.P
 	-rm -f obj/build.h
-	-rm -rf **/*.o
+	-rm -- leveldb/**/*.o
+	-rm -- leveldb/**/*.a
 
 FORCE:

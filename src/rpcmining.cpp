@@ -14,8 +14,6 @@
 
 #include <boost/assign/list_of.hpp>
 
-extern bool fEnableStaking;
-
 using namespace json_spirit;
 using namespace std;
 using namespace boost::assign;
@@ -98,7 +96,7 @@ Value getstakinginfo(const Array& params, bool fHelp)
 
     Object obj;
 
-    obj.push_back(Pair("enabled", fEnableStaking));
+    obj.push_back(Pair("enabled", GetBoolArg("-staking", DefaultStaking())));
     obj.push_back(Pair("staking", staking));
     obj.push_back(Pair("errors", GetWarnings("statusbar")));
 

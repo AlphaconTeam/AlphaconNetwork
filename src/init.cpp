@@ -37,7 +37,6 @@ unsigned int nNodeLifespan;
 unsigned int nDerivationMethodIndex;
 unsigned int nMinerSleep;
 bool fUseFastIndex;
-bool fEnableStaking;
 
 //////////////////////////////////////////////////////////////////////////////
 //
@@ -326,7 +325,6 @@ bool AppInit2(boost::thread_group& threadGroup)
 
     nNodeLifespan = GetArg("-addrlifespan", 7);
     fUseFastIndex = GetBoolArg("-fastindex", true);
-    fEnableStaking = GetBoolArg("-staking", false);
     nMinerSleep = GetArg("-minersleep", 500);
 
     nDerivationMethodIndex = 0;
@@ -807,7 +805,7 @@ bool AppInit2(boost::thread_group& threadGroup)
         StartRPCThreads();
 
     // Mine proof-of-stake blocks in the background
-    if (fEnableStaking == false)
+    if (GetBoolArg("-staking", DefaultStaking()) == false)
         LogPrintf("Staking disabled\n");
     else if (pwalletMain)
         threadGroup.create_thread(boost::bind(&ThreadStakeMiner, pwalletMain));
