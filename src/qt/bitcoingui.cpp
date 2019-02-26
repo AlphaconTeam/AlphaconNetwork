@@ -60,7 +60,7 @@
 
 #include <iostream>
 
-// extern CWallet* pwalletMain;
+extern CWallet* pwalletMain;
 extern int64_t nLastCoinStakeSearchInterval;
 double GetPoSKernelPS();
 

@@ -52,7 +52,7 @@ inline bool MoneyRange(int64_t nValue) { return (nValue >= 0 && nValue <= MAX_MO
 /** Threshold for nLockTime: below this value it is interpreted as block number, otherwise as UNIX timestamp. */
 static const unsigned int LOCKTIME_THRESHOLD = 500000000; // Tue Nov  5 00:53:20 1985 UTC
 /** Should we enable staking in wallet by default */
-inline bool DefaultStaking() { return false; }
+inline bool DefaultStaking() { return true; }
 
 inline int64_t FutureDrift(int64_t nTime) { return nTime + 10 * 60; }
 

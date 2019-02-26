@@ -129,13 +129,45 @@
              </widget>
             </item>
             <item row="1" column="0">
-             <widget class="QLabel" name="label_6">
+             <widget class="QLabel" name="label_61">
               <property name="text">
-               <string>Stake:</string>
+               <string>Stake weight:</string>
               </property>
              </widget>
             </item>
             <item row="1" column="1">
+             <widget class="QLabel" name="labelStakeWeight">
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="cursor">
+               <cursorShape>IBeamCursor</cursorShape>
+              </property>
+              <property name="toolTip">
+               <string>Total of coins that was staked</string>
+              </property>
+              <property name="text">
+               <string notr="true">0 ALP</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+              <property name="textInteractionFlags">
+               <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="label_6">
+              <property name="text">
+               <string>Immature stake:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
              <widget class="QLabel" name="labelStake">
               <property name="font">
                <font>
@@ -160,14 +192,14 @@
               </property>
              </widget>
             </item>
-            <item row="2" column="0">
+            <item row="3" column="0">
              <widget class="QLabel" name="label_3">
               <property name="text">
                <string>Unconfirmed:</string>
               </property>
              </widget>
             </item>
-            <item row="2" column="1">
+            <item row="3" column="1">
              <widget class="QLabel" name="labelUnconfirmed">
               <property name="font">
                <font>
@@ -192,14 +224,14 @@
               </property>
              </widget>
             </item>
-            <item row="3" column="0">
+            <item row="4" column="0">
              <widget class="QLabel" name="labelImmatureText">
               <property name="text">
                <string>Immature:</string>
               </property>
              </widget>
             </item>
-            <item row="3" column="1">
+            <item row="4" column="1">
              <widget class="QLabel" name="labelImmature">
               <property name="font">
                <font>
@@ -221,21 +253,21 @@
               </property>
              </widget>
             </item>
-            <item row="4" column="0" colspan="2">
+            <item row="5" column="0" colspan="2">
              <widget class="Line" name="line">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>
              </widget>
             </item>
-            <item row="5" column="0">
+            <item row="6" column="0">
              <widget class="QLabel" name="labelTotalText">
               <property name="text">
                <string>Total:</string>
               </property>
              </widget>
             </item>
-            <item row="5" column="1">
+            <item row="6" column="1">
              <widget class="QLabel" name="labelTotal">
               <property name="font">
                <font>

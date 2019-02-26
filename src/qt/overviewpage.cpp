@@ -9,12 +9,15 @@
 #include "transactionfilterproxy.h"
 #include "guiutil.h"
 #include "guiconstants.h"
+#include "wallet.h"
 
 #include <QAbstractItemDelegate>
 #include <QPainter>
 
 #define DECORATION_SIZE 64
 #define NUM_ITEMS 6
+
+extern CWallet* pwalletMain;
 
 class TxViewDelegate : public QAbstractItemDelegate
 {
@@ -124,6 +127,7 @@ OverviewPage::OverviewPage(QWidget *parent) :
     {
         const char* whiteLabelQSS = "QLabel { color: rgb(41,41,41); }";
         ui->labelBalance->setStyleSheet(whiteLabelQSS);
+        ui->labelStakeWeight->setStyleSheet(whiteLabelQSS);
         ui->labelStake->setStyleSheet(whiteLabelQSS);
         ui->labelUnconfirmed->setStyleSheet(whiteLabelQSS);
         ui->labelImmature->setStyleSheet(whiteLabelQSS);
@@ -144,12 +148,14 @@ OverviewPage::~OverviewPage()
 
 void OverviewPage::setBalance(qint64 balance, qint64 stake, qint64 unconfirmedBalance, qint64 immatureBalance)
 {
+    uint64_t nWeight = pwalletMain->GetStakeWeight();
     int unit = walletModel->getOptionsModel()->getDisplayUnit();
     currentBalance = balance;
     currentStake = stake;
     currentUnconfirmedBalance = unconfirmedBalance;
     currentImmatureBalance = immatureBalance;
     ui->labelBalance->setText(BitcoinUnits::formatWithUnit(unit, balance));
+    ui->labelStakeWeight->setText(BitcoinUnits::formatWithUnit(unit, nWeight));
     ui->labelStake->setText(BitcoinUnits::formatWithUnit(unit, stake));
     ui->labelUnconfirmed->setText(BitcoinUnits::formatWithUnit(unit, unconfirmedBalance));
     ui->labelImmature->setText(BitcoinUnits::formatWithUnit(unit, immatureBalance));

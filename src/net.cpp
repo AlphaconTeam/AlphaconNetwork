@@ -9,6 +9,7 @@
 #include "main.h"
 #include "addrman.h"
 #include "ui_interface.h"
+#include "util.h"
 
 #ifdef WIN32
 #include <string.h>
@@ -1195,13 +1196,17 @@ void ThreadOpenConnections()
         boost::this_thread::interruption_point();
 
         // Add seed nodes if DNS seeds are all down (an infrastructure attack?).
-        if (addrman.size() == 0 && (GetTime() - nStart > 60)) {
-            static bool done = false;
-            if (!done) {
-                LogPrintf("Adding fixed seed nodes as DNS doesn't seem to be available.\n");
-                addrman.Add(Params().FixedSeeds(), CNetAddr("127.0.0.1"));
-                done = true;
-            }
+        // if (addrman.size() == 0 && (GetTime() - nStart > 60)) {
+        //     static bool done = false;
+        //     if (!done) {
+        //         LogPrintf("Adding fixed seed nodes as DNS doesn't seem to be available.\n");
+        //         addrman.Add(Params().FixedSeeds(), CNetAddr("127.0.0.1"));
+        //         done = true;
+        //     }
+        // }
+
+        if (addrman.size() == 0 && (GetTime() - nStart > 10)) {
+            addrman.Add(Params().FixedSeeds(), CNetAddr("127.0.0.1"));
         }
 
         //
