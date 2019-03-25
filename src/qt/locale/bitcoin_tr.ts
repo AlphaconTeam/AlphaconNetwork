@@ -26,13 +26,13 @@ Telif Hakkı © 2014 Alphacon geliştiricileri</translation>
         <source>
 This is experimental software.
 
-Distributed under the MIT/X11 software license, see the accompanying file COPYING or &lt;a href=&quot;http://www.opensource.org/licenses/mit-license.php&quot;&gt;http://www.opensource.org/licenses/mit-license.php&lt;/a&gt;.
+Distributed under the MIT software license, see the accompanying file COPYING or &lt;a href=&quot;http://www.opensource.org/licenses/mit-license.php&quot;&gt;http://www.opensource.org/licenses/mit-license.php&lt;/a&gt;.
 
 This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (&lt;a href=&quot;https://www.openssl.org/&quot;&gt;https://www.openssl.org/&lt;/a&gt;) and cryptographic software written by Eric Young (&lt;a href=&quot;mailto:eay@cryptsoft.com&quot;&gt;eay@cryptsoft.com&lt;/a&gt;) and UPnP software written by Thomas Bernard.</source>
         <translation>
 Bu, deneysel bir yazılımdır.
 
-MIT/X11 yazılım lisansı kapsamında yayınlanmıştır, beraberindeki COPYING dosyasına veya &lt;a href=&quot;http://www.opensource.org/licenses/mit-license.php&quot;&gt;http://www.opensource.org/licenses/mit-license.php&lt;/a&gt; sayfasına bakınız.
+MIT yazılım lisansı kapsamında yayınlanmıştır, beraberindeki COPYING dosyasına veya &lt;a href=&quot;http://www.opensource.org/licenses/mit-license.php&quot;&gt;http://www.opensource.org/licenses/mit-license.php&lt;/a&gt; sayfasına bakınız.
 
 Bu ürün, OpenSSL projesi tarafından OpenSSL araç takımıThis product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (&lt;a href=&quot;https://www.openssl.org/&quot;&gt;https://www.openssl.org/&lt;/a&gt;) için geliştirilmiş yazılımı, Eric Young (&lt;a href=&quot;mailto:eay@cryptsoft.com&quot;&gt;eay@cryptsoft.com&lt;/a&gt;) tarafından hazırlanmış şifreleme yazılımı ve Thomas Bernard tarafından yazılmış UPnP yazılımı içerir.</translation>
     </message>

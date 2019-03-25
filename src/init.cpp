@@ -1,19 +1,24 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2012 The Bitcoin developers
-// Distributed under the MIT/X11 software license, see the accompanying
+// Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "init.h"
-#include "main.h"
-#include "chainparams.h"
-#include "script.h"
-#include "txdb.h"
-#include "rpcserver.h"
-#include "net.h"
-#include "util.h"
-#include "ui_interface.h"
-#include "wallet.h"
-#include "walletdb.h"
+#if defined(HAVE_CONFIG_H)
+#include "bitcoin-config.h"
+#endif
+
+#include <init.h>
+#include <main.h>
+#include <chainparams.h>
+#include <script.h>
+#include <txdb.h>
+#include <rpc/server.h>
+#include <net.h>
+#include <util.h>
+#include <ui_interface.h>
+#include <wallet/wallet.h>
+#include <wallet/walletdb.h>
+#include <assets/assets.h>
 
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
@@ -663,6 +668,8 @@ bool AppInit2(boost::thread_group& threadGroup)
         return false;
     }
 
+    passets = new CAssets();
+
     // ********************************************************* Step 8: load wallet
     if (fDisableWallet) {
         pwalletMain = NULL;
@@ -672,7 +679,9 @@ bool AppInit2(boost::thread_group& threadGroup)
 
         nStart = GetTimeMillis();
         bool fFirstRun = true;
+
         pwalletMain = new CWallet(strWalletFileName);
+
         DBErrors nLoadWalletRet = pwalletMain->LoadWallet(fFirstRun);
         if (nLoadWalletRet != DB_LOAD_OK)
         {

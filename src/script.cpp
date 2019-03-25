@@ -1,6 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2012 The Bitcoin developers
-// Distributed under the MIT/X11 software license, see the accompanying
+// Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <boost/foreach.hpp>
@@ -10,13 +10,13 @@
 using namespace std;
 using namespace boost;
 
-#include "script.h"
-#include "keystore.h"
-#include "bignum.h"
-#include "key.h"
-#include "main.h"
-#include "sync.h"
-#include "util.h"
+#include <script.h>
+#include <keystore.h>
+#include <bignum.h>
+#include <key.h>
+#include <main.h>
+#include <sync.h>
+#include <util.h>
 
 bool CheckSig(vector<unsigned char> vchSig, const vector<unsigned char> &vchPubKey, const CScript &scriptCode, const CTransaction& txTo, unsigned int nIn, int nHashType, int flags);
 
@@ -1546,32 +1546,38 @@ bool IsMine(const CKeyStore &keystore, const CScript& scriptPubKey)
     CKeyID keyID;
     switch (whichType)
     {
-    case TX_NONSTANDARD:
-    case TX_NULL_DATA:
-        return false;
-    case TX_PUBKEY:
-        keyID = CPubKey(vSolutions[0]).GetID();
-        return keystore.HaveKey(keyID);
-    case TX_PUBKEYHASH:
-        keyID = CKeyID(uint160(vSolutions[0]));
-        return keystore.HaveKey(keyID);
-    case TX_SCRIPTHASH:
-    {
-        CScript subscript;
-        if (!keystore.GetCScript(CScriptID(uint160(vSolutions[0])), subscript))
+        case TX_NONSTANDARD:
+        case TX_NULL_DATA:
             return false;
-        return IsMine(keystore, subscript);
-    }
-    case TX_MULTISIG:
-    {
-        // Only consider transactions "mine" if we own ALL the
-        // keys involved. multi-signature transactions that are
-        // partially owned (somebody else has a key that can spend
-        // them) enable spend-out-from-under-you attacks, especially
-        // in shared-wallet situations.
-        vector<valtype> keys(vSolutions.begin()+1, vSolutions.begin()+vSolutions.size()-1);
-        return HaveKeys(keys, keystore) == keys.size();
-    }
+
+        case TX_PUBKEY:
+            keyID = CPubKey(vSolutions[0]).GetID();
+            return keystore.HaveKey(keyID);
+
+        case TX_PUBKEYHASH:
+            keyID = CKeyID(uint160(vSolutions[0]));
+            return keystore.HaveKey(keyID);
+
+        case TX_SCRIPTHASH:
+        {
+            CScript subscript;
+            if (!keystore.GetCScript(CScriptID(uint160(vSolutions[0])), subscript)) {
+                return false;
+            }
+
+            return IsMine(keystore, subscript);
+        }
+
+        case TX_MULTISIG:
+        {
+            // Only consider transactions "mine" if we own ALL the
+            // keys involved. multi-signature transactions that are
+            // partially owned (somebody else has a key that can spend
+            // them) enable spend-out-from-under-you attacks, especially
+            // in shared-wallet situations.
+            vector<valtype> keys(vSolutions.begin() + 1, vSolutions.begin()+vSolutions.size() - 1);
+            return HaveKeys(keys, keystore) == keys.size();
+        }
     }
     return false;
 }

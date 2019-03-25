@@ -27,7 +27,7 @@ Copyright © 2018 The Alphacon developers</translation>
         <source>
 This is experimental software.
 
-Distributed under the MIT/X11 software license, see the accompanying file COPYING or &lt;a href=&quot;http://www.opensource.org/licenses/mit-license.php&quot;&gt;http://www.opensource.org/licenses/mit-license.php&lt;/a&gt;.
+Distributed under the MIT software license, see the accompanying file COPYING or &lt;a href=&quot;http://www.opensource.org/licenses/mit-license.php&quot;&gt;http://www.opensource.org/licenses/mit-license.php&lt;/a&gt;.
 
 This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (&lt;a href=&quot;https://www.openssl.org/&quot;&gt;https://www.openssl.org/&lt;/a&gt;) and cryptographic software written by Eric Young (&lt;a href=&quot;mailto:eay@cryptsoft.com&quot;&gt;eay@cryptsoft.com&lt;/a&gt;) and UPnP software written by Thomas Bernard.</source>
         <translation type="unfinished"/>
@@ -43,7 +43,7 @@ This product includes software developed by the OpenSSL Project for use in the O
     <message>
         <location line="+22"/>
         <source>Double-click to edit address or label</source>
-        <translation>Dvojklikem myši začneš upravovat označení adresy</translation>
+        <translation>Dvojklikem myši začneš upraAlphaconNetworkt označení adresy</translation>
     </message>
     <message>
         <location line="+24"/>
@@ -1084,7 +1084,7 @@ To znamená, že je potřebný poplatek ve výši nejméně %2.</translation>
     <message>
         <location line="+31"/>
         <source>Reserved amount does not participate in staking and is therefore spendable at any time.</source>
-        <translation>Rezervované množství se nepoužívá při stakingu a může tak být použito kdykoli.</translation>
+        <translation>RezerAlphaconNetworkné množství se nepoužívá při stakingu a může tak být použito kdykoli.</translation>
     </message>
     <message>
         <location line="+15"/>

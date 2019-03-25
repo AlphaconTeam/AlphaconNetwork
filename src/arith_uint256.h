@@ -2,7 +2,7 @@
 #define BITCOIN_ARITH_UINT256_H
 
 // Temporary for migration to opaque uint160/256
-#include "uint256.h"
+#include <uint256.h>
 
 class arith_uint256 : public uint256 {
 public:

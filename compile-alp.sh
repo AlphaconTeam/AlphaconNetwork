@@ -33,7 +33,7 @@ export MINIUPNPC_INCLUDE_PATH=${MXE_INCLUDE_PATH}
 export MINIUPNPC_LIB_PATH=${MXE_INCLUDE_LIB}
 export MINIUPNP_STATICLIB=${MXE_INCLUDE_LIB}
 export QMAKE_LRELEASE=${MXE_PATH}/usr/${target}/qt5/bin/lrelease
-export PATH=/home/vova/Shared/ALP/mxe/usr/bin:$PATH
+export PATH=/home/AlphaconNetwork/Shared/ALP/mxe/usr/bin:$PATH
 
 # Call qmake to create Makefile.[Release|Debug]
 
@@ -60,7 +60,7 @@ ${target}-qmake-qt5 \
 
 # Go for it. If successful, Windows binary will be written out to ./release/COin-name-qt.exe
 cd src/leveldb
-TARGET_OS=NATIVE_WINDOWS make libleveldb.a libmemenv.a CC=/home/vova/Shared/ALP/mxe/usr/bin/i686-w64-mingw32.static-gcc CXX=/home/vova/Shared/ALP/mxe/usr/bin/i686-w64-mingw32.static-g++
+TARGET_OS=NATIVE_WINDOWS make libleveldb.a libmemenv.a CC=/home/AlphaconNetwork/Shared/ALP/mxe/usr/bin/i686-w64-mingw32.static-gcc CXX=/home/AlphaconNetwork/Shared/ALP/mxe/usr/bin/i686-w64-mingw32.static-g++
 
 cd ../..
 

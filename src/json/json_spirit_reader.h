@@ -10,8 +10,8 @@
 # pragma once
 #endif
 
-#include "json_spirit_value.h"
-#include "json_spirit_error_position.h"
+#include <json/json_spirit_value.h>
+#include <json/json_spirit_error_position.h>
 #include <iostream>
 
 namespace json_spirit

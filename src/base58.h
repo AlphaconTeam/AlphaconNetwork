@@ -1,6 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2012 The Bitcoin Developers
-// Distributed under the MIT/X11 software license, see the accompanying
+// Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 
@@ -18,12 +18,12 @@
 #include <string>
 #include <vector>
 
-#include "chainparams.h"
-#include "bignum.h"
-#include "key.h"
-#include "script.h"
-#include "allocators.h"
-#include "util.h"
+#include <chainparams.h>
+#include <bignum.h>
+#include <key.h>
+#include <script.h>
+#include <allocators.h>
+#include <util.h>
 
 static const char* pszBase58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 

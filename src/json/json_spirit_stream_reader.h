@@ -10,7 +10,7 @@
 # pragma once
 #endif
 
-#include "json_spirit_reader_template.h"
+#include <json/json_spirit_reader_template.h>
 
 namespace json_spirit
 {

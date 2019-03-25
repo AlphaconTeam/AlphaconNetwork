@@ -27,13 +27,13 @@ Copyright © 2018 The Alphacon developers</translation>
         <source>
 This is experimental software.
 
-Distributed under the MIT/X11 software license, see the accompanying file COPYING or &lt;a href=&quot;http://www.opensource.org/licenses/mit-license.php&quot;&gt;http://www.opensource.org/licenses/mit-license.php&lt;/a&gt;.
+Distributed under the MIT software license, see the accompanying file COPYING or &lt;a href=&quot;http://www.opensource.org/licenses/mit-license.php&quot;&gt;http://www.opensource.org/licenses/mit-license.php&lt;/a&gt;.
 
 This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (&lt;a href=&quot;https://www.openssl.org/&quot;&gt;https://www.openssl.org/&lt;/a&gt;) and cryptographic software written by Eric Young (&lt;a href=&quot;mailto:eay@cryptsoft.com&quot;&gt;eay@cryptsoft.com&lt;/a&gt;) and UPnP software written by Thomas Bernard.</source>
         <translation>
 Toto je experimentálny softvér. 
 
-Distribuovaný pod softvérovou licenciou MIT/X11, viď priložený súbor COPYING alebo &lt;a href=&quot;http://www.opensource.org/licenses/mit-license.php&quot;&gt;http://www.opensource.org/licenses/mit-license.php&lt;/a&gt;. 
+Distribuovaný pod softvérovou licenciou MIT, viď priložený súbor COPYING alebo &lt;a href=&quot;http://www.opensource.org/licenses/mit-license.php&quot;&gt;http://www.opensource.org/licenses/mit-license.php&lt;/a&gt;. 
 
 Tento produkt obsahuje softvér vyvinutý projektom OpenSSL Project pre použitie v sade OpenSSL Toolkit  (&lt;a href=&quot;https://www.openssl.org/&quot;&gt;https://www.openssl.org/&lt;/a&gt;), šifrovací softvér, ktorý napísal Eric Young (&lt;a href=&quot;mailto:eay@cryptsoft.com&quot;&gt;eay@cryptsoft.com&lt;/a&gt;) a UPnP softvér ktorý napísal Thomas Bernard.</translation>
     </message>
@@ -1088,7 +1088,7 @@ To znamená, že je potrebný poplatok aspoň %2.</translation>
     <message>
         <location line="+31"/>
         <source>Reserved amount does not participate in staking and is therefore spendable at any time.</source>
-        <translation>Rezervované množstvo sa nepodieľa na stávkovaní a preto je použiteľné kedykoľvek.</translation>
+        <translation>RezerAlphaconNetworkné množstvo sa nepodieľa na stávkovaní a preto je použiteľné kedykoľvek.</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -2716,7 +2716,7 @@ napríklad: alertnotify=echo %%s | mail -s &quot;Alphacon upozornenie&quot; admi
     <message>
         <location line="+153"/>
         <source>An error occurred while setting up the RPC port %u for listening on IPv4: %s</source>
-        <translation>Pri nastavovaní portu RPC %u pre počúvanie na IPv4 došlo k chybe: %s</translation>
+        <translation>Pri nastaAlphaconNetworkní portu RPC %u pre počúvanie na IPv4 došlo k chybe: %s</translation>
     </message>
     <message>
         <location line="-126"/>
@@ -2746,7 +2746,7 @@ napríklad: alertnotify=echo %%s | mail -s &quot;Alphacon upozornenie&quot; admi
     <message>
         <location line="+160"/>
         <source>An error occurred while setting up the RPC port %u for listening on IPv6, falling back to IPv4: %s</source>
-        <translation>Pri nastavovaní portu RPC %u pre počúvanie na IPv6, spadne späť do IPv4 došlo k chybe: %s</translation>
+        <translation>Pri nastaAlphaconNetworkní portu RPC %u pre počúvanie na IPv6, spadne späť do IPv4 došlo k chybe: %s</translation>
     </message>
     <message>
         <location line="-84"/>

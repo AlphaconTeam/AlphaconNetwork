@@ -1,9 +1,13 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2012 The Bitcoin developers
-// Distributed under the MIT/X11 software license, see the accompanying
+// Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 #ifndef BITCOIN_MAIN_H
 #define BITCOIN_MAIN_H
+
+#if defined(HAVE_CONFIG_H)
+#include "bitcoin-config.h"
+#endif
 
 #include "core.h"
 #include "bignum.h"
@@ -23,6 +27,8 @@ class CKeyItem;
 class CNode;
 class CReserveKey;
 class CWallet;
+
+class CAssets;
 
 /** The maximum allowed size for a serialized block, in bytes (network rule) */
 static const unsigned int MAX_BLOCK_SIZE = 8000000;
@@ -82,6 +88,8 @@ extern bool fReindex;
 struct COrphanBlock;
 extern std::map<uint256, COrphanBlock*> mapOrphanBlocks;
 extern bool fHaveGUI;
+
+extern CAssets *passets;
 
 // Settings
 extern bool fUseFastIndex;

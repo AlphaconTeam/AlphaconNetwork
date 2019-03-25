@@ -1,7 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2012 The Bitcoin developers
 // Copyright (c) 2018 Alphacon developers
-// Distributed under the MIT/X11 software license, see the accompanying
+// Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <boost/algorithm/string/replace.hpp>
@@ -19,6 +19,8 @@
 #include "txdb.h"
 #include "txmempool.h"
 #include "ui_interface.h"
+
+#include <assets/assets.h>
 
 using namespace std;
 using namespace boost;
@@ -59,6 +61,8 @@ int64_t nTimeBestReceived = 0;
 bool fReindex = GetBoolArg("-reindex", false);
 bool fImporting = false;
 bool fHaveGUI = false;
+
+CAssets *passets = NULL;
 
 struct COrphanBlock {
     uint256 hashBlock;

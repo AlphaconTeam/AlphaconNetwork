@@ -1,12 +1,12 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2012 The Bitcoin developers
-// Distributed under the MIT/X11 software license, see the accompanying
+// Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "netbase.h"
-#include "util.h"
-#include "sync.h"
-#include "hash.h"
+#include <netbase.h>
+#include <util.h>
+#include <sync.h>
+#include <hash.h>
 
 #ifndef WIN32
 #include <sys/fcntl.h>
@@ -14,6 +14,10 @@
 
 #include <boost/algorithm/string/case_conv.hpp> // for to_lower()
 #include <boost/algorithm/string/predicate.hpp> // for startswith() and endswith()
+
+#if !defined(HAVE_MSG_NOSIGNAL)
+#define MSG_NOSIGNAL 0
+#endif
 
 using namespace std;
 

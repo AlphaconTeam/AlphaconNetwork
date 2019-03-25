@@ -1,14 +1,14 @@
 // Copyright (c) 2012 Pieter Wuille
-// Distributed under the MIT/X11 software license, see the accompanying
+// Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
-#ifndef _BITCOIN_ADDRMAN
-#define _BITCOIN_ADDRMAN 1
+#ifndef BITCOIN_ADDRMAN
+#define BITCOIN_ADDRMAN 1
 
-#include "netbase.h"
-#include "protocol.h"
-#include "sync.h"
-#include "timedata.h"
-#include "util.h"
+#include <netbase.h>
+#include <protocol.h>
+#include <sync.h>
+#include <timedata.h>
+#include <util.h>
 
 #include <map>
 #include <vector>

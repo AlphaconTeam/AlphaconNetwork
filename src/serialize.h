@@ -1,6 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2012 The Bitcoin developers
-// Distributed under the MIT/X11 software license, see the accompanying
+// Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #ifndef BITCOIN_SERIALIZE_H
@@ -19,8 +19,8 @@
 #include <boost/type_traits/is_fundamental.hpp>
 #include <boost/tuple/tuple.hpp>
 
-#include "allocators.h"
-#include "version.h"
+#include <allocators.h>
+#include <version.h>
 
 class CAutoFile;
 class CDataStream;
@@ -53,6 +53,26 @@ enum
     SER_SKIPSIG         = (1 << 16),
     SER_BLOCKHEADERONLY = (1 << 17),
 };
+
+/**
+ * Used to acquire a non-const pointer "this" to generate bodies
+ * of const serialization operations from a template
+ */
+template<typename T>
+inline T* NCONST_PTR(const T* val)
+{
+    return const_cast<T*>(val);
+}
+
+#define ADD_SERIALIZE_METHODS                                         \
+    template<typename Stream>                                         \
+    void Serialize(Stream& s) const {                                 \
+        NCONST_PTR(this)->SerializationOp(s, CSerActionSerialize());  \
+    }                                                                 \
+    template<typename Stream>                                         \
+    void Unserialize(Stream& s) {                                     \
+        SerializationOp(s, CSerActionUnserialize());                  \
+    }
 
 #define IMPLEMENT_SERIALIZE(statements)    \
     unsigned int GetSerializeSize(int nType, int nVersion) const  \

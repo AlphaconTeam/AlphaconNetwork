@@ -1,12 +1,12 @@
 // Copyright (c) 2009-2012 The Bitcoin Developers.
 // Authored by Google, Inc.
-// Distributed under the MIT/X11 software license, see the accompanying
+// Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #ifndef BITCOIN_LEVELDB_H
 #define BITCOIN_LEVELDB_H
 
-#include "main.h"
+#include <main.h>
 
 #include <map>
 #include <string>
