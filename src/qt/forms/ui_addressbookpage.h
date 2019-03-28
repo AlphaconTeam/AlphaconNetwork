@@ -13,7 +13,6 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
-#include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
@@ -32,14 +31,12 @@ public:
     QLabel *labelExplanation;
     QTableView *tableView;
     QHBoxLayout *horizontalLayout;
-    QPushButton *newAddressButton;
-    QPushButton *copyToClipboard;
-    QPushButton *showQRCode;
-    QPushButton *signMessage;
-    QPushButton *verifyMessage;
-    QPushButton *deleteButton;
+    QPushButton *newAddress;
+    QPushButton *copyAddress;
+    QPushButton *deleteAddress;
     QSpacerItem *horizontalSpacer;
-    QDialogButtonBox *buttonBox;
+    QPushButton *exportButton;
+    QPushButton *closeButton;
 
     void setupUi(QWidget *AddressBookPage)
     {
@@ -59,6 +56,7 @@ public:
         tableView->setObjectName(QStringLiteral("tableView"));
         tableView->setContextMenuPolicy(Qt::CustomContextMenu);
         tableView->setTabKeyNavigation(false);
+        tableView->setAlternatingRowColors(true);
         tableView->setSelectionMode(QAbstractItemView::SingleSelection);
         tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
         tableView->setSortingEnabled(true);
@@ -68,50 +66,56 @@ public:
 
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        newAddressButton = new QPushButton(AddressBookPage);
-        newAddressButton->setObjectName(QStringLiteral("newAddressButton"));
+        newAddress = new QPushButton(AddressBookPage);
+        newAddress->setObjectName(QStringLiteral("newAddress"));
+        QIcon icon;
+        icon.addFile(QStringLiteral(":/icons/add"), QSize(), QIcon::Normal, QIcon::Off);
+        newAddress->setIcon(icon);
+        newAddress->setAutoDefault(false);
 
-        horizontalLayout->addWidget(newAddressButton);
+        horizontalLayout->addWidget(newAddress);
 
-        copyToClipboard = new QPushButton(AddressBookPage);
-        copyToClipboard->setObjectName(QStringLiteral("copyToClipboard"));
+        copyAddress = new QPushButton(AddressBookPage);
+        copyAddress->setObjectName(QStringLiteral("copyAddress"));
+        QIcon icon1;
+        icon1.addFile(QStringLiteral(":/icons/editcopy"), QSize(), QIcon::Normal, QIcon::Off);
+        copyAddress->setIcon(icon1);
+        copyAddress->setAutoDefault(false);
 
-        horizontalLayout->addWidget(copyToClipboard);
+        horizontalLayout->addWidget(copyAddress);
 
-        showQRCode = new QPushButton(AddressBookPage);
-        showQRCode->setObjectName(QStringLiteral("showQRCode"));
+        deleteAddress = new QPushButton(AddressBookPage);
+        deleteAddress->setObjectName(QStringLiteral("deleteAddress"));
+        QIcon icon2;
+        icon2.addFile(QStringLiteral(":/icons/remove"), QSize(), QIcon::Normal, QIcon::Off);
+        deleteAddress->setIcon(icon2);
+        deleteAddress->setAutoDefault(false);
 
-        horizontalLayout->addWidget(showQRCode);
-
-        signMessage = new QPushButton(AddressBookPage);
-        signMessage->setObjectName(QStringLiteral("signMessage"));
-
-        horizontalLayout->addWidget(signMessage);
-
-        verifyMessage = new QPushButton(AddressBookPage);
-        verifyMessage->setObjectName(QStringLiteral("verifyMessage"));
-
-        horizontalLayout->addWidget(verifyMessage);
-
-        deleteButton = new QPushButton(AddressBookPage);
-        deleteButton->setObjectName(QStringLiteral("deleteButton"));
-
-        horizontalLayout->addWidget(deleteButton);
+        horizontalLayout->addWidget(deleteAddress);
 
         horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         horizontalLayout->addItem(horizontalSpacer);
 
-        buttonBox = new QDialogButtonBox(AddressBookPage);
-        buttonBox->setObjectName(QStringLiteral("buttonBox"));
-        QSizePolicy sizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
+        exportButton = new QPushButton(AddressBookPage);
+        exportButton->setObjectName(QStringLiteral("exportButton"));
+        QIcon icon3;
+        icon3.addFile(QStringLiteral(":/icons/export"), QSize(), QIcon::Normal, QIcon::Off);
+        exportButton->setIcon(icon3);
+        exportButton->setAutoDefault(false);
+
+        horizontalLayout->addWidget(exportButton);
+
+        closeButton = new QPushButton(AddressBookPage);
+        closeButton->setObjectName(QStringLiteral("closeButton"));
+        QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(buttonBox->sizePolicy().hasHeightForWidth());
-        buttonBox->setSizePolicy(sizePolicy);
-        buttonBox->setStandardButtons(QDialogButtonBox::Ok);
+        sizePolicy.setHeightForWidth(closeButton->sizePolicy().hasHeightForWidth());
+        closeButton->setSizePolicy(sizePolicy);
+        closeButton->setAutoDefault(false);
 
-        horizontalLayout->addWidget(buttonBox);
+        horizontalLayout->addWidget(closeButton);
 
 
         verticalLayout->addLayout(horizontalLayout);
@@ -124,32 +128,27 @@ public:
 
     void retranslateUi(QWidget *AddressBookPage)
     {
-        AddressBookPage->setWindowTitle(QApplication::translate("AddressBookPage", "Address Book", 0));
-        labelExplanation->setText(QApplication::translate("AddressBookPage", "These are your Alphacon addresses for receiving payments. You may want to give a different one to each sender so you can keep track of who is paying you.", 0));
 #ifndef QT_NO_TOOLTIP
-        tableView->setToolTip(QApplication::translate("AddressBookPage", "Double-click to edit address or label", 0));
+        tableView->setToolTip(QApplication::translate("AddressBookPage", "Right-click to edit address or label", 0));
 #endif // QT_NO_TOOLTIP
 #ifndef QT_NO_TOOLTIP
-        newAddressButton->setToolTip(QApplication::translate("AddressBookPage", "Create a new address", 0));
+        newAddress->setToolTip(QApplication::translate("AddressBookPage", "Create a new address", 0));
 #endif // QT_NO_TOOLTIP
-        newAddressButton->setText(QApplication::translate("AddressBookPage", "&New Address", 0));
+        newAddress->setText(QApplication::translate("AddressBookPage", "&New", 0));
 #ifndef QT_NO_TOOLTIP
-        copyToClipboard->setToolTip(QApplication::translate("AddressBookPage", "Copy the currently selected address to the system clipboard", 0));
+        copyAddress->setToolTip(QApplication::translate("AddressBookPage", "Copy the currently selected address to the system clipboard", 0));
 #endif // QT_NO_TOOLTIP
-        copyToClipboard->setText(QApplication::translate("AddressBookPage", "&Copy Address", 0));
-        showQRCode->setText(QApplication::translate("AddressBookPage", "Show &QR Code", 0));
+        copyAddress->setText(QApplication::translate("AddressBookPage", "&Copy", 0));
 #ifndef QT_NO_TOOLTIP
-        signMessage->setToolTip(QApplication::translate("AddressBookPage", "Sign a message to prove you own a Alphacon address", 0));
+        deleteAddress->setToolTip(QApplication::translate("AddressBookPage", "Delete the currently selected address from the list", 0));
 #endif // QT_NO_TOOLTIP
-        signMessage->setText(QApplication::translate("AddressBookPage", "Sign &Message", 0));
+        deleteAddress->setText(QApplication::translate("AddressBookPage", "&Delete", 0));
 #ifndef QT_NO_TOOLTIP
-        verifyMessage->setToolTip(QApplication::translate("AddressBookPage", "Verify a message to ensure it was signed with a specified Alphacon address", 0));
+        exportButton->setToolTip(QApplication::translate("AddressBookPage", "Export the data in the current tab to a file", 0));
 #endif // QT_NO_TOOLTIP
-        verifyMessage->setText(QApplication::translate("AddressBookPage", "&Verify Message", 0));
-#ifndef QT_NO_TOOLTIP
-        deleteButton->setToolTip(QApplication::translate("AddressBookPage", "Delete the currently selected address from the list", 0));
-#endif // QT_NO_TOOLTIP
-        deleteButton->setText(QApplication::translate("AddressBookPage", "&Delete", 0));
+        exportButton->setText(QApplication::translate("AddressBookPage", "&Export", 0));
+        closeButton->setText(QApplication::translate("AddressBookPage", "C&lose", 0));
+        Q_UNUSED(AddressBookPage);
     } // retranslateUi
 
 };

@@ -18,8 +18,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_SendCoinsEntry_t {
-    QByteArrayData data[15];
-    char stringdata0[221];
+    QByteArrayData data[14];
+    char stringdata0[215];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -34,22 +34,21 @@ QT_MOC_LITERAL(2, 27, 0), // ""
 QT_MOC_LITERAL(3, 28, 15), // "SendCoinsEntry*"
 QT_MOC_LITERAL(4, 44, 5), // "entry"
 QT_MOC_LITERAL(5, 50, 16), // "payAmountChanged"
-QT_MOC_LITERAL(6, 67, 16), // "setRemoveEnabled"
-QT_MOC_LITERAL(7, 84, 7), // "enabled"
-QT_MOC_LITERAL(8, 92, 5), // "clear"
-QT_MOC_LITERAL(9, 98, 23), // "on_deleteButton_clicked"
-QT_MOC_LITERAL(10, 122, 20), // "on_payTo_textChanged"
-QT_MOC_LITERAL(11, 143, 7), // "address"
-QT_MOC_LITERAL(12, 151, 28), // "on_addressBookButton_clicked"
-QT_MOC_LITERAL(13, 180, 22), // "on_pasteButton_clicked"
-QT_MOC_LITERAL(14, 203, 17) // "updateDisplayUnit"
+QT_MOC_LITERAL(6, 67, 28), // "subtractFeeFromAmountChanged"
+QT_MOC_LITERAL(7, 96, 5), // "clear"
+QT_MOC_LITERAL(8, 102, 13), // "deleteClicked"
+QT_MOC_LITERAL(9, 116, 20), // "on_payTo_textChanged"
+QT_MOC_LITERAL(10, 137, 7), // "address"
+QT_MOC_LITERAL(11, 145, 28), // "on_addressBookButton_clicked"
+QT_MOC_LITERAL(12, 174, 22), // "on_pasteButton_clicked"
+QT_MOC_LITERAL(13, 197, 17) // "updateDisplayUnit"
 
     },
     "SendCoinsEntry\0removeEntry\0\0SendCoinsEntry*\0"
-    "entry\0payAmountChanged\0setRemoveEnabled\0"
-    "enabled\0clear\0on_deleteButton_clicked\0"
-    "on_payTo_textChanged\0address\0"
-    "on_addressBookButton_clicked\0"
+    "entry\0payAmountChanged\0"
+    "subtractFeeFromAmountChanged\0clear\0"
+    "deleteClicked\0on_payTo_textChanged\0"
+    "address\0on_addressBookButton_clicked\0"
     "on_pasteButton_clicked\0updateDisplayUnit"
 };
 #undef QT_MOC_LITERAL
@@ -65,30 +64,30 @@ static const uint qt_meta_data_SendCoinsEntry[] = {
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       2,       // signalCount
+       3,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
        1,    1,   59,    2, 0x06 /* Public */,
        5,    0,   62,    2, 0x06 /* Public */,
+       6,    0,   63,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       6,    1,   63,    2, 0x0a /* Public */,
-       8,    0,   66,    2, 0x0a /* Public */,
-       9,    0,   67,    2, 0x08 /* Private */,
-      10,    1,   68,    2, 0x08 /* Private */,
-      12,    0,   71,    2, 0x08 /* Private */,
-      13,    0,   72,    2, 0x08 /* Private */,
-      14,    0,   73,    2, 0x08 /* Private */,
+       7,    0,   64,    2, 0x0a /* Public */,
+       8,    0,   65,    2, 0x08 /* Private */,
+       9,    1,   66,    2, 0x08 /* Private */,
+      11,    0,   69,    2, 0x08 /* Private */,
+      12,    0,   70,    2, 0x08 /* Private */,
+      13,    0,   71,    2, 0x08 /* Private */,
 
  // signals: parameters
     QMetaType::Void, 0x80000000 | 3,    4,
     QMetaType::Void,
+    QMetaType::Void,
 
  // slots: parameters
-    QMetaType::Void, QMetaType::Bool,    7,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::QString,   11,
+    QMetaType::Void, QMetaType::QString,   10,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -104,9 +103,9 @@ void SendCoinsEntry::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _
         switch (_id) {
         case 0: _t->removeEntry((*reinterpret_cast< SendCoinsEntry*(*)>(_a[1]))); break;
         case 1: _t->payAmountChanged(); break;
-        case 2: _t->setRemoveEnabled((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 2: _t->subtractFeeFromAmountChanged(); break;
         case 3: _t->clear(); break;
-        case 4: _t->on_deleteButton_clicked(); break;
+        case 4: _t->deleteClicked(); break;
         case 5: _t->on_payTo_textChanged((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 6: _t->on_addressBookButton_clicked(); break;
         case 7: _t->on_pasteButton_clicked(); break;
@@ -139,11 +138,17 @@ void SendCoinsEntry::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _
                 *result = 1;
             }
         }
+        {
+            typedef void (SendCoinsEntry::*_t)();
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&SendCoinsEntry::subtractFeeFromAmountChanged)) {
+                *result = 2;
+            }
+        }
     }
 }
 
 const QMetaObject SendCoinsEntry::staticMetaObject = {
-    { &QFrame::staticMetaObject, qt_meta_stringdata_SendCoinsEntry.data,
+    { &QStackedWidget::staticMetaObject, qt_meta_stringdata_SendCoinsEntry.data,
       qt_meta_data_SendCoinsEntry,  qt_static_metacall, Q_NULLPTR, Q_NULLPTR}
 };
 
@@ -158,12 +163,12 @@ void *SendCoinsEntry::qt_metacast(const char *_clname)
     if (!_clname) return Q_NULLPTR;
     if (!strcmp(_clname, qt_meta_stringdata_SendCoinsEntry.stringdata0))
         return static_cast<void*>(const_cast< SendCoinsEntry*>(this));
-    return QFrame::qt_metacast(_clname);
+    return QStackedWidget::qt_metacast(_clname);
 }
 
 int SendCoinsEntry::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
-    _id = QFrame::qt_metacall(_c, _id, _a);
+    _id = QStackedWidget::qt_metacall(_c, _id, _a);
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
@@ -189,5 +194,11 @@ void SendCoinsEntry::removeEntry(SendCoinsEntry * _t1)
 void SendCoinsEntry::payAmountChanged()
 {
     QMetaObject::activate(this, &staticMetaObject, 1, Q_NULLPTR);
+}
+
+// SIGNAL 2
+void SendCoinsEntry::subtractFeeFromAmountChanged()
+{
+    QMetaObject::activate(this, &staticMetaObject, 2, Q_NULLPTR);
 }
 QT_END_MOC_NAMESPACE

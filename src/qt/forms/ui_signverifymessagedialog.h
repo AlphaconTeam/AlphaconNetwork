@@ -41,6 +41,7 @@ public:
     QPushButton *addressBookButton_SM;
     QPushButton *pasteButton_SM;
     QPlainTextEdit *messageIn_SM;
+    QLabel *signatureLabel_SM;
     QHBoxLayout *horizontalLayout_2_SM;
     QLineEdit *signatureOut_SM;
     QPushButton *copySignatureButton_SM;
@@ -91,7 +92,6 @@ public:
         horizontalLayout_1_SM->setObjectName(QStringLiteral("horizontalLayout_1_SM"));
         addressIn_SM = new QValidatedLineEdit(tabSignMessage);
         addressIn_SM->setObjectName(QStringLiteral("addressIn_SM"));
-        addressIn_SM->setMaxLength(34);
 
         horizontalLayout_1_SM->addWidget(addressIn_SM);
 
@@ -120,6 +120,12 @@ public:
         messageIn_SM->setObjectName(QStringLiteral("messageIn_SM"));
 
         verticalLayout_SM->addWidget(messageIn_SM);
+
+        signatureLabel_SM = new QLabel(tabSignMessage);
+        signatureLabel_SM->setObjectName(QStringLiteral("signatureLabel_SM"));
+        signatureLabel_SM->setTextFormat(Qt::PlainText);
+
+        verticalLayout_SM->addWidget(signatureLabel_SM);
 
         horizontalLayout_2_SM = new QHBoxLayout();
         horizontalLayout_2_SM->setSpacing(0);
@@ -204,7 +210,6 @@ public:
         horizontalLayout_1_VM->setObjectName(QStringLiteral("horizontalLayout_1_VM"));
         addressIn_VM = new QValidatedLineEdit(tabVerifyMessage);
         addressIn_VM->setObjectName(QStringLiteral("addressIn_VM"));
-        addressIn_VM->setMaxLength(34);
 
         horizontalLayout_1_VM->addWidget(addressIn_VM);
 
@@ -271,7 +276,7 @@ public:
 
         retranslateUi(SignVerifyMessageDialog);
 
-        tabWidget->setCurrentIndex(1);
+        tabWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(SignVerifyMessageDialog);
@@ -280,12 +285,12 @@ public:
     void retranslateUi(QDialog *SignVerifyMessageDialog)
     {
         SignVerifyMessageDialog->setWindowTitle(QApplication::translate("SignVerifyMessageDialog", "Signatures - Sign / Verify a Message", 0));
-        infoLabel_SM->setText(QApplication::translate("SignVerifyMessageDialog", "You can sign messages with your addresses to prove you own them. Be careful not to sign anything vague, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.", 0));
+        infoLabel_SM->setText(QApplication::translate("SignVerifyMessageDialog", "You can sign messages/agreements with your addresses to prove you can receive bitcoins sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.", 0));
 #ifndef QT_NO_TOOLTIP
-        addressIn_SM->setToolTip(QApplication::translate("SignVerifyMessageDialog", "The address to sign the message with (e.g. B8gZqgY4r2RoEdqYk3QsAqFckyf9pRHN6i)", 0));
+        addressIn_SM->setToolTip(QApplication::translate("SignVerifyMessageDialog", "The Bitcoin address to sign the message with", 0));
 #endif // QT_NO_TOOLTIP
 #ifndef QT_NO_TOOLTIP
-        addressBookButton_SM->setToolTip(QApplication::translate("SignVerifyMessageDialog", "Choose an address from the address book", 0));
+        addressBookButton_SM->setToolTip(QApplication::translate("SignVerifyMessageDialog", "Choose previously used address", 0));
 #endif // QT_NO_TOOLTIP
         addressBookButton_SM->setText(QString());
         addressBookButton_SM->setShortcut(QApplication::translate("SignVerifyMessageDialog", "Alt+A", 0));
@@ -297,33 +302,34 @@ public:
 #ifndef QT_NO_TOOLTIP
         messageIn_SM->setToolTip(QApplication::translate("SignVerifyMessageDialog", "Enter the message you want to sign here", 0));
 #endif // QT_NO_TOOLTIP
+        signatureLabel_SM->setText(QApplication::translate("SignVerifyMessageDialog", "Signature", 0));
 #ifndef QT_NO_TOOLTIP
         copySignatureButton_SM->setToolTip(QApplication::translate("SignVerifyMessageDialog", "Copy the current signature to the system clipboard", 0));
 #endif // QT_NO_TOOLTIP
         copySignatureButton_SM->setText(QString());
 #ifndef QT_NO_TOOLTIP
-        signMessageButton_SM->setToolTip(QApplication::translate("SignVerifyMessageDialog", "Sign the message to prove you own this Alphacon address", 0));
+        signMessageButton_SM->setToolTip(QApplication::translate("SignVerifyMessageDialog", "Sign the message to prove you own this Bitcoin address", 0));
 #endif // QT_NO_TOOLTIP
-        signMessageButton_SM->setText(QApplication::translate("SignVerifyMessageDialog", "&Sign Message", 0));
+        signMessageButton_SM->setText(QApplication::translate("SignVerifyMessageDialog", "Sign &Message", 0));
 #ifndef QT_NO_TOOLTIP
         clearButton_SM->setToolTip(QApplication::translate("SignVerifyMessageDialog", "Reset all sign message fields", 0));
 #endif // QT_NO_TOOLTIP
         clearButton_SM->setText(QApplication::translate("SignVerifyMessageDialog", "Clear &All", 0));
         statusLabel_SM->setText(QString());
         tabWidget->setTabText(tabWidget->indexOf(tabSignMessage), QApplication::translate("SignVerifyMessageDialog", "&Sign Message", 0));
-        infoLabel_VM->setText(QApplication::translate("SignVerifyMessageDialog", "Enter the signing address, message (ensure you copy line breaks, spaces, tabs, etc. exactly) and signature below to verify the message. Be careful not to read more into the signature than what is in the signed message itself, to avoid being tricked by a man-in-the-middle attack.", 0));
+        infoLabel_VM->setText(QApplication::translate("SignVerifyMessageDialog", "Enter the receiver's address, message (ensure you copy line breaks, spaces, tabs, etc. exactly) and signature below to verify the message. Be careful not to read more into the signature than what is in the signed message itself, to avoid being tricked by a man-in-the-middle attack. Note that this only proves the signing party receives with the address, it cannot prove sendership of any transaction!", 0));
 #ifndef QT_NO_TOOLTIP
-        addressIn_VM->setToolTip(QApplication::translate("SignVerifyMessageDialog", "The address the message was signed with (e.g. B8gZqgY4r2RoEdqYk3QsAqFckyf9pRHN6i)", 0));
+        addressIn_VM->setToolTip(QApplication::translate("SignVerifyMessageDialog", "The Bitcoin address the message was signed with", 0));
 #endif // QT_NO_TOOLTIP
 #ifndef QT_NO_TOOLTIP
-        addressBookButton_VM->setToolTip(QApplication::translate("SignVerifyMessageDialog", "Choose an address from the address book", 0));
+        addressBookButton_VM->setToolTip(QApplication::translate("SignVerifyMessageDialog", "Choose previously used address", 0));
 #endif // QT_NO_TOOLTIP
         addressBookButton_VM->setText(QString());
         addressBookButton_VM->setShortcut(QApplication::translate("SignVerifyMessageDialog", "Alt+A", 0));
 #ifndef QT_NO_TOOLTIP
-        verifyMessageButton_VM->setToolTip(QApplication::translate("SignVerifyMessageDialog", "Verify the message to ensure it was signed with the specified Alphacon address", 0));
+        verifyMessageButton_VM->setToolTip(QApplication::translate("SignVerifyMessageDialog", "Verify the message to ensure it was signed with the specified Bitcoin address", 0));
 #endif // QT_NO_TOOLTIP
-        verifyMessageButton_VM->setText(QApplication::translate("SignVerifyMessageDialog", "&Verify Message", 0));
+        verifyMessageButton_VM->setText(QApplication::translate("SignVerifyMessageDialog", "Verify &Message", 0));
 #ifndef QT_NO_TOOLTIP
         clearButton_VM->setToolTip(QApplication::translate("SignVerifyMessageDialog", "Reset all verify message fields", 0));
 #endif // QT_NO_TOOLTIP

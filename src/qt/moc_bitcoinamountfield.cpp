@@ -19,7 +19,7 @@
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_BitcoinAmountField_t {
     QByteArrayData data[6];
-    char stringdata0[54];
+    char stringdata0[55];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -29,14 +29,14 @@ struct qt_meta_stringdata_BitcoinAmountField_t {
 static const qt_meta_stringdata_BitcoinAmountField_t qt_meta_stringdata_BitcoinAmountField = {
     {
 QT_MOC_LITERAL(0, 0, 18), // "BitcoinAmountField"
-QT_MOC_LITERAL(1, 19, 11), // "textChanged"
-QT_MOC_LITERAL(2, 31, 0), // ""
-QT_MOC_LITERAL(3, 32, 11), // "unitChanged"
-QT_MOC_LITERAL(4, 44, 3), // "idx"
-QT_MOC_LITERAL(5, 48, 5) // "value"
+QT_MOC_LITERAL(1, 19, 12), // "valueChanged"
+QT_MOC_LITERAL(2, 32, 0), // ""
+QT_MOC_LITERAL(3, 33, 11), // "unitChanged"
+QT_MOC_LITERAL(4, 45, 3), // "idx"
+QT_MOC_LITERAL(5, 49, 5) // "value"
 
     },
-    "BitcoinAmountField\0textChanged\0\0"
+    "BitcoinAmountField\0valueChanged\0\0"
     "unitChanged\0idx\0value"
 };
 #undef QT_MOC_LITERAL
@@ -81,7 +81,7 @@ void BitcoinAmountField::qt_static_metacall(QObject *_o, QMetaObject::Call _c, i
         BitcoinAmountField *_t = static_cast<BitcoinAmountField *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->textChanged(); break;
+        case 0: _t->valueChanged(); break;
         case 1: _t->unitChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         default: ;
         }
@@ -90,7 +90,7 @@ void BitcoinAmountField::qt_static_metacall(QObject *_o, QMetaObject::Call _c, i
         void **func = reinterpret_cast<void **>(_a[1]);
         {
             typedef void (BitcoinAmountField::*_t)();
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&BitcoinAmountField::textChanged)) {
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&BitcoinAmountField::valueChanged)) {
                 *result = 0;
             }
         }
@@ -171,7 +171,7 @@ int BitcoinAmountField::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 }
 
 // SIGNAL 0
-void BitcoinAmountField::textChanged()
+void BitcoinAmountField::valueChanged()
 {
     QMetaObject::activate(this, &staticMetaObject, 0, Q_NULLPTR);
 }

@@ -1,2 +1,1 @@
-// No build information available
-#define BUILD_DATE ""
+#define BUILD_SUFFIX 4591c59-dirty

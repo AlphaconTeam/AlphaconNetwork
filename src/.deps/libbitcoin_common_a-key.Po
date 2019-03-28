@@ -1,5 +1,6 @@
-libbitcoin_common_a-key.o: key.cpp /usr/include/stdc-predef.h \
- /usr/include/openssl/bn.h \
+libbitcoin_common_a-key.o: key.cpp /usr/include/stdc-predef.h key.h \
+ pubkey.h hash.h crypto/sph_groestl.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h crypto/sph_types.h \
  /usr/lib/gcc/x86_64-linux-gnu/5/include-fixed/limits.h \
  /usr/lib/gcc/x86_64-linux-gnu/5/include-fixed/syslimits.h \
  /usr/include/limits.h /usr/include/features.h \
@@ -12,22 +13,15 @@ libbitcoin_common_a-key.o: key.cpp /usr/include/stdc-predef.h \
  /usr/include/linux/limits.h \
  /usr/include/x86_64-linux-gnu/bits/posix2_lim.h \
  /usr/include/x86_64-linux-gnu/bits/xopen_lim.h \
- /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
- /usr/include/openssl/e_os2.h \
- /usr/include/x86_64-linux-gnu/openssl/opensslconf.h /usr/include/stdio.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h \
- /usr/include/x86_64-linux-gnu/bits/types.h \
- /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/libio.h \
- /usr/include/_G_config.h /usr/include/wchar.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/stdarg.h \
- /usr/include/x86_64-linux-gnu/bits/sys_errlist.h \
- /usr/include/x86_64-linux-gnu/bits/stdio.h \
- /usr/include/x86_64-linux-gnu/bits/stdio2.h \
- /usr/include/openssl/ossl_typ.h /usr/include/openssl/crypto.h \
- /usr/include/stdlib.h /usr/include/x86_64-linux-gnu/bits/waitflags.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h crypto/ripemd160.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/stdint.h /usr/include/stdint.h \
+ /usr/include/x86_64-linux-gnu/bits/wchar.h /usr/include/stdlib.h \
+ /usr/include/x86_64-linux-gnu/bits/waitflags.h \
  /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/endian.h \
  /usr/include/x86_64-linux-gnu/bits/endian.h \
  /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h \
  /usr/include/x86_64-linux-gnu/bits/byteswap-16.h /usr/include/xlocale.h \
  /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/time.h \
  /usr/include/x86_64-linux-gnu/sys/select.h \
@@ -39,75 +33,176 @@ libbitcoin_common_a-key.o: key.cpp /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h /usr/include/alloca.h \
  /usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h \
  /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
- /usr/include/x86_64-linux-gnu/bits/stdlib.h /usr/include/openssl/stack.h \
- /usr/include/openssl/safestack.h /usr/include/openssl/opensslv.h \
- /usr/include/openssl/symhacks.h /usr/include/openssl/ecdsa.h \
- /usr/include/openssl/ec.h /usr/include/openssl/asn1.h \
- /usr/include/x86_64-linux-gnu/bits/timex.h /usr/include/openssl/bio.h \
- /usr/include/openssl/rand.h /usr/include/openssl/obj_mac.h key.h \
- /usr/include/c++/5/vector /usr/include/c++/5/bits/stl_algobase.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib.h crypto/sha256.h prevector.h \
+ /usr/include/string.h /usr/include/x86_64-linux-gnu/bits/string3.h \
+ /usr/include/c++/5/iterator \
  /usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/5/bits/os_defines.h \
  /usr/include/x86_64-linux-gnu/c++/5/bits/cpu_defines.h \
- /usr/include/c++/5/bits/functexcept.h \
- /usr/include/c++/5/bits/exception_defines.h \
- /usr/include/c++/5/bits/cpp_type_traits.h \
- /usr/include/c++/5/ext/type_traits.h \
- /usr/include/c++/5/ext/numeric_traits.h \
- /usr/include/c++/5/bits/stl_pair.h /usr/include/c++/5/bits/move.h \
- /usr/include/c++/5/bits/concept_check.h /usr/include/c++/5/type_traits \
  /usr/include/c++/5/bits/stl_iterator_base_types.h \
+ /usr/include/c++/5/type_traits \
  /usr/include/c++/5/bits/stl_iterator_base_funcs.h \
- /usr/include/c++/5/debug/debug.h /usr/include/c++/5/bits/stl_iterator.h \
- /usr/include/c++/5/bits/ptr_traits.h \
- /usr/include/c++/5/bits/predefined_ops.h \
- /usr/include/c++/5/bits/allocator.h \
- /usr/include/x86_64-linux-gnu/c++/5/bits/c++allocator.h \
- /usr/include/c++/5/ext/new_allocator.h /usr/include/c++/5/new \
- /usr/include/c++/5/exception \
+ /usr/include/c++/5/bits/concept_check.h /usr/include/c++/5/debug/debug.h \
+ /usr/include/c++/5/bits/stl_iterator.h \
+ /usr/include/c++/5/bits/cpp_type_traits.h \
+ /usr/include/c++/5/ext/type_traits.h /usr/include/c++/5/bits/move.h \
+ /usr/include/c++/5/bits/ptr_traits.h /usr/include/c++/5/ostream \
+ /usr/include/c++/5/ios /usr/include/c++/5/iosfwd \
+ /usr/include/c++/5/bits/stringfwd.h /usr/include/c++/5/bits/memoryfwd.h \
+ /usr/include/c++/5/bits/postypes.h /usr/include/c++/5/cwchar \
+ /usr/include/wchar.h /usr/include/stdio.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/wchar2.h /usr/include/c++/5/exception \
  /usr/include/c++/5/bits/atomic_lockfree_defines.h \
  /usr/include/c++/5/bits/exception_ptr.h \
+ /usr/include/c++/5/bits/exception_defines.h \
  /usr/include/c++/5/bits/nested_exception.h \
- /usr/include/c++/5/bits/memoryfwd.h \
- /usr/include/c++/5/bits/stl_construct.h \
- /usr/include/c++/5/ext/alloc_traits.h \
- /usr/include/c++/5/bits/alloc_traits.h \
- /usr/include/c++/5/bits/stl_uninitialized.h \
- /usr/include/c++/5/bits/stl_vector.h /usr/include/c++/5/initializer_list \
- /usr/include/c++/5/bits/stl_bvector.h \
- /usr/include/c++/5/bits/functional_hash.h \
- /usr/include/c++/5/bits/hash_bytes.h \
- /usr/include/c++/5/bits/range_access.h \
- /usr/include/c++/5/bits/vector.tcc allocators.h /usr/include/string.h \
- /usr/include/x86_64-linux-gnu/bits/string3.h /usr/include/c++/5/string \
- /usr/include/c++/5/bits/stringfwd.h \
- /usr/include/c++/5/bits/char_traits.h /usr/include/c++/5/bits/postypes.h \
- /usr/include/c++/5/cwchar /usr/include/x86_64-linux-gnu/bits/wchar.h \
- /usr/include/x86_64-linux-gnu/bits/wchar2.h /usr/include/c++/5/cstdint \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/stdint.h /usr/include/stdint.h \
+ /usr/include/c++/5/bits/char_traits.h \
+ /usr/include/c++/5/bits/stl_algobase.h \
+ /usr/include/c++/5/bits/functexcept.h \
+ /usr/include/c++/5/ext/numeric_traits.h \
+ /usr/include/c++/5/bits/stl_pair.h \
+ /usr/include/c++/5/bits/predefined_ops.h /usr/include/c++/5/cstdint \
  /usr/include/c++/5/bits/localefwd.h \
  /usr/include/x86_64-linux-gnu/c++/5/bits/c++locale.h \
  /usr/include/c++/5/clocale /usr/include/locale.h \
- /usr/include/x86_64-linux-gnu/bits/locale.h /usr/include/c++/5/iosfwd \
- /usr/include/c++/5/cctype /usr/include/ctype.h \
- /usr/include/c++/5/bits/ostream_insert.h \
- /usr/include/c++/5/bits/cxxabi_forced.h \
- /usr/include/c++/5/bits/stl_function.h \
- /usr/include/c++/5/backward/binders.h \
- /usr/include/c++/5/bits/basic_string.h \
+ /usr/include/x86_64-linux-gnu/bits/locale.h /usr/include/c++/5/cctype \
+ /usr/include/ctype.h /usr/include/c++/5/bits/ios_base.h \
  /usr/include/c++/5/ext/atomicity.h \
  /usr/include/x86_64-linux-gnu/c++/5/bits/gthr.h \
  /usr/include/x86_64-linux-gnu/c++/5/bits/gthr-default.h \
  /usr/include/pthread.h /usr/include/sched.h \
  /usr/include/x86_64-linux-gnu/bits/sched.h \
+ /usr/include/x86_64-linux-gnu/bits/timex.h \
  /usr/include/x86_64-linux-gnu/bits/setjmp.h \
  /usr/include/x86_64-linux-gnu/c++/5/bits/atomic_word.h \
+ /usr/include/c++/5/bits/locale_classes.h /usr/include/c++/5/string \
+ /usr/include/c++/5/bits/allocator.h \
+ /usr/include/x86_64-linux-gnu/c++/5/bits/c++allocator.h \
+ /usr/include/c++/5/ext/new_allocator.h /usr/include/c++/5/new \
+ /usr/include/c++/5/bits/ostream_insert.h \
+ /usr/include/c++/5/bits/cxxabi_forced.h \
+ /usr/include/c++/5/bits/stl_function.h \
+ /usr/include/c++/5/backward/binders.h \
+ /usr/include/c++/5/bits/range_access.h \
+ /usr/include/c++/5/initializer_list \
+ /usr/include/c++/5/bits/basic_string.h \
+ /usr/include/c++/5/ext/alloc_traits.h \
+ /usr/include/c++/5/bits/alloc_traits.h \
  /usr/include/c++/5/ext/string_conversions.h /usr/include/c++/5/cstdlib \
- /usr/include/c++/5/cstdio /usr/include/c++/5/cerrno /usr/include/errno.h \
- /usr/include/x86_64-linux-gnu/bits/errno.h /usr/include/linux/errno.h \
- /usr/include/x86_64-linux-gnu/asm/errno.h \
+ /usr/include/c++/5/cstdio /usr/include/libio.h /usr/include/_G_config.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio2.h /usr/include/c++/5/cerrno \
+ /usr/include/errno.h /usr/include/x86_64-linux-gnu/bits/errno.h \
+ /usr/include/linux/errno.h /usr/include/x86_64-linux-gnu/asm/errno.h \
  /usr/include/asm-generic/errno.h /usr/include/asm-generic/errno-base.h \
+ /usr/include/c++/5/bits/functional_hash.h \
+ /usr/include/c++/5/bits/hash_bytes.h \
  /usr/include/c++/5/bits/basic_string.tcc \
+ /usr/include/c++/5/bits/locale_classes.tcc \
+ /usr/include/c++/5/system_error \
+ /usr/include/x86_64-linux-gnu/c++/5/bits/error_constants.h \
+ /usr/include/c++/5/stdexcept /usr/include/c++/5/streambuf \
+ /usr/include/c++/5/bits/streambuf.tcc \
+ /usr/include/c++/5/bits/basic_ios.h \
+ /usr/include/c++/5/bits/locale_facets.h /usr/include/c++/5/cwctype \
+ /usr/include/wctype.h \
+ /usr/include/x86_64-linux-gnu/c++/5/bits/ctype_base.h \
+ /usr/include/c++/5/bits/streambuf_iterator.h \
+ /usr/include/x86_64-linux-gnu/c++/5/bits/ctype_inline.h \
+ /usr/include/c++/5/bits/locale_facets.tcc \
+ /usr/include/c++/5/bits/basic_ios.tcc \
+ /usr/include/c++/5/bits/ostream.tcc /usr/include/c++/5/istream \
+ /usr/include/c++/5/bits/istream.tcc \
+ /usr/include/c++/5/bits/stream_iterator.h serialize.h compat/endian.h \
+ config/bitcoin-config.h compat/byteswap.h /usr/include/byteswap.h \
+ /usr/include/c++/5/algorithm /usr/include/c++/5/utility \
+ /usr/include/c++/5/bits/stl_relops.h /usr/include/c++/5/bits/stl_algo.h \
+ /usr/include/c++/5/bits/algorithmfwd.h \
+ /usr/include/c++/5/bits/stl_heap.h /usr/include/c++/5/bits/stl_tempbuf.h \
+ /usr/include/c++/5/bits/stl_construct.h /usr/include/c++/5/random \
+ /usr/include/c++/5/cmath /usr/include/math.h \
+ /usr/include/x86_64-linux-gnu/bits/math-vector.h \
+ /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_val.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_valf.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_vall.h \
+ /usr/include/x86_64-linux-gnu/bits/inf.h \
+ /usr/include/x86_64-linux-gnu/bits/nan.h \
+ /usr/include/x86_64-linux-gnu/bits/mathdef.h \
+ /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
+ /usr/include/x86_64-linux-gnu/bits/mathinline.h \
+ /usr/include/c++/5/limits /usr/include/c++/5/bits/random.h \
+ /usr/include/c++/5/vector /usr/include/c++/5/bits/stl_uninitialized.h \
+ /usr/include/c++/5/bits/stl_vector.h \
+ /usr/include/c++/5/bits/stl_bvector.h /usr/include/c++/5/bits/vector.tcc \
+ /usr/include/c++/5/bits/uniform_int_dist.h \
+ /usr/include/x86_64-linux-gnu/c++/5/bits/opt_random.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/x86intrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/ia32intrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/mmintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/xmmintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/mm_malloc.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/emmintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/pmmintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/tmmintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/ammintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/smmintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/popcntintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/wmmintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/immintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/avxintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/avx2intrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512fintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512erintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512pfintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512cdintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512vlintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512bwintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512dqintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512vlbwintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512vldqintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512ifmaintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512ifmavlintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512vbmiintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512vbmivlintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/shaintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/lzcntintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/bmiintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/bmi2intrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/fmaintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/f16cintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/rtmintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/xtestintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/mm3dnow.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/prfchwintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/fma4intrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/xopintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/lwpintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/tbmintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/rdseedintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/fxsrintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/xsaveintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/xsaveoptintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/adxintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/clwbintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/pcommitintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/clflushoptintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/xsavesintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/xsavecintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/mwaitxintrin.h \
+ /usr/include/c++/5/bits/random.tcc /usr/include/c++/5/numeric \
+ /usr/include/c++/5/bits/stl_numeric.h /usr/include/assert.h \
+ /usr/include/c++/5/map /usr/include/c++/5/bits/stl_tree.h \
+ /usr/include/c++/5/ext/aligned_buffer.h \
+ /usr/include/c++/5/bits/stl_map.h /usr/include/c++/5/tuple \
+ /usr/include/c++/5/array /usr/include/c++/5/bits/uses_allocator.h \
+ /usr/include/c++/5/bits/stl_multimap.h /usr/include/c++/5/set \
+ /usr/include/c++/5/bits/stl_set.h /usr/include/c++/5/bits/stl_multiset.h \
+ uint256.h /usr/include/c++/5/cstring crypto/common.h \
+ ../src/config/bitcoin-config.h compat/endian.h version.h \
+ support/allocators/secure.h support/pagelocker.h support/cleanse.h \
  /usr/include/boost/thread/mutex.hpp \
  /usr/include/boost/thread/detail/platform.hpp \
  /usr/include/boost/config.hpp /usr/include/boost/config/user.hpp \
@@ -129,11 +224,11 @@ libbitcoin_common_a-key.o: key.cpp /usr/include/stdc-predef.h \
  /usr/include/boost/thread/detail/config.hpp \
  /usr/include/boost/detail/workaround.hpp \
  /usr/include/boost/config/auto_link.hpp /usr/include/boost/assert.hpp \
- /usr/include/assert.h /usr/include/boost/throw_exception.hpp \
+ /usr/include/boost/throw_exception.hpp \
  /usr/include/boost/exception/exception.hpp \
  /usr/include/boost/current_function.hpp \
  /usr/include/boost/core/ignore_unused.hpp \
- /usr/include/boost/thread/exceptions.hpp /usr/include/c++/5/stdexcept \
+ /usr/include/boost/thread/exceptions.hpp \
  /usr/include/boost/system/system_error.hpp /usr/include/c++/5/cassert \
  /usr/include/boost/system/error_code.hpp \
  /usr/include/boost/system/config.hpp \
@@ -150,26 +245,9 @@ libbitcoin_common_a-key.o: key.cpp /usr/include/stdc-predef.h \
  /usr/include/boost/noncopyable.hpp \
  /usr/include/boost/core/noncopyable.hpp \
  /usr/include/boost/utility/enable_if.hpp \
- /usr/include/boost/core/enable_if.hpp /usr/include/c++/5/ostream \
- /usr/include/c++/5/ios /usr/include/c++/5/bits/ios_base.h \
- /usr/include/c++/5/bits/locale_classes.h \
- /usr/include/c++/5/bits/locale_classes.tcc \
- /usr/include/c++/5/system_error \
- /usr/include/x86_64-linux-gnu/c++/5/bits/error_constants.h \
- /usr/include/c++/5/streambuf /usr/include/c++/5/bits/streambuf.tcc \
- /usr/include/c++/5/bits/basic_ios.h \
- /usr/include/c++/5/bits/locale_facets.h /usr/include/c++/5/cwctype \
- /usr/include/wctype.h \
- /usr/include/x86_64-linux-gnu/c++/5/bits/ctype_base.h \
- /usr/include/c++/5/bits/streambuf_iterator.h \
- /usr/include/x86_64-linux-gnu/c++/5/bits/ctype_inline.h \
- /usr/include/c++/5/bits/locale_facets.tcc \
- /usr/include/c++/5/bits/basic_ios.tcc \
- /usr/include/c++/5/bits/ostream.tcc /usr/include/c++/5/functional \
- /usr/include/c++/5/typeinfo /usr/include/c++/5/tuple \
- /usr/include/c++/5/utility /usr/include/c++/5/bits/stl_relops.h \
- /usr/include/c++/5/array /usr/include/c++/5/bits/uses_allocator.h \
- /usr/include/boost/cerrno.hpp /usr/include/boost/config/abi_prefix.hpp \
+ /usr/include/boost/core/enable_if.hpp /usr/include/c++/5/functional \
+ /usr/include/c++/5/typeinfo /usr/include/boost/cerrno.hpp \
+ /usr/include/boost/config/abi_prefix.hpp \
  /usr/include/boost/config/abi_suffix.hpp \
  /usr/include/boost/thread/lock_types.hpp \
  /usr/include/boost/thread/detail/move.hpp \
@@ -319,14 +397,12 @@ libbitcoin_common_a-key.o: key.cpp /usr/include/stdc-predef.h \
  /usr/include/boost/shared_ptr.hpp \
  /usr/include/boost/smart_ptr/shared_ptr.hpp \
  /usr/include/boost/config/no_tr1/memory.hpp /usr/include/c++/5/memory \
- /usr/include/c++/5/bits/stl_tempbuf.h \
  /usr/include/c++/5/bits/stl_raw_storage_iter.h \
  /usr/include/c++/5/ext/concurrence.h \
  /usr/include/c++/5/bits/unique_ptr.h \
  /usr/include/c++/5/bits/shared_ptr.h \
  /usr/include/c++/5/bits/shared_ptr_base.h \
  /usr/include/c++/5/bits/allocated_ptr.h \
- /usr/include/c++/5/ext/aligned_buffer.h \
  /usr/include/c++/5/bits/shared_ptr_atomic.h \
  /usr/include/c++/5/bits/atomic_base.h \
  /usr/include/c++/5/backward/auto_ptr.h \
@@ -445,79 +521,7 @@ libbitcoin_common_a-key.o: key.cpp /usr/include/stdc-predef.h \
  /usr/include/boost/predef/os/solaris.h \
  /usr/include/boost/predef/os/unix.h /usr/include/boost/predef/os/vms.h \
  /usr/include/boost/predef/other.h \
- /usr/include/boost/predef/other/endian.h /usr/include/c++/5/algorithm \
- /usr/include/c++/5/bits/stl_algo.h \
- /usr/include/c++/5/bits/algorithmfwd.h \
- /usr/include/c++/5/bits/stl_heap.h /usr/include/c++/5/random \
- /usr/include/c++/5/cmath /usr/include/math.h \
- /usr/include/x86_64-linux-gnu/bits/math-vector.h \
- /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
- /usr/include/x86_64-linux-gnu/bits/huge_val.h \
- /usr/include/x86_64-linux-gnu/bits/huge_valf.h \
- /usr/include/x86_64-linux-gnu/bits/huge_vall.h \
- /usr/include/x86_64-linux-gnu/bits/inf.h \
- /usr/include/x86_64-linux-gnu/bits/nan.h \
- /usr/include/x86_64-linux-gnu/bits/mathdef.h \
- /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
- /usr/include/x86_64-linux-gnu/bits/mathinline.h \
- /usr/include/c++/5/limits /usr/include/c++/5/bits/random.h \
- /usr/include/c++/5/bits/uniform_int_dist.h \
- /usr/include/x86_64-linux-gnu/c++/5/bits/opt_random.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/x86intrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/ia32intrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/mmintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/xmmintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/mm_malloc.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/emmintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/pmmintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/tmmintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/ammintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/smmintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/popcntintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/wmmintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/immintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/avxintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/avx2intrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512fintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512erintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512pfintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512cdintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512vlintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512bwintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512dqintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512vlbwintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512vldqintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512ifmaintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512ifmavlintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512vbmiintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512vbmivlintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/shaintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/lzcntintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/bmiintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/bmi2intrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/fmaintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/f16cintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/rtmintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/xtestintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/mm3dnow.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/prfchwintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/fma4intrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/xopintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/lwpintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/tbmintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/rdseedintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/fxsrintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/xsaveintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/xsaveoptintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/adxintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/clwbintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/pcommitintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/clflushoptintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/xsavesintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/xsavecintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/mwaitxintrin.h \
- /usr/include/c++/5/bits/random.tcc /usr/include/c++/5/numeric \
- /usr/include/c++/5/bits/stl_numeric.h \
+ /usr/include/boost/predef/other/endian.h \
  /usr/include/boost/smart_ptr/detail/operator_bool.hpp \
  /usr/include/boost/date_time/microsec_time_clock.hpp \
  /usr/include/boost/date_time/filetime_functions.hpp \
@@ -528,9 +532,6 @@ libbitcoin_common_a-key.o: key.cpp /usr/include/stdc-predef.h \
  /usr/include/boost/limits.hpp /usr/include/boost/config/no_tr1/cmath.hpp \
  /usr/include/boost/date_time/time_duration.hpp \
  /usr/include/boost/operators.hpp /usr/include/boost/iterator.hpp \
- /usr/include/c++/5/iterator /usr/include/c++/5/istream \
- /usr/include/c++/5/bits/istream.tcc \
- /usr/include/c++/5/bits/stream_iterator.h \
  /usr/include/boost/date_time/time_defs.hpp \
  /usr/include/boost/date_time/special_defs.hpp \
  /usr/include/boost/date_time/time_resolution_traits.hpp \
@@ -552,8 +553,6 @@ libbitcoin_common_a-key.o: key.cpp /usr/include/stdc-predef.h \
  /usr/include/boost/date_time/gregorian/greg_day.hpp \
  /usr/include/boost/date_time/gregorian/greg_year.hpp \
  /usr/include/boost/date_time/gregorian/greg_month.hpp \
- /usr/include/c++/5/map /usr/include/c++/5/bits/stl_tree.h \
- /usr/include/c++/5/bits/stl_map.h /usr/include/c++/5/bits/stl_multimap.h \
  /usr/include/boost/date_time/gregorian/greg_duration.hpp \
  /usr/include/boost/date_time/date_duration.hpp \
  /usr/include/boost/date_time/date_duration_types.hpp \
@@ -605,7 +604,6 @@ libbitcoin_common_a-key.o: key.cpp /usr/include/stdc-predef.h \
  /usr/include/boost/chrono/detail/is_evenly_divisible_by.hpp \
  /usr/include/c++/5/iostream /usr/include/boost/thread/xtime.hpp \
  /usr/include/boost/date_time/posix_time/conversion.hpp \
- /usr/include/c++/5/cstring \
  /usr/include/boost/date_time/gregorian/conversion.hpp \
  /usr/include/boost/thread/pthread/timespec.hpp \
  /usr/include/boost/thread/pthread/pthread_mutex_scoped_lock.hpp \
@@ -613,32 +611,63 @@ libbitcoin_common_a-key.o: key.cpp /usr/include/stdc-predef.h \
  /usr/include/boost/chrono/detail/system.hpp \
  /usr/include/boost/version.hpp \
  /usr/include/boost/chrono/clock_string.hpp \
- /usr/include/boost/chrono/ceil.hpp \
- /usr/include/x86_64-linux-gnu/sys/mman.h \
- /usr/include/x86_64-linux-gnu/bits/mman.h \
- /usr/include/x86_64-linux-gnu/bits/mman-linux.h serialize.h \
- /usr/include/c++/5/set /usr/include/c++/5/bits/stl_set.h \
- /usr/include/c++/5/bits/stl_multiset.h \
- /usr/include/boost/type_traits/is_fundamental.hpp \
- /usr/include/boost/tuple/tuple.hpp /usr/include/boost/ref.hpp \
- /usr/include/boost/core/ref.hpp \
- /usr/include/boost/tuple/detail/tuple_basic.hpp \
- /usr/include/boost/type_traits/cv_traits.hpp \
- /usr/include/boost/type_traits/add_const.hpp \
- /usr/include/boost/type_traits/add_volatile.hpp \
- /usr/include/boost/type_traits/add_cv.hpp \
- /usr/include/boost/type_traits/is_const.hpp \
- /usr/include/boost/type_traits/remove_const.hpp \
- /usr/include/boost/type_traits/remove_volatile.hpp \
- /usr/include/boost/type_traits/function_traits.hpp \
- /usr/include/boost/utility/swap.hpp /usr/include/boost/core/swap.hpp \
- allocators.h version.h clientversion.h ../src/config/bitcoin-config.h \
- uint256.h hash.h /usr/include/openssl/sha.h \
- /usr/include/openssl/ripemd.h crypto/sph_groestl.h crypto/sph_types.h
+ /usr/include/boost/chrono/ceil.hpp /usr/include/boost/thread/once.hpp \
+ /usr/include/boost/thread/pthread/once_atomic.hpp \
+ /usr/include/boost/thread/detail/invoke.hpp \
+ /usr/include/boost/type_traits/is_pointer.hpp \
+ /usr/include/boost/type_traits/is_member_pointer.hpp \
+ /usr/include/boost/type_traits/is_member_function_pointer.hpp \
+ /usr/include/boost/type_traits/detail/is_mem_fun_pointer_impl.hpp \
+ /usr/include/boost/core/no_exceptions_support.hpp \
+ /usr/include/boost/bind.hpp /usr/include/boost/bind/bind.hpp \
+ /usr/include/boost/ref.hpp /usr/include/boost/core/ref.hpp \
+ /usr/include/boost/mem_fn.hpp /usr/include/boost/bind/mem_fn.hpp \
+ /usr/include/boost/get_pointer.hpp \
+ /usr/include/boost/bind/mem_fn_template.hpp \
+ /usr/include/boost/bind/mem_fn_cc.hpp /usr/include/boost/type.hpp \
+ /usr/include/boost/is_placeholder.hpp /usr/include/boost/bind/arg.hpp \
+ /usr/include/boost/visit_each.hpp /usr/include/boost/bind/storage.hpp \
+ /usr/include/boost/bind/bind_cc.hpp \
+ /usr/include/boost/bind/bind_mf_cc.hpp \
+ /usr/include/boost/bind/bind_mf2_cc.hpp \
+ /usr/include/boost/bind/placeholders.hpp /usr/include/boost/atomic.hpp \
+ /usr/include/boost/atomic/atomic.hpp \
+ /usr/include/boost/atomic/capabilities.hpp \
+ /usr/include/boost/atomic/detail/config.hpp \
+ /usr/include/boost/atomic/detail/platform.hpp \
+ /usr/include/boost/atomic/detail/int_sizes.hpp \
+ /usr/include/boost/atomic/detail/caps_gcc_atomic.hpp \
+ /usr/include/boost/atomic/fences.hpp /usr/include/boost/memory_order.hpp \
+ /usr/include/boost/atomic/detail/operations.hpp \
+ /usr/include/boost/atomic/detail/operations_lockfree.hpp \
+ /usr/include/boost/atomic/detail/ops_gcc_atomic.hpp \
+ /usr/include/boost/atomic/detail/storage_type.hpp \
+ /usr/include/boost/atomic/detail/operations_fwd.hpp \
+ /usr/include/boost/atomic/detail/ops_emulated.hpp \
+ /usr/include/boost/atomic/detail/lockpool.hpp \
+ /usr/include/boost/atomic/detail/link.hpp \
+ /usr/include/boost/atomic/atomic_flag.hpp \
+ /usr/include/boost/atomic/detail/atomic_flag.hpp \
+ /usr/include/boost/atomic/detail/atomic_template.hpp \
+ /usr/include/boost/type_traits/is_signed.hpp \
+ /usr/include/boost/atomic/detail/casts.hpp arith_uint256.h \
+ crypto/hmac_sha512.h crypto/sha512.h random.h \
+ secp256k1/include/secp256k1.h secp256k1/include/secp256k1_recovery.h \
+ secp256k1/include/secp256k1.h
 
 /usr/include/stdc-predef.h:
 
-/usr/include/openssl/bn.h:
+key.h:
+
+pubkey.h:
+
+hash.h:
+
+crypto/sph_groestl.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h:
+
+crypto/sph_types.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/5/include-fixed/limits.h:
 
@@ -668,35 +697,13 @@ libbitcoin_common_a-key.o: key.cpp /usr/include/stdc-predef.h \
 
 /usr/include/x86_64-linux-gnu/bits/stdio_lim.h:
 
-/usr/include/openssl/e_os2.h:
+crypto/ripemd160.h:
 
-/usr/include/x86_64-linux-gnu/openssl/opensslconf.h:
+/usr/lib/gcc/x86_64-linux-gnu/5/include/stdint.h:
 
-/usr/include/stdio.h:
+/usr/include/stdint.h:
 
-/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h:
-
-/usr/include/x86_64-linux-gnu/bits/types.h:
-
-/usr/include/x86_64-linux-gnu/bits/typesizes.h:
-
-/usr/include/libio.h:
-
-/usr/include/_G_config.h:
-
-/usr/include/wchar.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/stdarg.h:
-
-/usr/include/x86_64-linux-gnu/bits/sys_errlist.h:
-
-/usr/include/x86_64-linux-gnu/bits/stdio.h:
-
-/usr/include/x86_64-linux-gnu/bits/stdio2.h:
-
-/usr/include/openssl/ossl_typ.h:
-
-/usr/include/openssl/crypto.h:
+/usr/include/x86_64-linux-gnu/bits/wchar.h:
 
 /usr/include/stdlib.h:
 
@@ -709,6 +716,10 @@ libbitcoin_common_a-key.o: key.cpp /usr/include/stdc-predef.h \
 /usr/include/x86_64-linux-gnu/bits/endian.h:
 
 /usr/include/x86_64-linux-gnu/bits/byteswap.h:
+
+/usr/include/x86_64-linux-gnu/bits/types.h:
+
+/usr/include/x86_64-linux-gnu/bits/typesizes.h:
 
 /usr/include/x86_64-linux-gnu/bits/byteswap-16.h:
 
@@ -740,33 +751,15 @@ libbitcoin_common_a-key.o: key.cpp /usr/include/stdc-predef.h \
 
 /usr/include/x86_64-linux-gnu/bits/stdlib.h:
 
-/usr/include/openssl/stack.h:
+crypto/sha256.h:
 
-/usr/include/openssl/safestack.h:
+prevector.h:
 
-/usr/include/openssl/opensslv.h:
+/usr/include/string.h:
 
-/usr/include/openssl/symhacks.h:
+/usr/include/x86_64-linux-gnu/bits/string3.h:
 
-/usr/include/openssl/ecdsa.h:
-
-/usr/include/openssl/ec.h:
-
-/usr/include/openssl/asn1.h:
-
-/usr/include/x86_64-linux-gnu/bits/timex.h:
-
-/usr/include/openssl/bio.h:
-
-/usr/include/openssl/rand.h:
-
-/usr/include/openssl/obj_mac.h:
-
-key.h:
-
-/usr/include/c++/5/vector:
-
-/usr/include/c++/5/bits/stl_algobase.h:
+/usr/include/c++/5/iterator:
 
 /usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:
 
@@ -774,43 +767,47 @@ key.h:
 
 /usr/include/x86_64-linux-gnu/c++/5/bits/cpu_defines.h:
 
-/usr/include/c++/5/bits/functexcept.h:
-
-/usr/include/c++/5/bits/exception_defines.h:
-
-/usr/include/c++/5/bits/cpp_type_traits.h:
-
-/usr/include/c++/5/ext/type_traits.h:
-
-/usr/include/c++/5/ext/numeric_traits.h:
-
-/usr/include/c++/5/bits/stl_pair.h:
-
-/usr/include/c++/5/bits/move.h:
-
-/usr/include/c++/5/bits/concept_check.h:
+/usr/include/c++/5/bits/stl_iterator_base_types.h:
 
 /usr/include/c++/5/type_traits:
 
-/usr/include/c++/5/bits/stl_iterator_base_types.h:
-
 /usr/include/c++/5/bits/stl_iterator_base_funcs.h:
+
+/usr/include/c++/5/bits/concept_check.h:
 
 /usr/include/c++/5/debug/debug.h:
 
 /usr/include/c++/5/bits/stl_iterator.h:
 
+/usr/include/c++/5/bits/cpp_type_traits.h:
+
+/usr/include/c++/5/ext/type_traits.h:
+
+/usr/include/c++/5/bits/move.h:
+
 /usr/include/c++/5/bits/ptr_traits.h:
 
-/usr/include/c++/5/bits/predefined_ops.h:
+/usr/include/c++/5/ostream:
 
-/usr/include/c++/5/bits/allocator.h:
+/usr/include/c++/5/ios:
 
-/usr/include/x86_64-linux-gnu/c++/5/bits/c++allocator.h:
+/usr/include/c++/5/iosfwd:
 
-/usr/include/c++/5/ext/new_allocator.h:
+/usr/include/c++/5/bits/stringfwd.h:
 
-/usr/include/c++/5/new:
+/usr/include/c++/5/bits/memoryfwd.h:
+
+/usr/include/c++/5/bits/postypes.h:
+
+/usr/include/c++/5/cwchar:
+
+/usr/include/wchar.h:
+
+/usr/include/stdio.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/stdarg.h:
+
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:
 
 /usr/include/c++/5/exception:
 
@@ -818,57 +815,23 @@ key.h:
 
 /usr/include/c++/5/bits/exception_ptr.h:
 
+/usr/include/c++/5/bits/exception_defines.h:
+
 /usr/include/c++/5/bits/nested_exception.h:
-
-/usr/include/c++/5/bits/memoryfwd.h:
-
-/usr/include/c++/5/bits/stl_construct.h:
-
-/usr/include/c++/5/ext/alloc_traits.h:
-
-/usr/include/c++/5/bits/alloc_traits.h:
-
-/usr/include/c++/5/bits/stl_uninitialized.h:
-
-/usr/include/c++/5/bits/stl_vector.h:
-
-/usr/include/c++/5/initializer_list:
-
-/usr/include/c++/5/bits/stl_bvector.h:
-
-/usr/include/c++/5/bits/functional_hash.h:
-
-/usr/include/c++/5/bits/hash_bytes.h:
-
-/usr/include/c++/5/bits/range_access.h:
-
-/usr/include/c++/5/bits/vector.tcc:
-
-allocators.h:
-
-/usr/include/string.h:
-
-/usr/include/x86_64-linux-gnu/bits/string3.h:
-
-/usr/include/c++/5/string:
-
-/usr/include/c++/5/bits/stringfwd.h:
 
 /usr/include/c++/5/bits/char_traits.h:
 
-/usr/include/c++/5/bits/postypes.h:
+/usr/include/c++/5/bits/stl_algobase.h:
 
-/usr/include/c++/5/cwchar:
+/usr/include/c++/5/bits/functexcept.h:
 
-/usr/include/x86_64-linux-gnu/bits/wchar.h:
+/usr/include/c++/5/ext/numeric_traits.h:
 
-/usr/include/x86_64-linux-gnu/bits/wchar2.h:
+/usr/include/c++/5/bits/stl_pair.h:
+
+/usr/include/c++/5/bits/predefined_ops.h:
 
 /usr/include/c++/5/cstdint:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/stdint.h:
-
-/usr/include/stdint.h:
 
 /usr/include/c++/5/bits/localefwd.h:
 
@@ -880,21 +843,11 @@ allocators.h:
 
 /usr/include/x86_64-linux-gnu/bits/locale.h:
 
-/usr/include/c++/5/iosfwd:
-
 /usr/include/c++/5/cctype:
 
 /usr/include/ctype.h:
 
-/usr/include/c++/5/bits/ostream_insert.h:
-
-/usr/include/c++/5/bits/cxxabi_forced.h:
-
-/usr/include/c++/5/bits/stl_function.h:
-
-/usr/include/c++/5/backward/binders.h:
-
-/usr/include/c++/5/bits/basic_string.h:
+/usr/include/c++/5/bits/ios_base.h:
 
 /usr/include/c++/5/ext/atomicity.h:
 
@@ -908,15 +861,57 @@ allocators.h:
 
 /usr/include/x86_64-linux-gnu/bits/sched.h:
 
+/usr/include/x86_64-linux-gnu/bits/timex.h:
+
 /usr/include/x86_64-linux-gnu/bits/setjmp.h:
 
 /usr/include/x86_64-linux-gnu/c++/5/bits/atomic_word.h:
+
+/usr/include/c++/5/bits/locale_classes.h:
+
+/usr/include/c++/5/string:
+
+/usr/include/c++/5/bits/allocator.h:
+
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++allocator.h:
+
+/usr/include/c++/5/ext/new_allocator.h:
+
+/usr/include/c++/5/new:
+
+/usr/include/c++/5/bits/ostream_insert.h:
+
+/usr/include/c++/5/bits/cxxabi_forced.h:
+
+/usr/include/c++/5/bits/stl_function.h:
+
+/usr/include/c++/5/backward/binders.h:
+
+/usr/include/c++/5/bits/range_access.h:
+
+/usr/include/c++/5/initializer_list:
+
+/usr/include/c++/5/bits/basic_string.h:
+
+/usr/include/c++/5/ext/alloc_traits.h:
+
+/usr/include/c++/5/bits/alloc_traits.h:
 
 /usr/include/c++/5/ext/string_conversions.h:
 
 /usr/include/c++/5/cstdlib:
 
 /usr/include/c++/5/cstdio:
+
+/usr/include/libio.h:
+
+/usr/include/_G_config.h:
+
+/usr/include/x86_64-linux-gnu/bits/sys_errlist.h:
+
+/usr/include/x86_64-linux-gnu/bits/stdio.h:
+
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:
 
 /usr/include/c++/5/cerrno:
 
@@ -932,7 +927,273 @@ allocators.h:
 
 /usr/include/asm-generic/errno-base.h:
 
+/usr/include/c++/5/bits/functional_hash.h:
+
+/usr/include/c++/5/bits/hash_bytes.h:
+
 /usr/include/c++/5/bits/basic_string.tcc:
+
+/usr/include/c++/5/bits/locale_classes.tcc:
+
+/usr/include/c++/5/system_error:
+
+/usr/include/x86_64-linux-gnu/c++/5/bits/error_constants.h:
+
+/usr/include/c++/5/stdexcept:
+
+/usr/include/c++/5/streambuf:
+
+/usr/include/c++/5/bits/streambuf.tcc:
+
+/usr/include/c++/5/bits/basic_ios.h:
+
+/usr/include/c++/5/bits/locale_facets.h:
+
+/usr/include/c++/5/cwctype:
+
+/usr/include/wctype.h:
+
+/usr/include/x86_64-linux-gnu/c++/5/bits/ctype_base.h:
+
+/usr/include/c++/5/bits/streambuf_iterator.h:
+
+/usr/include/x86_64-linux-gnu/c++/5/bits/ctype_inline.h:
+
+/usr/include/c++/5/bits/locale_facets.tcc:
+
+/usr/include/c++/5/bits/basic_ios.tcc:
+
+/usr/include/c++/5/bits/ostream.tcc:
+
+/usr/include/c++/5/istream:
+
+/usr/include/c++/5/bits/istream.tcc:
+
+/usr/include/c++/5/bits/stream_iterator.h:
+
+serialize.h:
+
+compat/endian.h:
+
+config/bitcoin-config.h:
+
+compat/byteswap.h:
+
+/usr/include/byteswap.h:
+
+/usr/include/c++/5/algorithm:
+
+/usr/include/c++/5/utility:
+
+/usr/include/c++/5/bits/stl_relops.h:
+
+/usr/include/c++/5/bits/stl_algo.h:
+
+/usr/include/c++/5/bits/algorithmfwd.h:
+
+/usr/include/c++/5/bits/stl_heap.h:
+
+/usr/include/c++/5/bits/stl_tempbuf.h:
+
+/usr/include/c++/5/bits/stl_construct.h:
+
+/usr/include/c++/5/random:
+
+/usr/include/c++/5/cmath:
+
+/usr/include/math.h:
+
+/usr/include/x86_64-linux-gnu/bits/math-vector.h:
+
+/usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h:
+
+/usr/include/x86_64-linux-gnu/bits/huge_val.h:
+
+/usr/include/x86_64-linux-gnu/bits/huge_valf.h:
+
+/usr/include/x86_64-linux-gnu/bits/huge_vall.h:
+
+/usr/include/x86_64-linux-gnu/bits/inf.h:
+
+/usr/include/x86_64-linux-gnu/bits/nan.h:
+
+/usr/include/x86_64-linux-gnu/bits/mathdef.h:
+
+/usr/include/x86_64-linux-gnu/bits/mathcalls.h:
+
+/usr/include/x86_64-linux-gnu/bits/mathinline.h:
+
+/usr/include/c++/5/limits:
+
+/usr/include/c++/5/bits/random.h:
+
+/usr/include/c++/5/vector:
+
+/usr/include/c++/5/bits/stl_uninitialized.h:
+
+/usr/include/c++/5/bits/stl_vector.h:
+
+/usr/include/c++/5/bits/stl_bvector.h:
+
+/usr/include/c++/5/bits/vector.tcc:
+
+/usr/include/c++/5/bits/uniform_int_dist.h:
+
+/usr/include/x86_64-linux-gnu/c++/5/bits/opt_random.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/x86intrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/ia32intrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/mmintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/xmmintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/mm_malloc.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/emmintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/pmmintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/tmmintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/ammintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/smmintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/popcntintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/wmmintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/immintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/avxintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/avx2intrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512fintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512erintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512pfintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512cdintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512vlintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512bwintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512dqintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512vlbwintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512vldqintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512ifmaintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512ifmavlintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512vbmiintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512vbmivlintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/shaintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/lzcntintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/bmiintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/bmi2intrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/fmaintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/f16cintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/rtmintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/xtestintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/mm3dnow.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/prfchwintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/fma4intrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/xopintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/lwpintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/tbmintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/rdseedintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/fxsrintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/xsaveintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/xsaveoptintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/adxintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/clwbintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/pcommitintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/clflushoptintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/xsavesintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/xsavecintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/mwaitxintrin.h:
+
+/usr/include/c++/5/bits/random.tcc:
+
+/usr/include/c++/5/numeric:
+
+/usr/include/c++/5/bits/stl_numeric.h:
+
+/usr/include/assert.h:
+
+/usr/include/c++/5/map:
+
+/usr/include/c++/5/bits/stl_tree.h:
+
+/usr/include/c++/5/ext/aligned_buffer.h:
+
+/usr/include/c++/5/bits/stl_map.h:
+
+/usr/include/c++/5/tuple:
+
+/usr/include/c++/5/array:
+
+/usr/include/c++/5/bits/uses_allocator.h:
+
+/usr/include/c++/5/bits/stl_multimap.h:
+
+/usr/include/c++/5/set:
+
+/usr/include/c++/5/bits/stl_set.h:
+
+/usr/include/c++/5/bits/stl_multiset.h:
+
+uint256.h:
+
+/usr/include/c++/5/cstring:
+
+crypto/common.h:
+
+../src/config/bitcoin-config.h:
+
+compat/endian.h:
+
+version.h:
+
+support/allocators/secure.h:
+
+support/pagelocker.h:
+
+support/cleanse.h:
 
 /usr/include/boost/thread/mutex.hpp:
 
@@ -984,8 +1245,6 @@ allocators.h:
 
 /usr/include/boost/assert.hpp:
 
-/usr/include/assert.h:
-
 /usr/include/boost/throw_exception.hpp:
 
 /usr/include/boost/exception/exception.hpp:
@@ -995,8 +1254,6 @@ allocators.h:
 /usr/include/boost/core/ignore_unused.hpp:
 
 /usr/include/boost/thread/exceptions.hpp:
-
-/usr/include/c++/5/stdexcept:
 
 /usr/include/boost/system/system_error.hpp:
 
@@ -1038,57 +1295,9 @@ allocators.h:
 
 /usr/include/boost/core/enable_if.hpp:
 
-/usr/include/c++/5/ostream:
-
-/usr/include/c++/5/ios:
-
-/usr/include/c++/5/bits/ios_base.h:
-
-/usr/include/c++/5/bits/locale_classes.h:
-
-/usr/include/c++/5/bits/locale_classes.tcc:
-
-/usr/include/c++/5/system_error:
-
-/usr/include/x86_64-linux-gnu/c++/5/bits/error_constants.h:
-
-/usr/include/c++/5/streambuf:
-
-/usr/include/c++/5/bits/streambuf.tcc:
-
-/usr/include/c++/5/bits/basic_ios.h:
-
-/usr/include/c++/5/bits/locale_facets.h:
-
-/usr/include/c++/5/cwctype:
-
-/usr/include/wctype.h:
-
-/usr/include/x86_64-linux-gnu/c++/5/bits/ctype_base.h:
-
-/usr/include/c++/5/bits/streambuf_iterator.h:
-
-/usr/include/x86_64-linux-gnu/c++/5/bits/ctype_inline.h:
-
-/usr/include/c++/5/bits/locale_facets.tcc:
-
-/usr/include/c++/5/bits/basic_ios.tcc:
-
-/usr/include/c++/5/bits/ostream.tcc:
-
 /usr/include/c++/5/functional:
 
 /usr/include/c++/5/typeinfo:
-
-/usr/include/c++/5/tuple:
-
-/usr/include/c++/5/utility:
-
-/usr/include/c++/5/bits/stl_relops.h:
-
-/usr/include/c++/5/array:
-
-/usr/include/c++/5/bits/uses_allocator.h:
 
 /usr/include/boost/cerrno.hpp:
 
@@ -1406,8 +1615,6 @@ allocators.h:
 
 /usr/include/c++/5/memory:
 
-/usr/include/c++/5/bits/stl_tempbuf.h:
-
 /usr/include/c++/5/bits/stl_raw_storage_iter.h:
 
 /usr/include/c++/5/ext/concurrence.h:
@@ -1419,8 +1626,6 @@ allocators.h:
 /usr/include/c++/5/bits/shared_ptr_base.h:
 
 /usr/include/c++/5/bits/allocated_ptr.h:
-
-/usr/include/c++/5/ext/aligned_buffer.h:
 
 /usr/include/c++/5/bits/shared_ptr_atomic.h:
 
@@ -1676,160 +1881,6 @@ allocators.h:
 
 /usr/include/boost/predef/other/endian.h:
 
-/usr/include/c++/5/algorithm:
-
-/usr/include/c++/5/bits/stl_algo.h:
-
-/usr/include/c++/5/bits/algorithmfwd.h:
-
-/usr/include/c++/5/bits/stl_heap.h:
-
-/usr/include/c++/5/random:
-
-/usr/include/c++/5/cmath:
-
-/usr/include/math.h:
-
-/usr/include/x86_64-linux-gnu/bits/math-vector.h:
-
-/usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h:
-
-/usr/include/x86_64-linux-gnu/bits/huge_val.h:
-
-/usr/include/x86_64-linux-gnu/bits/huge_valf.h:
-
-/usr/include/x86_64-linux-gnu/bits/huge_vall.h:
-
-/usr/include/x86_64-linux-gnu/bits/inf.h:
-
-/usr/include/x86_64-linux-gnu/bits/nan.h:
-
-/usr/include/x86_64-linux-gnu/bits/mathdef.h:
-
-/usr/include/x86_64-linux-gnu/bits/mathcalls.h:
-
-/usr/include/x86_64-linux-gnu/bits/mathinline.h:
-
-/usr/include/c++/5/limits:
-
-/usr/include/c++/5/bits/random.h:
-
-/usr/include/c++/5/bits/uniform_int_dist.h:
-
-/usr/include/x86_64-linux-gnu/c++/5/bits/opt_random.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/x86intrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/ia32intrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/mmintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/xmmintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/mm_malloc.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/emmintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/pmmintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/tmmintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/ammintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/smmintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/popcntintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/wmmintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/immintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/avxintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/avx2intrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512fintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512erintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512pfintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512cdintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512vlintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512bwintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512dqintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512vlbwintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512vldqintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512ifmaintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512ifmavlintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512vbmiintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512vbmivlintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/shaintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/lzcntintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/bmiintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/bmi2intrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/fmaintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/f16cintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/rtmintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/xtestintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/mm3dnow.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/prfchwintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/fma4intrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/xopintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/lwpintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/tbmintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/rdseedintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/fxsrintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/xsaveintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/xsaveoptintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/adxintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/clwbintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/pcommitintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/clflushoptintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/xsavesintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/xsavecintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/mwaitxintrin.h:
-
-/usr/include/c++/5/bits/random.tcc:
-
-/usr/include/c++/5/numeric:
-
-/usr/include/c++/5/bits/stl_numeric.h:
-
 /usr/include/boost/smart_ptr/detail/operator_bool.hpp:
 
 /usr/include/boost/date_time/microsec_time_clock.hpp:
@@ -1853,14 +1904,6 @@ allocators.h:
 /usr/include/boost/operators.hpp:
 
 /usr/include/boost/iterator.hpp:
-
-/usr/include/c++/5/iterator:
-
-/usr/include/c++/5/istream:
-
-/usr/include/c++/5/bits/istream.tcc:
-
-/usr/include/c++/5/bits/stream_iterator.h:
 
 /usr/include/boost/date_time/time_defs.hpp:
 
@@ -1903,14 +1946,6 @@ allocators.h:
 /usr/include/boost/date_time/gregorian/greg_year.hpp:
 
 /usr/include/boost/date_time/gregorian/greg_month.hpp:
-
-/usr/include/c++/5/map:
-
-/usr/include/c++/5/bits/stl_tree.h:
-
-/usr/include/c++/5/bits/stl_map.h:
-
-/usr/include/c++/5/bits/stl_multimap.h:
 
 /usr/include/boost/date_time/gregorian/greg_duration.hpp:
 
@@ -2022,8 +2057,6 @@ allocators.h:
 
 /usr/include/boost/date_time/posix_time/conversion.hpp:
 
-/usr/include/c++/5/cstring:
-
 /usr/include/boost/date_time/gregorian/conversion.hpp:
 
 /usr/include/boost/thread/pthread/timespec.hpp:
@@ -2040,66 +2073,112 @@ allocators.h:
 
 /usr/include/boost/chrono/ceil.hpp:
 
-/usr/include/x86_64-linux-gnu/sys/mman.h:
+/usr/include/boost/thread/once.hpp:
 
-/usr/include/x86_64-linux-gnu/bits/mman.h:
+/usr/include/boost/thread/pthread/once_atomic.hpp:
 
-/usr/include/x86_64-linux-gnu/bits/mman-linux.h:
+/usr/include/boost/thread/detail/invoke.hpp:
 
-serialize.h:
+/usr/include/boost/type_traits/is_pointer.hpp:
 
-/usr/include/c++/5/set:
+/usr/include/boost/type_traits/is_member_pointer.hpp:
 
-/usr/include/c++/5/bits/stl_set.h:
+/usr/include/boost/type_traits/is_member_function_pointer.hpp:
 
-/usr/include/c++/5/bits/stl_multiset.h:
+/usr/include/boost/type_traits/detail/is_mem_fun_pointer_impl.hpp:
 
-/usr/include/boost/type_traits/is_fundamental.hpp:
+/usr/include/boost/core/no_exceptions_support.hpp:
 
-/usr/include/boost/tuple/tuple.hpp:
+/usr/include/boost/bind.hpp:
+
+/usr/include/boost/bind/bind.hpp:
 
 /usr/include/boost/ref.hpp:
 
 /usr/include/boost/core/ref.hpp:
 
-/usr/include/boost/tuple/detail/tuple_basic.hpp:
+/usr/include/boost/mem_fn.hpp:
 
-/usr/include/boost/type_traits/cv_traits.hpp:
+/usr/include/boost/bind/mem_fn.hpp:
 
-/usr/include/boost/type_traits/add_const.hpp:
+/usr/include/boost/get_pointer.hpp:
 
-/usr/include/boost/type_traits/add_volatile.hpp:
+/usr/include/boost/bind/mem_fn_template.hpp:
 
-/usr/include/boost/type_traits/add_cv.hpp:
+/usr/include/boost/bind/mem_fn_cc.hpp:
 
-/usr/include/boost/type_traits/is_const.hpp:
+/usr/include/boost/type.hpp:
 
-/usr/include/boost/type_traits/remove_const.hpp:
+/usr/include/boost/is_placeholder.hpp:
 
-/usr/include/boost/type_traits/remove_volatile.hpp:
+/usr/include/boost/bind/arg.hpp:
 
-/usr/include/boost/type_traits/function_traits.hpp:
+/usr/include/boost/visit_each.hpp:
 
-/usr/include/boost/utility/swap.hpp:
+/usr/include/boost/bind/storage.hpp:
 
-/usr/include/boost/core/swap.hpp:
+/usr/include/boost/bind/bind_cc.hpp:
 
-allocators.h:
+/usr/include/boost/bind/bind_mf_cc.hpp:
 
-version.h:
+/usr/include/boost/bind/bind_mf2_cc.hpp:
 
-clientversion.h:
+/usr/include/boost/bind/placeholders.hpp:
 
-../src/config/bitcoin-config.h:
+/usr/include/boost/atomic.hpp:
 
-uint256.h:
+/usr/include/boost/atomic/atomic.hpp:
 
-hash.h:
+/usr/include/boost/atomic/capabilities.hpp:
 
-/usr/include/openssl/sha.h:
+/usr/include/boost/atomic/detail/config.hpp:
 
-/usr/include/openssl/ripemd.h:
+/usr/include/boost/atomic/detail/platform.hpp:
 
-crypto/sph_groestl.h:
+/usr/include/boost/atomic/detail/int_sizes.hpp:
 
-crypto/sph_types.h:
+/usr/include/boost/atomic/detail/caps_gcc_atomic.hpp:
+
+/usr/include/boost/atomic/fences.hpp:
+
+/usr/include/boost/memory_order.hpp:
+
+/usr/include/boost/atomic/detail/operations.hpp:
+
+/usr/include/boost/atomic/detail/operations_lockfree.hpp:
+
+/usr/include/boost/atomic/detail/ops_gcc_atomic.hpp:
+
+/usr/include/boost/atomic/detail/storage_type.hpp:
+
+/usr/include/boost/atomic/detail/operations_fwd.hpp:
+
+/usr/include/boost/atomic/detail/ops_emulated.hpp:
+
+/usr/include/boost/atomic/detail/lockpool.hpp:
+
+/usr/include/boost/atomic/detail/link.hpp:
+
+/usr/include/boost/atomic/atomic_flag.hpp:
+
+/usr/include/boost/atomic/detail/atomic_flag.hpp:
+
+/usr/include/boost/atomic/detail/atomic_template.hpp:
+
+/usr/include/boost/type_traits/is_signed.hpp:
+
+/usr/include/boost/atomic/detail/casts.hpp:
+
+arith_uint256.h:
+
+crypto/hmac_sha512.h:
+
+crypto/sha512.h:
+
+random.h:
+
+secp256k1/include/secp256k1.h:
+
+secp256k1/include/secp256k1_recovery.h:
+
+secp256k1/include/secp256k1.h:

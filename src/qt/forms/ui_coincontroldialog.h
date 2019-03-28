@@ -24,7 +24,6 @@
 #include <QtWidgets/QRadioButton>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QVBoxLayout>
-#include <QtWidgets/QWidget>
 #include "coincontroltreewidget.h"
 
 QT_BEGIN_NAMESPACE
@@ -42,6 +41,8 @@ public:
     QFormLayout *formLayoutCoinControl2;
     QLabel *labelCoinControlAmountText;
     QLabel *labelCoinControlAmount;
+    QLabel *labelCoinControlPriorityText;
+    QLabel *labelCoinControlPriority;
     QFormLayout *formLayoutCoinControl3;
     QLabel *labelCoinControlFeeText;
     QLabel *labelCoinControlFee;
@@ -53,11 +54,12 @@ public:
     QLabel *labelCoinControlChangeText;
     QLabel *labelCoinControlChange;
     QFrame *frame;
-    QWidget *horizontalLayoutWidget;
+    QHBoxLayout *horizontalLayout;
     QHBoxLayout *horizontalLayoutPanel;
     QPushButton *pushButtonSelectAll;
     QRadioButton *radioTreeMode;
     QRadioButton *radioListMode;
+    QLabel *labelLocked;
     QSpacerItem *horizontalSpacer;
     CoinControlTreeWidget *treeWidget;
     QDialogButtonBox *buttonBox;
@@ -79,16 +81,15 @@ public:
         formLayoutCoinControl1->setContentsMargins(6, -1, 6, -1);
         labelCoinControlQuantityText = new QLabel(CoinControlDialog);
         labelCoinControlQuantityText->setObjectName(QStringLiteral("labelCoinControlQuantityText"));
-        labelCoinControlQuantityText->setStyleSheet(QStringLiteral("font-weight:bold;"));
+        QFont font;
+        font.setBold(true);
+        font.setWeight(75);
+        labelCoinControlQuantityText->setFont(font);
 
         formLayoutCoinControl1->setWidget(0, QFormLayout::LabelRole, labelCoinControlQuantityText);
 
         labelCoinControlQuantity = new QLabel(CoinControlDialog);
         labelCoinControlQuantity->setObjectName(QStringLiteral("labelCoinControlQuantity"));
-        QFont font;
-        font.setFamily(QStringLiteral("Monospace"));
-        font.setPointSize(10);
-        labelCoinControlQuantity->setFont(font);
         labelCoinControlQuantity->setCursor(QCursor(Qt::IBeamCursor));
         labelCoinControlQuantity->setContextMenuPolicy(Qt::ActionsContextMenu);
         labelCoinControlQuantity->setText(QStringLiteral("0"));
@@ -98,13 +99,12 @@ public:
 
         labelCoinControlBytesText = new QLabel(CoinControlDialog);
         labelCoinControlBytesText->setObjectName(QStringLiteral("labelCoinControlBytesText"));
-        labelCoinControlBytesText->setStyleSheet(QStringLiteral("font-weight:bold;"));
+        labelCoinControlBytesText->setFont(font);
 
         formLayoutCoinControl1->setWidget(1, QFormLayout::LabelRole, labelCoinControlBytesText);
 
         labelCoinControlBytes = new QLabel(CoinControlDialog);
         labelCoinControlBytes->setObjectName(QStringLiteral("labelCoinControlBytes"));
-        labelCoinControlBytes->setFont(font);
         labelCoinControlBytes->setCursor(QCursor(Qt::IBeamCursor));
         labelCoinControlBytes->setContextMenuPolicy(Qt::ActionsContextMenu);
         labelCoinControlBytes->setText(QStringLiteral("0"));
@@ -122,19 +122,33 @@ public:
         formLayoutCoinControl2->setContentsMargins(6, -1, 6, -1);
         labelCoinControlAmountText = new QLabel(CoinControlDialog);
         labelCoinControlAmountText->setObjectName(QStringLiteral("labelCoinControlAmountText"));
-        labelCoinControlAmountText->setStyleSheet(QStringLiteral("font-weight:bold;"));
+        labelCoinControlAmountText->setFont(font);
 
         formLayoutCoinControl2->setWidget(0, QFormLayout::LabelRole, labelCoinControlAmountText);
 
         labelCoinControlAmount = new QLabel(CoinControlDialog);
         labelCoinControlAmount->setObjectName(QStringLiteral("labelCoinControlAmount"));
-        labelCoinControlAmount->setFont(font);
         labelCoinControlAmount->setCursor(QCursor(Qt::IBeamCursor));
         labelCoinControlAmount->setContextMenuPolicy(Qt::ActionsContextMenu);
-        labelCoinControlAmount->setText(QStringLiteral("0.00 ALP"));
+        labelCoinControlAmount->setText(QStringLiteral("0.00 BTC"));
         labelCoinControlAmount->setTextInteractionFlags(Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse);
 
         formLayoutCoinControl2->setWidget(0, QFormLayout::FieldRole, labelCoinControlAmount);
+
+        labelCoinControlPriorityText = new QLabel(CoinControlDialog);
+        labelCoinControlPriorityText->setObjectName(QStringLiteral("labelCoinControlPriorityText"));
+        labelCoinControlPriorityText->setFont(font);
+
+        formLayoutCoinControl2->setWidget(1, QFormLayout::LabelRole, labelCoinControlPriorityText);
+
+        labelCoinControlPriority = new QLabel(CoinControlDialog);
+        labelCoinControlPriority->setObjectName(QStringLiteral("labelCoinControlPriority"));
+        labelCoinControlPriority->setCursor(QCursor(Qt::IBeamCursor));
+        labelCoinControlPriority->setContextMenuPolicy(Qt::ActionsContextMenu);
+        labelCoinControlPriority->setText(QStringLiteral("medium"));
+        labelCoinControlPriority->setTextInteractionFlags(Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse);
+
+        formLayoutCoinControl2->setWidget(1, QFormLayout::FieldRole, labelCoinControlPriority);
 
 
         horizontalLayoutTop->addLayout(formLayoutCoinControl2);
@@ -146,16 +160,15 @@ public:
         formLayoutCoinControl3->setContentsMargins(6, -1, 6, -1);
         labelCoinControlFeeText = new QLabel(CoinControlDialog);
         labelCoinControlFeeText->setObjectName(QStringLiteral("labelCoinControlFeeText"));
-        labelCoinControlFeeText->setStyleSheet(QStringLiteral("font-weight:bold;"));
+        labelCoinControlFeeText->setFont(font);
 
         formLayoutCoinControl3->setWidget(0, QFormLayout::LabelRole, labelCoinControlFeeText);
 
         labelCoinControlFee = new QLabel(CoinControlDialog);
         labelCoinControlFee->setObjectName(QStringLiteral("labelCoinControlFee"));
-        labelCoinControlFee->setFont(font);
         labelCoinControlFee->setCursor(QCursor(Qt::IBeamCursor));
         labelCoinControlFee->setContextMenuPolicy(Qt::ActionsContextMenu);
-        labelCoinControlFee->setText(QStringLiteral("0.00 ALP"));
+        labelCoinControlFee->setText(QStringLiteral("0.00 BTC"));
         labelCoinControlFee->setTextInteractionFlags(Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse);
 
         formLayoutCoinControl3->setWidget(0, QFormLayout::FieldRole, labelCoinControlFee);
@@ -163,14 +176,13 @@ public:
         labelCoinControlLowOutputText = new QLabel(CoinControlDialog);
         labelCoinControlLowOutputText->setObjectName(QStringLiteral("labelCoinControlLowOutputText"));
         labelCoinControlLowOutputText->setEnabled(false);
-        labelCoinControlLowOutputText->setStyleSheet(QStringLiteral("font-weight:bold;"));
+        labelCoinControlLowOutputText->setFont(font);
 
         formLayoutCoinControl3->setWidget(1, QFormLayout::LabelRole, labelCoinControlLowOutputText);
 
         labelCoinControlLowOutput = new QLabel(CoinControlDialog);
         labelCoinControlLowOutput->setObjectName(QStringLiteral("labelCoinControlLowOutput"));
         labelCoinControlLowOutput->setEnabled(false);
-        labelCoinControlLowOutput->setFont(font);
         labelCoinControlLowOutput->setCursor(QCursor(Qt::IBeamCursor));
         labelCoinControlLowOutput->setContextMenuPolicy(Qt::ActionsContextMenu);
         labelCoinControlLowOutput->setText(QStringLiteral("no"));
@@ -188,16 +200,15 @@ public:
         formLayoutCoinControl4->setContentsMargins(6, -1, 6, -1);
         labelCoinControlAfterFeeText = new QLabel(CoinControlDialog);
         labelCoinControlAfterFeeText->setObjectName(QStringLiteral("labelCoinControlAfterFeeText"));
-        labelCoinControlAfterFeeText->setStyleSheet(QStringLiteral("font-weight:bold;"));
+        labelCoinControlAfterFeeText->setFont(font);
 
         formLayoutCoinControl4->setWidget(0, QFormLayout::LabelRole, labelCoinControlAfterFeeText);
 
         labelCoinControlAfterFee = new QLabel(CoinControlDialog);
         labelCoinControlAfterFee->setObjectName(QStringLiteral("labelCoinControlAfterFee"));
-        labelCoinControlAfterFee->setFont(font);
         labelCoinControlAfterFee->setCursor(QCursor(Qt::IBeamCursor));
         labelCoinControlAfterFee->setContextMenuPolicy(Qt::ActionsContextMenu);
-        labelCoinControlAfterFee->setText(QStringLiteral("0.00 ALP"));
+        labelCoinControlAfterFee->setText(QStringLiteral("0.00 BTC"));
         labelCoinControlAfterFee->setTextInteractionFlags(Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse);
 
         formLayoutCoinControl4->setWidget(0, QFormLayout::FieldRole, labelCoinControlAfterFee);
@@ -205,17 +216,16 @@ public:
         labelCoinControlChangeText = new QLabel(CoinControlDialog);
         labelCoinControlChangeText->setObjectName(QStringLiteral("labelCoinControlChangeText"));
         labelCoinControlChangeText->setEnabled(false);
-        labelCoinControlChangeText->setStyleSheet(QStringLiteral("font-weight:bold;"));
+        labelCoinControlChangeText->setFont(font);
 
         formLayoutCoinControl4->setWidget(1, QFormLayout::LabelRole, labelCoinControlChangeText);
 
         labelCoinControlChange = new QLabel(CoinControlDialog);
         labelCoinControlChange->setObjectName(QStringLiteral("labelCoinControlChange"));
         labelCoinControlChange->setEnabled(false);
-        labelCoinControlChange->setFont(font);
         labelCoinControlChange->setCursor(QCursor(Qt::IBeamCursor));
         labelCoinControlChange->setContextMenuPolicy(Qt::ActionsContextMenu);
-        labelCoinControlChange->setText(QStringLiteral("0.00 ALP"));
+        labelCoinControlChange->setText(QStringLiteral("0.00 BTC"));
         labelCoinControlChange->setTextInteractionFlags(Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse);
 
         formLayoutCoinControl4->setWidget(1, QFormLayout::FieldRole, labelCoinControlChange);
@@ -231,41 +241,49 @@ public:
         frame->setMinimumSize(QSize(0, 40));
         frame->setFrameShape(QFrame::StyledPanel);
         frame->setFrameShadow(QFrame::Sunken);
-        horizontalLayoutWidget = new QWidget(frame);
-        horizontalLayoutWidget->setObjectName(QStringLiteral("horizontalLayoutWidget"));
-        horizontalLayoutWidget->setGeometry(QRect(10, 0, 781, 41));
-        horizontalLayoutPanel = new QHBoxLayout(horizontalLayoutWidget);
+        horizontalLayout = new QHBoxLayout(frame);
+        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
+        horizontalLayoutPanel = new QHBoxLayout();
         horizontalLayoutPanel->setSpacing(14);
         horizontalLayoutPanel->setObjectName(QStringLiteral("horizontalLayoutPanel"));
-        horizontalLayoutPanel->setContentsMargins(0, 0, 0, 0);
-        pushButtonSelectAll = new QPushButton(horizontalLayoutWidget);
+        pushButtonSelectAll = new QPushButton(frame);
         pushButtonSelectAll->setObjectName(QStringLiteral("pushButtonSelectAll"));
         QSizePolicy sizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(pushButtonSelectAll->sizePolicy().hasHeightForWidth());
         pushButtonSelectAll->setSizePolicy(sizePolicy);
+        pushButtonSelectAll->setAutoDefault(false);
 
         horizontalLayoutPanel->addWidget(pushButtonSelectAll);
 
-        radioTreeMode = new QRadioButton(horizontalLayoutWidget);
+        radioTreeMode = new QRadioButton(frame);
         radioTreeMode->setObjectName(QStringLiteral("radioTreeMode"));
         sizePolicy.setHeightForWidth(radioTreeMode->sizePolicy().hasHeightForWidth());
         radioTreeMode->setSizePolicy(sizePolicy);
-        radioTreeMode->setChecked(true);
 
         horizontalLayoutPanel->addWidget(radioTreeMode);
 
-        radioListMode = new QRadioButton(horizontalLayoutWidget);
+        radioListMode = new QRadioButton(frame);
         radioListMode->setObjectName(QStringLiteral("radioListMode"));
         sizePolicy.setHeightForWidth(radioListMode->sizePolicy().hasHeightForWidth());
         radioListMode->setSizePolicy(sizePolicy);
+        radioListMode->setChecked(true);
 
         horizontalLayoutPanel->addWidget(radioListMode);
+
+        labelLocked = new QLabel(frame);
+        labelLocked->setObjectName(QStringLiteral("labelLocked"));
+        labelLocked->setText(QStringLiteral("(1 locked)"));
+
+        horizontalLayoutPanel->addWidget(labelLocked);
 
         horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         horizontalLayoutPanel->addItem(horizontalSpacer);
+
+
+        horizontalLayout->addLayout(horizontalLayoutPanel);
 
 
         verticalLayout->addWidget(frame);
@@ -276,10 +294,11 @@ public:
         treeWidget->headerItem()->setText(8, QString());
         treeWidget->headerItem()->setText(9, QString());
         treeWidget->headerItem()->setText(10, QString());
+        treeWidget->headerItem()->setText(11, QString());
         treeWidget->setObjectName(QStringLiteral("treeWidget"));
         treeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
         treeWidget->setSortingEnabled(false);
-        treeWidget->setColumnCount(11);
+        treeWidget->setColumnCount(12);
         treeWidget->header()->setProperty("showSortIndicator", QVariant(true));
         treeWidget->header()->setStretchLastSection(false);
 
@@ -302,12 +321,13 @@ public:
 
     void retranslateUi(QDialog *CoinControlDialog)
     {
-        CoinControlDialog->setWindowTitle(QApplication::translate("CoinControlDialog", "Coin Control", 0));
+        CoinControlDialog->setWindowTitle(QApplication::translate("CoinControlDialog", "Coin Selection", 0));
         labelCoinControlQuantityText->setText(QApplication::translate("CoinControlDialog", "Quantity:", 0));
         labelCoinControlBytesText->setText(QApplication::translate("CoinControlDialog", "Bytes:", 0));
         labelCoinControlAmountText->setText(QApplication::translate("CoinControlDialog", "Amount:", 0));
+        labelCoinControlPriorityText->setText(QApplication::translate("CoinControlDialog", "Priority:", 0));
         labelCoinControlFeeText->setText(QApplication::translate("CoinControlDialog", "Fee:", 0));
-        labelCoinControlLowOutputText->setText(QApplication::translate("CoinControlDialog", "Low Output:", 0));
+        labelCoinControlLowOutputText->setText(QApplication::translate("CoinControlDialog", "Dust:", 0));
         labelCoinControlAfterFeeText->setText(QApplication::translate("CoinControlDialog", "After Fee:", 0));
         labelCoinControlChangeText->setText(QApplication::translate("CoinControlDialog", "Change:", 0));
         pushButtonSelectAll->setText(QApplication::translate("CoinControlDialog", "(un)select all", 0));
@@ -317,8 +337,8 @@ public:
         ___qtreewidgetitem->setText(6, QApplication::translate("CoinControlDialog", "Priority", 0));
         ___qtreewidgetitem->setText(5, QApplication::translate("CoinControlDialog", "Confirmations", 0));
         ___qtreewidgetitem->setText(4, QApplication::translate("CoinControlDialog", "Date", 0));
-        ___qtreewidgetitem->setText(3, QApplication::translate("CoinControlDialog", "Address", 0));
-        ___qtreewidgetitem->setText(2, QApplication::translate("CoinControlDialog", "Label", 0));
+        ___qtreewidgetitem->setText(3, QApplication::translate("CoinControlDialog", "Received with address", 0));
+        ___qtreewidgetitem->setText(2, QApplication::translate("CoinControlDialog", "Received with label", 0));
         ___qtreewidgetitem->setText(1, QApplication::translate("CoinControlDialog", "Amount", 0));
 #ifndef QT_NO_TOOLTIP
         ___qtreewidgetitem->setToolTip(5, QApplication::translate("CoinControlDialog", "Confirmed", 0));

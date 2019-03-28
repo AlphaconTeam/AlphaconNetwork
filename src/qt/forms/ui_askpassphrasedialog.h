@@ -36,6 +36,7 @@ public:
     QLineEdit *passEdit2;
     QLabel *passLabel3;
     QLineEdit *passEdit3;
+    QCheckBox *toggleShowPasswordButton;
     QLabel *capsLabel;
     QCheckBox *stakingCheckBox;
     QDialogButtonBox *buttonBox;
@@ -44,7 +45,7 @@ public:
     {
         if (AskPassphraseDialog->objectName().isEmpty())
             AskPassphraseDialog->setObjectName(QStringLiteral("AskPassphraseDialog"));
-        AskPassphraseDialog->resize(598, 198);
+        AskPassphraseDialog->resize(598, 222);
         QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
@@ -53,8 +54,10 @@ public:
         AskPassphraseDialog->setMinimumSize(QSize(550, 0));
         verticalLayout = new QVBoxLayout(AskPassphraseDialog);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        verticalLayout->setSizeConstraint(QLayout::SetMinimumSize);
         warningLabel = new QLabel(AskPassphraseDialog);
         warningLabel->setObjectName(QStringLiteral("warningLabel"));
+        warningLabel->setText(QStringLiteral("Placeholder text"));
         warningLabel->setTextFormat(Qt::RichText);
         warningLabel->setWordWrap(true);
 
@@ -62,6 +65,7 @@ public:
 
         formLayout = new QFormLayout();
         formLayout->setObjectName(QStringLiteral("formLayout"));
+        formLayout->setSizeConstraint(QLayout::SetMinimumSize);
         formLayout->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
         passLabel1 = new QLabel(AskPassphraseDialog);
         passLabel1->setObjectName(QStringLiteral("passLabel1"));
@@ -96,6 +100,11 @@ public:
 
         formLayout->setWidget(2, QFormLayout::FieldRole, passEdit3);
 
+        toggleShowPasswordButton = new QCheckBox(AskPassphraseDialog);
+        toggleShowPasswordButton->setObjectName(QStringLiteral("toggleShowPasswordButton"));
+
+        formLayout->setWidget(3, QFormLayout::FieldRole, toggleShowPasswordButton);
+
         capsLabel = new QLabel(AskPassphraseDialog);
         capsLabel->setObjectName(QStringLiteral("capsLabel"));
         QFont font;
@@ -104,12 +113,10 @@ public:
         capsLabel->setFont(font);
         capsLabel->setAlignment(Qt::AlignCenter);
 
-        formLayout->setWidget(3, QFormLayout::FieldRole, capsLabel);
+        formLayout->setWidget(4, QFormLayout::FieldRole, capsLabel);
 
         stakingCheckBox = new QCheckBox(AskPassphraseDialog);
         stakingCheckBox->setObjectName(QStringLiteral("stakingCheckBox"));
-        stakingCheckBox->setEnabled(true);
-        stakingCheckBox->setVisible(false);
 
         formLayout->setWidget(4, QFormLayout::LabelRole, stakingCheckBox);
 
@@ -137,11 +144,9 @@ public:
         passLabel1->setText(QApplication::translate("AskPassphraseDialog", "Enter passphrase", 0));
         passLabel2->setText(QApplication::translate("AskPassphraseDialog", "New passphrase", 0));
         passLabel3->setText(QApplication::translate("AskPassphraseDialog", "Repeat new passphrase", 0));
+        toggleShowPasswordButton->setText(QApplication::translate("AskPassphraseDialog", "Show password", 0));
         capsLabel->setText(QString());
-#ifndef QT_NO_TOOLTIP
-        stakingCheckBox->setToolTip(QApplication::translate("AskPassphraseDialog", "Serves to disable the trivial sendmoney when OS account compromised. Provides no real security.", 0));
-#endif // QT_NO_TOOLTIP
-        stakingCheckBox->setText(QApplication::translate("AskPassphraseDialog", "For staking only", 0));
+        stakingCheckBox->setText(QApplication::translate("AskPassphraseDialog", "* Tick for staking only", 0));
     } // retranslateUi
 
 };

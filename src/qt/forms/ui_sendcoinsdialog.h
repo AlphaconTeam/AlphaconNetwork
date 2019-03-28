@@ -17,15 +17,19 @@
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QFormLayout>
 #include <QtWidgets/QFrame>
+#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
-#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QRadioButton>
 #include <QtWidgets/QScrollArea>
+#include <QtWidgets/QSlider>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
+#include "bitcoinamountfield.h"
+#include "qvalidatedlineedit.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -54,6 +58,8 @@ public:
     QFormLayout *formLayoutCoinControl2;
     QLabel *labelCoinControlAmountText;
     QLabel *labelCoinControlAmount;
+    QLabel *labelCoinControlPriorityText;
+    QLabel *labelCoinControlPriority;
     QFormLayout *formLayoutCoinControl3;
     QLabel *labelCoinControlFeeText;
     QLabel *labelCoinControlFee;
@@ -66,7 +72,7 @@ public:
     QLabel *labelCoinControlChange;
     QHBoxLayout *horizontalLayoutCoinControl4;
     QCheckBox *checkBoxCoinControlChange;
-    QLineEdit *lineEditCoinControlChange;
+    QValidatedLineEdit *lineEditCoinControlChange;
     QLabel *labelCoinControlChangeLabel;
     QSpacerItem *verticalSpacerCoinControl;
     QScrollArea *scrollArea;
@@ -74,20 +80,68 @@ public:
     QVBoxLayout *verticalLayout_2;
     QVBoxLayout *entries;
     QSpacerItem *verticalSpacer;
+    QFrame *frameFee;
+    QVBoxLayout *verticalLayoutFee1;
+    QVBoxLayout *verticalLayoutFee2;
+    QHBoxLayout *horizontalLayoutFee1;
+    QVBoxLayout *verticalLayoutFee7;
+    QSpacerItem *verticalSpacerSmartFee;
+    QSpacerItem *verticalSpacer_5;
+    QSpacerItem *horizontalSpacer_4;
+    QPushButton *buttonMinimizeFee;
+    QFrame *frameFeeSelection;
+    QVBoxLayout *verticalLayoutFee12;
+    QGridLayout *gridLayoutFee;
+    QVBoxLayout *verticalLayoutFee8;
+    QHBoxLayout *horizontalLayoutFee13;
+    QRadioButton *radioCustomPerKilobyte;
+    QRadioButton *radioCustomAtLeast;
+    BitcoinAmountField *customFee;
+    QSpacerItem *horizontalSpacer_6;
+    QHBoxLayout *horizontalLayoutFee8;
+    QCheckBox *checkBoxMinimumFee;
+    QLabel *labelMinFeeWarning;
+    QSpacerItem *horizontalSpacer_2;
+    QVBoxLayout *verticalLayoutFee4;
+    QRadioButton *radioSmartFee;
+    QSpacerItem *verticalSpacer_2;
+    QVBoxLayout *verticalLayoutFee9;
+    QRadioButton *radioCustomFee;
+    QSpacerItem *verticalSpacer_6;
+    QVBoxLayout *verticalLayoutFee3;
+    QHBoxLayout *horizontalLayoutFee12;
+    QLabel *labelSmartFee;
+    QLabel *labelFeeEstimation;
+    QLabel *labelSmartFee2;
+    QSpacerItem *horizontalSpacer_5;
+    QHBoxLayout *horizontalLayoutFee9;
+    QVBoxLayout *verticalLayoutFee6;
+    QLabel *labelSmartFee3;
+    QSpacerItem *verticalSpacer_3;
+    QVBoxLayout *verticalLayoutFee5;
+    QSlider *sliderSmartFee;
+    QHBoxLayout *horizontalLayoutFee10;
+    QLabel *labelSmartFeeNormal;
+    QSpacerItem *horizontalSpacer_3;
+    QLabel *labelSmartFeeFast;
+    QSpacerItem *verticalSpacer_4;
+    QSpacerItem *verticalSpacerFee;
     QHBoxLayout *horizontalLayout;
-    QPushButton *addButton;
+    QPushButton *sendButton;
     QPushButton *clearButton;
+    QPushButton *addButton;
+    QSpacerItem *horizontalSpacer;
     QHBoxLayout *horizontalLayout_2;
     QLabel *label;
     QLabel *labelBalance;
-    QSpacerItem *horizontalSpacer;
-    QPushButton *sendButton;
+    QButtonGroup *groupFee;
+    QButtonGroup *groupCustomFee;
 
     void setupUi(QDialog *SendCoinsDialog)
     {
         if (SendCoinsDialog->objectName().isEmpty())
             SendCoinsDialog->setObjectName(QStringLiteral("SendCoinsDialog"));
-        SendCoinsDialog->resize(850, 400);
+        SendCoinsDialog->resize(850, 526);
         verticalLayout = new QVBoxLayout(SendCoinsDialog);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         verticalLayout->setContentsMargins(-1, -1, -1, 8);
@@ -102,9 +156,7 @@ public:
         frameCoinControl->setFrameShape(QFrame::StyledPanel);
         frameCoinControl->setFrameShadow(QFrame::Sunken);
         verticalLayoutCoinControl2 = new QVBoxLayout(frameCoinControl);
-#ifndef Q_OS_MAC
-        verticalLayoutCoinControl2->setSpacing(-1);
-#endif
+        verticalLayoutCoinControl2->setSpacing(0);
         verticalLayoutCoinControl2->setObjectName(QStringLiteral("verticalLayoutCoinControl2"));
         verticalLayoutCoinControl2->setContentsMargins(0, 0, 0, 6);
         verticalLayoutCoinControl = new QVBoxLayout();
@@ -139,6 +191,7 @@ public:
         pushButtonCoinControl = new QPushButton(frameCoinControl);
         pushButtonCoinControl->setObjectName(QStringLiteral("pushButtonCoinControl"));
         pushButtonCoinControl->setStyleSheet(QStringLiteral(""));
+        pushButtonCoinControl->setAutoDefault(false);
 
         horizontalLayoutCoinControl2->addWidget(pushButtonCoinControl);
 
@@ -173,8 +226,8 @@ public:
         widgetCoinControl->setMinimumSize(QSize(0, 0));
         widgetCoinControl->setStyleSheet(QStringLiteral(""));
         horizontalLayoutCoinControl5 = new QHBoxLayout(widgetCoinControl);
-        horizontalLayoutCoinControl5->setContentsMargins(0, 0, 0, 0);
         horizontalLayoutCoinControl5->setObjectName(QStringLiteral("horizontalLayoutCoinControl5"));
+        horizontalLayoutCoinControl5->setContentsMargins(0, 0, 0, 0);
         horizontalLayoutCoinControl3 = new QHBoxLayout();
         horizontalLayoutCoinControl3->setSpacing(20);
         horizontalLayoutCoinControl3->setObjectName(QStringLiteral("horizontalLayoutCoinControl3"));
@@ -186,19 +239,16 @@ public:
         formLayoutCoinControl1->setContentsMargins(10, 4, 6, -1);
         labelCoinControlQuantityText = new QLabel(widgetCoinControl);
         labelCoinControlQuantityText->setObjectName(QStringLiteral("labelCoinControlQuantityText"));
-        labelCoinControlQuantityText->setStyleSheet(QStringLiteral("font-weight:bold;"));
+        labelCoinControlQuantityText->setFont(font);
         labelCoinControlQuantityText->setMargin(0);
 
         formLayoutCoinControl1->setWidget(0, QFormLayout::LabelRole, labelCoinControlQuantityText);
 
         labelCoinControlQuantity = new QLabel(widgetCoinControl);
         labelCoinControlQuantity->setObjectName(QStringLiteral("labelCoinControlQuantity"));
-        QFont font1;
-        font1.setFamily(QStringLiteral("Monospace"));
-        font1.setPointSize(10);
-        labelCoinControlQuantity->setFont(font1);
         labelCoinControlQuantity->setCursor(QCursor(Qt::IBeamCursor));
         labelCoinControlQuantity->setContextMenuPolicy(Qt::ActionsContextMenu);
+        labelCoinControlQuantity->setText(QStringLiteral("0"));
         labelCoinControlQuantity->setMargin(0);
         labelCoinControlQuantity->setTextInteractionFlags(Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse);
 
@@ -206,15 +256,15 @@ public:
 
         labelCoinControlBytesText = new QLabel(widgetCoinControl);
         labelCoinControlBytesText->setObjectName(QStringLiteral("labelCoinControlBytesText"));
-        labelCoinControlBytesText->setStyleSheet(QStringLiteral("font-weight:bold;"));
+        labelCoinControlBytesText->setFont(font);
 
         formLayoutCoinControl1->setWidget(1, QFormLayout::LabelRole, labelCoinControlBytesText);
 
         labelCoinControlBytes = new QLabel(widgetCoinControl);
         labelCoinControlBytes->setObjectName(QStringLiteral("labelCoinControlBytes"));
-        labelCoinControlBytes->setFont(font1);
         labelCoinControlBytes->setCursor(QCursor(Qt::IBeamCursor));
         labelCoinControlBytes->setContextMenuPolicy(Qt::ActionsContextMenu);
+        labelCoinControlBytes->setText(QStringLiteral("0"));
         labelCoinControlBytes->setTextInteractionFlags(Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse);
 
         formLayoutCoinControl1->setWidget(1, QFormLayout::FieldRole, labelCoinControlBytes);
@@ -229,20 +279,34 @@ public:
         formLayoutCoinControl2->setContentsMargins(6, 4, 6, -1);
         labelCoinControlAmountText = new QLabel(widgetCoinControl);
         labelCoinControlAmountText->setObjectName(QStringLiteral("labelCoinControlAmountText"));
-        labelCoinControlAmountText->setStyleSheet(QStringLiteral("font-weight:bold;"));
+        labelCoinControlAmountText->setFont(font);
         labelCoinControlAmountText->setMargin(0);
 
         formLayoutCoinControl2->setWidget(0, QFormLayout::LabelRole, labelCoinControlAmountText);
 
         labelCoinControlAmount = new QLabel(widgetCoinControl);
         labelCoinControlAmount->setObjectName(QStringLiteral("labelCoinControlAmount"));
-        labelCoinControlAmount->setFont(font1);
         labelCoinControlAmount->setCursor(QCursor(Qt::IBeamCursor));
         labelCoinControlAmount->setContextMenuPolicy(Qt::ActionsContextMenu);
-        labelCoinControlAmount->setText(QStringLiteral("0.00 ALP"));
+        labelCoinControlAmount->setText(QStringLiteral("0.00 BTC"));
         labelCoinControlAmount->setTextInteractionFlags(Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse);
 
         formLayoutCoinControl2->setWidget(0, QFormLayout::FieldRole, labelCoinControlAmount);
+
+        labelCoinControlPriorityText = new QLabel(widgetCoinControl);
+        labelCoinControlPriorityText->setObjectName(QStringLiteral("labelCoinControlPriorityText"));
+        labelCoinControlPriorityText->setFont(font);
+
+        formLayoutCoinControl2->setWidget(1, QFormLayout::LabelRole, labelCoinControlPriorityText);
+
+        labelCoinControlPriority = new QLabel(widgetCoinControl);
+        labelCoinControlPriority->setObjectName(QStringLiteral("labelCoinControlPriority"));
+        labelCoinControlPriority->setCursor(QCursor(Qt::IBeamCursor));
+        labelCoinControlPriority->setContextMenuPolicy(Qt::ActionsContextMenu);
+        labelCoinControlPriority->setText(QStringLiteral("medium"));
+        labelCoinControlPriority->setTextInteractionFlags(Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse);
+
+        formLayoutCoinControl2->setWidget(1, QFormLayout::FieldRole, labelCoinControlPriority);
 
 
         horizontalLayoutCoinControl3->addLayout(formLayoutCoinControl2);
@@ -254,32 +318,31 @@ public:
         formLayoutCoinControl3->setContentsMargins(6, 4, 6, -1);
         labelCoinControlFeeText = new QLabel(widgetCoinControl);
         labelCoinControlFeeText->setObjectName(QStringLiteral("labelCoinControlFeeText"));
-        labelCoinControlFeeText->setStyleSheet(QStringLiteral("font-weight:bold;"));
+        labelCoinControlFeeText->setFont(font);
         labelCoinControlFeeText->setMargin(0);
 
         formLayoutCoinControl3->setWidget(0, QFormLayout::LabelRole, labelCoinControlFeeText);
 
         labelCoinControlFee = new QLabel(widgetCoinControl);
         labelCoinControlFee->setObjectName(QStringLiteral("labelCoinControlFee"));
-        labelCoinControlFee->setFont(font1);
         labelCoinControlFee->setCursor(QCursor(Qt::IBeamCursor));
         labelCoinControlFee->setContextMenuPolicy(Qt::ActionsContextMenu);
-        labelCoinControlFee->setText(QStringLiteral("0.00 ALP"));
+        labelCoinControlFee->setText(QStringLiteral("0.00 BTC"));
         labelCoinControlFee->setTextInteractionFlags(Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse);
 
         formLayoutCoinControl3->setWidget(0, QFormLayout::FieldRole, labelCoinControlFee);
 
         labelCoinControlLowOutputText = new QLabel(widgetCoinControl);
         labelCoinControlLowOutputText->setObjectName(QStringLiteral("labelCoinControlLowOutputText"));
-        labelCoinControlLowOutputText->setStyleSheet(QStringLiteral("font-weight:bold;"));
+        labelCoinControlLowOutputText->setFont(font);
 
         formLayoutCoinControl3->setWidget(1, QFormLayout::LabelRole, labelCoinControlLowOutputText);
 
         labelCoinControlLowOutput = new QLabel(widgetCoinControl);
         labelCoinControlLowOutput->setObjectName(QStringLiteral("labelCoinControlLowOutput"));
-        labelCoinControlLowOutput->setFont(font1);
         labelCoinControlLowOutput->setCursor(QCursor(Qt::IBeamCursor));
         labelCoinControlLowOutput->setContextMenuPolicy(Qt::ActionsContextMenu);
+        labelCoinControlLowOutput->setText(QStringLiteral("no"));
         labelCoinControlLowOutput->setTextInteractionFlags(Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse);
 
         formLayoutCoinControl3->setWidget(1, QFormLayout::FieldRole, labelCoinControlLowOutput);
@@ -294,33 +357,31 @@ public:
         formLayoutCoinControl4->setContentsMargins(6, 4, 6, -1);
         labelCoinControlAfterFeeText = new QLabel(widgetCoinControl);
         labelCoinControlAfterFeeText->setObjectName(QStringLiteral("labelCoinControlAfterFeeText"));
-        labelCoinControlAfterFeeText->setStyleSheet(QStringLiteral("font-weight:bold;"));
+        labelCoinControlAfterFeeText->setFont(font);
         labelCoinControlAfterFeeText->setMargin(0);
 
         formLayoutCoinControl4->setWidget(0, QFormLayout::LabelRole, labelCoinControlAfterFeeText);
 
         labelCoinControlAfterFee = new QLabel(widgetCoinControl);
         labelCoinControlAfterFee->setObjectName(QStringLiteral("labelCoinControlAfterFee"));
-        labelCoinControlAfterFee->setFont(font1);
         labelCoinControlAfterFee->setCursor(QCursor(Qt::IBeamCursor));
         labelCoinControlAfterFee->setContextMenuPolicy(Qt::ActionsContextMenu);
-        labelCoinControlAfterFee->setText(QStringLiteral("0.00 ALP"));
+        labelCoinControlAfterFee->setText(QStringLiteral("0.00 BTC"));
         labelCoinControlAfterFee->setTextInteractionFlags(Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse);
 
         formLayoutCoinControl4->setWidget(0, QFormLayout::FieldRole, labelCoinControlAfterFee);
 
         labelCoinControlChangeText = new QLabel(widgetCoinControl);
         labelCoinControlChangeText->setObjectName(QStringLiteral("labelCoinControlChangeText"));
-        labelCoinControlChangeText->setStyleSheet(QStringLiteral("font-weight:bold;"));
+        labelCoinControlChangeText->setFont(font);
 
         formLayoutCoinControl4->setWidget(1, QFormLayout::LabelRole, labelCoinControlChangeText);
 
         labelCoinControlChange = new QLabel(widgetCoinControl);
         labelCoinControlChange->setObjectName(QStringLiteral("labelCoinControlChange"));
-        labelCoinControlChange->setFont(font1);
         labelCoinControlChange->setCursor(QCursor(Qt::IBeamCursor));
         labelCoinControlChange->setContextMenuPolicy(Qt::ActionsContextMenu);
-        labelCoinControlChange->setText(QStringLiteral("0.00 ALP"));
+        labelCoinControlChange->setText(QStringLiteral("0.00 BTC"));
         labelCoinControlChange->setTextInteractionFlags(Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse);
 
         formLayoutCoinControl4->setWidget(1, QFormLayout::FieldRole, labelCoinControlChange);
@@ -345,7 +406,7 @@ public:
 
         horizontalLayoutCoinControl4->addWidget(checkBoxCoinControlChange);
 
-        lineEditCoinControlChange = new QLineEdit(frameCoinControl);
+        lineEditCoinControlChange = new QValidatedLineEdit(frameCoinControl);
         lineEditCoinControlChange->setObjectName(QStringLiteral("lineEditCoinControlChange"));
         lineEditCoinControlChange->setEnabled(false);
         QSizePolicy sizePolicy3(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -387,10 +448,10 @@ public:
         scrollArea->setWidgetResizable(true);
         scrollAreaWidgetContents = new QWidget();
         scrollAreaWidgetContents->setObjectName(QStringLiteral("scrollAreaWidgetContents"));
-        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 830, 165));
+        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 830, 104));
         verticalLayout_2 = new QVBoxLayout(scrollAreaWidgetContents);
-        verticalLayout_2->setContentsMargins(0, 0, 0, 0);
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
+        verticalLayout_2->setContentsMargins(0, 0, 0, 0);
         entries = new QVBoxLayout();
         entries->setSpacing(6);
         entries->setObjectName(QStringLiteral("entries"));
@@ -401,17 +462,280 @@ public:
 
         verticalLayout_2->addItem(verticalSpacer);
 
+        verticalLayout_2->setStretch(1, 1);
         scrollArea->setWidget(scrollAreaWidgetContents);
 
         verticalLayout->addWidget(scrollArea);
 
+        frameFee = new QFrame(SendCoinsDialog);
+        frameFee->setObjectName(QStringLiteral("frameFee"));
+        sizePolicy.setHeightForWidth(frameFee->sizePolicy().hasHeightForWidth());
+        frameFee->setSizePolicy(sizePolicy);
+        frameFee->setMaximumSize(QSize(16777215, 16777215));
+        frameFee->setFrameShape(QFrame::StyledPanel);
+        frameFee->setFrameShadow(QFrame::Sunken);
+        verticalLayoutFee1 = new QVBoxLayout(frameFee);
+        verticalLayoutFee1->setSpacing(0);
+        verticalLayoutFee1->setObjectName(QStringLiteral("verticalLayoutFee1"));
+        verticalLayoutFee1->setContentsMargins(0, 0, 0, 0);
+        verticalLayoutFee2 = new QVBoxLayout();
+        verticalLayoutFee2->setSpacing(0);
+        verticalLayoutFee2->setObjectName(QStringLiteral("verticalLayoutFee2"));
+        verticalLayoutFee2->setContentsMargins(10, 0, -1, -1);
+        horizontalLayoutFee1 = new QHBoxLayout();
+        horizontalLayoutFee1->setObjectName(QStringLiteral("horizontalLayoutFee1"));
+        horizontalLayoutFee1->setContentsMargins(-1, -1, -1, 0);
+        verticalLayoutFee7 = new QVBoxLayout();
+        verticalLayoutFee7->setSpacing(0);
+        verticalLayoutFee7->setObjectName(QStringLiteral("verticalLayoutFee7"));
+        verticalSpacerSmartFee = new QSpacerItem(1, 4, QSizePolicy::Minimum, QSizePolicy::Fixed);
+
+        verticalLayoutFee7->addItem(verticalSpacerSmartFee);
+
+        verticalSpacer_5 = new QSpacerItem(1, 1, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayoutFee7->addItem(verticalSpacer_5);
+
+
+        horizontalLayoutFee1->addLayout(verticalLayoutFee7);
+
+        horizontalSpacer_4 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayoutFee1->addItem(horizontalSpacer_4);
+
+        buttonMinimizeFee = new QPushButton(frameFee);
+        buttonMinimizeFee->setObjectName(QStringLiteral("buttonMinimizeFee"));
+
+        horizontalLayoutFee1->addWidget(buttonMinimizeFee);
+
+
+        verticalLayoutFee2->addLayout(horizontalLayoutFee1);
+
+        frameFeeSelection = new QFrame(frameFee);
+        frameFeeSelection->setObjectName(QStringLiteral("frameFeeSelection"));
+        verticalLayoutFee12 = new QVBoxLayout(frameFeeSelection);
+        verticalLayoutFee12->setSpacing(0);
+        verticalLayoutFee12->setObjectName(QStringLiteral("verticalLayoutFee12"));
+        verticalLayoutFee12->setContentsMargins(0, 0, 0, 0);
+        gridLayoutFee = new QGridLayout();
+        gridLayoutFee->setObjectName(QStringLiteral("gridLayoutFee"));
+        gridLayoutFee->setHorizontalSpacing(10);
+        gridLayoutFee->setVerticalSpacing(4);
+        gridLayoutFee->setContentsMargins(-1, 10, -1, 4);
+        verticalLayoutFee8 = new QVBoxLayout();
+        verticalLayoutFee8->setSpacing(6);
+        verticalLayoutFee8->setObjectName(QStringLiteral("verticalLayoutFee8"));
+        horizontalLayoutFee13 = new QHBoxLayout();
+        horizontalLayoutFee13->setObjectName(QStringLiteral("horizontalLayoutFee13"));
+        radioCustomPerKilobyte = new QRadioButton(frameFeeSelection);
+        groupCustomFee = new QButtonGroup(SendCoinsDialog);
+        groupCustomFee->setObjectName(QStringLiteral("groupCustomFee"));
+        groupCustomFee->addButton(radioCustomPerKilobyte);
+        radioCustomPerKilobyte->setObjectName(QStringLiteral("radioCustomPerKilobyte"));
+        radioCustomPerKilobyte->setChecked(true);
+
+        horizontalLayoutFee13->addWidget(radioCustomPerKilobyte);
+
+        radioCustomAtLeast = new QRadioButton(frameFeeSelection);
+        groupCustomFee->addButton(radioCustomAtLeast);
+        radioCustomAtLeast->setObjectName(QStringLiteral("radioCustomAtLeast"));
+
+        horizontalLayoutFee13->addWidget(radioCustomAtLeast);
+
+        customFee = new BitcoinAmountField(frameFeeSelection);
+        customFee->setObjectName(QStringLiteral("customFee"));
+
+        horizontalLayoutFee13->addWidget(customFee);
+
+        horizontalSpacer_6 = new QSpacerItem(1, 1, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayoutFee13->addItem(horizontalSpacer_6);
+
+
+        verticalLayoutFee8->addLayout(horizontalLayoutFee13);
+
+        horizontalLayoutFee8 = new QHBoxLayout();
+        horizontalLayoutFee8->setObjectName(QStringLiteral("horizontalLayoutFee8"));
+        checkBoxMinimumFee = new QCheckBox(frameFeeSelection);
+        checkBoxMinimumFee->setObjectName(QStringLiteral("checkBoxMinimumFee"));
+
+        horizontalLayoutFee8->addWidget(checkBoxMinimumFee);
+
+        labelMinFeeWarning = new QLabel(frameFeeSelection);
+        labelMinFeeWarning->setObjectName(QStringLiteral("labelMinFeeWarning"));
+        labelMinFeeWarning->setEnabled(true);
+        labelMinFeeWarning->setMargin(5);
+
+        horizontalLayoutFee8->addWidget(labelMinFeeWarning);
+
+        horizontalSpacer_2 = new QSpacerItem(1, 1, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayoutFee8->addItem(horizontalSpacer_2);
+
+
+        verticalLayoutFee8->addLayout(horizontalLayoutFee8);
+
+
+        gridLayoutFee->addLayout(verticalLayoutFee8, 1, 1, 1, 1);
+
+        verticalLayoutFee4 = new QVBoxLayout();
+        verticalLayoutFee4->setObjectName(QStringLiteral("verticalLayoutFee4"));
+        radioSmartFee = new QRadioButton(frameFeeSelection);
+        groupFee = new QButtonGroup(SendCoinsDialog);
+        groupFee->setObjectName(QStringLiteral("groupFee"));
+        groupFee->addButton(radioSmartFee);
+        radioSmartFee->setObjectName(QStringLiteral("radioSmartFee"));
+        radioSmartFee->setChecked(true);
+
+        verticalLayoutFee4->addWidget(radioSmartFee);
+
+        verticalSpacer_2 = new QSpacerItem(1, 1, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayoutFee4->addItem(verticalSpacer_2);
+
+        verticalLayoutFee4->setStretch(1, 1);
+
+        gridLayoutFee->addLayout(verticalLayoutFee4, 0, 0, 1, 1);
+
+        verticalLayoutFee9 = new QVBoxLayout();
+        verticalLayoutFee9->setObjectName(QStringLiteral("verticalLayoutFee9"));
+        radioCustomFee = new QRadioButton(frameFeeSelection);
+        groupFee->addButton(radioCustomFee);
+        radioCustomFee->setObjectName(QStringLiteral("radioCustomFee"));
+
+        verticalLayoutFee9->addWidget(radioCustomFee);
+
+        verticalSpacer_6 = new QSpacerItem(1, 1, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayoutFee9->addItem(verticalSpacer_6);
+
+        verticalLayoutFee9->setStretch(1, 1);
+
+        gridLayoutFee->addLayout(verticalLayoutFee9, 1, 0, 1, 1);
+
+        verticalLayoutFee3 = new QVBoxLayout();
+        verticalLayoutFee3->setSpacing(6);
+        verticalLayoutFee3->setObjectName(QStringLiteral("verticalLayoutFee3"));
+        verticalLayoutFee3->setContentsMargins(-1, 2, -1, -1);
+        horizontalLayoutFee12 = new QHBoxLayout();
+        horizontalLayoutFee12->setObjectName(QStringLiteral("horizontalLayoutFee12"));
+        labelSmartFee = new QLabel(frameFeeSelection);
+        labelSmartFee->setObjectName(QStringLiteral("labelSmartFee"));
+        labelSmartFee->setMargin(2);
+
+        horizontalLayoutFee12->addWidget(labelSmartFee);
+
+        labelFeeEstimation = new QLabel(frameFeeSelection);
+        labelFeeEstimation->setObjectName(QStringLiteral("labelFeeEstimation"));
+
+        horizontalLayoutFee12->addWidget(labelFeeEstimation);
+
+        labelSmartFee2 = new QLabel(frameFeeSelection);
+        labelSmartFee2->setObjectName(QStringLiteral("labelSmartFee2"));
+        labelSmartFee2->setMargin(2);
+
+        horizontalLayoutFee12->addWidget(labelSmartFee2);
+
+        horizontalSpacer_5 = new QSpacerItem(1, 1, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayoutFee12->addItem(horizontalSpacer_5);
+
+
+        verticalLayoutFee3->addLayout(horizontalLayoutFee12);
+
+        horizontalLayoutFee9 = new QHBoxLayout();
+        horizontalLayoutFee9->setObjectName(QStringLiteral("horizontalLayoutFee9"));
+        verticalLayoutFee6 = new QVBoxLayout();
+        verticalLayoutFee6->setObjectName(QStringLiteral("verticalLayoutFee6"));
+        labelSmartFee3 = new QLabel(frameFeeSelection);
+        labelSmartFee3->setObjectName(QStringLiteral("labelSmartFee3"));
+        labelSmartFee3->setMargin(2);
+
+        verticalLayoutFee6->addWidget(labelSmartFee3);
+
+        verticalSpacer_3 = new QSpacerItem(1, 1, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayoutFee6->addItem(verticalSpacer_3);
+
+
+        horizontalLayoutFee9->addLayout(verticalLayoutFee6);
+
+        verticalLayoutFee5 = new QVBoxLayout();
+        verticalLayoutFee5->setObjectName(QStringLiteral("verticalLayoutFee5"));
+        verticalLayoutFee5->setContentsMargins(-1, -1, 30, -1);
+        sliderSmartFee = new QSlider(frameFeeSelection);
+        sliderSmartFee->setObjectName(QStringLiteral("sliderSmartFee"));
+        sliderSmartFee->setMinimum(0);
+        sliderSmartFee->setMaximum(24);
+        sliderSmartFee->setPageStep(1);
+        sliderSmartFee->setValue(0);
+        sliderSmartFee->setOrientation(Qt::Horizontal);
+        sliderSmartFee->setInvertedAppearance(false);
+        sliderSmartFee->setInvertedControls(false);
+        sliderSmartFee->setTickPosition(QSlider::NoTicks);
+
+        verticalLayoutFee5->addWidget(sliderSmartFee);
+
+        horizontalLayoutFee10 = new QHBoxLayout();
+        horizontalLayoutFee10->setObjectName(QStringLiteral("horizontalLayoutFee10"));
+        labelSmartFeeNormal = new QLabel(frameFeeSelection);
+        labelSmartFeeNormal->setObjectName(QStringLiteral("labelSmartFeeNormal"));
+
+        horizontalLayoutFee10->addWidget(labelSmartFeeNormal);
+
+        horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayoutFee10->addItem(horizontalSpacer_3);
+
+        labelSmartFeeFast = new QLabel(frameFeeSelection);
+        labelSmartFeeFast->setObjectName(QStringLiteral("labelSmartFeeFast"));
+
+        horizontalLayoutFee10->addWidget(labelSmartFeeFast);
+
+
+        verticalLayoutFee5->addLayout(horizontalLayoutFee10);
+
+
+        horizontalLayoutFee9->addLayout(verticalLayoutFee5);
+
+
+        verticalLayoutFee3->addLayout(horizontalLayoutFee9);
+
+        verticalSpacer_4 = new QSpacerItem(1, 1, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayoutFee3->addItem(verticalSpacer_4);
+
+        verticalLayoutFee3->setStretch(2, 1);
+
+        gridLayoutFee->addLayout(verticalLayoutFee3, 0, 1, 1, 1);
+
+
+        verticalLayoutFee12->addLayout(gridLayoutFee);
+
+
+        verticalLayoutFee2->addWidget(frameFeeSelection);
+
+        verticalSpacerFee = new QSpacerItem(800, 1, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayoutFee2->addItem(verticalSpacerFee);
+
+
+        verticalLayoutFee1->addLayout(verticalLayoutFee2);
+
+
+        verticalLayout->addWidget(frameFee);
+
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        addButton = new QPushButton(SendCoinsDialog);
-        addButton->setObjectName(QStringLiteral("addButton"));
-        addButton->setAutoDefault(false);
+        sendButton = new QPushButton(SendCoinsDialog);
+        sendButton->setObjectName(QStringLiteral("sendButton"));
+        sendButton->setMinimumSize(QSize(150, 0));
+        QIcon icon;
+        icon.addFile(QStringLiteral(":/icons/send"), QSize(), QIcon::Normal, QIcon::Off);
+        sendButton->setIcon(icon);
+        sendButton->setAutoDefault(false);
 
-        horizontalLayout->addWidget(addButton);
+        horizontalLayout->addWidget(sendButton);
 
         clearButton = new QPushButton(SendCoinsDialog);
         clearButton->setObjectName(QStringLiteral("clearButton"));
@@ -420,10 +744,25 @@ public:
         sizePolicy5.setVerticalStretch(0);
         sizePolicy5.setHeightForWidth(clearButton->sizePolicy().hasHeightForWidth());
         clearButton->setSizePolicy(sizePolicy5);
-        clearButton->setAutoRepeatDelay(300);
+        QIcon icon1;
+        icon1.addFile(QStringLiteral(":/icons/remove"), QSize(), QIcon::Normal, QIcon::Off);
+        clearButton->setIcon(icon1);
         clearButton->setAutoDefault(false);
 
         horizontalLayout->addWidget(clearButton);
+
+        addButton = new QPushButton(SendCoinsDialog);
+        addButton->setObjectName(QStringLiteral("addButton"));
+        QIcon icon2;
+        icon2.addFile(QStringLiteral(":/icons/add"), QSize(), QIcon::Normal, QIcon::Off);
+        addButton->setIcon(icon2);
+        addButton->setAutoDefault(false);
+
+        horizontalLayout->addWidget(addButton);
+
+        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout->addItem(horizontalSpacer);
 
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setSpacing(3);
@@ -443,26 +782,13 @@ public:
         sizePolicy6.setHeightForWidth(labelBalance->sizePolicy().hasHeightForWidth());
         labelBalance->setSizePolicy(sizePolicy6);
         labelBalance->setCursor(QCursor(Qt::IBeamCursor));
-        labelBalance->setText(QStringLiteral("123.456 ALP"));
+        labelBalance->setText(QStringLiteral("123.456 BTC"));
         labelBalance->setTextInteractionFlags(Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse);
 
         horizontalLayout_2->addWidget(labelBalance);
 
 
         horizontalLayout->addLayout(horizontalLayout_2);
-
-        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        horizontalLayout->addItem(horizontalSpacer);
-
-        sendButton = new QPushButton(SendCoinsDialog);
-        sendButton->setObjectName(QStringLiteral("sendButton"));
-        sendButton->setMinimumSize(QSize(150, 0));
-        QIcon icon;
-        icon.addFile(QStringLiteral(":/icons/send"), QSize(), QIcon::Normal, QIcon::Off);
-        sendButton->setIcon(icon);
-
-        horizontalLayout->addWidget(sendButton);
 
 
         verticalLayout->addLayout(horizontalLayout);
@@ -485,30 +811,59 @@ public:
         labelCoinControlAutomaticallySelected->setText(QApplication::translate("SendCoinsDialog", "automatically selected", 0));
         labelCoinControlInsuffFunds->setText(QApplication::translate("SendCoinsDialog", "Insufficient funds!", 0));
         labelCoinControlQuantityText->setText(QApplication::translate("SendCoinsDialog", "Quantity:", 0));
-        labelCoinControlQuantity->setText(QApplication::translate("SendCoinsDialog", "0", 0));
         labelCoinControlBytesText->setText(QApplication::translate("SendCoinsDialog", "Bytes:", 0));
-        labelCoinControlBytes->setText(QApplication::translate("SendCoinsDialog", "0", 0));
         labelCoinControlAmountText->setText(QApplication::translate("SendCoinsDialog", "Amount:", 0));
+        labelCoinControlPriorityText->setText(QApplication::translate("SendCoinsDialog", "Priority:", 0));
         labelCoinControlFeeText->setText(QApplication::translate("SendCoinsDialog", "Fee:", 0));
-        labelCoinControlLowOutputText->setText(QApplication::translate("SendCoinsDialog", "Low Output:", 0));
-        labelCoinControlLowOutput->setText(QApplication::translate("SendCoinsDialog", "no", 0));
+        labelCoinControlLowOutputText->setText(QApplication::translate("SendCoinsDialog", "Dust:", 0));
         labelCoinControlAfterFeeText->setText(QApplication::translate("SendCoinsDialog", "After Fee:", 0));
-        labelCoinControlChangeText->setText(QApplication::translate("SendCoinsDialog", "Change", 0));
-        checkBoxCoinControlChange->setText(QApplication::translate("SendCoinsDialog", "custom change address", 0));
+        labelCoinControlChangeText->setText(QApplication::translate("SendCoinsDialog", "Change:", 0));
+#ifndef QT_NO_TOOLTIP
+        checkBoxCoinControlChange->setToolTip(QApplication::translate("SendCoinsDialog", "If this is activated, but the change address is empty or invalid, change will be sent to a newly generated address.", 0));
+#endif // QT_NO_TOOLTIP
+        checkBoxCoinControlChange->setText(QApplication::translate("SendCoinsDialog", "Custom change address", 0));
         labelCoinControlChangeLabel->setText(QString());
 #ifndef QT_NO_TOOLTIP
-        addButton->setToolTip(QApplication::translate("SendCoinsDialog", "Send to multiple recipients at once", 0));
+        buttonMinimizeFee->setToolTip(QApplication::translate("SendCoinsDialog", "collapse fee-settings", 0));
 #endif // QT_NO_TOOLTIP
-        addButton->setText(QApplication::translate("SendCoinsDialog", "Add &Recipient", 0));
+        buttonMinimizeFee->setText(QApplication::translate("SendCoinsDialog", "Hide", 0));
 #ifndef QT_NO_TOOLTIP
-        clearButton->setToolTip(QApplication::translate("SendCoinsDialog", "Remove all transaction fields", 0));
+        radioCustomPerKilobyte->setToolTip(QApplication::translate("SendCoinsDialog", "If the custom fee is set to 1000 satoshis and the transaction is only 250 bytes, then \"per kilobyte\" only pays 250 satoshis in fee, while \"total at least\" pays 1000 satoshis. For transactions bigger than a kilobyte both pay by kilobyte.", 0));
 #endif // QT_NO_TOOLTIP
-        clearButton->setText(QApplication::translate("SendCoinsDialog", "Clear &All", 0));
-        label->setText(QApplication::translate("SendCoinsDialog", "Balance:", 0));
+        radioCustomPerKilobyte->setText(QApplication::translate("SendCoinsDialog", "per kilobyte", 0));
+#ifndef QT_NO_TOOLTIP
+        radioCustomAtLeast->setToolTip(QApplication::translate("SendCoinsDialog", "If the custom fee is set to 1000 satoshis and the transaction is only 250 bytes, then \"per kilobyte\" only pays 250 satoshis in fee, while \"total at least\" pays 1000 satoshis. For transactions bigger than a kilobyte both pay by kilobyte.", 0));
+#endif // QT_NO_TOOLTIP
+        radioCustomAtLeast->setText(QApplication::translate("SendCoinsDialog", "total at least", 0));
+#ifndef QT_NO_TOOLTIP
+        checkBoxMinimumFee->setToolTip(QApplication::translate("SendCoinsDialog", "Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks. But be aware that this can end up in a never confirming transaction once there is more demand for bitcoin transactions than the network can process.", 0));
+#endif // QT_NO_TOOLTIP
+        checkBoxMinimumFee->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        labelMinFeeWarning->setToolTip(QApplication::translate("SendCoinsDialog", "Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks. But be aware that this can end up in a never confirming transaction once there is more demand for bitcoin transactions than the network can process.", 0));
+#endif // QT_NO_TOOLTIP
+        labelMinFeeWarning->setText(QApplication::translate("SendCoinsDialog", "(read the tooltip)", 0));
+        radioSmartFee->setText(QApplication::translate("SendCoinsDialog", "Recommended:", 0));
+        radioCustomFee->setText(QApplication::translate("SendCoinsDialog", "Custom:", 0));
+        labelSmartFee->setText(QString());
+        labelFeeEstimation->setText(QString());
+        labelSmartFee2->setText(QApplication::translate("SendCoinsDialog", "(Smart fee not initialized yet. This usually takes a few blocks...)", 0));
+        labelSmartFee3->setText(QApplication::translate("SendCoinsDialog", "Confirmation time:", 0));
+        labelSmartFeeNormal->setText(QApplication::translate("SendCoinsDialog", "normal", 0));
+        labelSmartFeeFast->setText(QApplication::translate("SendCoinsDialog", "fast", 0));
 #ifndef QT_NO_TOOLTIP
         sendButton->setToolTip(QApplication::translate("SendCoinsDialog", "Confirm the send action", 0));
 #endif // QT_NO_TOOLTIP
         sendButton->setText(QApplication::translate("SendCoinsDialog", "S&end", 0));
+#ifndef QT_NO_TOOLTIP
+        clearButton->setToolTip(QApplication::translate("SendCoinsDialog", "Clear all fields of the form.", 0));
+#endif // QT_NO_TOOLTIP
+        clearButton->setText(QApplication::translate("SendCoinsDialog", "Clear &All", 0));
+#ifndef QT_NO_TOOLTIP
+        addButton->setToolTip(QApplication::translate("SendCoinsDialog", "Send to multiple recipients at once", 0));
+#endif // QT_NO_TOOLTIP
+        addButton->setText(QApplication::translate("SendCoinsDialog", "Add &Recipient", 0));
+        label->setText(QApplication::translate("SendCoinsDialog", "Balance:", 0));
     } // retranslateUi
 
 };

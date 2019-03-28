@@ -33,6 +33,7 @@ public:
         if (TransactionDescDialog->objectName().isEmpty())
             TransactionDescDialog->setObjectName(QStringLiteral("TransactionDescDialog"));
         TransactionDescDialog->resize(620, 250);
+        TransactionDescDialog->setWindowTitle(QStringLiteral("Transaction details"));
         verticalLayout = new QVBoxLayout(TransactionDescDialog);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         detailText = new QTextEdit(TransactionDescDialog);
@@ -58,10 +59,10 @@ public:
 
     void retranslateUi(QDialog *TransactionDescDialog)
     {
-        TransactionDescDialog->setWindowTitle(QApplication::translate("TransactionDescDialog", "Transaction details", 0));
 #ifndef QT_NO_TOOLTIP
         detailText->setToolTip(QApplication::translate("TransactionDescDialog", "This pane shows a detailed description of the transaction", 0));
 #endif // QT_NO_TOOLTIP
+        Q_UNUSED(TransactionDescDialog);
     } // retranslateUi
 
 };

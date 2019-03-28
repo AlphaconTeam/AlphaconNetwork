@@ -1,26 +1,24 @@
 qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
- /usr/include/stdc-predef.h \
- /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QApplication \
- /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qapplication.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qcoreapplication.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qglobal.h \
- /usr/include/c++/5/cstddef \
- /usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h \
- /usr/include/x86_64-linux-gnu/c++/5/bits/os_defines.h \
+ /usr/include/stdc-predef.h qt/bitcoingui.h config/bitcoin-config.h \
+ amount.h serialize.h compat/endian.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/stdint.h /usr/include/stdint.h \
  /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
  /usr/include/x86_64-linux-gnu/gnu/stubs.h \
  /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/include/x86_64-linux-gnu/bits/wchar.h compat/byteswap.h \
+ /usr/include/byteswap.h /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap-16.h /usr/include/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/endian.h /usr/include/c++/5/algorithm \
+ /usr/include/c++/5/utility \
+ /usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h \
+ /usr/include/x86_64-linux-gnu/c++/5/bits/os_defines.h \
  /usr/include/x86_64-linux-gnu/c++/5/bits/cpu_defines.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qconfig.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qfeatures.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qsystemdetection.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qprocessordetection.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qcompilerdetection.h \
- /usr/include/c++/5/utility /usr/include/c++/5/bits/stl_relops.h \
- /usr/include/c++/5/bits/stl_pair.h /usr/include/c++/5/bits/move.h \
- /usr/include/c++/5/bits/concept_check.h /usr/include/c++/5/algorithm \
+ /usr/include/c++/5/bits/stl_relops.h /usr/include/c++/5/bits/stl_pair.h \
+ /usr/include/c++/5/bits/move.h /usr/include/c++/5/bits/concept_check.h \
+ /usr/include/c++/5/type_traits /usr/include/c++/5/initializer_list \
  /usr/include/c++/5/bits/stl_algobase.h \
  /usr/include/c++/5/bits/functexcept.h \
  /usr/include/c++/5/bits/exception_defines.h \
@@ -33,13 +31,9 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
  /usr/include/c++/5/bits/ptr_traits.h \
  /usr/include/c++/5/bits/predefined_ops.h \
  /usr/include/c++/5/bits/stl_algo.h /usr/include/c++/5/cstdlib \
- /usr/include/stdlib.h /usr/include/x86_64-linux-gnu/bits/waitflags.h \
- /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/endian.h \
- /usr/include/x86_64-linux-gnu/bits/endian.h \
- /usr/include/x86_64-linux-gnu/bits/byteswap.h \
- /usr/include/x86_64-linux-gnu/bits/types.h \
- /usr/include/x86_64-linux-gnu/bits/typesizes.h \
- /usr/include/x86_64-linux-gnu/bits/byteswap-16.h /usr/include/xlocale.h \
+ /usr/include/stdlib.h /usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/waitflags.h \
+ /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/xlocale.h \
  /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/time.h \
  /usr/include/x86_64-linux-gnu/sys/select.h \
  /usr/include/x86_64-linux-gnu/bits/select.h \
@@ -56,35 +50,30 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
  /usr/include/c++/5/bits/stl_construct.h /usr/include/c++/5/new \
  /usr/include/c++/5/exception \
  /usr/include/c++/5/bits/atomic_lockfree_defines.h \
+ /usr/include/c++/5/bits/exception_ptr.h \
+ /usr/include/c++/5/bits/nested_exception.h \
  /usr/include/c++/5/ext/alloc_traits.h \
- /usr/include/c++/5/bits/allocator.h \
- /usr/include/x86_64-linux-gnu/c++/5/bits/c++allocator.h \
- /usr/include/c++/5/ext/new_allocator.h \
- /usr/include/c++/5/bits/memoryfwd.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qtypeinfo.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qtypetraits.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qsysinfo.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qlogging.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qflags.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qatomic.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qbasicatomic.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qatomic_x86.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qgenericatomic.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qglobalstatic.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qnumeric.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qstring.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qchar.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qbytearray.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qrefcount.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qnamespace.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qarraydata.h \
- /usr/include/string.h /usr/include/x86_64-linux-gnu/bits/string3.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/stdarg.h \
+ /usr/include/c++/5/bits/alloc_traits.h \
+ /usr/include/c++/5/bits/memoryfwd.h /usr/include/c++/5/random \
+ /usr/include/c++/5/cmath /usr/include/math.h \
+ /usr/include/x86_64-linux-gnu/bits/math-vector.h \
+ /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_val.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_valf.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_vall.h \
+ /usr/include/x86_64-linux-gnu/bits/inf.h \
+ /usr/include/x86_64-linux-gnu/bits/nan.h \
+ /usr/include/x86_64-linux-gnu/bits/mathdef.h \
+ /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
+ /usr/include/x86_64-linux-gnu/bits/mathinline.h \
  /usr/include/c++/5/string /usr/include/c++/5/bits/stringfwd.h \
  /usr/include/c++/5/bits/char_traits.h /usr/include/c++/5/bits/postypes.h \
  /usr/include/c++/5/cwchar /usr/include/wchar.h /usr/include/stdio.h \
- /usr/include/x86_64-linux-gnu/bits/wchar.h \
- /usr/include/x86_64-linux-gnu/bits/wchar2.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/wchar2.h /usr/include/c++/5/cstdint \
+ /usr/include/c++/5/bits/allocator.h \
+ /usr/include/x86_64-linux-gnu/c++/5/bits/c++allocator.h \
+ /usr/include/c++/5/ext/new_allocator.h \
  /usr/include/c++/5/bits/localefwd.h \
  /usr/include/x86_64-linux-gnu/c++/5/bits/c++locale.h \
  /usr/include/c++/5/clocale /usr/include/locale.h \
@@ -104,18 +93,86 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
  /usr/include/x86_64-linux-gnu/bits/timex.h \
  /usr/include/x86_64-linux-gnu/bits/setjmp.h \
  /usr/include/x86_64-linux-gnu/c++/5/bits/atomic_word.h \
- /usr/include/c++/5/bits/basic_string.tcc \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qobject.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qobjectdefs.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qobjectdefs_impl.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qlist.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qalgorithms.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qiterator.h \
- /usr/include/c++/5/iterator /usr/include/c++/5/ostream \
+ /usr/include/c++/5/ext/string_conversions.h /usr/include/c++/5/cstdio \
+ /usr/include/libio.h /usr/include/_G_config.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio2.h /usr/include/c++/5/cerrno \
+ /usr/include/errno.h /usr/include/x86_64-linux-gnu/bits/errno.h \
+ /usr/include/linux/errno.h /usr/include/x86_64-linux-gnu/asm/errno.h \
+ /usr/include/asm-generic/errno.h /usr/include/asm-generic/errno-base.h \
+ /usr/include/c++/5/bits/functional_hash.h \
+ /usr/include/c++/5/bits/hash_bytes.h \
+ /usr/include/c++/5/bits/basic_string.tcc /usr/include/c++/5/limits \
+ /usr/include/c++/5/bits/random.h /usr/include/c++/5/vector \
+ /usr/include/c++/5/bits/stl_uninitialized.h \
+ /usr/include/c++/5/bits/stl_vector.h \
+ /usr/include/c++/5/bits/stl_bvector.h /usr/include/c++/5/bits/vector.tcc \
+ /usr/include/c++/5/bits/uniform_int_dist.h \
+ /usr/include/x86_64-linux-gnu/c++/5/bits/opt_random.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/x86intrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/ia32intrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/mmintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/xmmintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/mm_malloc.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/emmintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/pmmintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/tmmintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/ammintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/smmintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/popcntintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/wmmintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/immintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/avxintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/avx2intrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512fintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512erintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512pfintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512cdintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512vlintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512bwintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512dqintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512vlbwintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512vldqintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512ifmaintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512ifmavlintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512vbmiintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512vbmivlintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/shaintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/lzcntintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/bmiintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/bmi2intrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/fmaintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/f16cintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/rtmintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/xtestintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/mm3dnow.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/prfchwintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/fma4intrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/xopintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/lwpintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/tbmintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/rdseedintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/fxsrintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/xsaveintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/xsaveoptintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/adxintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/clwbintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/pcommitintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/clflushoptintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/xsavesintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/xsavecintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/mwaitxintrin.h \
+ /usr/include/c++/5/bits/random.tcc /usr/include/c++/5/numeric \
+ /usr/include/c++/5/bits/stl_numeric.h /usr/include/assert.h \
  /usr/include/c++/5/ios /usr/include/c++/5/bits/ios_base.h \
  /usr/include/c++/5/bits/locale_classes.h \
- /usr/include/c++/5/bits/locale_classes.tcc /usr/include/c++/5/stdexcept \
- /usr/include/c++/5/streambuf /usr/include/c++/5/bits/streambuf.tcc \
+ /usr/include/c++/5/bits/locale_classes.tcc \
+ /usr/include/c++/5/system_error \
+ /usr/include/x86_64-linux-gnu/c++/5/bits/error_constants.h \
+ /usr/include/c++/5/stdexcept /usr/include/c++/5/streambuf \
+ /usr/include/c++/5/bits/streambuf.tcc \
  /usr/include/c++/5/bits/basic_ios.h \
  /usr/include/c++/5/bits/locale_facets.h /usr/include/c++/5/cwctype \
  /usr/include/wctype.h \
@@ -123,11 +180,55 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
  /usr/include/c++/5/bits/streambuf_iterator.h \
  /usr/include/x86_64-linux-gnu/c++/5/bits/ctype_inline.h \
  /usr/include/c++/5/bits/locale_facets.tcc \
- /usr/include/c++/5/bits/basic_ios.tcc \
+ /usr/include/c++/5/bits/basic_ios.tcc /usr/include/c++/5/map \
+ /usr/include/c++/5/bits/stl_tree.h \
+ /usr/include/c++/5/ext/aligned_buffer.h \
+ /usr/include/c++/5/bits/stl_map.h /usr/include/c++/5/tuple \
+ /usr/include/c++/5/array /usr/include/c++/5/bits/uses_allocator.h \
+ /usr/include/c++/5/bits/stl_multimap.h /usr/include/c++/5/set \
+ /usr/include/c++/5/bits/stl_set.h /usr/include/c++/5/bits/stl_multiset.h \
+ /usr/include/string.h /usr/include/x86_64-linux-gnu/bits/string3.h \
+ prevector.h /usr/include/c++/5/iterator /usr/include/c++/5/ostream \
  /usr/include/c++/5/bits/ostream.tcc /usr/include/c++/5/istream \
  /usr/include/c++/5/bits/istream.tcc \
- /usr/include/c++/5/bits/stream_iterator.h /usr/include/c++/5/list \
- /usr/include/c++/5/bits/stl_list.h /usr/include/c++/5/bits/list.tcc \
+ /usr/include/c++/5/bits/stream_iterator.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QLabel \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qlabel.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qframe.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qglobal.h \
+ /usr/include/c++/5/cstddef \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qconfig.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qfeatures.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qsystemdetection.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qprocessordetection.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qcompilerdetection.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qtypeinfo.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qtypetraits.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qsysinfo.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qlogging.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qflags.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qatomic.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qbasicatomic.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qatomic_x86.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qgenericatomic.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qglobalstatic.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qnumeric.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qobjectdefs.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qnamespace.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qobjectdefs_impl.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qobject.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qstring.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qchar.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qbytearray.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qrefcount.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qarraydata.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qlist.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qalgorithms.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qiterator.h \
+ /usr/include/c++/5/list /usr/include/c++/5/bits/stl_list.h \
+ /usr/include/c++/5/bits/list.tcc \
  /usr/lib/gcc/x86_64-linux-gnu/5/include-fixed/limits.h \
  /usr/lib/gcc/x86_64-linux-gnu/5/include-fixed/syslimits.h \
  /usr/include/limits.h /usr/include/x86_64-linux-gnu/bits/posix1_lim.h \
@@ -135,7 +236,6 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
  /usr/include/linux/limits.h \
  /usr/include/x86_64-linux-gnu/bits/posix2_lim.h \
  /usr/include/x86_64-linux-gnu/bits/xopen_lim.h \
- /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
  /usr/include/x86_64-linux-gnu/qt5/QtCore/qbytearraylist.h \
  /usr/include/x86_64-linux-gnu/qt5/QtCore/qstringlist.h \
  /usr/include/x86_64-linux-gnu/qt5/QtCore/qregexp.h \
@@ -145,37 +245,17 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
  /usr/include/x86_64-linux-gnu/qt5/QtCore/qvarlengtharray.h \
  /usr/include/x86_64-linux-gnu/qt5/QtCore/qcontainerfwd.h \
  /usr/include/x86_64-linux-gnu/qt5/QtCore/qisenum.h \
- /usr/include/c++/5/vector /usr/include/c++/5/bits/stl_uninitialized.h \
- /usr/include/c++/5/bits/stl_vector.h \
- /usr/include/c++/5/bits/stl_bvector.h /usr/include/c++/5/bits/vector.tcc \
- /usr/include/c++/5/map /usr/include/c++/5/bits/stl_tree.h \
- /usr/include/c++/5/bits/stl_map.h /usr/include/c++/5/bits/stl_multimap.h \
  /usr/include/x86_64-linux-gnu/qt5/QtCore/qobject_impl.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qcoreevent.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qeventloop.h \
- /usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qpoint.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qsize.h \
- /usr/include/x86_64-linux-gnu/qt5/QtGui/qcursor.h \
- /usr/include/x86_64-linux-gnu/qt5/QtGui/qguiapplication.h \
- /usr/include/x86_64-linux-gnu/qt5/QtGui/qinputmethod.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qlocale.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qvariant.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qmap.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qpair.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qhash.h \
- /usr/include/c++/5/numeric /usr/include/c++/5/bits/stl_numeric.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qshareddata.h qt/bitcoingui.h \
- /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMainWindow \
- /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmainwindow.h \
- /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h \
  /usr/include/x86_64-linux-gnu/qt5/QtCore/qmargins.h \
  /usr/include/x86_64-linux-gnu/qt5/QtGui/qpaintdevice.h \
  /usr/include/x86_64-linux-gnu/qt5/QtCore/qrect.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qsize.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qpoint.h \
  /usr/include/x86_64-linux-gnu/qt5/QtGui/qpalette.h \
  /usr/include/x86_64-linux-gnu/qt5/QtGui/qcolor.h \
  /usr/include/x86_64-linux-gnu/qt5/QtGui/qrgb.h \
  /usr/include/x86_64-linux-gnu/qt5/QtGui/qbrush.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qpair.h \
  /usr/include/x86_64-linux-gnu/qt5/QtCore/qvector.h \
  /usr/include/x86_64-linux-gnu/qt5/QtGui/qmatrix.h \
  /usr/include/x86_64-linux-gnu/qt5/QtGui/qpolygon.h \
@@ -189,32 +269,70 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
  /usr/include/x86_64-linux-gnu/qt5/QtGui/qpixelformat.h \
  /usr/include/x86_64-linux-gnu/qt5/QtGui/qpixmap.h \
  /usr/include/x86_64-linux-gnu/qt5/QtCore/qsharedpointer.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qshareddata.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qhash.h \
  /usr/include/x86_64-linux-gnu/qt5/QtCore/qsharedpointer_impl.h \
  /usr/include/x86_64-linux-gnu/qt5/QtGui/qfont.h \
  /usr/include/x86_64-linux-gnu/qt5/QtGui/qfontmetrics.h \
  /usr/include/x86_64-linux-gnu/qt5/QtGui/qfontinfo.h \
  /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qsizepolicy.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qcursor.h \
  /usr/include/x86_64-linux-gnu/qt5/QtGui/qkeysequence.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMainWindow \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmainwindow.h \
  /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qtabwidget.h \
  /usr/include/x86_64-linux-gnu/qt5/QtGui/qicon.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/QMap \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qmap.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenu \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qaction.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qvariant.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qmap.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qactiongroup.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/QPoint \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qpoint.h \
  /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QSystemTrayIcon \
  /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qsystemtrayicon.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/stdint.h /usr/include/stdint.h \
- qt/transactiontablemodel.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/QAbstractTableModel \
+ qt/bitcoinunits.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/QAbstractListModel \
  /usr/include/x86_64-linux-gnu/qt5/QtCore/qabstractitemmodel.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/QStringList \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qstringlist.h \
- qt/addressbookpage.h /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QDialog \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/QString \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qstring.h qt/clientmodel.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/QObject \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qobject.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/QDateTime \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qdatetime.h qt/guiconstants.h \
+ qt/guiutil.h /usr/include/x86_64-linux-gnu/qt5/QtCore/QEvent \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qcoreevent.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QHeaderView \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qheaderview.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qabstractitemview.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qabstractscrollarea.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qabstractitemmodel.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qitemselectionmodel.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qset.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qabstractitemdelegate.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qstyleoption.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qabstractspinbox.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qvalidator.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qregularexpression.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qlocale.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qslider.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qabstractslider.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qstyle.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qtabbar.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qrubberband.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMessageBox \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmessagebox.h \
  /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qdialog.h \
- qt/sendcoinsdialog.h /usr/include/x86_64-linux-gnu/qt5/QtCore/QString \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qstring.h \
- qt/signverifymessagedialog.h qt/optionsdialog.h qt/aboutdialog.h \
- qt/clientmodel.h /usr/include/x86_64-linux-gnu/qt5/QtCore/QObject \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qobject.h qt/walletmodel.h \
- allocators.h /usr/include/boost/thread/mutex.hpp \
- /usr/include/boost/thread/detail/platform.hpp \
- /usr/include/boost/config.hpp /usr/include/boost/config/user.hpp \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QProgressBar \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qprogressbar.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QTableView \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qtableview.h \
+ /usr/include/boost/filesystem.hpp \
+ /usr/include/boost/filesystem/config.hpp /usr/include/boost/config.hpp \
+ /usr/include/boost/config/user.hpp \
  /usr/include/boost/config/select_compiler_config.hpp \
  /usr/include/boost/config/compiler/gcc.hpp \
  /usr/include/boost/config/select_stdlib_config.hpp \
@@ -227,45 +345,15 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
  /usr/include/boost/config/platform/linux.hpp \
  /usr/include/boost/config/posix_features.hpp \
  /usr/include/boost/config/suffix.hpp \
- /usr/include/boost/config/requires_threads.hpp \
- /usr/include/boost/thread/pthread/mutex.hpp \
- /usr/include/boost/thread/detail/config.hpp \
+ /usr/include/boost/system/api_config.hpp \
  /usr/include/boost/detail/workaround.hpp \
- /usr/include/boost/config/auto_link.hpp /usr/include/boost/assert.hpp \
- /usr/include/assert.h /usr/include/boost/throw_exception.hpp \
- /usr/include/boost/exception/exception.hpp \
- /usr/include/boost/current_function.hpp \
- /usr/include/boost/core/ignore_unused.hpp \
- /usr/include/boost/thread/exceptions.hpp \
- /usr/include/boost/system/system_error.hpp /usr/include/c++/5/cassert \
- /usr/include/boost/system/error_code.hpp \
- /usr/include/boost/system/config.hpp \
- /usr/include/boost/predef/platform.h \
- /usr/include/boost/predef/platform/mingw.h \
- /usr/include/boost/predef/version_number.h \
- /usr/include/boost/predef/make.h /usr/include/boost/predef/detail/test.h \
- /usr/include/boost/predef/platform/windows_desktop.h \
- /usr/include/boost/predef/os/windows.h \
- /usr/include/boost/predef/platform/windows_store.h \
- /usr/include/boost/predef/platform/windows_phone.h \
- /usr/include/boost/predef/platform/windows_runtime.h \
- /usr/include/boost/system/api_config.hpp /usr/include/boost/cstdint.hpp \
- /usr/include/boost/noncopyable.hpp \
- /usr/include/boost/core/noncopyable.hpp \
+ /usr/include/boost/config/auto_link.hpp \
+ /usr/include/boost/filesystem/path.hpp \
+ /usr/include/boost/filesystem/path_traits.hpp \
  /usr/include/boost/utility/enable_if.hpp \
- /usr/include/boost/core/enable_if.hpp /usr/include/c++/5/functional \
- /usr/include/boost/cerrno.hpp /usr/include/c++/5/cerrno \
- /usr/include/errno.h /usr/include/x86_64-linux-gnu/bits/errno.h \
- /usr/include/linux/errno.h /usr/include/x86_64-linux-gnu/asm/errno.h \
- /usr/include/asm-generic/errno.h /usr/include/asm-generic/errno-base.h \
- /usr/include/boost/config/abi_prefix.hpp \
- /usr/include/boost/config/abi_suffix.hpp \
- /usr/include/boost/thread/lock_types.hpp \
- /usr/include/boost/thread/detail/move.hpp \
- /usr/include/boost/type_traits/is_convertible.hpp \
- /usr/include/boost/type_traits/intrinsics.hpp \
+ /usr/include/boost/core/enable_if.hpp \
+ /usr/include/boost/type_traits/is_array.hpp \
  /usr/include/boost/type_traits/config.hpp \
- /usr/include/boost/type_traits/is_same.hpp \
  /usr/include/boost/type_traits/detail/bool_trait_def.hpp \
  /usr/include/boost/type_traits/detail/template_arity_spec.hpp \
  /usr/include/boost/mpl/int.hpp /usr/include/boost/mpl/int_fwd.hpp \
@@ -310,6 +398,8 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
  /usr/include/boost/mpl/integral_c_fwd.hpp \
  /usr/include/boost/mpl/aux_/lambda_support.hpp \
  /usr/include/boost/type_traits/detail/bool_trait_undef.hpp \
+ /usr/include/boost/type_traits/decay.hpp \
+ /usr/include/boost/type_traits/is_function.hpp \
  /usr/include/boost/type_traits/is_reference.hpp \
  /usr/include/boost/type_traits/is_lvalue_reference.hpp \
  /usr/include/boost/type_traits/is_rvalue_reference.hpp \
@@ -319,27 +409,13 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
  /usr/include/boost/type_traits/detail/ice_and.hpp \
  /usr/include/boost/type_traits/detail/ice_not.hpp \
  /usr/include/boost/type_traits/detail/ice_eq.hpp \
- /usr/include/boost/type_traits/is_volatile.hpp \
- /usr/include/boost/type_traits/detail/cv_traits_impl.hpp \
- /usr/include/boost/type_traits/is_array.hpp \
- /usr/include/boost/type_traits/is_arithmetic.hpp \
- /usr/include/boost/type_traits/is_integral.hpp \
- /usr/include/boost/type_traits/is_float.hpp \
- /usr/include/boost/type_traits/is_void.hpp \
- /usr/include/boost/type_traits/is_abstract.hpp \
- /usr/include/boost/type_traits/add_lvalue_reference.hpp \
- /usr/include/boost/type_traits/add_reference.hpp \
- /usr/include/boost/type_traits/detail/type_trait_def.hpp \
- /usr/include/boost/type_traits/detail/type_trait_undef.hpp \
- /usr/include/boost/type_traits/add_rvalue_reference.hpp \
- /usr/include/boost/type_traits/is_function.hpp \
  /usr/include/boost/type_traits/detail/false_result.hpp \
  /usr/include/boost/type_traits/detail/is_function_ptr_helper.hpp \
- /usr/include/boost/type_traits/remove_reference.hpp \
- /usr/include/boost/type_traits/remove_cv.hpp \
- /usr/include/boost/type_traits/decay.hpp \
  /usr/include/boost/type_traits/remove_bounds.hpp \
+ /usr/include/boost/type_traits/detail/type_trait_def.hpp \
+ /usr/include/boost/type_traits/detail/type_trait_undef.hpp \
  /usr/include/boost/type_traits/add_pointer.hpp \
+ /usr/include/boost/type_traits/remove_reference.hpp \
  /usr/include/boost/mpl/eval_if.hpp /usr/include/boost/mpl/if.hpp \
  /usr/include/boost/mpl/aux_/value_wknd.hpp \
  /usr/include/boost/mpl/aux_/config/integral.hpp \
@@ -382,36 +458,146 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
  /usr/include/boost/preprocessor/variadic/elem.hpp \
  /usr/include/boost/preprocessor/arithmetic/sub.hpp \
  /usr/include/boost/mpl/identity.hpp \
- /usr/include/boost/type_traits/conditional.hpp \
- /usr/include/boost/type_traits/remove_extent.hpp \
- /usr/include/boost/thread/detail/delete.hpp \
- /usr/include/boost/move/utility.hpp \
- /usr/include/boost/move/detail/config_begin.hpp \
- /usr/include/boost/move/utility_core.hpp \
- /usr/include/boost/move/core.hpp \
- /usr/include/boost/move/detail/workaround.hpp \
- /usr/include/boost/move/detail/type_traits.hpp \
- /usr/include/boost/move/detail/meta_utils.hpp \
- /usr/include/boost/move/detail/meta_utils_core.hpp \
+ /usr/include/boost/system/error_code.hpp \
+ /usr/include/boost/system/config.hpp \
+ /usr/include/boost/predef/platform.h \
+ /usr/include/boost/predef/platform/mingw.h \
+ /usr/include/boost/predef/version_number.h \
+ /usr/include/boost/predef/make.h /usr/include/boost/predef/detail/test.h \
+ /usr/include/boost/predef/platform/windows_desktop.h \
+ /usr/include/boost/predef/os/windows.h \
+ /usr/include/boost/predef/platform/windows_store.h \
+ /usr/include/boost/predef/platform/windows_phone.h \
+ /usr/include/boost/predef/platform/windows_runtime.h \
+ /usr/include/boost/cstdint.hpp /usr/include/boost/assert.hpp \
+ /usr/include/boost/noncopyable.hpp \
+ /usr/include/boost/core/noncopyable.hpp /usr/include/c++/5/functional \
+ /usr/include/c++/5/typeinfo /usr/include/boost/cerrno.hpp \
+ /usr/include/boost/config/abi_prefix.hpp \
+ /usr/include/boost/config/abi_suffix.hpp /usr/include/c++/5/locale \
+ /usr/include/c++/5/bits/locale_facets_nonio.h /usr/include/c++/5/ctime \
+ /usr/include/x86_64-linux-gnu/c++/5/bits/time_members.h \
+ /usr/include/x86_64-linux-gnu/c++/5/bits/messages_members.h \
+ /usr/include/libintl.h /usr/include/c++/5/bits/codecvt.h \
+ /usr/include/c++/5/bits/locale_facets_nonio.tcc \
+ /usr/include/c++/5/bits/locale_conv.h \
+ /usr/include/c++/5/bits/stringfwd.h /usr/include/c++/5/bits/allocator.h \
+ /usr/include/c++/5/bits/codecvt.h /usr/include/c++/5/bits/unique_ptr.h \
+ /usr/include/boost/system/system_error.hpp /usr/include/c++/5/cassert \
+ /usr/include/boost/iterator/iterator_facade.hpp \
+ /usr/include/boost/iterator.hpp \
+ /usr/include/boost/iterator/interoperable.hpp \
+ /usr/include/boost/mpl/or.hpp \
+ /usr/include/boost/mpl/aux_/config/use_preprocessed.hpp \
+ /usr/include/boost/mpl/aux_/nested_type_wknd.hpp \
+ /usr/include/boost/mpl/aux_/include_preprocessed.hpp \
+ /usr/include/boost/mpl/aux_/config/compiler.hpp \
+ /usr/include/boost/preprocessor/stringize.hpp \
+ /usr/include/boost/mpl/aux_/preprocessed/gcc/or.hpp \
+ /usr/include/boost/type_traits/is_convertible.hpp \
+ /usr/include/boost/type_traits/intrinsics.hpp \
+ /usr/include/boost/type_traits/is_same.hpp \
+ /usr/include/boost/type_traits/is_volatile.hpp \
+ /usr/include/boost/type_traits/detail/cv_traits_impl.hpp \
+ /usr/include/boost/type_traits/is_arithmetic.hpp \
+ /usr/include/boost/type_traits/is_integral.hpp \
+ /usr/include/boost/type_traits/is_float.hpp \
+ /usr/include/boost/type_traits/is_void.hpp \
+ /usr/include/boost/type_traits/is_abstract.hpp \
+ /usr/include/boost/type_traits/add_lvalue_reference.hpp \
+ /usr/include/boost/type_traits/add_reference.hpp \
+ /usr/include/boost/type_traits/add_rvalue_reference.hpp \
+ /usr/include/boost/utility/declval.hpp \
+ /usr/include/boost/iterator/detail/config_def.hpp \
+ /usr/include/boost/iterator/detail/config_undef.hpp \
+ /usr/include/boost/iterator/iterator_traits.hpp \
+ /usr/include/boost/detail/iterator.hpp \
+ /usr/include/boost/iterator/iterator_categories.hpp \
+ /usr/include/boost/mpl/placeholders.hpp /usr/include/boost/mpl/arg.hpp \
+ /usr/include/boost/mpl/arg_fwd.hpp \
+ /usr/include/boost/mpl/aux_/na_assert.hpp \
+ /usr/include/boost/mpl/assert.hpp /usr/include/boost/mpl/not.hpp \
+ /usr/include/boost/mpl/aux_/yes_no.hpp \
+ /usr/include/boost/mpl/aux_/config/arrays.hpp \
+ /usr/include/boost/mpl/aux_/config/gpu.hpp \
+ /usr/include/boost/mpl/aux_/config/pp_counter.hpp \
+ /usr/include/boost/mpl/aux_/arity_spec.hpp \
+ /usr/include/boost/mpl/aux_/arg_typedef.hpp \
+ /usr/include/boost/mpl/aux_/preprocessed/gcc/arg.hpp \
+ /usr/include/boost/mpl/aux_/preprocessed/gcc/placeholders.hpp \
  /usr/include/boost/static_assert.hpp \
- /usr/include/boost/move/detail/config_end.hpp \
- /usr/include/boost/move/traits.hpp \
- /usr/include/boost/thread/lock_options.hpp \
- /usr/include/boost/thread/lockable_traits.hpp \
+ /usr/include/boost/iterator/detail/facade_iterator_category.hpp \
+ /usr/include/boost/mpl/and.hpp \
+ /usr/include/boost/mpl/aux_/preprocessed/gcc/and.hpp \
+ /usr/include/boost/type_traits/is_const.hpp \
+ /usr/include/boost/detail/indirect_traits.hpp \
+ /usr/include/boost/type_traits/is_pointer.hpp \
+ /usr/include/boost/type_traits/is_member_pointer.hpp \
+ /usr/include/boost/type_traits/is_member_function_pointer.hpp \
+ /usr/include/boost/type_traits/detail/is_mem_fun_pointer_impl.hpp \
+ /usr/include/boost/type_traits/remove_cv.hpp \
  /usr/include/boost/type_traits/is_class.hpp \
- /usr/include/boost/thread/thread_time.hpp \
- /usr/include/boost/date_time/time_clock.hpp \
- /usr/include/boost/date_time/c_time.hpp /usr/include/c++/5/ctime \
- /usr/include/boost/date_time/compiler_config.hpp \
- /usr/include/boost/date_time/locale_config.hpp \
- /usr/include/x86_64-linux-gnu/sys/time.h \
+ /usr/include/boost/type_traits/remove_pointer.hpp \
+ /usr/include/boost/iterator/detail/enable_if.hpp \
+ /usr/include/boost/utility/addressof.hpp \
+ /usr/include/boost/core/addressof.hpp \
+ /usr/include/boost/type_traits/add_const.hpp \
+ /usr/include/boost/type_traits/remove_const.hpp \
+ /usr/include/boost/type_traits/is_pod.hpp \
+ /usr/include/boost/type_traits/is_scalar.hpp \
+ /usr/include/boost/type_traits/is_enum.hpp \
+ /usr/include/boost/mpl/always.hpp \
+ /usr/include/boost/mpl/aux_/preprocessor/default_params.hpp \
+ /usr/include/boost/mpl/apply.hpp /usr/include/boost/mpl/apply_fwd.hpp \
+ /usr/include/boost/mpl/aux_/preprocessed/gcc/apply_fwd.hpp \
+ /usr/include/boost/mpl/apply_wrap.hpp \
+ /usr/include/boost/mpl/aux_/has_apply.hpp \
+ /usr/include/boost/mpl/has_xxx.hpp \
+ /usr/include/boost/mpl/aux_/type_wrapper.hpp \
+ /usr/include/boost/mpl/aux_/config/has_xxx.hpp \
+ /usr/include/boost/mpl/aux_/config/msvc_typename.hpp \
+ /usr/include/boost/preprocessor/array/elem.hpp \
+ /usr/include/boost/preprocessor/array/data.hpp \
+ /usr/include/boost/preprocessor/array/size.hpp \
+ /usr/include/boost/preprocessor/repetition/enum_params.hpp \
+ /usr/include/boost/preprocessor/repetition/enum_trailing_params.hpp \
+ /usr/include/boost/mpl/aux_/config/has_apply.hpp \
+ /usr/include/boost/mpl/aux_/msvc_never_true.hpp \
+ /usr/include/boost/mpl/aux_/preprocessed/gcc/apply_wrap.hpp \
+ /usr/include/boost/mpl/lambda.hpp /usr/include/boost/mpl/bind.hpp \
+ /usr/include/boost/mpl/bind_fwd.hpp \
+ /usr/include/boost/mpl/aux_/config/bind.hpp \
+ /usr/include/boost/mpl/aux_/preprocessed/gcc/bind_fwd.hpp \
+ /usr/include/boost/mpl/next.hpp /usr/include/boost/mpl/next_prior.hpp \
+ /usr/include/boost/mpl/aux_/common_name_wknd.hpp \
+ /usr/include/boost/mpl/protect.hpp \
+ /usr/include/boost/mpl/aux_/preprocessed/gcc/bind.hpp \
+ /usr/include/boost/mpl/aux_/full_lambda.hpp \
+ /usr/include/boost/mpl/quote.hpp /usr/include/boost/mpl/void.hpp \
+ /usr/include/boost/mpl/aux_/has_type.hpp \
+ /usr/include/boost/mpl/aux_/config/bcc.hpp \
+ /usr/include/boost/mpl/aux_/preprocessed/gcc/quote.hpp \
+ /usr/include/boost/mpl/aux_/template_arity.hpp \
+ /usr/include/boost/mpl/aux_/preprocessed/gcc/template_arity.hpp \
+ /usr/include/boost/mpl/aux_/preprocessed/gcc/full_lambda.hpp \
+ /usr/include/boost/mpl/aux_/preprocessed/gcc/apply.hpp \
  /usr/include/boost/shared_ptr.hpp \
  /usr/include/boost/smart_ptr/shared_ptr.hpp \
  /usr/include/boost/config/no_tr1/memory.hpp /usr/include/c++/5/memory \
  /usr/include/c++/5/bits/stl_raw_storage_iter.h \
+ /usr/include/c++/5/ext/concurrence.h \
+ /usr/include/c++/5/bits/unique_ptr.h \
+ /usr/include/c++/5/bits/shared_ptr.h \
+ /usr/include/c++/5/bits/shared_ptr_base.h \
+ /usr/include/c++/5/bits/allocated_ptr.h \
+ /usr/include/c++/5/bits/shared_ptr_atomic.h \
+ /usr/include/c++/5/bits/atomic_base.h \
  /usr/include/c++/5/backward/auto_ptr.h \
  /usr/include/boost/checked_delete.hpp \
  /usr/include/boost/core/checked_delete.hpp \
+ /usr/include/boost/throw_exception.hpp \
+ /usr/include/boost/exception/exception.hpp \
+ /usr/include/boost/current_function.hpp \
  /usr/include/boost/smart_ptr/detail/shared_count.hpp \
  /usr/include/boost/smart_ptr/bad_weak_ptr.hpp \
  /usr/include/boost/smart_ptr/detail/sp_counted_base.hpp \
@@ -421,7 +607,6 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
  /usr/include/boost/core/typeinfo.hpp \
  /usr/include/boost/core/demangle.hpp /usr/include/c++/5/cxxabi.h \
  /usr/include/x86_64-linux-gnu/c++/5/bits/cxxabi_tweaks.h \
- /usr/include/c++/5/typeinfo \
  /usr/include/boost/smart_ptr/detail/sp_counted_impl.hpp \
  /usr/include/boost/smart_ptr/detail/sp_convertible.hpp \
  /usr/include/boost/smart_ptr/detail/sp_nullptr_t.hpp \
@@ -526,26 +711,192 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
  /usr/include/boost/predef/other.h \
  /usr/include/boost/predef/other/endian.h \
  /usr/include/boost/smart_ptr/detail/operator_bool.hpp \
+ /usr/include/boost/io/detail/quoted_manip.hpp \
+ /usr/include/boost/io/ios_state.hpp /usr/include/boost/io_fwd.hpp \
+ /usr/include/boost/functional/hash_fwd.hpp \
+ /usr/include/boost/functional/hash/hash_fwd.hpp \
+ /usr/include/c++/5/cstring /usr/include/boost/filesystem/operations.hpp \
+ /usr/include/boost/detail/scoped_enum_emulation.hpp \
+ /usr/include/boost/core/scoped_enum.hpp \
+ /usr/include/boost/detail/bitmask.hpp \
+ /usr/include/boost/range/mutable_iterator.hpp \
+ /usr/include/boost/range/config.hpp \
+ /usr/include/boost/range/range_fwd.hpp \
+ /usr/include/boost/range/detail/extract_optional_type.hpp \
+ /usr/include/boost/range/detail/msvc_has_iterator_workaround.hpp \
+ /usr/include/boost/range/const_iterator.hpp /usr/include/c++/5/stack \
+ /usr/include/c++/5/deque /usr/include/c++/5/bits/stl_deque.h \
+ /usr/include/c++/5/bits/deque.tcc /usr/include/c++/5/bits/stl_stack.h \
+ /usr/include/boost/filesystem/convenience.hpp qt/networkstyle.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/QIcon \
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qicon.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/QPixmap \
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qpixmap.h qt/notificator.h \
+ qt/openuridialog.h /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QDialog \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qdialog.h qt/optionsdialog.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/QValidator \
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qvalidator.h qt/optionsmodel.h \
+ qt/platformstyle.h qt/rpcconsole.h qt/peertablemodel.h main.h \
+ config/bitcoin-config.h amount.h chain.h arith_uint256.h chainparams.h \
+ chainparamsbase.h consensus/params.h uint256.h crypto/common.h \
+ ../src/config/bitcoin-config.h compat/endian.h primitives/block.h \
+ primitives/transaction.h script/script.h crypto/common.h prevector.h \
+ /usr/include/c++/5/climits serialize.h protocol.h netbase.h compat.h \
+ /usr/include/x86_64-linux-gnu/sys/fcntl.h /usr/include/fcntl.h \
+ /usr/include/x86_64-linux-gnu/bits/fcntl.h \
+ /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \
+ /usr/include/x86_64-linux-gnu/bits/uio.h \
+ /usr/include/x86_64-linux-gnu/bits/stat.h \
+ /usr/include/x86_64-linux-gnu/bits/fcntl2.h \
+ /usr/include/x86_64-linux-gnu/sys/mman.h \
+ /usr/include/x86_64-linux-gnu/bits/mman.h \
+ /usr/include/x86_64-linux-gnu/bits/mman-linux.h \
+ /usr/include/x86_64-linux-gnu/sys/socket.h \
+ /usr/include/x86_64-linux-gnu/sys/uio.h \
+ /usr/include/x86_64-linux-gnu/bits/socket.h \
+ /usr/include/x86_64-linux-gnu/bits/socket_type.h \
+ /usr/include/x86_64-linux-gnu/bits/sockaddr.h \
+ /usr/include/x86_64-linux-gnu/asm/socket.h \
+ /usr/include/asm-generic/socket.h \
+ /usr/include/x86_64-linux-gnu/asm/sockios.h \
+ /usr/include/asm-generic/sockios.h \
+ /usr/include/x86_64-linux-gnu/bits/socket2.h /usr/include/net/if.h \
+ /usr/include/netinet/in.h /usr/include/x86_64-linux-gnu/bits/in.h \
+ /usr/include/netinet/tcp.h /usr/include/arpa/inet.h \
+ /usr/include/ifaddrs.h /usr/include/netdb.h /usr/include/rpc/netdb.h \
+ /usr/include/x86_64-linux-gnu/bits/siginfo.h \
+ /usr/include/x86_64-linux-gnu/bits/netdb.h uint256.h version.h pow.h \
+ tinyformat.h /usr/include/c++/5/iostream /usr/include/c++/5/sstream \
+ /usr/include/c++/5/bits/sstream.tcc coins.h compressor.h \
+ primitives/transaction.h script/script.h core_memusage.h memusage.h \
+ /usr/include/boost/foreach.hpp /usr/include/boost/mpl/logical.hpp \
+ /usr/include/boost/range/end.hpp \
+ /usr/include/boost/range/detail/implementation_help.hpp \
+ /usr/include/boost/range/detail/common.hpp \
+ /usr/include/boost/range/detail/sfinae.hpp \
+ /usr/include/boost/range/iterator.hpp /usr/include/boost/range/begin.hpp \
+ /usr/include/boost/range/rend.hpp \
+ /usr/include/boost/range/reverse_iterator.hpp \
+ /usr/include/boost/iterator/reverse_iterator.hpp \
+ /usr/include/boost/next_prior.hpp \
+ /usr/include/boost/type_traits/is_unsigned.hpp \
+ /usr/include/boost/type_traits/integral_promotion.hpp \
+ /usr/include/boost/type_traits/make_signed.hpp \
+ /usr/include/boost/type_traits/is_signed.hpp \
+ /usr/include/boost/type_traits/add_volatile.hpp \
+ /usr/include/boost/type_traits/has_plus.hpp \
+ /usr/include/boost/type_traits/detail/has_binary_operator.hpp \
+ /usr/include/boost/type_traits/is_base_of.hpp \
+ /usr/include/boost/type_traits/is_base_and_derived.hpp \
+ /usr/include/boost/type_traits/is_fundamental.hpp \
+ /usr/include/boost/type_traits/has_plus_assign.hpp \
+ /usr/include/boost/type_traits/has_minus.hpp \
+ /usr/include/boost/type_traits/has_minus_assign.hpp \
+ /usr/include/boost/iterator/iterator_adaptor.hpp \
+ /usr/include/boost/range/rbegin.hpp /usr/include/boost/foreach_fwd.hpp \
+ /usr/include/boost/unordered_set.hpp \
+ /usr/include/boost/unordered/unordered_set.hpp \
+ /usr/include/boost/unordered/unordered_set_fwd.hpp \
+ /usr/include/boost/unordered/detail/fwd.hpp \
+ /usr/include/boost/unordered/detail/equivalent.hpp \
+ /usr/include/boost/unordered/detail/table.hpp \
+ /usr/include/boost/unordered/detail/buckets.hpp \
+ /usr/include/boost/unordered/detail/util.hpp \
+ /usr/include/boost/type_traits/is_empty.hpp \
+ /usr/include/boost/detail/select_type.hpp \
+ /usr/include/boost/move/move.hpp \
+ /usr/include/boost/move/detail/config_begin.hpp \
+ /usr/include/boost/move/utility.hpp \
+ /usr/include/boost/move/utility_core.hpp \
+ /usr/include/boost/move/core.hpp \
+ /usr/include/boost/move/detail/workaround.hpp \
+ /usr/include/boost/move/detail/config_end.hpp \
+ /usr/include/boost/move/detail/meta_utils.hpp \
+ /usr/include/boost/move/detail/meta_utils_core.hpp \
+ /usr/include/boost/move/traits.hpp \
+ /usr/include/boost/move/detail/type_traits.hpp \
+ /usr/include/boost/move/iterator.hpp \
+ /usr/include/boost/move/detail/iterator_traits.hpp \
+ /usr/include/boost/move/algorithm.hpp \
+ /usr/include/boost/detail/no_exceptions_support.hpp \
+ /usr/include/boost/core/no_exceptions_support.hpp \
+ /usr/include/boost/preprocessor/seq/size.hpp \
+ /usr/include/boost/preprocessor/seq/enum.hpp /usr/include/boost/swap.hpp \
+ /usr/include/boost/core/swap.hpp \
+ /usr/include/boost/unordered/detail/allocate.hpp \
+ /usr/include/boost/preprocessor/dec.hpp \
+ /usr/include/boost/preprocessor/repetition/enum.hpp \
+ /usr/include/boost/preprocessor/repetition/enum_binary_params.hpp \
+ /usr/include/boost/preprocessor/repetition/repeat_from_to.hpp \
+ /usr/include/boost/tuple/tuple.hpp /usr/include/boost/ref.hpp \
+ /usr/include/boost/core/ref.hpp \
+ /usr/include/boost/tuple/detail/tuple_basic.hpp \
+ /usr/include/boost/type_traits/cv_traits.hpp \
+ /usr/include/boost/type_traits/add_cv.hpp \
+ /usr/include/boost/type_traits/remove_volatile.hpp \
+ /usr/include/boost/type_traits/function_traits.hpp \
+ /usr/include/boost/utility/swap.hpp /usr/include/boost/limits.hpp \
+ /usr/include/boost/pointer_to_other.hpp \
+ /usr/include/boost/type_traits/aligned_storage.hpp \
+ /usr/include/boost/aligned_storage.hpp \
+ /usr/include/boost/type_traits/alignment_of.hpp \
+ /usr/include/boost/type_traits/detail/size_t_trait_def.hpp \
+ /usr/include/boost/mpl/size_t.hpp /usr/include/boost/mpl/size_t_fwd.hpp \
+ /usr/include/boost/type_traits/detail/size_t_trait_undef.hpp \
+ /usr/include/boost/type_traits/type_with_alignment.hpp \
+ /usr/include/boost/preprocessor/list/for_each_i.hpp \
+ /usr/include/boost/preprocessor/repetition/for.hpp \
+ /usr/include/boost/preprocessor/repetition/detail/for.hpp \
+ /usr/include/boost/preprocessor/tuple/to_list.hpp \
+ /usr/include/boost/preprocessor/tuple/size.hpp \
+ /usr/include/boost/preprocessor/list/transform.hpp \
+ /usr/include/boost/preprocessor/list/append.hpp \
+ /usr/include/boost/type_traits/is_nothrow_move_constructible.hpp \
+ /usr/include/boost/type_traits/has_trivial_move_constructor.hpp \
+ /usr/include/boost/type_traits/has_nothrow_copy.hpp \
+ /usr/include/boost/type_traits/has_trivial_copy.hpp \
+ /usr/include/boost/type_traits/is_nothrow_move_assignable.hpp \
+ /usr/include/boost/type_traits/has_trivial_move_assign.hpp \
+ /usr/include/boost/type_traits/has_nothrow_assign.hpp \
+ /usr/include/boost/type_traits/has_trivial_assign.hpp \
+ /usr/include/boost/unordered/detail/extract_key.hpp \
+ /usr/include/boost/unordered/detail/unique.hpp \
+ /usr/include/boost/functional/hash.hpp \
+ /usr/include/boost/functional/hash/hash.hpp \
+ /usr/include/boost/functional/hash/detail/hash_float.hpp \
+ /usr/include/boost/functional/hash/detail/float_functions.hpp \
+ /usr/include/boost/config/no_tr1/cmath.hpp \
+ /usr/include/boost/functional/hash/detail/limits.hpp \
+ /usr/include/boost/integer/static_log2.hpp \
+ /usr/include/boost/integer_fwd.hpp /usr/include/c++/5/typeindex \
+ /usr/include/boost/functional/hash/extensions.hpp \
+ /usr/include/boost/detail/container_fwd.hpp /usr/include/c++/5/bitset \
+ /usr/include/c++/5/complex /usr/include/boost/unordered_map.hpp \
+ /usr/include/boost/unordered/unordered_map.hpp \
+ /usr/include/boost/unordered/unordered_map_fwd.hpp hash.h \
+ crypto/sph_groestl.h crypto/sph_types.h crypto/ripemd160.h \
+ crypto/sha256.h net.h bloom.h limitedmap.h random.h streams.h \
+ support/allocators/zeroafterfree.h support/cleanse.h sync.h \
+ threadsafety.h /usr/include/boost/thread/condition_variable.hpp \
+ /usr/include/boost/thread/detail/platform.hpp \
+ /usr/include/boost/config/requires_threads.hpp \
+ /usr/include/boost/thread/pthread/condition_variable.hpp \
+ /usr/include/boost/thread/pthread/timespec.hpp \
+ /usr/include/boost/thread/detail/config.hpp \
+ /usr/include/boost/thread/thread_time.hpp \
+ /usr/include/boost/date_time/time_clock.hpp \
+ /usr/include/boost/date_time/c_time.hpp \
+ /usr/include/boost/date_time/compiler_config.hpp \
+ /usr/include/boost/date_time/locale_config.hpp \
+ /usr/include/x86_64-linux-gnu/sys/time.h \
  /usr/include/boost/date_time/microsec_time_clock.hpp \
  /usr/include/boost/date_time/filetime_functions.hpp \
  /usr/include/boost/date_time/posix_time/posix_time_types.hpp \
  /usr/include/boost/date_time/posix_time/ptime.hpp \
  /usr/include/boost/date_time/posix_time/posix_time_system.hpp \
  /usr/include/boost/date_time/posix_time/posix_time_config.hpp \
- /usr/include/boost/limits.hpp /usr/include/c++/5/limits \
- /usr/include/boost/config/no_tr1/cmath.hpp /usr/include/c++/5/cmath \
- /usr/include/math.h /usr/include/x86_64-linux-gnu/bits/math-vector.h \
- /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
- /usr/include/x86_64-linux-gnu/bits/huge_val.h \
- /usr/include/x86_64-linux-gnu/bits/huge_valf.h \
- /usr/include/x86_64-linux-gnu/bits/huge_vall.h \
- /usr/include/x86_64-linux-gnu/bits/inf.h \
- /usr/include/x86_64-linux-gnu/bits/nan.h \
- /usr/include/x86_64-linux-gnu/bits/mathdef.h \
- /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
- /usr/include/x86_64-linux-gnu/bits/mathinline.h \
  /usr/include/boost/date_time/time_duration.hpp \
- /usr/include/boost/operators.hpp /usr/include/boost/iterator.hpp \
+ /usr/include/boost/operators.hpp \
  /usr/include/boost/date_time/time_defs.hpp \
  /usr/include/boost/date_time/special_defs.hpp \
  /usr/include/boost/date_time/time_resolution_traits.hpp \
@@ -557,8 +908,6 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
  /usr/include/boost/date_time/gregorian/greg_calendar.hpp \
  /usr/include/boost/date_time/gregorian/greg_weekday.hpp \
  /usr/include/boost/date_time/constrained_value.hpp \
- /usr/include/boost/type_traits/is_base_of.hpp \
- /usr/include/boost/type_traits/is_base_and_derived.hpp \
  /usr/include/boost/date_time/date_defs.hpp \
  /usr/include/boost/date_time/gregorian/greg_day_of_year.hpp \
  /usr/include/boost/date_time/gregorian_calendar.hpp \
@@ -575,7 +924,6 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
  /usr/include/boost/date_time/adjust_functors.hpp \
  /usr/include/boost/date_time/wrapping_int.hpp \
  /usr/include/boost/date_time/date_generators.hpp \
- /usr/include/c++/5/sstream /usr/include/c++/5/bits/sstream.tcc \
  /usr/include/boost/date_time/date_clock_device.hpp \
  /usr/include/boost/date_time/date_iterator.hpp \
  /usr/include/boost/date_time/time_system_split.hpp \
@@ -586,22 +934,12 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
  /usr/include/boost/date_time/posix_time/time_period.hpp \
  /usr/include/boost/date_time/time_iterator.hpp \
  /usr/include/boost/date_time/dst_rules.hpp \
- /usr/include/boost/chrono/time_point.hpp \
+ /usr/include/boost/date_time/posix_time/conversion.hpp \
+ /usr/include/boost/date_time/gregorian/conversion.hpp \
  /usr/include/boost/chrono/duration.hpp \
  /usr/include/boost/chrono/config.hpp \
  /usr/include/boost/chrono/detail/static_assert.hpp \
- /usr/include/c++/5/climits /usr/include/boost/mpl/logical.hpp \
- /usr/include/boost/mpl/or.hpp \
- /usr/include/boost/mpl/aux_/config/use_preprocessed.hpp \
- /usr/include/boost/mpl/aux_/nested_type_wknd.hpp \
- /usr/include/boost/mpl/aux_/include_preprocessed.hpp \
- /usr/include/boost/mpl/aux_/config/compiler.hpp \
- /usr/include/boost/preprocessor/stringize.hpp \
- /usr/include/boost/mpl/aux_/preprocessed/gcc/or.hpp \
- /usr/include/boost/mpl/and.hpp \
- /usr/include/boost/mpl/aux_/preprocessed/gcc/and.hpp \
- /usr/include/boost/mpl/not.hpp /usr/include/boost/ratio/ratio.hpp \
- /usr/include/boost/ratio/config.hpp \
+ /usr/include/boost/ratio/ratio.hpp /usr/include/boost/ratio/config.hpp \
  /usr/include/boost/ratio/detail/mpl/abs.hpp \
  /usr/include/boost/ratio/detail/mpl/sign.hpp \
  /usr/include/boost/ratio/detail/mpl/gcd.hpp \
@@ -612,74 +950,32 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
  /usr/include/boost/ratio/ratio_fwd.hpp \
  /usr/include/boost/ratio/detail/overflow_helpers.hpp \
  /usr/include/boost/type_traits/common_type.hpp \
- /usr/include/boost/typeof/typeof.hpp \
- /usr/include/boost/typeof/message.hpp \
- /usr/include/boost/typeof/native.hpp \
- /usr/include/boost/utility/declval.hpp \
  /usr/include/boost/type_traits/is_floating_point.hpp \
- /usr/include/boost/type_traits/is_unsigned.hpp \
- /usr/include/boost/type_traits/is_enum.hpp \
  /usr/include/boost/chrono/detail/is_evenly_divisible_by.hpp \
- /usr/include/c++/5/iostream /usr/include/boost/thread/xtime.hpp \
- /usr/include/boost/date_time/posix_time/conversion.hpp \
- /usr/include/c++/5/cstring \
- /usr/include/boost/date_time/gregorian/conversion.hpp \
- /usr/include/boost/thread/pthread/timespec.hpp \
  /usr/include/boost/thread/pthread/pthread_mutex_scoped_lock.hpp \
+ /usr/include/boost/thread/pthread/thread_data.hpp \
+ /usr/include/boost/thread/exceptions.hpp \
+ /usr/include/boost/thread/lock_guard.hpp \
+ /usr/include/boost/thread/detail/delete.hpp \
+ /usr/include/boost/thread/detail/move.hpp \
+ /usr/include/boost/type_traits/conditional.hpp \
+ /usr/include/boost/type_traits/remove_extent.hpp \
+ /usr/include/boost/thread/detail/lockable_wrapper.hpp \
+ /usr/include/boost/thread/lock_options.hpp \
+ /usr/include/boost/thread/lock_types.hpp \
+ /usr/include/boost/thread/lockable_traits.hpp \
+ /usr/include/boost/chrono/time_point.hpp \
+ /usr/include/boost/thread/mutex.hpp \
+ /usr/include/boost/thread/pthread/mutex.hpp \
+ /usr/include/boost/core/ignore_unused.hpp \
+ /usr/include/boost/thread/xtime.hpp \
  /usr/include/boost/chrono/system_clocks.hpp \
  /usr/include/boost/chrono/detail/system.hpp \
  /usr/include/boost/version.hpp \
  /usr/include/boost/chrono/clock_string.hpp \
- /usr/include/boost/chrono/ceil.hpp /usr/include/openssl/crypto.h \
- /usr/include/openssl/e_os2.h \
- /usr/include/x86_64-linux-gnu/openssl/opensslconf.h /usr/include/libio.h \
- /usr/include/_G_config.h \
- /usr/include/x86_64-linux-gnu/bits/sys_errlist.h \
- /usr/include/x86_64-linux-gnu/bits/stdio.h \
- /usr/include/x86_64-linux-gnu/bits/stdio2.h /usr/include/openssl/stack.h \
- /usr/include/openssl/safestack.h /usr/include/openssl/opensslv.h \
- /usr/include/openssl/ossl_typ.h /usr/include/openssl/symhacks.h \
- /usr/include/x86_64-linux-gnu/sys/mman.h \
- /usr/include/x86_64-linux-gnu/bits/mman.h \
- /usr/include/x86_64-linux-gnu/bits/mman-linux.h qt/editaddressdialog.h \
- qt/optionsmodel.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/QAbstractListModel \
- qt/transactiondescdialog.h qt/addresstablemodel.h qt/transactionview.h \
- /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QWidget \
- /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h qt/overviewpage.h \
- qt/bitcoinunits.h qt/guiconstants.h qt/askpassphrasedialog.h \
- qt/notificator.h ../src/config/bitcoin-config.h \
- /usr/include/x86_64-linux-gnu/qt5/QtGui/QIcon \
- /usr/include/x86_64-linux-gnu/qt5/QtGui/qicon.h qt/guiutil.h \
- /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMessageBox \
- /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmessagebox.h \
- /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qdialog.h qt/rpcconsole.h \
- wallet.h walletdb.h db.h serialize.h /usr/include/c++/5/set \
- /usr/include/c++/5/bits/stl_set.h /usr/include/c++/5/bits/stl_multiset.h \
- /usr/include/c++/5/cstdio \
- /usr/include/boost/type_traits/is_fundamental.hpp \
- /usr/include/boost/tuple/tuple.hpp /usr/include/boost/ref.hpp \
- /usr/include/boost/core/ref.hpp /usr/include/boost/utility/addressof.hpp \
- /usr/include/boost/core/addressof.hpp \
- /usr/include/boost/tuple/detail/tuple_basic.hpp \
- /usr/include/boost/type_traits/cv_traits.hpp \
- /usr/include/boost/type_traits/add_const.hpp \
- /usr/include/boost/type_traits/add_volatile.hpp \
- /usr/include/boost/type_traits/add_cv.hpp \
- /usr/include/boost/type_traits/is_const.hpp \
- /usr/include/boost/type_traits/remove_const.hpp \
- /usr/include/boost/type_traits/remove_volatile.hpp \
- /usr/include/boost/type_traits/function_traits.hpp \
- /usr/include/boost/utility/swap.hpp /usr/include/boost/core/swap.hpp \
- allocators.h version.h clientversion.h sync.h threadsafety.h \
- /usr/include/boost/thread/condition_variable.hpp \
- /usr/include/boost/thread/pthread/condition_variable.hpp \
- /usr/include/boost/thread/pthread/thread_data.hpp \
- /usr/include/boost/thread/lock_guard.hpp \
- /usr/include/boost/thread/detail/lockable_wrapper.hpp \
+ /usr/include/boost/chrono/ceil.hpp \
  /usr/include/boost/thread/pthread/condition_variable_fwd.hpp \
  /usr/include/boost/thread/cv_status.hpp \
- /usr/include/boost/core/scoped_enum.hpp \
  /usr/include/boost/enable_shared_from_this.hpp \
  /usr/include/boost/smart_ptr/enable_shared_from_this.hpp \
  /usr/include/boost/smart_ptr/weak_ptr.hpp \
@@ -687,85 +983,7 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
  /usr/include/boost/thread/lock_algorithms.hpp \
  /usr/include/boost/thread/recursive_mutex.hpp \
  /usr/include/boost/thread/pthread/recursive_mutex.hpp \
- /usr/include/boost/filesystem/path.hpp \
- /usr/include/boost/filesystem/config.hpp \
- /usr/include/boost/filesystem/path_traits.hpp /usr/include/c++/5/locale \
- /usr/include/c++/5/bits/locale_facets_nonio.h \
- /usr/include/x86_64-linux-gnu/c++/5/bits/time_members.h \
- /usr/include/x86_64-linux-gnu/c++/5/bits/messages_members.h \
- /usr/include/libintl.h /usr/include/c++/5/bits/codecvt.h \
- /usr/include/c++/5/bits/locale_facets_nonio.tcc \
- /usr/include/boost/iterator/iterator_facade.hpp \
- /usr/include/boost/iterator/interoperable.hpp \
- /usr/include/boost/iterator/detail/config_def.hpp \
- /usr/include/boost/iterator/detail/config_undef.hpp \
- /usr/include/boost/iterator/iterator_traits.hpp \
- /usr/include/boost/detail/iterator.hpp \
- /usr/include/boost/iterator/iterator_categories.hpp \
- /usr/include/boost/mpl/placeholders.hpp /usr/include/boost/mpl/arg.hpp \
- /usr/include/boost/mpl/arg_fwd.hpp \
- /usr/include/boost/mpl/aux_/na_assert.hpp \
- /usr/include/boost/mpl/assert.hpp /usr/include/boost/mpl/aux_/yes_no.hpp \
- /usr/include/boost/mpl/aux_/config/arrays.hpp \
- /usr/include/boost/mpl/aux_/config/gpu.hpp \
- /usr/include/boost/mpl/aux_/config/pp_counter.hpp \
- /usr/include/boost/mpl/aux_/arity_spec.hpp \
- /usr/include/boost/mpl/aux_/arg_typedef.hpp \
- /usr/include/boost/mpl/aux_/preprocessed/gcc/arg.hpp \
- /usr/include/boost/mpl/aux_/preprocessed/gcc/placeholders.hpp \
- /usr/include/boost/iterator/detail/facade_iterator_category.hpp \
- /usr/include/boost/detail/indirect_traits.hpp \
- /usr/include/boost/type_traits/is_pointer.hpp \
- /usr/include/boost/type_traits/is_member_pointer.hpp \
- /usr/include/boost/type_traits/is_member_function_pointer.hpp \
- /usr/include/boost/type_traits/detail/is_mem_fun_pointer_impl.hpp \
- /usr/include/boost/type_traits/remove_pointer.hpp \
- /usr/include/boost/iterator/detail/enable_if.hpp \
- /usr/include/boost/type_traits/is_pod.hpp \
- /usr/include/boost/type_traits/is_scalar.hpp \
- /usr/include/boost/mpl/always.hpp \
- /usr/include/boost/mpl/aux_/preprocessor/default_params.hpp \
- /usr/include/boost/mpl/apply.hpp /usr/include/boost/mpl/apply_fwd.hpp \
- /usr/include/boost/mpl/aux_/preprocessed/gcc/apply_fwd.hpp \
- /usr/include/boost/mpl/apply_wrap.hpp \
- /usr/include/boost/mpl/aux_/has_apply.hpp \
- /usr/include/boost/mpl/has_xxx.hpp \
- /usr/include/boost/mpl/aux_/type_wrapper.hpp \
- /usr/include/boost/mpl/aux_/config/has_xxx.hpp \
- /usr/include/boost/mpl/aux_/config/msvc_typename.hpp \
- /usr/include/boost/preprocessor/array/elem.hpp \
- /usr/include/boost/preprocessor/array/data.hpp \
- /usr/include/boost/preprocessor/array/size.hpp \
- /usr/include/boost/preprocessor/repetition/enum_params.hpp \
- /usr/include/boost/preprocessor/repetition/enum_trailing_params.hpp \
- /usr/include/boost/mpl/aux_/config/has_apply.hpp \
- /usr/include/boost/mpl/aux_/msvc_never_true.hpp \
- /usr/include/boost/mpl/aux_/preprocessed/gcc/apply_wrap.hpp \
- /usr/include/boost/mpl/lambda.hpp /usr/include/boost/mpl/bind.hpp \
- /usr/include/boost/mpl/bind_fwd.hpp \
- /usr/include/boost/mpl/aux_/config/bind.hpp \
- /usr/include/boost/mpl/aux_/preprocessed/gcc/bind_fwd.hpp \
- /usr/include/boost/mpl/next.hpp /usr/include/boost/mpl/next_prior.hpp \
- /usr/include/boost/mpl/aux_/common_name_wknd.hpp \
- /usr/include/boost/mpl/protect.hpp \
- /usr/include/boost/mpl/aux_/preprocessed/gcc/bind.hpp \
- /usr/include/boost/mpl/aux_/full_lambda.hpp \
- /usr/include/boost/mpl/quote.hpp /usr/include/boost/mpl/void.hpp \
- /usr/include/boost/mpl/aux_/has_type.hpp \
- /usr/include/boost/mpl/aux_/config/bcc.hpp \
- /usr/include/boost/mpl/aux_/preprocessed/gcc/quote.hpp \
- /usr/include/boost/mpl/aux_/template_arity.hpp \
- /usr/include/boost/mpl/aux_/preprocessed/gcc/template_arity.hpp \
- /usr/include/boost/mpl/aux_/preprocessed/gcc/full_lambda.hpp \
- /usr/include/boost/mpl/aux_/preprocessed/gcc/apply.hpp \
- /usr/include/boost/io/detail/quoted_manip.hpp \
- /usr/include/boost/io/ios_state.hpp /usr/include/boost/io_fwd.hpp \
- /usr/include/boost/functional/hash_fwd.hpp \
- /usr/include/boost/functional/hash/hash_fwd.hpp /usr/include/db_cxx.h \
- /usr/include/db.h /usr/include/inttypes.h key.h uint256.h hash.h \
- /usr/include/openssl/sha.h /usr/include/openssl/ripemd.h sph_groestl.h \
- sph_types.h crypter.h keystore.h /usr/include/boost/signals2/signal.hpp \
- /usr/include/boost/function.hpp \
+ /usr/include/boost/signals2/signal.hpp /usr/include/boost/function.hpp \
  /usr/include/boost/preprocessor/iterate.hpp \
  /usr/include/boost/preprocessor/iteration/iterate.hpp \
  /usr/include/boost/preprocessor/slot/slot.hpp \
@@ -773,15 +991,10 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
  /usr/include/boost/function/detail/prologue.hpp \
  /usr/include/boost/config/no_tr1/functional.hpp \
  /usr/include/boost/function/function_base.hpp \
- /usr/include/boost/integer.hpp /usr/include/boost/integer_fwd.hpp \
- /usr/include/boost/type_traits/has_trivial_copy.hpp \
+ /usr/include/boost/integer.hpp \
  /usr/include/boost/type_traits/has_trivial_destructor.hpp \
  /usr/include/boost/type_traits/composite_traits.hpp \
  /usr/include/boost/type_traits/is_union.hpp \
- /usr/include/boost/type_traits/alignment_of.hpp \
- /usr/include/boost/type_traits/detail/size_t_trait_def.hpp \
- /usr/include/boost/mpl/size_t.hpp /usr/include/boost/mpl/size_t_fwd.hpp \
- /usr/include/boost/type_traits/detail/size_t_trait_undef.hpp \
  /usr/include/boost/function_equal.hpp \
  /usr/include/boost/function/function_fwd.hpp \
  /usr/include/boost/mem_fn.hpp /usr/include/boost/bind/mem_fn.hpp \
@@ -789,7 +1002,6 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
  /usr/include/boost/bind/mem_fn_template.hpp \
  /usr/include/boost/bind/mem_fn_cc.hpp \
  /usr/include/boost/preprocessor/enum.hpp \
- /usr/include/boost/preprocessor/repetition/enum.hpp \
  /usr/include/boost/preprocessor/enum_params.hpp \
  /usr/include/boost/preprocessor/iteration/detail/iter/forward1.hpp \
  /usr/include/boost/preprocessor/iteration/detail/bounds/lower1.hpp \
@@ -798,8 +1010,6 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
  /usr/include/boost/function/detail/function_iterate.hpp \
  /usr/include/boost/function/detail/maybe_include.hpp \
  /usr/include/boost/function/function_template.hpp \
- /usr/include/boost/detail/no_exceptions_support.hpp \
- /usr/include/boost/core/no_exceptions_support.hpp \
  /usr/include/boost/signals2/connection.hpp \
  /usr/include/boost/signals2/detail/null_output_iterator.hpp \
  /usr/include/boost/function_output_iterator.hpp \
@@ -808,7 +1018,6 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
  /usr/include/boost/bind/bind.hpp /usr/include/boost/type.hpp \
  /usr/include/boost/is_placeholder.hpp /usr/include/boost/bind/arg.hpp \
  /usr/include/boost/visit_each.hpp /usr/include/boost/bind/storage.hpp \
- /usr/include/boost/bind/bind_template.hpp \
  /usr/include/boost/bind/bind_cc.hpp \
  /usr/include/boost/bind/bind_mf_cc.hpp \
  /usr/include/boost/bind/bind_mf2_cc.hpp \
@@ -834,7 +1043,6 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
  /usr/include/boost/preprocessor/enum_shifted_params.hpp \
  /usr/include/boost/preprocessor/repetition/enum_shifted_params.hpp \
  /usr/include/boost/variant/detail/substitute_fwd.hpp \
- /usr/include/boost/mpl/limits/list.hpp \
  /usr/include/boost/variant/detail/has_result_type.hpp \
  /usr/include/boost/variant/variant.hpp /usr/include/boost/type_index.hpp \
  /usr/include/boost/type_index/stl_type_index.hpp \
@@ -846,12 +1054,8 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
  /usr/include/boost/call_traits.hpp \
  /usr/include/boost/detail/call_traits.hpp \
  /usr/include/boost/detail/reference_content.hpp \
- /usr/include/boost/type_traits/has_nothrow_copy.hpp \
  /usr/include/boost/variant/recursive_wrapper_fwd.hpp \
  /usr/include/boost/variant/detail/move.hpp \
- /usr/include/boost/move/move.hpp /usr/include/boost/move/iterator.hpp \
- /usr/include/boost/move/detail/iterator_traits.hpp \
- /usr/include/boost/move/algorithm.hpp \
  /usr/include/boost/move/adl_move_swap.hpp \
  /usr/include/boost/mpl/iter_fold.hpp \
  /usr/include/boost/mpl/begin_end.hpp \
@@ -876,7 +1080,8 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
  /usr/include/boost/mpl/pair.hpp \
  /usr/include/boost/mpl/aux_/msvc_eti_base.hpp \
  /usr/include/boost/variant/detail/make_variant_list.hpp \
- /usr/include/boost/mpl/list.hpp /usr/include/boost/mpl/list/list20.hpp \
+ /usr/include/boost/mpl/list.hpp /usr/include/boost/mpl/limits/list.hpp \
+ /usr/include/boost/mpl/list/list20.hpp \
  /usr/include/boost/mpl/list/list10.hpp \
  /usr/include/boost/mpl/list/list0.hpp \
  /usr/include/boost/mpl/list/aux_/push_front.hpp \
@@ -907,31 +1112,15 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
  /usr/include/boost/variant/detail/over_sequence.hpp \
  /usr/include/boost/variant/detail/visitation_impl.hpp \
  /usr/include/boost/variant/detail/cast_storage.hpp \
- /usr/include/boost/type_traits/is_nothrow_move_constructible.hpp \
- /usr/include/boost/type_traits/has_trivial_move_constructor.hpp \
  /usr/include/boost/variant/detail/hash_variant.hpp \
  /usr/include/boost/variant/static_visitor.hpp \
- /usr/include/boost/aligned_storage.hpp \
- /usr/include/boost/type_traits/type_with_alignment.hpp \
- /usr/include/boost/preprocessor/list/for_each_i.hpp \
- /usr/include/boost/preprocessor/repetition/for.hpp \
- /usr/include/boost/preprocessor/repetition/detail/for.hpp \
- /usr/include/boost/preprocessor/tuple/to_list.hpp \
- /usr/include/boost/preprocessor/tuple/size.hpp \
- /usr/include/boost/preprocessor/list/transform.hpp \
- /usr/include/boost/preprocessor/list/append.hpp \
  /usr/include/boost/blank.hpp \
  /usr/include/boost/detail/templated_streams.hpp \
- /usr/include/boost/type_traits/is_empty.hpp \
  /usr/include/boost/type_traits/is_stateless.hpp \
  /usr/include/boost/type_traits/has_trivial_constructor.hpp \
  /usr/include/boost/math/common_factor_ct.hpp \
  /usr/include/boost/math_fwd.hpp \
  /usr/include/boost/type_traits/has_nothrow_constructor.hpp \
- /usr/include/boost/type_traits/is_nothrow_move_assignable.hpp \
- /usr/include/boost/type_traits/has_trivial_move_assign.hpp \
- /usr/include/boost/type_traits/has_nothrow_assign.hpp \
- /usr/include/boost/type_traits/has_trivial_assign.hpp \
  /usr/include/boost/mpl/empty.hpp \
  /usr/include/boost/mpl/aux_/empty_impl.hpp \
  /usr/include/boost/mpl/find_if.hpp \
@@ -982,21 +1171,8 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
  /usr/include/boost/mpl/aux_/clear_impl.hpp \
  /usr/include/boost/variant/detail/variant_io.hpp \
  /usr/include/boost/signals2/trackable.hpp \
- /usr/include/boost/signals2/preprocessed_slot.hpp \
- /usr/include/boost/preprocessor/repetition.hpp \
- /usr/include/boost/preprocessor/repetition/deduce_r.hpp \
- /usr/include/boost/preprocessor/repetition/deduce_z.hpp \
- /usr/include/boost/preprocessor/repetition/enum_binary_params.hpp \
- /usr/include/boost/preprocessor/repetition/enum_params_with_a_default.hpp \
- /usr/include/boost/preprocessor/facilities/intercept.hpp \
- /usr/include/boost/preprocessor/repetition/enum_params_with_defaults.hpp \
- /usr/include/boost/preprocessor/repetition/enum_shifted.hpp \
- /usr/include/boost/preprocessor/repetition/enum_shifted_binary_params.hpp \
- /usr/include/boost/preprocessor/repetition/enum_trailing.hpp \
- /usr/include/boost/preprocessor/repetition/enum_trailing_binary_params.hpp \
- /usr/include/boost/preprocessor/repetition/repeat_from_to.hpp \
- /usr/include/boost/signals2/detail/preprocessed_arg_type.hpp \
- /usr/include/boost/signals2/detail/preprocessed_arg_type_template.hpp \
+ /usr/include/boost/signals2/variadic_slot.hpp \
+ /usr/include/boost/signals2/detail/variadic_arg_type.hpp \
  /usr/include/boost/signals2/detail/slot_template.hpp \
  /usr/include/boost/signals2/detail/replace_slot_function.hpp \
  /usr/include/boost/signals2/detail/result_type_wrapper.hpp \
@@ -1013,63 +1189,44 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
  /usr/include/boost/optional/optional_fwd.hpp \
  /usr/include/boost/signals2/detail/slot_call_iterator.hpp \
  /usr/include/boost/signals2/detail/auto_buffer.hpp \
- /usr/include/boost/iterator/reverse_iterator.hpp \
- /usr/include/boost/next_prior.hpp \
- /usr/include/boost/type_traits/integral_promotion.hpp \
- /usr/include/boost/type_traits/make_signed.hpp \
- /usr/include/boost/type_traits/is_signed.hpp \
- /usr/include/boost/type_traits/has_plus.hpp \
- /usr/include/boost/type_traits/detail/has_binary_operator.hpp \
- /usr/include/boost/type_traits/has_plus_assign.hpp \
- /usr/include/boost/type_traits/has_minus.hpp \
- /usr/include/boost/type_traits/has_minus_assign.hpp \
- /usr/include/boost/iterator/iterator_adaptor.hpp \
  /usr/include/boost/multi_index/detail/scope_guard.hpp \
- /usr/include/boost/swap.hpp \
- /usr/include/boost/type_traits/aligned_storage.hpp \
  /usr/include/boost/signals2/optional_last_value.hpp \
  /usr/include/boost/signals2/mutex.hpp \
  /usr/include/boost/signals2/detail/lwm_pthreads.hpp \
- /usr/include/boost/signals2/preprocessed_signal.hpp \
- /usr/include/boost/preprocessor/arithmetic.hpp \
- /usr/include/boost/preprocessor/arithmetic/div.hpp \
- /usr/include/boost/preprocessor/arithmetic/detail/div_base.hpp \
- /usr/include/boost/preprocessor/comparison/less_equal.hpp \
- /usr/include/boost/preprocessor/logical/not.hpp \
- /usr/include/boost/preprocessor/arithmetic/mod.hpp \
- /usr/include/boost/preprocessor/arithmetic/mul.hpp \
+ /usr/include/boost/signals2/variadic_signal.hpp \
  /usr/include/boost/preprocessor/control/expr_if.hpp \
- /usr/include/boost/preprocessor/iteration.hpp \
- /usr/include/boost/preprocessor/iteration/local.hpp \
- /usr/include/boost/preprocessor/iteration/self.hpp \
- /usr/include/boost/signals2/detail/signal_template.hpp main.h core.h \
- util.h /usr/include/x86_64-linux-gnu/sys/resource.h \
- /usr/include/x86_64-linux-gnu/bits/resource.h tinyformat.h \
- /usr/include/boost/thread.hpp /usr/include/boost/thread/thread.hpp \
- /usr/include/boost/thread/thread_only.hpp \
- /usr/include/boost/thread/detail/thread.hpp \
- /usr/include/boost/thread/detail/thread_heap_alloc.hpp \
- /usr/include/boost/thread/pthread/thread_heap_alloc.hpp \
- /usr/include/boost/thread/detail/make_tuple_indices.hpp \
- /usr/include/boost/thread/detail/invoke.hpp \
- /usr/include/boost/thread/detail/is_convertible.hpp \
- /usr/include/boost/functional/hash.hpp \
- /usr/include/boost/functional/hash/hash.hpp \
- /usr/include/boost/functional/hash/detail/hash_float.hpp \
- /usr/include/boost/functional/hash/detail/float_functions.hpp \
- /usr/include/boost/functional/hash/detail/limits.hpp \
- /usr/include/boost/integer/static_log2.hpp \
- /usr/include/boost/functional/hash/extensions.hpp \
- /usr/include/boost/detail/container_fwd.hpp /usr/include/c++/5/deque \
- /usr/include/c++/5/bits/stl_deque.h /usr/include/c++/5/bits/deque.tcc \
- /usr/include/c++/5/bitset /usr/include/c++/5/complex \
- /usr/include/boost/thread/detail/thread_interruption.hpp \
- /usr/include/boost/thread/v2/thread.hpp \
- /usr/include/boost/thread/detail/thread_group.hpp \
- /usr/include/boost/thread/shared_mutex.hpp \
- /usr/include/boost/thread/pthread/shared_mutex.hpp \
+ /usr/include/boost/signals2/detail/variadic_slot_invoker.hpp \
+ /usr/include/boost/signals2/detail/signal_template.hpp \
+ script/script_error.h versionbits.h spentindex.h net.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/QAbstractTableModel \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/QStringList \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qstringlist.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QWidget \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QCompleter \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qcompleter.h \
+ qt/utilitydialog.h qt/walletframe.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QFrame \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qframe.h qt/walletmodel.h \
+ qt/paymentrequestplus.h qt/paymentrequest.pb.h \
+ /usr/include/google/protobuf/stubs/common.h \
+ /usr/include/google/protobuf/generated_message_util.h \
+ /usr/include/google/protobuf/stubs/once.h \
+ /usr/include/google/protobuf/stubs/atomicops.h \
+ /usr/include/google/protobuf/stubs/platform_macros.h \
+ /usr/include/google/protobuf/stubs/atomicops_internals_x86_gcc.h \
+ /usr/include/google/protobuf/message.h \
+ /usr/include/google/protobuf/message_lite.h \
+ /usr/include/google/protobuf/descriptor.h \
+ /usr/include/google/protobuf/repeated_field.h \
+ /usr/include/google/protobuf/stubs/type_traits.h \
+ /usr/include/google/protobuf/stubs/template_util.h \
+ /usr/include/google/protobuf/extension_set.h \
+ /usr/include/google/protobuf/unknown_field_set.h base58.h key.h pubkey.h \
+ support/allocators/secure.h support/pagelocker.h \
  /usr/include/boost/thread/once.hpp \
  /usr/include/boost/thread/pthread/once_atomic.hpp \
+ /usr/include/boost/thread/detail/invoke.hpp \
  /usr/include/boost/atomic.hpp /usr/include/boost/atomic/atomic.hpp \
  /usr/include/boost/atomic/capabilities.hpp \
  /usr/include/boost/atomic/detail/config.hpp \
@@ -1088,112 +1245,8 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
  /usr/include/boost/atomic/atomic_flag.hpp \
  /usr/include/boost/atomic/detail/atomic_flag.hpp \
  /usr/include/boost/atomic/detail/atomic_template.hpp \
- /usr/include/boost/atomic/detail/casts.hpp \
- /usr/include/boost/thread/tss.hpp /usr/include/boost/thread/barrier.hpp \
- /usr/include/boost/thread/detail/nullary_function.hpp \
- /usr/include/boost/thread/detail/memory.hpp \
- /usr/include/boost/thread/csbl/memory/pointer_traits.hpp \
- /usr/include/boost/thread/csbl/memory/config.hpp \
- /usr/include/boost/intrusive/pointer_traits.hpp \
- /usr/include/boost/intrusive/detail/config_begin.hpp \
- /usr/include/boost/intrusive/detail/workaround.hpp \
- /usr/include/boost/intrusive/pointer_rebind.hpp \
- /usr/include/boost/intrusive/detail/pointer_element.hpp \
- /usr/include/boost/intrusive/detail/mpl.hpp \
- /usr/include/boost/intrusive/detail/config_end.hpp \
- /usr/include/boost/thread/csbl/memory/allocator_arg.hpp \
- /usr/include/boost/container/scoped_allocator.hpp \
- /usr/include/boost/container/detail/config_begin.hpp \
- /usr/include/boost/container/detail/workaround.hpp \
- /usr/include/boost/container/detail/config_end.hpp \
- /usr/include/boost/container/allocator_traits.hpp \
- /usr/include/boost/container/container_fwd.hpp \
- /usr/include/boost/container/detail/std_fwd.hpp \
- /usr/include/boost/container/detail/mpl.hpp \
- /usr/include/boost/container/detail/type_traits.hpp \
- /usr/include/boost/container/detail/placement_new.hpp \
- /usr/include/boost/move/detail/fwd_macros.hpp \
- /usr/include/boost/intrusive/detail/has_member_function_callable_with.hpp \
- /usr/include/boost/container/scoped_allocator_fwd.hpp \
- /usr/include/boost/container/detail/addressof.hpp \
- /usr/include/boost/container/detail/pair.hpp \
- /usr/include/boost/intrusive/detail/minimal_pair_header.hpp \
- /usr/include/boost/thread/csbl/memory/allocator_traits.hpp \
- /usr/include/boost/thread/csbl/memory/scoped_allocator.hpp \
- /usr/include/boost/thread/csbl/memory/shared_ptr.hpp \
- /usr/include/boost/smart_ptr/make_shared.hpp \
- /usr/include/boost/smart_ptr/make_shared_object.hpp \
- /usr/include/boost/smart_ptr/detail/sp_forward.hpp \
- /usr/include/boost/smart_ptr/make_shared_array.hpp \
- /usr/include/boost/smart_ptr/detail/array_count_impl.hpp \
- /usr/include/boost/smart_ptr/detail/array_allocator.hpp \
- /usr/include/boost/align/align.hpp \
- /usr/include/boost/align/detail/align.hpp \
- /usr/include/boost/align/detail/address.hpp \
- /usr/include/boost/align/detail/is_alignment.hpp \
- /usr/include/boost/smart_ptr/detail/array_traits.hpp \
- /usr/include/boost/smart_ptr/detail/array_utility.hpp \
- /usr/include/boost/smart_ptr/detail/sp_if_array.hpp \
- /usr/include/boost/smart_ptr/allocate_shared_array.hpp \
- /usr/include/boost/utility/result_of.hpp \
- /usr/include/boost/utility/detail/result_of_iterate.hpp \
- /usr/include/boost/thread/future.hpp \
- /usr/include/boost/thread/detail/invoker.hpp \
- /usr/include/boost/thread/csbl/tuple.hpp \
- /usr/include/boost/thread/detail/variadic_header.hpp \
- /usr/include/boost/thread/detail/variadic_footer.hpp \
- /usr/include/boost/thread/exceptional_ptr.hpp \
- /usr/include/boost/exception_ptr.hpp \
- /usr/include/boost/exception/detail/exception_ptr.hpp \
- /usr/include/boost/exception/info.hpp \
- /usr/include/boost/exception/to_string_stub.hpp \
- /usr/include/boost/exception/to_string.hpp \
- /usr/include/boost/exception/detail/is_output_streamable.hpp \
- /usr/include/boost/exception/detail/object_hex_dump.hpp \
- /usr/include/boost/exception/detail/type_info.hpp \
- /usr/include/c++/5/iomanip \
- /usr/include/boost/exception/detail/error_info_impl.hpp \
- /usr/include/boost/exception/diagnostic_information.hpp \
- /usr/include/boost/exception/get_error_info.hpp \
- /usr/include/boost/exception/current_exception_cast.hpp \
- /usr/include/boost/exception/detail/clone_current_exception.hpp \
- /usr/include/boost/thread/futures/future_error.hpp \
- /usr/include/boost/thread/futures/future_error_code.hpp \
- /usr/include/boost/thread/futures/future_status.hpp \
- /usr/include/boost/thread/futures/is_future_type.hpp \
- /usr/include/boost/thread/futures/launch.hpp \
- /usr/include/boost/thread/futures/wait_for_all.hpp \
- /usr/include/boost/thread/futures/wait_for_any.hpp \
- /usr/include/boost/scoped_array.hpp \
- /usr/include/boost/smart_ptr/scoped_array.hpp \
- /usr/include/boost/thread/csbl/memory/unique_ptr.hpp \
- /usr/include/boost/move/unique_ptr.hpp \
- /usr/include/boost/move/detail/unique_ptr_meta_utils.hpp \
- /usr/include/boost/move/default_delete.hpp \
- /usr/include/boost/move/make_unique.hpp \
- /usr/include/boost/type_traits/is_copy_constructible.hpp \
- /usr/include/boost/detail/atomic_undef_macros.hpp \
- /usr/include/boost/detail/atomic_redef_macros.hpp \
- /usr/include/boost/filesystem.hpp \
- /usr/include/boost/filesystem/operations.hpp \
- /usr/include/boost/detail/scoped_enum_emulation.hpp \
- /usr/include/boost/detail/bitmask.hpp \
- /usr/include/boost/range/mutable_iterator.hpp \
- /usr/include/boost/range/config.hpp \
- /usr/include/boost/range/range_fwd.hpp \
- /usr/include/boost/range/detail/extract_optional_type.hpp \
- /usr/include/boost/range/detail/msvc_has_iterator_workaround.hpp \
- /usr/include/boost/range/const_iterator.hpp /usr/include/c++/5/stack \
- /usr/include/c++/5/bits/stl_stack.h \
- /usr/include/boost/filesystem/convenience.hpp script.h \
- /usr/include/boost/foreach.hpp /usr/include/boost/range/end.hpp \
- /usr/include/boost/range/detail/implementation_help.hpp \
- /usr/include/boost/range/detail/common.hpp \
- /usr/include/boost/range/detail/sfinae.hpp \
- /usr/include/boost/range/iterator.hpp /usr/include/boost/range/begin.hpp \
- /usr/include/boost/range/rend.hpp \
- /usr/include/boost/range/reverse_iterator.hpp \
- /usr/include/boost/range/rbegin.hpp /usr/include/boost/foreach_fwd.hpp \
+ /usr/include/boost/atomic/detail/casts.hpp script/standard.h \
+ script/interpreter.h script/script_error.h \
  /usr/include/boost/variant.hpp \
  /usr/include/boost/variant/recursive_variant.hpp \
  /usr/include/boost/variant/detail/enable_recursive.hpp \
@@ -1203,106 +1256,99 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
  /usr/include/boost/mpl/equal.hpp /usr/include/boost/variant/get.hpp \
  /usr/include/boost/variant/detail/element_index.hpp \
  /usr/include/boost/variant/visitor_ptr.hpp \
- /usr/include/boost/variant/bad_visit.hpp bignum.h \
- /usr/include/openssl/bn.h txmempool.h net.h /usr/include/boost/array.hpp \
- /usr/include/openssl/rand.h /usr/include/arpa/inet.h \
- /usr/include/netinet/in.h /usr/include/x86_64-linux-gnu/sys/socket.h \
- /usr/include/x86_64-linux-gnu/sys/uio.h \
- /usr/include/x86_64-linux-gnu/bits/uio.h \
- /usr/include/x86_64-linux-gnu/bits/socket.h \
- /usr/include/x86_64-linux-gnu/bits/socket_type.h \
- /usr/include/x86_64-linux-gnu/bits/sockaddr.h \
- /usr/include/x86_64-linux-gnu/asm/socket.h \
- /usr/include/asm-generic/socket.h \
- /usr/include/x86_64-linux-gnu/asm/sockios.h \
- /usr/include/asm-generic/sockios.h \
- /usr/include/x86_64-linux-gnu/bits/socket2.h \
- /usr/include/x86_64-linux-gnu/bits/in.h mruset.h netbase.h compat.h \
- /usr/include/x86_64-linux-gnu/sys/fcntl.h /usr/include/fcntl.h \
- /usr/include/x86_64-linux-gnu/bits/fcntl.h \
- /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \
- /usr/include/x86_64-linux-gnu/bits/stat.h \
- /usr/include/x86_64-linux-gnu/bits/fcntl2.h /usr/include/netdb.h \
- /usr/include/rpc/netdb.h /usr/include/x86_64-linux-gnu/bits/siginfo.h \
- /usr/include/x86_64-linux-gnu/bits/netdb.h /usr/include/net/if.h \
- /usr/include/ifaddrs.h protocol.h chainparams.h addrman.h timedata.h \
- ui_interface.h /usr/include/boost/signals2/last_value.hpp init.h \
- wallet.h ui_interface.h \
+ /usr/include/boost/variant/bad_visit.hpp /usr/include/openssl/x509.h \
+ /usr/include/openssl/e_os2.h \
+ /usr/include/x86_64-linux-gnu/openssl/opensslconf.h \
+ /usr/include/openssl/symhacks.h /usr/include/openssl/buffer.h \
+ /usr/include/openssl/ossl_typ.h /usr/include/openssl/evp.h \
+ /usr/include/openssl/bio.h /usr/include/openssl/crypto.h \
+ /usr/include/openssl/stack.h /usr/include/openssl/safestack.h \
+ /usr/include/openssl/opensslv.h /usr/include/openssl/objects.h \
+ /usr/include/openssl/obj_mac.h /usr/include/openssl/asn1.h \
+ /usr/include/openssl/bn.h /usr/include/openssl/ec.h \
+ /usr/include/openssl/ecdsa.h /usr/include/openssl/ecdh.h \
+ /usr/include/openssl/rsa.h /usr/include/openssl/dsa.h \
+ /usr/include/openssl/dh.h /usr/include/openssl/sha.h \
+ /usr/include/openssl/x509_vfy.h /usr/include/openssl/lhash.h \
+ /usr/include/openssl/pkcs7.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/QByteArray \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qbytearray.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/QList \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qlist.h \
+ qt/walletmodeltransaction.h support/allocators/secure.h wallet/wallet.h \
+ streams.h tinyformat.h ui_interface.h \
+ /usr/include/boost/signals2/last_value.hpp utilstrencodings.h \
+ validationinterface.h script/ismine.h script/standard.h wallet/crypter.h \
+ keystore.h wallet/walletdb.h key.h wallet/db.h clientversion.h sync.h \
+ version.h /usr/include/db_cxx.h /usr/include/db.h \
+ /usr/include/inttypes.h wallet/rpcwallet.h init.h util.h utiltime.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QAction \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qaction.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QApplication \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qapplication.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qcoreapplication.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qcoreevent.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qeventloop.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qguiapplication.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qinputmethod.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QDesktopWidget \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qdesktopwidget.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/QDragEnterEvent \
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qevent.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qurl.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qfile.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qfiledevice.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qvector2d.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qtouchdevice.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QListWidget \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qlistwidget.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qlistview.h \
  /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar \
  /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h \
  /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h \
- /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qaction.h \
- /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qactiongroup.h \
- /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenu \
- /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/QMimeData \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qmimedata.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QProgressDialog \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qprogressdialog.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/QSettings \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qsettings.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QShortcut \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qshortcut.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QStackedWidget \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qstackedwidget.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QStatusBar \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qstatusbar.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QStyle \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qstyle.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/QTimer \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qtimer.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qbasictimer.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QToolBar \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qtoolbar.h \
  /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QVBoxLayout \
  /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qboxlayout.h \
  /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qlayout.h \
  /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qlayoutitem.h \
  /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qboxlayout.h \
  /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qgridlayout.h \
- /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QToolBar \
- /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qtoolbar.h \
- /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QStatusBar \
- /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qstatusbar.h \
- /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QLabel \
- /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qlabel.h \
- /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qframe.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/QMimeData \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qmimedata.h \
- /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QProgressBar \
- /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qprogressbar.h \
- /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QStackedWidget \
- /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qstackedwidget.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/QDateTime \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qdatetime.h \
- /usr/include/x86_64-linux-gnu/qt5/QtGui/QMovie \
- /usr/include/x86_64-linux-gnu/qt5/QtGui/qmovie.h \
- /usr/include/x86_64-linux-gnu/qt5/QtGui/qimagereader.h \
- /usr/include/x86_64-linux-gnu/qt5/QtGui/qimageiohandler.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qplugin.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qpointer.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qjsonobject.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qjsonvalue.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qfactoryinterface.h \
- /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QFileDialog \
- /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qfiledialog.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qdir.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qfileinfo.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qfile.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qfiledevice.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qurl.h \
- /usr/include/x86_64-linux-gnu/qt5/QtGui/QDesktopServices \
- /usr/include/x86_64-linux-gnu/qt5/QtGui/qdesktopservices.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qstandardpaths.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/QTimer \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qtimer.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qbasictimer.h \
- /usr/include/x86_64-linux-gnu/qt5/QtGui/QDragEnterEvent \
- /usr/include/x86_64-linux-gnu/qt5/QtGui/qevent.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qset.h \
- /usr/include/x86_64-linux-gnu/qt5/QtGui/qvector2d.h \
- /usr/include/x86_64-linux-gnu/qt5/QtGui/qtouchdevice.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/QUrl \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qurl.h \
- /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QStyle \
- /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qstyle.h
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/QUrlQuery \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qurlquery.h
 
 /usr/include/stdc-predef.h:
 
-/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QApplication:
+qt/bitcoingui.h:
 
-/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qapplication.h:
+config/bitcoin-config.h:
 
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qcoreapplication.h:
+amount.h:
 
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qglobal.h:
+serialize.h:
 
-/usr/include/c++/5/cstddef:
+compat/endian.h:
 
-/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:
+/usr/lib/gcc/x86_64-linux-gnu/5/include/stdint.h:
 
-/usr/include/x86_64-linux-gnu/c++/5/bits/os_defines.h:
+/usr/include/stdint.h:
 
 /usr/include/features.h:
 
@@ -1314,21 +1360,33 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
 
 /usr/include/x86_64-linux-gnu/gnu/stubs-64.h:
 
-/usr/include/x86_64-linux-gnu/c++/5/bits/cpu_defines.h:
+/usr/include/x86_64-linux-gnu/bits/wchar.h:
 
-/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h:
+compat/byteswap.h:
 
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qconfig.h:
+/usr/include/byteswap.h:
 
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qfeatures.h:
+/usr/include/x86_64-linux-gnu/bits/byteswap.h:
 
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qsystemdetection.h:
+/usr/include/x86_64-linux-gnu/bits/types.h:
 
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qprocessordetection.h:
+/usr/include/x86_64-linux-gnu/bits/typesizes.h:
 
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qcompilerdetection.h:
+/usr/include/x86_64-linux-gnu/bits/byteswap-16.h:
+
+/usr/include/endian.h:
+
+/usr/include/x86_64-linux-gnu/bits/endian.h:
+
+/usr/include/c++/5/algorithm:
 
 /usr/include/c++/5/utility:
+
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:
+
+/usr/include/x86_64-linux-gnu/c++/5/bits/os_defines.h:
+
+/usr/include/x86_64-linux-gnu/c++/5/bits/cpu_defines.h:
 
 /usr/include/c++/5/bits/stl_relops.h:
 
@@ -1338,7 +1396,9 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
 
 /usr/include/c++/5/bits/concept_check.h:
 
-/usr/include/c++/5/algorithm:
+/usr/include/c++/5/type_traits:
+
+/usr/include/c++/5/initializer_list:
 
 /usr/include/c++/5/bits/stl_algobase.h:
 
@@ -1370,21 +1430,11 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
 
 /usr/include/stdlib.h:
 
+/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h:
+
 /usr/include/x86_64-linux-gnu/bits/waitflags.h:
 
 /usr/include/x86_64-linux-gnu/bits/waitstatus.h:
-
-/usr/include/endian.h:
-
-/usr/include/x86_64-linux-gnu/bits/endian.h:
-
-/usr/include/x86_64-linux-gnu/bits/byteswap.h:
-
-/usr/include/x86_64-linux-gnu/bits/types.h:
-
-/usr/include/x86_64-linux-gnu/bits/typesizes.h:
-
-/usr/include/x86_64-linux-gnu/bits/byteswap-16.h:
 
 /usr/include/xlocale.h:
 
@@ -1428,55 +1478,41 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
 
 /usr/include/c++/5/bits/atomic_lockfree_defines.h:
 
+/usr/include/c++/5/bits/exception_ptr.h:
+
+/usr/include/c++/5/bits/nested_exception.h:
+
 /usr/include/c++/5/ext/alloc_traits.h:
 
-/usr/include/c++/5/bits/allocator.h:
-
-/usr/include/x86_64-linux-gnu/c++/5/bits/c++allocator.h:
-
-/usr/include/c++/5/ext/new_allocator.h:
+/usr/include/c++/5/bits/alloc_traits.h:
 
 /usr/include/c++/5/bits/memoryfwd.h:
 
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qtypeinfo.h:
+/usr/include/c++/5/random:
 
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qtypetraits.h:
+/usr/include/c++/5/cmath:
 
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qsysinfo.h:
+/usr/include/math.h:
 
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qlogging.h:
+/usr/include/x86_64-linux-gnu/bits/math-vector.h:
 
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qflags.h:
+/usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h:
 
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qatomic.h:
+/usr/include/x86_64-linux-gnu/bits/huge_val.h:
 
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qbasicatomic.h:
+/usr/include/x86_64-linux-gnu/bits/huge_valf.h:
 
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qatomic_x86.h:
+/usr/include/x86_64-linux-gnu/bits/huge_vall.h:
 
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qgenericatomic.h:
+/usr/include/x86_64-linux-gnu/bits/inf.h:
 
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qglobalstatic.h:
+/usr/include/x86_64-linux-gnu/bits/nan.h:
 
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qnumeric.h:
+/usr/include/x86_64-linux-gnu/bits/mathdef.h:
 
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qstring.h:
+/usr/include/x86_64-linux-gnu/bits/mathcalls.h:
 
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qchar.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qbytearray.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qrefcount.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qnamespace.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qarraydata.h:
-
-/usr/include/string.h:
-
-/usr/include/x86_64-linux-gnu/bits/string3.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/5/include/stdarg.h:
+/usr/include/x86_64-linux-gnu/bits/mathinline.h:
 
 /usr/include/c++/5/string:
 
@@ -1492,9 +1528,17 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
 
 /usr/include/stdio.h:
 
-/usr/include/x86_64-linux-gnu/bits/wchar.h:
+/usr/lib/gcc/x86_64-linux-gnu/5/include/stdarg.h:
 
 /usr/include/x86_64-linux-gnu/bits/wchar2.h:
+
+/usr/include/c++/5/cstdint:
+
+/usr/include/c++/5/bits/allocator.h:
+
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++allocator.h:
+
+/usr/include/c++/5/ext/new_allocator.h:
 
 /usr/include/c++/5/bits/localefwd.h:
 
@@ -1542,23 +1586,173 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
 
 /usr/include/x86_64-linux-gnu/c++/5/bits/atomic_word.h:
 
+/usr/include/c++/5/ext/string_conversions.h:
+
+/usr/include/c++/5/cstdio:
+
+/usr/include/libio.h:
+
+/usr/include/_G_config.h:
+
+/usr/include/x86_64-linux-gnu/bits/stdio_lim.h:
+
+/usr/include/x86_64-linux-gnu/bits/sys_errlist.h:
+
+/usr/include/x86_64-linux-gnu/bits/stdio.h:
+
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:
+
+/usr/include/c++/5/cerrno:
+
+/usr/include/errno.h:
+
+/usr/include/x86_64-linux-gnu/bits/errno.h:
+
+/usr/include/linux/errno.h:
+
+/usr/include/x86_64-linux-gnu/asm/errno.h:
+
+/usr/include/asm-generic/errno.h:
+
+/usr/include/asm-generic/errno-base.h:
+
+/usr/include/c++/5/bits/functional_hash.h:
+
+/usr/include/c++/5/bits/hash_bytes.h:
+
 /usr/include/c++/5/bits/basic_string.tcc:
 
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qobject.h:
+/usr/include/c++/5/limits:
 
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qobjectdefs.h:
+/usr/include/c++/5/bits/random.h:
 
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qobjectdefs_impl.h:
+/usr/include/c++/5/vector:
 
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qlist.h:
+/usr/include/c++/5/bits/stl_uninitialized.h:
 
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qalgorithms.h:
+/usr/include/c++/5/bits/stl_vector.h:
 
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qiterator.h:
+/usr/include/c++/5/bits/stl_bvector.h:
 
-/usr/include/c++/5/iterator:
+/usr/include/c++/5/bits/vector.tcc:
 
-/usr/include/c++/5/ostream:
+/usr/include/c++/5/bits/uniform_int_dist.h:
+
+/usr/include/x86_64-linux-gnu/c++/5/bits/opt_random.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/x86intrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/ia32intrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/mmintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/xmmintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/mm_malloc.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/emmintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/pmmintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/tmmintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/ammintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/smmintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/popcntintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/wmmintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/immintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/avxintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/avx2intrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512fintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512erintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512pfintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512cdintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512vlintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512bwintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512dqintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512vlbwintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512vldqintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512ifmaintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512ifmavlintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512vbmiintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/avx512vbmivlintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/shaintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/lzcntintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/bmiintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/bmi2intrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/fmaintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/f16cintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/rtmintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/xtestintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/mm3dnow.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/prfchwintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/fma4intrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/xopintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/lwpintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/tbmintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/rdseedintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/fxsrintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/xsaveintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/xsaveoptintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/adxintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/clwbintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/pcommitintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/clflushoptintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/xsavesintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/xsavecintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/5/include/mwaitxintrin.h:
+
+/usr/include/c++/5/bits/random.tcc:
+
+/usr/include/c++/5/numeric:
+
+/usr/include/c++/5/bits/stl_numeric.h:
+
+/usr/include/assert.h:
 
 /usr/include/c++/5/ios:
 
@@ -1567,6 +1761,10 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
 /usr/include/c++/5/bits/locale_classes.h:
 
 /usr/include/c++/5/bits/locale_classes.tcc:
+
+/usr/include/c++/5/system_error:
+
+/usr/include/x86_64-linux-gnu/c++/5/bits/error_constants.h:
 
 /usr/include/c++/5/stdexcept:
 
@@ -1592,6 +1790,38 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
 
 /usr/include/c++/5/bits/basic_ios.tcc:
 
+/usr/include/c++/5/map:
+
+/usr/include/c++/5/bits/stl_tree.h:
+
+/usr/include/c++/5/ext/aligned_buffer.h:
+
+/usr/include/c++/5/bits/stl_map.h:
+
+/usr/include/c++/5/tuple:
+
+/usr/include/c++/5/array:
+
+/usr/include/c++/5/bits/uses_allocator.h:
+
+/usr/include/c++/5/bits/stl_multimap.h:
+
+/usr/include/c++/5/set:
+
+/usr/include/c++/5/bits/stl_set.h:
+
+/usr/include/c++/5/bits/stl_multiset.h:
+
+/usr/include/string.h:
+
+/usr/include/x86_64-linux-gnu/bits/string3.h:
+
+prevector.h:
+
+/usr/include/c++/5/iterator:
+
+/usr/include/c++/5/ostream:
+
 /usr/include/c++/5/bits/ostream.tcc:
 
 /usr/include/c++/5/istream:
@@ -1599,6 +1829,76 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
 /usr/include/c++/5/bits/istream.tcc:
 
 /usr/include/c++/5/bits/stream_iterator.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QLabel:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qlabel.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qframe.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qglobal.h:
+
+/usr/include/c++/5/cstddef:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qconfig.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qfeatures.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qsystemdetection.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qprocessordetection.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qcompilerdetection.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qtypeinfo.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qtypetraits.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qsysinfo.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qlogging.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qflags.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qatomic.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qbasicatomic.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qatomic_x86.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qgenericatomic.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qglobalstatic.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qnumeric.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qobjectdefs.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qnamespace.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qobjectdefs_impl.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qobject.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qstring.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qchar.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qbytearray.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qrefcount.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qarraydata.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qlist.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qalgorithms.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qiterator.h:
 
 /usr/include/c++/5/list:
 
@@ -1622,8 +1922,6 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
 
 /usr/include/x86_64-linux-gnu/bits/xopen_lim.h:
 
-/usr/include/x86_64-linux-gnu/bits/stdio_lim.h:
-
 /usr/include/x86_64-linux-gnu/qt5/QtCore/qbytearraylist.h:
 
 /usr/include/x86_64-linux-gnu/qt5/QtCore/qstringlist.h:
@@ -1642,71 +1940,17 @@ qt/qt_libbitcoinqt_a-bitcoingui.o: qt/bitcoingui.cpp \
 
 /usr/include/x86_64-linux-gnu/qt5/QtCore/qisenum.h:
 
-/usr/include/c++/5/vector:
-
-/usr/include/c++/5/bits/stl_uninitialized.h:
-
-/usr/include/c++/5/bits/stl_vector.h:
-
-/usr/include/c++/5/bits/stl_bvector.h:
-
-/usr/include/c++/5/bits/vector.tcc:
-
-/usr/include/c++/5/map:
-
-/usr/include/c++/5/bits/stl_tree.h:
-
-/usr/include/c++/5/bits/stl_map.h:
-
-/usr/include/c++/5/bits/stl_multimap.h:
-
 /usr/include/x86_64-linux-gnu/qt5/QtCore/qobject_impl.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qcoreevent.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qeventloop.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qpoint.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qsize.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtGui/qcursor.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtGui/qguiapplication.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtGui/qinputmethod.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qlocale.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qvariant.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qmap.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qpair.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qhash.h:
-
-/usr/include/c++/5/numeric:
-
-/usr/include/c++/5/bits/stl_numeric.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qshareddata.h:
-
-qt/bitcoingui.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMainWindow:
-
-/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmainwindow.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:
 
 /usr/include/x86_64-linux-gnu/qt5/QtCore/qmargins.h:
 
 /usr/include/x86_64-linux-gnu/qt5/QtGui/qpaintdevice.h:
 
 /usr/include/x86_64-linux-gnu/qt5/QtCore/qrect.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qsize.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qpoint.h:
 
 /usr/include/x86_64-linux-gnu/qt5/QtGui/qpalette.h:
 
@@ -1715,6 +1959,8 @@ qt/bitcoingui.h:
 /usr/include/x86_64-linux-gnu/qt5/QtGui/qrgb.h:
 
 /usr/include/x86_64-linux-gnu/qt5/QtGui/qbrush.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qpair.h:
 
 /usr/include/x86_64-linux-gnu/qt5/QtCore/qvector.h:
 
@@ -1742,6 +1988,10 @@ qt/bitcoingui.h:
 
 /usr/include/x86_64-linux-gnu/qt5/QtCore/qsharedpointer.h:
 
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qshareddata.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qhash.h:
+
 /usr/include/x86_64-linux-gnu/qt5/QtCore/qsharedpointer_impl.h:
 
 /usr/include/x86_64-linux-gnu/qt5/QtGui/qfont.h:
@@ -1752,47 +2002,51 @@ qt/bitcoingui.h:
 
 /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qsizepolicy.h:
 
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qcursor.h:
+
 /usr/include/x86_64-linux-gnu/qt5/QtGui/qkeysequence.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMainWindow:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmainwindow.h:
 
 /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qtabwidget.h:
 
 /usr/include/x86_64-linux-gnu/qt5/QtGui/qicon.h:
 
+/usr/include/x86_64-linux-gnu/qt5/QtCore/QMap:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qmap.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenu:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qaction.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qvariant.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qmap.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qactiongroup.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/QPoint:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qpoint.h:
+
 /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QSystemTrayIcon:
 
 /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qsystemtrayicon.h:
 
-/usr/lib/gcc/x86_64-linux-gnu/5/include/stdint.h:
+qt/bitcoinunits.h:
 
-/usr/include/stdint.h:
-
-qt/transactiontablemodel.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/QAbstractTableModel:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/QAbstractListModel:
 
 /usr/include/x86_64-linux-gnu/qt5/QtCore/qabstractitemmodel.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/QStringList:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qstringlist.h:
-
-qt/addressbookpage.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QDialog:
-
-/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qdialog.h:
-
-qt/sendcoinsdialog.h:
 
 /usr/include/x86_64-linux-gnu/qt5/QtCore/QString:
 
 /usr/include/x86_64-linux-gnu/qt5/QtCore/qstring.h:
-
-qt/signverifymessagedialog.h:
-
-qt/optionsdialog.h:
-
-qt/aboutdialog.h:
 
 qt/clientmodel.h:
 
@@ -1800,13 +2054,71 @@ qt/clientmodel.h:
 
 /usr/include/x86_64-linux-gnu/qt5/QtCore/qobject.h:
 
-qt/walletmodel.h:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/QDateTime:
 
-allocators.h:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdatetime.h:
 
-/usr/include/boost/thread/mutex.hpp:
+qt/guiconstants.h:
 
-/usr/include/boost/thread/detail/platform.hpp:
+qt/guiutil.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/QEvent:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qcoreevent.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QHeaderView:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qheaderview.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qabstractitemview.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qabstractscrollarea.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qabstractitemmodel.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qitemselectionmodel.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qset.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qabstractitemdelegate.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qstyleoption.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qabstractspinbox.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qvalidator.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qregularexpression.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qlocale.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qslider.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qabstractslider.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qstyle.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qtabbar.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qrubberband.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMessageBox:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmessagebox.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qdialog.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QProgressBar:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qprogressbar.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QTableView:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qtableview.h:
+
+/usr/include/boost/filesystem.hpp:
+
+/usr/include/boost/filesystem/config.hpp:
 
 /usr/include/boost/config.hpp:
 
@@ -1840,103 +2152,23 @@ allocators.h:
 
 /usr/include/boost/config/suffix.hpp:
 
-/usr/include/boost/config/requires_threads.hpp:
-
-/usr/include/boost/thread/pthread/mutex.hpp:
-
-/usr/include/boost/thread/detail/config.hpp:
+/usr/include/boost/system/api_config.hpp:
 
 /usr/include/boost/detail/workaround.hpp:
 
 /usr/include/boost/config/auto_link.hpp:
 
-/usr/include/boost/assert.hpp:
+/usr/include/boost/filesystem/path.hpp:
 
-/usr/include/assert.h:
-
-/usr/include/boost/throw_exception.hpp:
-
-/usr/include/boost/exception/exception.hpp:
-
-/usr/include/boost/current_function.hpp:
-
-/usr/include/boost/core/ignore_unused.hpp:
-
-/usr/include/boost/thread/exceptions.hpp:
-
-/usr/include/boost/system/system_error.hpp:
-
-/usr/include/c++/5/cassert:
-
-/usr/include/boost/system/error_code.hpp:
-
-/usr/include/boost/system/config.hpp:
-
-/usr/include/boost/predef/platform.h:
-
-/usr/include/boost/predef/platform/mingw.h:
-
-/usr/include/boost/predef/version_number.h:
-
-/usr/include/boost/predef/make.h:
-
-/usr/include/boost/predef/detail/test.h:
-
-/usr/include/boost/predef/platform/windows_desktop.h:
-
-/usr/include/boost/predef/os/windows.h:
-
-/usr/include/boost/predef/platform/windows_store.h:
-
-/usr/include/boost/predef/platform/windows_phone.h:
-
-/usr/include/boost/predef/platform/windows_runtime.h:
-
-/usr/include/boost/system/api_config.hpp:
-
-/usr/include/boost/cstdint.hpp:
-
-/usr/include/boost/noncopyable.hpp:
-
-/usr/include/boost/core/noncopyable.hpp:
+/usr/include/boost/filesystem/path_traits.hpp:
 
 /usr/include/boost/utility/enable_if.hpp:
 
 /usr/include/boost/core/enable_if.hpp:
 
-/usr/include/c++/5/functional:
-
-/usr/include/boost/cerrno.hpp:
-
-/usr/include/c++/5/cerrno:
-
-/usr/include/errno.h:
-
-/usr/include/x86_64-linux-gnu/bits/errno.h:
-
-/usr/include/linux/errno.h:
-
-/usr/include/x86_64-linux-gnu/asm/errno.h:
-
-/usr/include/asm-generic/errno.h:
-
-/usr/include/asm-generic/errno-base.h:
-
-/usr/include/boost/config/abi_prefix.hpp:
-
-/usr/include/boost/config/abi_suffix.hpp:
-
-/usr/include/boost/thread/lock_types.hpp:
-
-/usr/include/boost/thread/detail/move.hpp:
-
-/usr/include/boost/type_traits/is_convertible.hpp:
-
-/usr/include/boost/type_traits/intrinsics.hpp:
+/usr/include/boost/type_traits/is_array.hpp:
 
 /usr/include/boost/type_traits/config.hpp:
-
-/usr/include/boost/type_traits/is_same.hpp:
 
 /usr/include/boost/type_traits/detail/bool_trait_def.hpp:
 
@@ -2030,6 +2262,10 @@ allocators.h:
 
 /usr/include/boost/type_traits/detail/bool_trait_undef.hpp:
 
+/usr/include/boost/type_traits/decay.hpp:
+
+/usr/include/boost/type_traits/is_function.hpp:
+
 /usr/include/boost/type_traits/is_reference.hpp:
 
 /usr/include/boost/type_traits/is_lvalue_reference.hpp:
@@ -2048,47 +2284,19 @@ allocators.h:
 
 /usr/include/boost/type_traits/detail/ice_eq.hpp:
 
-/usr/include/boost/type_traits/is_volatile.hpp:
+/usr/include/boost/type_traits/detail/false_result.hpp:
 
-/usr/include/boost/type_traits/detail/cv_traits_impl.hpp:
+/usr/include/boost/type_traits/detail/is_function_ptr_helper.hpp:
 
-/usr/include/boost/type_traits/is_array.hpp:
-
-/usr/include/boost/type_traits/is_arithmetic.hpp:
-
-/usr/include/boost/type_traits/is_integral.hpp:
-
-/usr/include/boost/type_traits/is_float.hpp:
-
-/usr/include/boost/type_traits/is_void.hpp:
-
-/usr/include/boost/type_traits/is_abstract.hpp:
-
-/usr/include/boost/type_traits/add_lvalue_reference.hpp:
-
-/usr/include/boost/type_traits/add_reference.hpp:
+/usr/include/boost/type_traits/remove_bounds.hpp:
 
 /usr/include/boost/type_traits/detail/type_trait_def.hpp:
 
 /usr/include/boost/type_traits/detail/type_trait_undef.hpp:
 
-/usr/include/boost/type_traits/add_rvalue_reference.hpp:
-
-/usr/include/boost/type_traits/is_function.hpp:
-
-/usr/include/boost/type_traits/detail/false_result.hpp:
-
-/usr/include/boost/type_traits/detail/is_function_ptr_helper.hpp:
+/usr/include/boost/type_traits/add_pointer.hpp:
 
 /usr/include/boost/type_traits/remove_reference.hpp:
-
-/usr/include/boost/type_traits/remove_cv.hpp:
-
-/usr/include/boost/type_traits/decay.hpp:
-
-/usr/include/boost/type_traits/remove_bounds.hpp:
-
-/usr/include/boost/type_traits/add_pointer.hpp:
 
 /usr/include/boost/mpl/eval_if.hpp:
 
@@ -2178,53 +2386,283 @@ allocators.h:
 
 /usr/include/boost/mpl/identity.hpp:
 
-/usr/include/boost/type_traits/conditional.hpp:
+/usr/include/boost/system/error_code.hpp:
 
-/usr/include/boost/type_traits/remove_extent.hpp:
+/usr/include/boost/system/config.hpp:
 
-/usr/include/boost/thread/detail/delete.hpp:
+/usr/include/boost/predef/platform.h:
 
-/usr/include/boost/move/utility.hpp:
+/usr/include/boost/predef/platform/mingw.h:
 
-/usr/include/boost/move/detail/config_begin.hpp:
+/usr/include/boost/predef/version_number.h:
 
-/usr/include/boost/move/utility_core.hpp:
+/usr/include/boost/predef/make.h:
 
-/usr/include/boost/move/core.hpp:
+/usr/include/boost/predef/detail/test.h:
 
-/usr/include/boost/move/detail/workaround.hpp:
+/usr/include/boost/predef/platform/windows_desktop.h:
 
-/usr/include/boost/move/detail/type_traits.hpp:
+/usr/include/boost/predef/os/windows.h:
 
-/usr/include/boost/move/detail/meta_utils.hpp:
+/usr/include/boost/predef/platform/windows_store.h:
 
-/usr/include/boost/move/detail/meta_utils_core.hpp:
+/usr/include/boost/predef/platform/windows_phone.h:
 
-/usr/include/boost/static_assert.hpp:
+/usr/include/boost/predef/platform/windows_runtime.h:
 
-/usr/include/boost/move/detail/config_end.hpp:
+/usr/include/boost/cstdint.hpp:
 
-/usr/include/boost/move/traits.hpp:
+/usr/include/boost/assert.hpp:
 
-/usr/include/boost/thread/lock_options.hpp:
+/usr/include/boost/noncopyable.hpp:
 
-/usr/include/boost/thread/lockable_traits.hpp:
+/usr/include/boost/core/noncopyable.hpp:
 
-/usr/include/boost/type_traits/is_class.hpp:
+/usr/include/c++/5/functional:
 
-/usr/include/boost/thread/thread_time.hpp:
+/usr/include/c++/5/typeinfo:
 
-/usr/include/boost/date_time/time_clock.hpp:
+/usr/include/boost/cerrno.hpp:
 
-/usr/include/boost/date_time/c_time.hpp:
+/usr/include/boost/config/abi_prefix.hpp:
+
+/usr/include/boost/config/abi_suffix.hpp:
+
+/usr/include/c++/5/locale:
+
+/usr/include/c++/5/bits/locale_facets_nonio.h:
 
 /usr/include/c++/5/ctime:
 
-/usr/include/boost/date_time/compiler_config.hpp:
+/usr/include/x86_64-linux-gnu/c++/5/bits/time_members.h:
 
-/usr/include/boost/date_time/locale_config.hpp:
+/usr/include/x86_64-linux-gnu/c++/5/bits/messages_members.h:
 
-/usr/include/x86_64-linux-gnu/sys/time.h:
+/usr/include/libintl.h:
+
+/usr/include/c++/5/bits/codecvt.h:
+
+/usr/include/c++/5/bits/locale_facets_nonio.tcc:
+
+/usr/include/c++/5/bits/locale_conv.h:
+
+/usr/include/c++/5/bits/stringfwd.h:
+
+/usr/include/c++/5/bits/allocator.h:
+
+/usr/include/c++/5/bits/codecvt.h:
+
+/usr/include/c++/5/bits/unique_ptr.h:
+
+/usr/include/boost/system/system_error.hpp:
+
+/usr/include/c++/5/cassert:
+
+/usr/include/boost/iterator/iterator_facade.hpp:
+
+/usr/include/boost/iterator.hpp:
+
+/usr/include/boost/iterator/interoperable.hpp:
+
+/usr/include/boost/mpl/or.hpp:
+
+/usr/include/boost/mpl/aux_/config/use_preprocessed.hpp:
+
+/usr/include/boost/mpl/aux_/nested_type_wknd.hpp:
+
+/usr/include/boost/mpl/aux_/include_preprocessed.hpp:
+
+/usr/include/boost/mpl/aux_/config/compiler.hpp:
+
+/usr/include/boost/preprocessor/stringize.hpp:
+
+/usr/include/boost/mpl/aux_/preprocessed/gcc/or.hpp:
+
+/usr/include/boost/type_traits/is_convertible.hpp:
+
+/usr/include/boost/type_traits/intrinsics.hpp:
+
+/usr/include/boost/type_traits/is_same.hpp:
+
+/usr/include/boost/type_traits/is_volatile.hpp:
+
+/usr/include/boost/type_traits/detail/cv_traits_impl.hpp:
+
+/usr/include/boost/type_traits/is_arithmetic.hpp:
+
+/usr/include/boost/type_traits/is_integral.hpp:
+
+/usr/include/boost/type_traits/is_float.hpp:
+
+/usr/include/boost/type_traits/is_void.hpp:
+
+/usr/include/boost/type_traits/is_abstract.hpp:
+
+/usr/include/boost/type_traits/add_lvalue_reference.hpp:
+
+/usr/include/boost/type_traits/add_reference.hpp:
+
+/usr/include/boost/type_traits/add_rvalue_reference.hpp:
+
+/usr/include/boost/utility/declval.hpp:
+
+/usr/include/boost/iterator/detail/config_def.hpp:
+
+/usr/include/boost/iterator/detail/config_undef.hpp:
+
+/usr/include/boost/iterator/iterator_traits.hpp:
+
+/usr/include/boost/detail/iterator.hpp:
+
+/usr/include/boost/iterator/iterator_categories.hpp:
+
+/usr/include/boost/mpl/placeholders.hpp:
+
+/usr/include/boost/mpl/arg.hpp:
+
+/usr/include/boost/mpl/arg_fwd.hpp:
+
+/usr/include/boost/mpl/aux_/na_assert.hpp:
+
+/usr/include/boost/mpl/assert.hpp:
+
+/usr/include/boost/mpl/not.hpp:
+
+/usr/include/boost/mpl/aux_/yes_no.hpp:
+
+/usr/include/boost/mpl/aux_/config/arrays.hpp:
+
+/usr/include/boost/mpl/aux_/config/gpu.hpp:
+
+/usr/include/boost/mpl/aux_/config/pp_counter.hpp:
+
+/usr/include/boost/mpl/aux_/arity_spec.hpp:
+
+/usr/include/boost/mpl/aux_/arg_typedef.hpp:
+
+/usr/include/boost/mpl/aux_/preprocessed/gcc/arg.hpp:
+
+/usr/include/boost/mpl/aux_/preprocessed/gcc/placeholders.hpp:
+
+/usr/include/boost/static_assert.hpp:
+
+/usr/include/boost/iterator/detail/facade_iterator_category.hpp:
+
+/usr/include/boost/mpl/and.hpp:
+
+/usr/include/boost/mpl/aux_/preprocessed/gcc/and.hpp:
+
+/usr/include/boost/type_traits/is_const.hpp:
+
+/usr/include/boost/detail/indirect_traits.hpp:
+
+/usr/include/boost/type_traits/is_pointer.hpp:
+
+/usr/include/boost/type_traits/is_member_pointer.hpp:
+
+/usr/include/boost/type_traits/is_member_function_pointer.hpp:
+
+/usr/include/boost/type_traits/detail/is_mem_fun_pointer_impl.hpp:
+
+/usr/include/boost/type_traits/remove_cv.hpp:
+
+/usr/include/boost/type_traits/is_class.hpp:
+
+/usr/include/boost/type_traits/remove_pointer.hpp:
+
+/usr/include/boost/iterator/detail/enable_if.hpp:
+
+/usr/include/boost/utility/addressof.hpp:
+
+/usr/include/boost/core/addressof.hpp:
+
+/usr/include/boost/type_traits/add_const.hpp:
+
+/usr/include/boost/type_traits/remove_const.hpp:
+
+/usr/include/boost/type_traits/is_pod.hpp:
+
+/usr/include/boost/type_traits/is_scalar.hpp:
+
+/usr/include/boost/type_traits/is_enum.hpp:
+
+/usr/include/boost/mpl/always.hpp:
+
+/usr/include/boost/mpl/aux_/preprocessor/default_params.hpp:
+
+/usr/include/boost/mpl/apply.hpp:
+
+/usr/include/boost/mpl/apply_fwd.hpp:
+
+/usr/include/boost/mpl/aux_/preprocessed/gcc/apply_fwd.hpp:
+
+/usr/include/boost/mpl/apply_wrap.hpp:
+
+/usr/include/boost/mpl/aux_/has_apply.hpp:
+
+/usr/include/boost/mpl/has_xxx.hpp:
+
+/usr/include/boost/mpl/aux_/type_wrapper.hpp:
+
+/usr/include/boost/mpl/aux_/config/has_xxx.hpp:
+
+/usr/include/boost/mpl/aux_/config/msvc_typename.hpp:
+
+/usr/include/boost/preprocessor/array/elem.hpp:
+
+/usr/include/boost/preprocessor/array/data.hpp:
+
+/usr/include/boost/preprocessor/array/size.hpp:
+
+/usr/include/boost/preprocessor/repetition/enum_params.hpp:
+
+/usr/include/boost/preprocessor/repetition/enum_trailing_params.hpp:
+
+/usr/include/boost/mpl/aux_/config/has_apply.hpp:
+
+/usr/include/boost/mpl/aux_/msvc_never_true.hpp:
+
+/usr/include/boost/mpl/aux_/preprocessed/gcc/apply_wrap.hpp:
+
+/usr/include/boost/mpl/lambda.hpp:
+
+/usr/include/boost/mpl/bind.hpp:
+
+/usr/include/boost/mpl/bind_fwd.hpp:
+
+/usr/include/boost/mpl/aux_/config/bind.hpp:
+
+/usr/include/boost/mpl/aux_/preprocessed/gcc/bind_fwd.hpp:
+
+/usr/include/boost/mpl/next.hpp:
+
+/usr/include/boost/mpl/next_prior.hpp:
+
+/usr/include/boost/mpl/aux_/common_name_wknd.hpp:
+
+/usr/include/boost/mpl/protect.hpp:
+
+/usr/include/boost/mpl/aux_/preprocessed/gcc/bind.hpp:
+
+/usr/include/boost/mpl/aux_/full_lambda.hpp:
+
+/usr/include/boost/mpl/quote.hpp:
+
+/usr/include/boost/mpl/void.hpp:
+
+/usr/include/boost/mpl/aux_/has_type.hpp:
+
+/usr/include/boost/mpl/aux_/config/bcc.hpp:
+
+/usr/include/boost/mpl/aux_/preprocessed/gcc/quote.hpp:
+
+/usr/include/boost/mpl/aux_/template_arity.hpp:
+
+/usr/include/boost/mpl/aux_/preprocessed/gcc/template_arity.hpp:
+
+/usr/include/boost/mpl/aux_/preprocessed/gcc/full_lambda.hpp:
+
+/usr/include/boost/mpl/aux_/preprocessed/gcc/apply.hpp:
 
 /usr/include/boost/shared_ptr.hpp:
 
@@ -2236,11 +2674,31 @@ allocators.h:
 
 /usr/include/c++/5/bits/stl_raw_storage_iter.h:
 
+/usr/include/c++/5/ext/concurrence.h:
+
+/usr/include/c++/5/bits/unique_ptr.h:
+
+/usr/include/c++/5/bits/shared_ptr.h:
+
+/usr/include/c++/5/bits/shared_ptr_base.h:
+
+/usr/include/c++/5/bits/allocated_ptr.h:
+
+/usr/include/c++/5/bits/shared_ptr_atomic.h:
+
+/usr/include/c++/5/bits/atomic_base.h:
+
 /usr/include/c++/5/backward/auto_ptr.h:
 
 /usr/include/boost/checked_delete.hpp:
 
 /usr/include/boost/core/checked_delete.hpp:
+
+/usr/include/boost/throw_exception.hpp:
+
+/usr/include/boost/exception/exception.hpp:
+
+/usr/include/boost/current_function.hpp:
 
 /usr/include/boost/smart_ptr/detail/shared_count.hpp:
 
@@ -2261,8 +2719,6 @@ allocators.h:
 /usr/include/c++/5/cxxabi.h:
 
 /usr/include/x86_64-linux-gnu/c++/5/bits/cxxabi_tweaks.h:
-
-/usr/include/c++/5/typeinfo:
 
 /usr/include/boost/smart_ptr/detail/sp_counted_impl.hpp:
 
@@ -2486,6 +2942,494 @@ allocators.h:
 
 /usr/include/boost/smart_ptr/detail/operator_bool.hpp:
 
+/usr/include/boost/io/detail/quoted_manip.hpp:
+
+/usr/include/boost/io/ios_state.hpp:
+
+/usr/include/boost/io_fwd.hpp:
+
+/usr/include/boost/functional/hash_fwd.hpp:
+
+/usr/include/boost/functional/hash/hash_fwd.hpp:
+
+/usr/include/c++/5/cstring:
+
+/usr/include/boost/filesystem/operations.hpp:
+
+/usr/include/boost/detail/scoped_enum_emulation.hpp:
+
+/usr/include/boost/core/scoped_enum.hpp:
+
+/usr/include/boost/detail/bitmask.hpp:
+
+/usr/include/boost/range/mutable_iterator.hpp:
+
+/usr/include/boost/range/config.hpp:
+
+/usr/include/boost/range/range_fwd.hpp:
+
+/usr/include/boost/range/detail/extract_optional_type.hpp:
+
+/usr/include/boost/range/detail/msvc_has_iterator_workaround.hpp:
+
+/usr/include/boost/range/const_iterator.hpp:
+
+/usr/include/c++/5/stack:
+
+/usr/include/c++/5/deque:
+
+/usr/include/c++/5/bits/stl_deque.h:
+
+/usr/include/c++/5/bits/deque.tcc:
+
+/usr/include/c++/5/bits/stl_stack.h:
+
+/usr/include/boost/filesystem/convenience.hpp:
+
+qt/networkstyle.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtGui/QIcon:
+
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qicon.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtGui/QPixmap:
+
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qpixmap.h:
+
+qt/notificator.h:
+
+qt/openuridialog.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QDialog:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qdialog.h:
+
+qt/optionsdialog.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtGui/QValidator:
+
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qvalidator.h:
+
+qt/optionsmodel.h:
+
+qt/platformstyle.h:
+
+qt/rpcconsole.h:
+
+qt/peertablemodel.h:
+
+main.h:
+
+config/bitcoin-config.h:
+
+amount.h:
+
+chain.h:
+
+arith_uint256.h:
+
+chainparams.h:
+
+chainparamsbase.h:
+
+consensus/params.h:
+
+uint256.h:
+
+crypto/common.h:
+
+../src/config/bitcoin-config.h:
+
+compat/endian.h:
+
+primitives/block.h:
+
+primitives/transaction.h:
+
+script/script.h:
+
+crypto/common.h:
+
+prevector.h:
+
+/usr/include/c++/5/climits:
+
+serialize.h:
+
+protocol.h:
+
+netbase.h:
+
+compat.h:
+
+/usr/include/x86_64-linux-gnu/sys/fcntl.h:
+
+/usr/include/fcntl.h:
+
+/usr/include/x86_64-linux-gnu/bits/fcntl.h:
+
+/usr/include/x86_64-linux-gnu/bits/fcntl-linux.h:
+
+/usr/include/x86_64-linux-gnu/bits/uio.h:
+
+/usr/include/x86_64-linux-gnu/bits/stat.h:
+
+/usr/include/x86_64-linux-gnu/bits/fcntl2.h:
+
+/usr/include/x86_64-linux-gnu/sys/mman.h:
+
+/usr/include/x86_64-linux-gnu/bits/mman.h:
+
+/usr/include/x86_64-linux-gnu/bits/mman-linux.h:
+
+/usr/include/x86_64-linux-gnu/sys/socket.h:
+
+/usr/include/x86_64-linux-gnu/sys/uio.h:
+
+/usr/include/x86_64-linux-gnu/bits/socket.h:
+
+/usr/include/x86_64-linux-gnu/bits/socket_type.h:
+
+/usr/include/x86_64-linux-gnu/bits/sockaddr.h:
+
+/usr/include/x86_64-linux-gnu/asm/socket.h:
+
+/usr/include/asm-generic/socket.h:
+
+/usr/include/x86_64-linux-gnu/asm/sockios.h:
+
+/usr/include/asm-generic/sockios.h:
+
+/usr/include/x86_64-linux-gnu/bits/socket2.h:
+
+/usr/include/net/if.h:
+
+/usr/include/netinet/in.h:
+
+/usr/include/x86_64-linux-gnu/bits/in.h:
+
+/usr/include/netinet/tcp.h:
+
+/usr/include/arpa/inet.h:
+
+/usr/include/ifaddrs.h:
+
+/usr/include/netdb.h:
+
+/usr/include/rpc/netdb.h:
+
+/usr/include/x86_64-linux-gnu/bits/siginfo.h:
+
+/usr/include/x86_64-linux-gnu/bits/netdb.h:
+
+uint256.h:
+
+version.h:
+
+pow.h:
+
+tinyformat.h:
+
+/usr/include/c++/5/iostream:
+
+/usr/include/c++/5/sstream:
+
+/usr/include/c++/5/bits/sstream.tcc:
+
+coins.h:
+
+compressor.h:
+
+primitives/transaction.h:
+
+script/script.h:
+
+core_memusage.h:
+
+memusage.h:
+
+/usr/include/boost/foreach.hpp:
+
+/usr/include/boost/mpl/logical.hpp:
+
+/usr/include/boost/range/end.hpp:
+
+/usr/include/boost/range/detail/implementation_help.hpp:
+
+/usr/include/boost/range/detail/common.hpp:
+
+/usr/include/boost/range/detail/sfinae.hpp:
+
+/usr/include/boost/range/iterator.hpp:
+
+/usr/include/boost/range/begin.hpp:
+
+/usr/include/boost/range/rend.hpp:
+
+/usr/include/boost/range/reverse_iterator.hpp:
+
+/usr/include/boost/iterator/reverse_iterator.hpp:
+
+/usr/include/boost/next_prior.hpp:
+
+/usr/include/boost/type_traits/is_unsigned.hpp:
+
+/usr/include/boost/type_traits/integral_promotion.hpp:
+
+/usr/include/boost/type_traits/make_signed.hpp:
+
+/usr/include/boost/type_traits/is_signed.hpp:
+
+/usr/include/boost/type_traits/add_volatile.hpp:
+
+/usr/include/boost/type_traits/has_plus.hpp:
+
+/usr/include/boost/type_traits/detail/has_binary_operator.hpp:
+
+/usr/include/boost/type_traits/is_base_of.hpp:
+
+/usr/include/boost/type_traits/is_base_and_derived.hpp:
+
+/usr/include/boost/type_traits/is_fundamental.hpp:
+
+/usr/include/boost/type_traits/has_plus_assign.hpp:
+
+/usr/include/boost/type_traits/has_minus.hpp:
+
+/usr/include/boost/type_traits/has_minus_assign.hpp:
+
+/usr/include/boost/iterator/iterator_adaptor.hpp:
+
+/usr/include/boost/range/rbegin.hpp:
+
+/usr/include/boost/foreach_fwd.hpp:
+
+/usr/include/boost/unordered_set.hpp:
+
+/usr/include/boost/unordered/unordered_set.hpp:
+
+/usr/include/boost/unordered/unordered_set_fwd.hpp:
+
+/usr/include/boost/unordered/detail/fwd.hpp:
+
+/usr/include/boost/unordered/detail/equivalent.hpp:
+
+/usr/include/boost/unordered/detail/table.hpp:
+
+/usr/include/boost/unordered/detail/buckets.hpp:
+
+/usr/include/boost/unordered/detail/util.hpp:
+
+/usr/include/boost/type_traits/is_empty.hpp:
+
+/usr/include/boost/detail/select_type.hpp:
+
+/usr/include/boost/move/move.hpp:
+
+/usr/include/boost/move/detail/config_begin.hpp:
+
+/usr/include/boost/move/utility.hpp:
+
+/usr/include/boost/move/utility_core.hpp:
+
+/usr/include/boost/move/core.hpp:
+
+/usr/include/boost/move/detail/workaround.hpp:
+
+/usr/include/boost/move/detail/config_end.hpp:
+
+/usr/include/boost/move/detail/meta_utils.hpp:
+
+/usr/include/boost/move/detail/meta_utils_core.hpp:
+
+/usr/include/boost/move/traits.hpp:
+
+/usr/include/boost/move/detail/type_traits.hpp:
+
+/usr/include/boost/move/iterator.hpp:
+
+/usr/include/boost/move/detail/iterator_traits.hpp:
+
+/usr/include/boost/move/algorithm.hpp:
+
+/usr/include/boost/detail/no_exceptions_support.hpp:
+
+/usr/include/boost/core/no_exceptions_support.hpp:
+
+/usr/include/boost/preprocessor/seq/size.hpp:
+
+/usr/include/boost/preprocessor/seq/enum.hpp:
+
+/usr/include/boost/swap.hpp:
+
+/usr/include/boost/core/swap.hpp:
+
+/usr/include/boost/unordered/detail/allocate.hpp:
+
+/usr/include/boost/preprocessor/dec.hpp:
+
+/usr/include/boost/preprocessor/repetition/enum.hpp:
+
+/usr/include/boost/preprocessor/repetition/enum_binary_params.hpp:
+
+/usr/include/boost/preprocessor/repetition/repeat_from_to.hpp:
+
+/usr/include/boost/tuple/tuple.hpp:
+
+/usr/include/boost/ref.hpp:
+
+/usr/include/boost/core/ref.hpp:
+
+/usr/include/boost/tuple/detail/tuple_basic.hpp:
+
+/usr/include/boost/type_traits/cv_traits.hpp:
+
+/usr/include/boost/type_traits/add_cv.hpp:
+
+/usr/include/boost/type_traits/remove_volatile.hpp:
+
+/usr/include/boost/type_traits/function_traits.hpp:
+
+/usr/include/boost/utility/swap.hpp:
+
+/usr/include/boost/limits.hpp:
+
+/usr/include/boost/pointer_to_other.hpp:
+
+/usr/include/boost/type_traits/aligned_storage.hpp:
+
+/usr/include/boost/aligned_storage.hpp:
+
+/usr/include/boost/type_traits/alignment_of.hpp:
+
+/usr/include/boost/type_traits/detail/size_t_trait_def.hpp:
+
+/usr/include/boost/mpl/size_t.hpp:
+
+/usr/include/boost/mpl/size_t_fwd.hpp:
+
+/usr/include/boost/type_traits/detail/size_t_trait_undef.hpp:
+
+/usr/include/boost/type_traits/type_with_alignment.hpp:
+
+/usr/include/boost/preprocessor/list/for_each_i.hpp:
+
+/usr/include/boost/preprocessor/repetition/for.hpp:
+
+/usr/include/boost/preprocessor/repetition/detail/for.hpp:
+
+/usr/include/boost/preprocessor/tuple/to_list.hpp:
+
+/usr/include/boost/preprocessor/tuple/size.hpp:
+
+/usr/include/boost/preprocessor/list/transform.hpp:
+
+/usr/include/boost/preprocessor/list/append.hpp:
+
+/usr/include/boost/type_traits/is_nothrow_move_constructible.hpp:
+
+/usr/include/boost/type_traits/has_trivial_move_constructor.hpp:
+
+/usr/include/boost/type_traits/has_nothrow_copy.hpp:
+
+/usr/include/boost/type_traits/has_trivial_copy.hpp:
+
+/usr/include/boost/type_traits/is_nothrow_move_assignable.hpp:
+
+/usr/include/boost/type_traits/has_trivial_move_assign.hpp:
+
+/usr/include/boost/type_traits/has_nothrow_assign.hpp:
+
+/usr/include/boost/type_traits/has_trivial_assign.hpp:
+
+/usr/include/boost/unordered/detail/extract_key.hpp:
+
+/usr/include/boost/unordered/detail/unique.hpp:
+
+/usr/include/boost/functional/hash.hpp:
+
+/usr/include/boost/functional/hash/hash.hpp:
+
+/usr/include/boost/functional/hash/detail/hash_float.hpp:
+
+/usr/include/boost/functional/hash/detail/float_functions.hpp:
+
+/usr/include/boost/config/no_tr1/cmath.hpp:
+
+/usr/include/boost/functional/hash/detail/limits.hpp:
+
+/usr/include/boost/integer/static_log2.hpp:
+
+/usr/include/boost/integer_fwd.hpp:
+
+/usr/include/c++/5/typeindex:
+
+/usr/include/boost/functional/hash/extensions.hpp:
+
+/usr/include/boost/detail/container_fwd.hpp:
+
+/usr/include/c++/5/bitset:
+
+/usr/include/c++/5/complex:
+
+/usr/include/boost/unordered_map.hpp:
+
+/usr/include/boost/unordered/unordered_map.hpp:
+
+/usr/include/boost/unordered/unordered_map_fwd.hpp:
+
+hash.h:
+
+crypto/sph_groestl.h:
+
+crypto/sph_types.h:
+
+crypto/ripemd160.h:
+
+crypto/sha256.h:
+
+net.h:
+
+bloom.h:
+
+limitedmap.h:
+
+random.h:
+
+streams.h:
+
+support/allocators/zeroafterfree.h:
+
+support/cleanse.h:
+
+sync.h:
+
+threadsafety.h:
+
+/usr/include/boost/thread/condition_variable.hpp:
+
+/usr/include/boost/thread/detail/platform.hpp:
+
+/usr/include/boost/config/requires_threads.hpp:
+
+/usr/include/boost/thread/pthread/condition_variable.hpp:
+
+/usr/include/boost/thread/pthread/timespec.hpp:
+
+/usr/include/boost/thread/detail/config.hpp:
+
+/usr/include/boost/thread/thread_time.hpp:
+
+/usr/include/boost/date_time/time_clock.hpp:
+
+/usr/include/boost/date_time/c_time.hpp:
+
+/usr/include/boost/date_time/compiler_config.hpp:
+
+/usr/include/boost/date_time/locale_config.hpp:
+
+/usr/include/x86_64-linux-gnu/sys/time.h:
+
 /usr/include/boost/date_time/microsec_time_clock.hpp:
 
 /usr/include/boost/date_time/filetime_functions.hpp:
@@ -2498,41 +3442,9 @@ allocators.h:
 
 /usr/include/boost/date_time/posix_time/posix_time_config.hpp:
 
-/usr/include/boost/limits.hpp:
-
-/usr/include/c++/5/limits:
-
-/usr/include/boost/config/no_tr1/cmath.hpp:
-
-/usr/include/c++/5/cmath:
-
-/usr/include/math.h:
-
-/usr/include/x86_64-linux-gnu/bits/math-vector.h:
-
-/usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h:
-
-/usr/include/x86_64-linux-gnu/bits/huge_val.h:
-
-/usr/include/x86_64-linux-gnu/bits/huge_valf.h:
-
-/usr/include/x86_64-linux-gnu/bits/huge_vall.h:
-
-/usr/include/x86_64-linux-gnu/bits/inf.h:
-
-/usr/include/x86_64-linux-gnu/bits/nan.h:
-
-/usr/include/x86_64-linux-gnu/bits/mathdef.h:
-
-/usr/include/x86_64-linux-gnu/bits/mathcalls.h:
-
-/usr/include/x86_64-linux-gnu/bits/mathinline.h:
-
 /usr/include/boost/date_time/time_duration.hpp:
 
 /usr/include/boost/operators.hpp:
-
-/usr/include/boost/iterator.hpp:
 
 /usr/include/boost/date_time/time_defs.hpp:
 
@@ -2555,10 +3467,6 @@ allocators.h:
 /usr/include/boost/date_time/gregorian/greg_weekday.hpp:
 
 /usr/include/boost/date_time/constrained_value.hpp:
-
-/usr/include/boost/type_traits/is_base_of.hpp:
-
-/usr/include/boost/type_traits/is_base_and_derived.hpp:
 
 /usr/include/boost/date_time/date_defs.hpp:
 
@@ -2592,10 +3500,6 @@ allocators.h:
 
 /usr/include/boost/date_time/date_generators.hpp:
 
-/usr/include/c++/5/sstream:
-
-/usr/include/c++/5/bits/sstream.tcc:
-
 /usr/include/boost/date_time/date_clock_device.hpp:
 
 /usr/include/boost/date_time/date_iterator.hpp:
@@ -2616,37 +3520,15 @@ allocators.h:
 
 /usr/include/boost/date_time/dst_rules.hpp:
 
-/usr/include/boost/chrono/time_point.hpp:
+/usr/include/boost/date_time/posix_time/conversion.hpp:
+
+/usr/include/boost/date_time/gregorian/conversion.hpp:
 
 /usr/include/boost/chrono/duration.hpp:
 
 /usr/include/boost/chrono/config.hpp:
 
 /usr/include/boost/chrono/detail/static_assert.hpp:
-
-/usr/include/c++/5/climits:
-
-/usr/include/boost/mpl/logical.hpp:
-
-/usr/include/boost/mpl/or.hpp:
-
-/usr/include/boost/mpl/aux_/config/use_preprocessed.hpp:
-
-/usr/include/boost/mpl/aux_/nested_type_wknd.hpp:
-
-/usr/include/boost/mpl/aux_/include_preprocessed.hpp:
-
-/usr/include/boost/mpl/aux_/config/compiler.hpp:
-
-/usr/include/boost/preprocessor/stringize.hpp:
-
-/usr/include/boost/mpl/aux_/preprocessed/gcc/or.hpp:
-
-/usr/include/boost/mpl/and.hpp:
-
-/usr/include/boost/mpl/aux_/preprocessed/gcc/and.hpp:
-
-/usr/include/boost/mpl/not.hpp:
 
 /usr/include/boost/ratio/ratio.hpp:
 
@@ -2672,35 +3554,43 @@ allocators.h:
 
 /usr/include/boost/type_traits/common_type.hpp:
 
-/usr/include/boost/typeof/typeof.hpp:
-
-/usr/include/boost/typeof/message.hpp:
-
-/usr/include/boost/typeof/native.hpp:
-
-/usr/include/boost/utility/declval.hpp:
-
 /usr/include/boost/type_traits/is_floating_point.hpp:
-
-/usr/include/boost/type_traits/is_unsigned.hpp:
-
-/usr/include/boost/type_traits/is_enum.hpp:
 
 /usr/include/boost/chrono/detail/is_evenly_divisible_by.hpp:
 
-/usr/include/c++/5/iostream:
+/usr/include/boost/thread/pthread/pthread_mutex_scoped_lock.hpp:
+
+/usr/include/boost/thread/pthread/thread_data.hpp:
+
+/usr/include/boost/thread/exceptions.hpp:
+
+/usr/include/boost/thread/lock_guard.hpp:
+
+/usr/include/boost/thread/detail/delete.hpp:
+
+/usr/include/boost/thread/detail/move.hpp:
+
+/usr/include/boost/type_traits/conditional.hpp:
+
+/usr/include/boost/type_traits/remove_extent.hpp:
+
+/usr/include/boost/thread/detail/lockable_wrapper.hpp:
+
+/usr/include/boost/thread/lock_options.hpp:
+
+/usr/include/boost/thread/lock_types.hpp:
+
+/usr/include/boost/thread/lockable_traits.hpp:
+
+/usr/include/boost/chrono/time_point.hpp:
+
+/usr/include/boost/thread/mutex.hpp:
+
+/usr/include/boost/thread/pthread/mutex.hpp:
+
+/usr/include/boost/core/ignore_unused.hpp:
 
 /usr/include/boost/thread/xtime.hpp:
-
-/usr/include/boost/date_time/posix_time/conversion.hpp:
-
-/usr/include/c++/5/cstring:
-
-/usr/include/boost/date_time/gregorian/conversion.hpp:
-
-/usr/include/boost/thread/pthread/timespec.hpp:
-
-/usr/include/boost/thread/pthread/pthread_mutex_scoped_lock.hpp:
 
 /usr/include/boost/chrono/system_clocks.hpp:
 
@@ -2712,155 +3602,9 @@ allocators.h:
 
 /usr/include/boost/chrono/ceil.hpp:
 
-/usr/include/openssl/crypto.h:
-
-/usr/include/openssl/e_os2.h:
-
-/usr/include/x86_64-linux-gnu/openssl/opensslconf.h:
-
-/usr/include/libio.h:
-
-/usr/include/_G_config.h:
-
-/usr/include/x86_64-linux-gnu/bits/sys_errlist.h:
-
-/usr/include/x86_64-linux-gnu/bits/stdio.h:
-
-/usr/include/x86_64-linux-gnu/bits/stdio2.h:
-
-/usr/include/openssl/stack.h:
-
-/usr/include/openssl/safestack.h:
-
-/usr/include/openssl/opensslv.h:
-
-/usr/include/openssl/ossl_typ.h:
-
-/usr/include/openssl/symhacks.h:
-
-/usr/include/x86_64-linux-gnu/sys/mman.h:
-
-/usr/include/x86_64-linux-gnu/bits/mman.h:
-
-/usr/include/x86_64-linux-gnu/bits/mman-linux.h:
-
-qt/editaddressdialog.h:
-
-qt/optionsmodel.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/QAbstractListModel:
-
-qt/transactiondescdialog.h:
-
-qt/addresstablemodel.h:
-
-qt/transactionview.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QWidget:
-
-/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:
-
-qt/overviewpage.h:
-
-qt/bitcoinunits.h:
-
-qt/guiconstants.h:
-
-qt/askpassphrasedialog.h:
-
-qt/notificator.h:
-
-../src/config/bitcoin-config.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtGui/QIcon:
-
-/usr/include/x86_64-linux-gnu/qt5/QtGui/qicon.h:
-
-qt/guiutil.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMessageBox:
-
-/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmessagebox.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qdialog.h:
-
-qt/rpcconsole.h:
-
-wallet.h:
-
-walletdb.h:
-
-db.h:
-
-serialize.h:
-
-/usr/include/c++/5/set:
-
-/usr/include/c++/5/bits/stl_set.h:
-
-/usr/include/c++/5/bits/stl_multiset.h:
-
-/usr/include/c++/5/cstdio:
-
-/usr/include/boost/type_traits/is_fundamental.hpp:
-
-/usr/include/boost/tuple/tuple.hpp:
-
-/usr/include/boost/ref.hpp:
-
-/usr/include/boost/core/ref.hpp:
-
-/usr/include/boost/utility/addressof.hpp:
-
-/usr/include/boost/core/addressof.hpp:
-
-/usr/include/boost/tuple/detail/tuple_basic.hpp:
-
-/usr/include/boost/type_traits/cv_traits.hpp:
-
-/usr/include/boost/type_traits/add_const.hpp:
-
-/usr/include/boost/type_traits/add_volatile.hpp:
-
-/usr/include/boost/type_traits/add_cv.hpp:
-
-/usr/include/boost/type_traits/is_const.hpp:
-
-/usr/include/boost/type_traits/remove_const.hpp:
-
-/usr/include/boost/type_traits/remove_volatile.hpp:
-
-/usr/include/boost/type_traits/function_traits.hpp:
-
-/usr/include/boost/utility/swap.hpp:
-
-/usr/include/boost/core/swap.hpp:
-
-allocators.h:
-
-version.h:
-
-clientversion.h:
-
-sync.h:
-
-threadsafety.h:
-
-/usr/include/boost/thread/condition_variable.hpp:
-
-/usr/include/boost/thread/pthread/condition_variable.hpp:
-
-/usr/include/boost/thread/pthread/thread_data.hpp:
-
-/usr/include/boost/thread/lock_guard.hpp:
-
-/usr/include/boost/thread/detail/lockable_wrapper.hpp:
-
 /usr/include/boost/thread/pthread/condition_variable_fwd.hpp:
 
 /usr/include/boost/thread/cv_status.hpp:
-
-/usr/include/boost/core/scoped_enum.hpp:
 
 /usr/include/boost/enable_shared_from_this.hpp:
 
@@ -2875,198 +3619,6 @@ threadsafety.h:
 /usr/include/boost/thread/recursive_mutex.hpp:
 
 /usr/include/boost/thread/pthread/recursive_mutex.hpp:
-
-/usr/include/boost/filesystem/path.hpp:
-
-/usr/include/boost/filesystem/config.hpp:
-
-/usr/include/boost/filesystem/path_traits.hpp:
-
-/usr/include/c++/5/locale:
-
-/usr/include/c++/5/bits/locale_facets_nonio.h:
-
-/usr/include/x86_64-linux-gnu/c++/5/bits/time_members.h:
-
-/usr/include/x86_64-linux-gnu/c++/5/bits/messages_members.h:
-
-/usr/include/libintl.h:
-
-/usr/include/c++/5/bits/codecvt.h:
-
-/usr/include/c++/5/bits/locale_facets_nonio.tcc:
-
-/usr/include/boost/iterator/iterator_facade.hpp:
-
-/usr/include/boost/iterator/interoperable.hpp:
-
-/usr/include/boost/iterator/detail/config_def.hpp:
-
-/usr/include/boost/iterator/detail/config_undef.hpp:
-
-/usr/include/boost/iterator/iterator_traits.hpp:
-
-/usr/include/boost/detail/iterator.hpp:
-
-/usr/include/boost/iterator/iterator_categories.hpp:
-
-/usr/include/boost/mpl/placeholders.hpp:
-
-/usr/include/boost/mpl/arg.hpp:
-
-/usr/include/boost/mpl/arg_fwd.hpp:
-
-/usr/include/boost/mpl/aux_/na_assert.hpp:
-
-/usr/include/boost/mpl/assert.hpp:
-
-/usr/include/boost/mpl/aux_/yes_no.hpp:
-
-/usr/include/boost/mpl/aux_/config/arrays.hpp:
-
-/usr/include/boost/mpl/aux_/config/gpu.hpp:
-
-/usr/include/boost/mpl/aux_/config/pp_counter.hpp:
-
-/usr/include/boost/mpl/aux_/arity_spec.hpp:
-
-/usr/include/boost/mpl/aux_/arg_typedef.hpp:
-
-/usr/include/boost/mpl/aux_/preprocessed/gcc/arg.hpp:
-
-/usr/include/boost/mpl/aux_/preprocessed/gcc/placeholders.hpp:
-
-/usr/include/boost/iterator/detail/facade_iterator_category.hpp:
-
-/usr/include/boost/detail/indirect_traits.hpp:
-
-/usr/include/boost/type_traits/is_pointer.hpp:
-
-/usr/include/boost/type_traits/is_member_pointer.hpp:
-
-/usr/include/boost/type_traits/is_member_function_pointer.hpp:
-
-/usr/include/boost/type_traits/detail/is_mem_fun_pointer_impl.hpp:
-
-/usr/include/boost/type_traits/remove_pointer.hpp:
-
-/usr/include/boost/iterator/detail/enable_if.hpp:
-
-/usr/include/boost/type_traits/is_pod.hpp:
-
-/usr/include/boost/type_traits/is_scalar.hpp:
-
-/usr/include/boost/mpl/always.hpp:
-
-/usr/include/boost/mpl/aux_/preprocessor/default_params.hpp:
-
-/usr/include/boost/mpl/apply.hpp:
-
-/usr/include/boost/mpl/apply_fwd.hpp:
-
-/usr/include/boost/mpl/aux_/preprocessed/gcc/apply_fwd.hpp:
-
-/usr/include/boost/mpl/apply_wrap.hpp:
-
-/usr/include/boost/mpl/aux_/has_apply.hpp:
-
-/usr/include/boost/mpl/has_xxx.hpp:
-
-/usr/include/boost/mpl/aux_/type_wrapper.hpp:
-
-/usr/include/boost/mpl/aux_/config/has_xxx.hpp:
-
-/usr/include/boost/mpl/aux_/config/msvc_typename.hpp:
-
-/usr/include/boost/preprocessor/array/elem.hpp:
-
-/usr/include/boost/preprocessor/array/data.hpp:
-
-/usr/include/boost/preprocessor/array/size.hpp:
-
-/usr/include/boost/preprocessor/repetition/enum_params.hpp:
-
-/usr/include/boost/preprocessor/repetition/enum_trailing_params.hpp:
-
-/usr/include/boost/mpl/aux_/config/has_apply.hpp:
-
-/usr/include/boost/mpl/aux_/msvc_never_true.hpp:
-
-/usr/include/boost/mpl/aux_/preprocessed/gcc/apply_wrap.hpp:
-
-/usr/include/boost/mpl/lambda.hpp:
-
-/usr/include/boost/mpl/bind.hpp:
-
-/usr/include/boost/mpl/bind_fwd.hpp:
-
-/usr/include/boost/mpl/aux_/config/bind.hpp:
-
-/usr/include/boost/mpl/aux_/preprocessed/gcc/bind_fwd.hpp:
-
-/usr/include/boost/mpl/next.hpp:
-
-/usr/include/boost/mpl/next_prior.hpp:
-
-/usr/include/boost/mpl/aux_/common_name_wknd.hpp:
-
-/usr/include/boost/mpl/protect.hpp:
-
-/usr/include/boost/mpl/aux_/preprocessed/gcc/bind.hpp:
-
-/usr/include/boost/mpl/aux_/full_lambda.hpp:
-
-/usr/include/boost/mpl/quote.hpp:
-
-/usr/include/boost/mpl/void.hpp:
-
-/usr/include/boost/mpl/aux_/has_type.hpp:
-
-/usr/include/boost/mpl/aux_/config/bcc.hpp:
-
-/usr/include/boost/mpl/aux_/preprocessed/gcc/quote.hpp:
-
-/usr/include/boost/mpl/aux_/template_arity.hpp:
-
-/usr/include/boost/mpl/aux_/preprocessed/gcc/template_arity.hpp:
-
-/usr/include/boost/mpl/aux_/preprocessed/gcc/full_lambda.hpp:
-
-/usr/include/boost/mpl/aux_/preprocessed/gcc/apply.hpp:
-
-/usr/include/boost/io/detail/quoted_manip.hpp:
-
-/usr/include/boost/io/ios_state.hpp:
-
-/usr/include/boost/io_fwd.hpp:
-
-/usr/include/boost/functional/hash_fwd.hpp:
-
-/usr/include/boost/functional/hash/hash_fwd.hpp:
-
-/usr/include/db_cxx.h:
-
-/usr/include/db.h:
-
-/usr/include/inttypes.h:
-
-key.h:
-
-uint256.h:
-
-hash.h:
-
-/usr/include/openssl/sha.h:
-
-/usr/include/openssl/ripemd.h:
-
-sph_groestl.h:
-
-sph_types.h:
-
-crypter.h:
-
-keystore.h:
 
 /usr/include/boost/signals2/signal.hpp:
 
@@ -3088,25 +3640,11 @@ keystore.h:
 
 /usr/include/boost/integer.hpp:
 
-/usr/include/boost/integer_fwd.hpp:
-
-/usr/include/boost/type_traits/has_trivial_copy.hpp:
-
 /usr/include/boost/type_traits/has_trivial_destructor.hpp:
 
 /usr/include/boost/type_traits/composite_traits.hpp:
 
 /usr/include/boost/type_traits/is_union.hpp:
-
-/usr/include/boost/type_traits/alignment_of.hpp:
-
-/usr/include/boost/type_traits/detail/size_t_trait_def.hpp:
-
-/usr/include/boost/mpl/size_t.hpp:
-
-/usr/include/boost/mpl/size_t_fwd.hpp:
-
-/usr/include/boost/type_traits/detail/size_t_trait_undef.hpp:
 
 /usr/include/boost/function_equal.hpp:
 
@@ -3124,8 +3662,6 @@ keystore.h:
 
 /usr/include/boost/preprocessor/enum.hpp:
 
-/usr/include/boost/preprocessor/repetition/enum.hpp:
-
 /usr/include/boost/preprocessor/enum_params.hpp:
 
 /usr/include/boost/preprocessor/iteration/detail/iter/forward1.hpp:
@@ -3141,10 +3677,6 @@ keystore.h:
 /usr/include/boost/function/detail/maybe_include.hpp:
 
 /usr/include/boost/function/function_template.hpp:
-
-/usr/include/boost/detail/no_exceptions_support.hpp:
-
-/usr/include/boost/core/no_exceptions_support.hpp:
 
 /usr/include/boost/signals2/connection.hpp:
 
@@ -3169,8 +3701,6 @@ keystore.h:
 /usr/include/boost/visit_each.hpp:
 
 /usr/include/boost/bind/storage.hpp:
-
-/usr/include/boost/bind/bind_template.hpp:
 
 /usr/include/boost/bind/bind_cc.hpp:
 
@@ -3222,8 +3752,6 @@ keystore.h:
 
 /usr/include/boost/variant/detail/substitute_fwd.hpp:
 
-/usr/include/boost/mpl/limits/list.hpp:
-
 /usr/include/boost/variant/detail/has_result_type.hpp:
 
 /usr/include/boost/variant/variant.hpp:
@@ -3248,19 +3776,9 @@ keystore.h:
 
 /usr/include/boost/detail/reference_content.hpp:
 
-/usr/include/boost/type_traits/has_nothrow_copy.hpp:
-
 /usr/include/boost/variant/recursive_wrapper_fwd.hpp:
 
 /usr/include/boost/variant/detail/move.hpp:
-
-/usr/include/boost/move/move.hpp:
-
-/usr/include/boost/move/iterator.hpp:
-
-/usr/include/boost/move/detail/iterator_traits.hpp:
-
-/usr/include/boost/move/algorithm.hpp:
 
 /usr/include/boost/move/adl_move_swap.hpp:
 
@@ -3313,6 +3831,8 @@ keystore.h:
 /usr/include/boost/variant/detail/make_variant_list.hpp:
 
 /usr/include/boost/mpl/list.hpp:
+
+/usr/include/boost/mpl/limits/list.hpp:
 
 /usr/include/boost/mpl/list/list20.hpp:
 
@@ -3376,37 +3896,13 @@ keystore.h:
 
 /usr/include/boost/variant/detail/cast_storage.hpp:
 
-/usr/include/boost/type_traits/is_nothrow_move_constructible.hpp:
-
-/usr/include/boost/type_traits/has_trivial_move_constructor.hpp:
-
 /usr/include/boost/variant/detail/hash_variant.hpp:
 
 /usr/include/boost/variant/static_visitor.hpp:
 
-/usr/include/boost/aligned_storage.hpp:
-
-/usr/include/boost/type_traits/type_with_alignment.hpp:
-
-/usr/include/boost/preprocessor/list/for_each_i.hpp:
-
-/usr/include/boost/preprocessor/repetition/for.hpp:
-
-/usr/include/boost/preprocessor/repetition/detail/for.hpp:
-
-/usr/include/boost/preprocessor/tuple/to_list.hpp:
-
-/usr/include/boost/preprocessor/tuple/size.hpp:
-
-/usr/include/boost/preprocessor/list/transform.hpp:
-
-/usr/include/boost/preprocessor/list/append.hpp:
-
 /usr/include/boost/blank.hpp:
 
 /usr/include/boost/detail/templated_streams.hpp:
-
-/usr/include/boost/type_traits/is_empty.hpp:
 
 /usr/include/boost/type_traits/is_stateless.hpp:
 
@@ -3417,14 +3913,6 @@ keystore.h:
 /usr/include/boost/math_fwd.hpp:
 
 /usr/include/boost/type_traits/has_nothrow_constructor.hpp:
-
-/usr/include/boost/type_traits/is_nothrow_move_assignable.hpp:
-
-/usr/include/boost/type_traits/has_trivial_move_assign.hpp:
-
-/usr/include/boost/type_traits/has_nothrow_assign.hpp:
-
-/usr/include/boost/type_traits/has_trivial_assign.hpp:
 
 /usr/include/boost/mpl/empty.hpp:
 
@@ -3534,35 +4022,9 @@ keystore.h:
 
 /usr/include/boost/signals2/trackable.hpp:
 
-/usr/include/boost/signals2/preprocessed_slot.hpp:
+/usr/include/boost/signals2/variadic_slot.hpp:
 
-/usr/include/boost/preprocessor/repetition.hpp:
-
-/usr/include/boost/preprocessor/repetition/deduce_r.hpp:
-
-/usr/include/boost/preprocessor/repetition/deduce_z.hpp:
-
-/usr/include/boost/preprocessor/repetition/enum_binary_params.hpp:
-
-/usr/include/boost/preprocessor/repetition/enum_params_with_a_default.hpp:
-
-/usr/include/boost/preprocessor/facilities/intercept.hpp:
-
-/usr/include/boost/preprocessor/repetition/enum_params_with_defaults.hpp:
-
-/usr/include/boost/preprocessor/repetition/enum_shifted.hpp:
-
-/usr/include/boost/preprocessor/repetition/enum_shifted_binary_params.hpp:
-
-/usr/include/boost/preprocessor/repetition/enum_trailing.hpp:
-
-/usr/include/boost/preprocessor/repetition/enum_trailing_binary_params.hpp:
-
-/usr/include/boost/preprocessor/repetition/repeat_from_to.hpp:
-
-/usr/include/boost/signals2/detail/preprocessed_arg_type.hpp:
-
-/usr/include/boost/signals2/detail/preprocessed_arg_type_template.hpp:
+/usr/include/boost/signals2/detail/variadic_arg_type.hpp:
 
 /usr/include/boost/signals2/detail/slot_template.hpp:
 
@@ -3600,33 +4062,7 @@ keystore.h:
 
 /usr/include/boost/signals2/detail/auto_buffer.hpp:
 
-/usr/include/boost/iterator/reverse_iterator.hpp:
-
-/usr/include/boost/next_prior.hpp:
-
-/usr/include/boost/type_traits/integral_promotion.hpp:
-
-/usr/include/boost/type_traits/make_signed.hpp:
-
-/usr/include/boost/type_traits/is_signed.hpp:
-
-/usr/include/boost/type_traits/has_plus.hpp:
-
-/usr/include/boost/type_traits/detail/has_binary_operator.hpp:
-
-/usr/include/boost/type_traits/has_plus_assign.hpp:
-
-/usr/include/boost/type_traits/has_minus.hpp:
-
-/usr/include/boost/type_traits/has_minus_assign.hpp:
-
-/usr/include/boost/iterator/iterator_adaptor.hpp:
-
 /usr/include/boost/multi_index/detail/scope_guard.hpp:
-
-/usr/include/boost/swap.hpp:
-
-/usr/include/boost/type_traits/aligned_storage.hpp:
 
 /usr/include/boost/signals2/optional_last_value.hpp:
 
@@ -3634,101 +4070,93 @@ keystore.h:
 
 /usr/include/boost/signals2/detail/lwm_pthreads.hpp:
 
-/usr/include/boost/signals2/preprocessed_signal.hpp:
-
-/usr/include/boost/preprocessor/arithmetic.hpp:
-
-/usr/include/boost/preprocessor/arithmetic/div.hpp:
-
-/usr/include/boost/preprocessor/arithmetic/detail/div_base.hpp:
-
-/usr/include/boost/preprocessor/comparison/less_equal.hpp:
-
-/usr/include/boost/preprocessor/logical/not.hpp:
-
-/usr/include/boost/preprocessor/arithmetic/mod.hpp:
-
-/usr/include/boost/preprocessor/arithmetic/mul.hpp:
+/usr/include/boost/signals2/variadic_signal.hpp:
 
 /usr/include/boost/preprocessor/control/expr_if.hpp:
 
-/usr/include/boost/preprocessor/iteration.hpp:
-
-/usr/include/boost/preprocessor/iteration/local.hpp:
-
-/usr/include/boost/preprocessor/iteration/self.hpp:
+/usr/include/boost/signals2/detail/variadic_slot_invoker.hpp:
 
 /usr/include/boost/signals2/detail/signal_template.hpp:
 
-main.h:
+script/script_error.h:
 
-core.h:
+versionbits.h:
 
-util.h:
+spentindex.h:
 
-/usr/include/x86_64-linux-gnu/sys/resource.h:
+net.h:
 
-/usr/include/x86_64-linux-gnu/bits/resource.h:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/QAbstractTableModel:
 
-tinyformat.h:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/QStringList:
 
-/usr/include/boost/thread.hpp:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qstringlist.h:
 
-/usr/include/boost/thread/thread.hpp:
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QWidget:
 
-/usr/include/boost/thread/thread_only.hpp:
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:
 
-/usr/include/boost/thread/detail/thread.hpp:
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QCompleter:
 
-/usr/include/boost/thread/detail/thread_heap_alloc.hpp:
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qcompleter.h:
 
-/usr/include/boost/thread/pthread/thread_heap_alloc.hpp:
+qt/utilitydialog.h:
 
-/usr/include/boost/thread/detail/make_tuple_indices.hpp:
+qt/walletframe.h:
 
-/usr/include/boost/thread/detail/invoke.hpp:
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QFrame:
 
-/usr/include/boost/thread/detail/is_convertible.hpp:
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qframe.h:
 
-/usr/include/boost/functional/hash.hpp:
+qt/walletmodel.h:
 
-/usr/include/boost/functional/hash/hash.hpp:
+qt/paymentrequestplus.h:
 
-/usr/include/boost/functional/hash/detail/hash_float.hpp:
+qt/paymentrequest.pb.h:
 
-/usr/include/boost/functional/hash/detail/float_functions.hpp:
+/usr/include/google/protobuf/stubs/common.h:
 
-/usr/include/boost/functional/hash/detail/limits.hpp:
+/usr/include/google/protobuf/generated_message_util.h:
 
-/usr/include/boost/integer/static_log2.hpp:
+/usr/include/google/protobuf/stubs/once.h:
 
-/usr/include/boost/functional/hash/extensions.hpp:
+/usr/include/google/protobuf/stubs/atomicops.h:
 
-/usr/include/boost/detail/container_fwd.hpp:
+/usr/include/google/protobuf/stubs/platform_macros.h:
 
-/usr/include/c++/5/deque:
+/usr/include/google/protobuf/stubs/atomicops_internals_x86_gcc.h:
 
-/usr/include/c++/5/bits/stl_deque.h:
+/usr/include/google/protobuf/message.h:
 
-/usr/include/c++/5/bits/deque.tcc:
+/usr/include/google/protobuf/message_lite.h:
 
-/usr/include/c++/5/bitset:
+/usr/include/google/protobuf/descriptor.h:
 
-/usr/include/c++/5/complex:
+/usr/include/google/protobuf/repeated_field.h:
 
-/usr/include/boost/thread/detail/thread_interruption.hpp:
+/usr/include/google/protobuf/stubs/type_traits.h:
 
-/usr/include/boost/thread/v2/thread.hpp:
+/usr/include/google/protobuf/stubs/template_util.h:
 
-/usr/include/boost/thread/detail/thread_group.hpp:
+/usr/include/google/protobuf/extension_set.h:
 
-/usr/include/boost/thread/shared_mutex.hpp:
+/usr/include/google/protobuf/unknown_field_set.h:
 
-/usr/include/boost/thread/pthread/shared_mutex.hpp:
+base58.h:
+
+key.h:
+
+pubkey.h:
+
+support/allocators/secure.h:
+
+support/pagelocker.h:
 
 /usr/include/boost/thread/once.hpp:
 
 /usr/include/boost/thread/pthread/once_atomic.hpp:
+
+/usr/include/boost/thread/detail/invoke.hpp:
 
 /usr/include/boost/atomic.hpp:
 
@@ -3772,227 +4200,11 @@ tinyformat.h:
 
 /usr/include/boost/atomic/detail/casts.hpp:
 
-/usr/include/boost/thread/tss.hpp:
+script/standard.h:
 
-/usr/include/boost/thread/barrier.hpp:
+script/interpreter.h:
 
-/usr/include/boost/thread/detail/nullary_function.hpp:
-
-/usr/include/boost/thread/detail/memory.hpp:
-
-/usr/include/boost/thread/csbl/memory/pointer_traits.hpp:
-
-/usr/include/boost/thread/csbl/memory/config.hpp:
-
-/usr/include/boost/intrusive/pointer_traits.hpp:
-
-/usr/include/boost/intrusive/detail/config_begin.hpp:
-
-/usr/include/boost/intrusive/detail/workaround.hpp:
-
-/usr/include/boost/intrusive/pointer_rebind.hpp:
-
-/usr/include/boost/intrusive/detail/pointer_element.hpp:
-
-/usr/include/boost/intrusive/detail/mpl.hpp:
-
-/usr/include/boost/intrusive/detail/config_end.hpp:
-
-/usr/include/boost/thread/csbl/memory/allocator_arg.hpp:
-
-/usr/include/boost/container/scoped_allocator.hpp:
-
-/usr/include/boost/container/detail/config_begin.hpp:
-
-/usr/include/boost/container/detail/workaround.hpp:
-
-/usr/include/boost/container/detail/config_end.hpp:
-
-/usr/include/boost/container/allocator_traits.hpp:
-
-/usr/include/boost/container/container_fwd.hpp:
-
-/usr/include/boost/container/detail/std_fwd.hpp:
-
-/usr/include/boost/container/detail/mpl.hpp:
-
-/usr/include/boost/container/detail/type_traits.hpp:
-
-/usr/include/boost/container/detail/placement_new.hpp:
-
-/usr/include/boost/move/detail/fwd_macros.hpp:
-
-/usr/include/boost/intrusive/detail/has_member_function_callable_with.hpp:
-
-/usr/include/boost/container/scoped_allocator_fwd.hpp:
-
-/usr/include/boost/container/detail/addressof.hpp:
-
-/usr/include/boost/container/detail/pair.hpp:
-
-/usr/include/boost/intrusive/detail/minimal_pair_header.hpp:
-
-/usr/include/boost/thread/csbl/memory/allocator_traits.hpp:
-
-/usr/include/boost/thread/csbl/memory/scoped_allocator.hpp:
-
-/usr/include/boost/thread/csbl/memory/shared_ptr.hpp:
-
-/usr/include/boost/smart_ptr/make_shared.hpp:
-
-/usr/include/boost/smart_ptr/make_shared_object.hpp:
-
-/usr/include/boost/smart_ptr/detail/sp_forward.hpp:
-
-/usr/include/boost/smart_ptr/make_shared_array.hpp:
-
-/usr/include/boost/smart_ptr/detail/array_count_impl.hpp:
-
-/usr/include/boost/smart_ptr/detail/array_allocator.hpp:
-
-/usr/include/boost/align/align.hpp:
-
-/usr/include/boost/align/detail/align.hpp:
-
-/usr/include/boost/align/detail/address.hpp:
-
-/usr/include/boost/align/detail/is_alignment.hpp:
-
-/usr/include/boost/smart_ptr/detail/array_traits.hpp:
-
-/usr/include/boost/smart_ptr/detail/array_utility.hpp:
-
-/usr/include/boost/smart_ptr/detail/sp_if_array.hpp:
-
-/usr/include/boost/smart_ptr/allocate_shared_array.hpp:
-
-/usr/include/boost/utility/result_of.hpp:
-
-/usr/include/boost/utility/detail/result_of_iterate.hpp:
-
-/usr/include/boost/thread/future.hpp:
-
-/usr/include/boost/thread/detail/invoker.hpp:
-
-/usr/include/boost/thread/csbl/tuple.hpp:
-
-/usr/include/boost/thread/detail/variadic_header.hpp:
-
-/usr/include/boost/thread/detail/variadic_footer.hpp:
-
-/usr/include/boost/thread/exceptional_ptr.hpp:
-
-/usr/include/boost/exception_ptr.hpp:
-
-/usr/include/boost/exception/detail/exception_ptr.hpp:
-
-/usr/include/boost/exception/info.hpp:
-
-/usr/include/boost/exception/to_string_stub.hpp:
-
-/usr/include/boost/exception/to_string.hpp:
-
-/usr/include/boost/exception/detail/is_output_streamable.hpp:
-
-/usr/include/boost/exception/detail/object_hex_dump.hpp:
-
-/usr/include/boost/exception/detail/type_info.hpp:
-
-/usr/include/c++/5/iomanip:
-
-/usr/include/boost/exception/detail/error_info_impl.hpp:
-
-/usr/include/boost/exception/diagnostic_information.hpp:
-
-/usr/include/boost/exception/get_error_info.hpp:
-
-/usr/include/boost/exception/current_exception_cast.hpp:
-
-/usr/include/boost/exception/detail/clone_current_exception.hpp:
-
-/usr/include/boost/thread/futures/future_error.hpp:
-
-/usr/include/boost/thread/futures/future_error_code.hpp:
-
-/usr/include/boost/thread/futures/future_status.hpp:
-
-/usr/include/boost/thread/futures/is_future_type.hpp:
-
-/usr/include/boost/thread/futures/launch.hpp:
-
-/usr/include/boost/thread/futures/wait_for_all.hpp:
-
-/usr/include/boost/thread/futures/wait_for_any.hpp:
-
-/usr/include/boost/scoped_array.hpp:
-
-/usr/include/boost/smart_ptr/scoped_array.hpp:
-
-/usr/include/boost/thread/csbl/memory/unique_ptr.hpp:
-
-/usr/include/boost/move/unique_ptr.hpp:
-
-/usr/include/boost/move/detail/unique_ptr_meta_utils.hpp:
-
-/usr/include/boost/move/default_delete.hpp:
-
-/usr/include/boost/move/make_unique.hpp:
-
-/usr/include/boost/type_traits/is_copy_constructible.hpp:
-
-/usr/include/boost/detail/atomic_undef_macros.hpp:
-
-/usr/include/boost/detail/atomic_redef_macros.hpp:
-
-/usr/include/boost/filesystem.hpp:
-
-/usr/include/boost/filesystem/operations.hpp:
-
-/usr/include/boost/detail/scoped_enum_emulation.hpp:
-
-/usr/include/boost/detail/bitmask.hpp:
-
-/usr/include/boost/range/mutable_iterator.hpp:
-
-/usr/include/boost/range/config.hpp:
-
-/usr/include/boost/range/range_fwd.hpp:
-
-/usr/include/boost/range/detail/extract_optional_type.hpp:
-
-/usr/include/boost/range/detail/msvc_has_iterator_workaround.hpp:
-
-/usr/include/boost/range/const_iterator.hpp:
-
-/usr/include/c++/5/stack:
-
-/usr/include/c++/5/bits/stl_stack.h:
-
-/usr/include/boost/filesystem/convenience.hpp:
-
-script.h:
-
-/usr/include/boost/foreach.hpp:
-
-/usr/include/boost/range/end.hpp:
-
-/usr/include/boost/range/detail/implementation_help.hpp:
-
-/usr/include/boost/range/detail/common.hpp:
-
-/usr/include/boost/range/detail/sfinae.hpp:
-
-/usr/include/boost/range/iterator.hpp:
-
-/usr/include/boost/range/begin.hpp:
-
-/usr/include/boost/range/rend.hpp:
-
-/usr/include/boost/range/reverse_iterator.hpp:
-
-/usr/include/boost/range/rbegin.hpp:
-
-/usr/include/boost/foreach_fwd.hpp:
+script/script_error.h:
 
 /usr/include/boost/variant.hpp:
 
@@ -4016,93 +4228,159 @@ script.h:
 
 /usr/include/boost/variant/bad_visit.hpp:
 
-bignum.h:
+/usr/include/openssl/x509.h:
+
+/usr/include/openssl/e_os2.h:
+
+/usr/include/x86_64-linux-gnu/openssl/opensslconf.h:
+
+/usr/include/openssl/symhacks.h:
+
+/usr/include/openssl/buffer.h:
+
+/usr/include/openssl/ossl_typ.h:
+
+/usr/include/openssl/evp.h:
+
+/usr/include/openssl/bio.h:
+
+/usr/include/openssl/crypto.h:
+
+/usr/include/openssl/stack.h:
+
+/usr/include/openssl/safestack.h:
+
+/usr/include/openssl/opensslv.h:
+
+/usr/include/openssl/objects.h:
+
+/usr/include/openssl/obj_mac.h:
+
+/usr/include/openssl/asn1.h:
 
 /usr/include/openssl/bn.h:
 
-txmempool.h:
+/usr/include/openssl/ec.h:
 
-net.h:
+/usr/include/openssl/ecdsa.h:
 
-/usr/include/boost/array.hpp:
+/usr/include/openssl/ecdh.h:
 
-/usr/include/openssl/rand.h:
+/usr/include/openssl/rsa.h:
 
-/usr/include/arpa/inet.h:
+/usr/include/openssl/dsa.h:
 
-/usr/include/netinet/in.h:
+/usr/include/openssl/dh.h:
 
-/usr/include/x86_64-linux-gnu/sys/socket.h:
+/usr/include/openssl/sha.h:
 
-/usr/include/x86_64-linux-gnu/sys/uio.h:
+/usr/include/openssl/x509_vfy.h:
 
-/usr/include/x86_64-linux-gnu/bits/uio.h:
+/usr/include/openssl/lhash.h:
 
-/usr/include/x86_64-linux-gnu/bits/socket.h:
+/usr/include/openssl/pkcs7.h:
 
-/usr/include/x86_64-linux-gnu/bits/socket_type.h:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/QByteArray:
 
-/usr/include/x86_64-linux-gnu/bits/sockaddr.h:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qbytearray.h:
 
-/usr/include/x86_64-linux-gnu/asm/socket.h:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/QList:
 
-/usr/include/asm-generic/socket.h:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qlist.h:
 
-/usr/include/x86_64-linux-gnu/asm/sockios.h:
+qt/walletmodeltransaction.h:
 
-/usr/include/asm-generic/sockios.h:
+support/allocators/secure.h:
 
-/usr/include/x86_64-linux-gnu/bits/socket2.h:
+wallet/wallet.h:
 
-/usr/include/x86_64-linux-gnu/bits/in.h:
+streams.h:
 
-mruset.h:
-
-netbase.h:
-
-compat.h:
-
-/usr/include/x86_64-linux-gnu/sys/fcntl.h:
-
-/usr/include/fcntl.h:
-
-/usr/include/x86_64-linux-gnu/bits/fcntl.h:
-
-/usr/include/x86_64-linux-gnu/bits/fcntl-linux.h:
-
-/usr/include/x86_64-linux-gnu/bits/stat.h:
-
-/usr/include/x86_64-linux-gnu/bits/fcntl2.h:
-
-/usr/include/netdb.h:
-
-/usr/include/rpc/netdb.h:
-
-/usr/include/x86_64-linux-gnu/bits/siginfo.h:
-
-/usr/include/x86_64-linux-gnu/bits/netdb.h:
-
-/usr/include/net/if.h:
-
-/usr/include/ifaddrs.h:
-
-protocol.h:
-
-chainparams.h:
-
-addrman.h:
-
-timedata.h:
+tinyformat.h:
 
 ui_interface.h:
 
 /usr/include/boost/signals2/last_value.hpp:
 
+utilstrencodings.h:
+
+validationinterface.h:
+
+script/ismine.h:
+
+script/standard.h:
+
+wallet/crypter.h:
+
+keystore.h:
+
+wallet/walletdb.h:
+
+key.h:
+
+wallet/db.h:
+
+clientversion.h:
+
+sync.h:
+
+version.h:
+
+/usr/include/db_cxx.h:
+
+/usr/include/db.h:
+
+/usr/include/inttypes.h:
+
+wallet/rpcwallet.h:
+
 init.h:
 
-wallet.h:
+util.h:
 
-ui_interface.h:
+utiltime.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QAction:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qaction.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QApplication:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qapplication.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qcoreapplication.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qcoreevent.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qeventloop.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qguiapplication.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qinputmethod.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QDesktopWidget:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qdesktopwidget.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtGui/QDragEnterEvent:
+
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qevent.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qurl.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qfile.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qfiledevice.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qvector2d.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qtouchdevice.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QListWidget:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qlistwidget.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qlistview.h:
 
 /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:
 
@@ -4110,13 +4388,43 @@ ui_interface.h:
 
 /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:
 
-/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qaction.h:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/QMimeData:
 
-/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qactiongroup.h:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qmimedata.h:
 
-/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenu:
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QProgressDialog:
 
-/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qprogressdialog.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/QSettings:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qsettings.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QShortcut:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qshortcut.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QStackedWidget:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qstackedwidget.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QStatusBar:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qstatusbar.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QStyle:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qstyle.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/QTimer:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qtimer.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qbasictimer.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QToolBar:
+
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qtoolbar.h:
 
 /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QVBoxLayout:
 
@@ -4130,94 +4438,6 @@ ui_interface.h:
 
 /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qgridlayout.h:
 
-/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QToolBar:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/QUrlQuery:
 
-/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qtoolbar.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QStatusBar:
-
-/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qstatusbar.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QLabel:
-
-/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qlabel.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qframe.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/QMimeData:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qmimedata.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QProgressBar:
-
-/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qprogressbar.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QStackedWidget:
-
-/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qstackedwidget.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/QDateTime:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qdatetime.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtGui/QMovie:
-
-/usr/include/x86_64-linux-gnu/qt5/QtGui/qmovie.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtGui/qimagereader.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtGui/qimageiohandler.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qplugin.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qpointer.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qjsonobject.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qjsonvalue.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qfactoryinterface.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QFileDialog:
-
-/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qfiledialog.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qdir.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qfileinfo.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qfile.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qfiledevice.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qurl.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtGui/QDesktopServices:
-
-/usr/include/x86_64-linux-gnu/qt5/QtGui/qdesktopservices.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qstandardpaths.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/QTimer:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qtimer.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qbasictimer.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtGui/QDragEnterEvent:
-
-/usr/include/x86_64-linux-gnu/qt5/QtGui/qevent.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qset.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtGui/qvector2d.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtGui/qtouchdevice.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/QUrl:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qurl.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QStyle:
-
-/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qstyle.h:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qurlquery.h:

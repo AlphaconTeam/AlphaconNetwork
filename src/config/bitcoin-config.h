@@ -12,22 +12,25 @@
 #define CLIENT_VERSION_BUILD 0
 
 /* Version is release */
-#define CLIENT_VERSION_IS_RELEASE false
+#define CLIENT_VERSION_IS_RELEASE true
 
 /* Major version */
-#define CLIENT_VERSION_MAJOR 1
+#define CLIENT_VERSION_MAJOR 2
 
 /* Minor version */
-#define CLIENT_VERSION_MINOR 4
+#define CLIENT_VERSION_MINOR 12
 
 /* Build revision */
-#define CLIENT_VERSION_REVISION 3
+#define CLIENT_VERSION_REVISION 1
 
 /* Version is release */
-#define COPYRIGHT_YEAR 2014
+#define COPYRIGHT_YEAR 2018
 
 /* Define to 1 to enable wallet functions */
 #define ENABLE_WALLET 1
+
+/* Define to 1 to enable ZMQ functions */
+#define ENABLE_ZMQ 1
 
 /* parameter and return value type for __fdelt_chk */
 /* #undef FDELT_TYPE */
@@ -51,7 +54,20 @@
 #define HAVE_BOOST_THREAD /**/
 
 /* define if the Boost::Unit_Test_Framework library is available */
-#define HAVE_BOOST_UNIT_TEST_FRAMEWORK /**/
+/* #undef HAVE_BOOST_UNIT_TEST_FRAMEWORK */
+
+/* Define to 1 if you have the <byteswap.h> header file. */
+#define HAVE_BYTESWAP_H 1
+
+/* Define this symbol if the consensus lib has been built */
+#define HAVE_CONSENSUS_LIB 1
+
+/* define if the compiler supports basic C++11 syntax */
+#define HAVE_CXX11 1
+
+/* Define to 1 if you have the declaration of `be16toh', and to 0 if you
+   don't. */
+#define HAVE_DECL_BE16TOH 1
 
 /* Define to 1 if you have the declaration of `be32toh', and to 0 if you
    don't. */
@@ -61,6 +77,22 @@
    don't. */
 #define HAVE_DECL_BE64TOH 1
 
+/* Define to 1 if you have the declaration of `bswap_16', and to 0 if you
+   don't. */
+#define HAVE_DECL_BSWAP_16 1
+
+/* Define to 1 if you have the declaration of `bswap_32', and to 0 if you
+   don't. */
+#define HAVE_DECL_BSWAP_32 1
+
+/* Define to 1 if you have the declaration of `bswap_64', and to 0 if you
+   don't. */
+#define HAVE_DECL_BSWAP_64 1
+
+/* Define to 1 if you have the declaration of `htobe16', and to 0 if you
+   don't. */
+#define HAVE_DECL_HTOBE16 1
+
 /* Define to 1 if you have the declaration of `htobe32', and to 0 if you
    don't. */
 #define HAVE_DECL_HTOBE32 1
@@ -69,6 +101,10 @@
    don't. */
 #define HAVE_DECL_HTOBE64 1
 
+/* Define to 1 if you have the declaration of `htole16', and to 0 if you
+   don't. */
+#define HAVE_DECL_HTOLE16 1
+
 /* Define to 1 if you have the declaration of `htole32', and to 0 if you
    don't. */
 #define HAVE_DECL_HTOLE32 1
@@ -76,6 +112,10 @@
 /* Define to 1 if you have the declaration of `htole64', and to 0 if you
    don't. */
 #define HAVE_DECL_HTOLE64 1
+
+/* Define to 1 if you have the declaration of `le16toh', and to 0 if you
+   don't. */
+#define HAVE_DECL_LE16TOH 1
 
 /* Define to 1 if you have the declaration of `le32toh', and to 0 if you
    don't. */
@@ -138,9 +178,6 @@
 /* Define to 1 if you have the `iphlpapi' library (-liphlpapi). */
 /* #undef HAVE_LIBIPHLPAPI */
 
-/* Define to 1 if you have the `jpeg ' library (-ljpeg ). */
-/* #undef HAVE_LIBJPEG_ */
-
 /* Define to 1 if you have the `kernel32' library (-lkernel32). */
 /* #undef HAVE_LIBKERNEL32 */
 
@@ -156,14 +193,11 @@
 /* Define to 1 if you have the `oleaut32' library (-loleaut32). */
 /* #undef HAVE_LIBOLEAUT32 */
 
-/* Define to 1 if you have the `pcre16 ' library (-lpcre16 ). */
-/* #undef HAVE_LIBPCRE16_ */
-
-/* Define to 1 if you have the `png ' library (-lpng ). */
-/* #undef HAVE_LIBPNG_ */
-
 /* Define to 1 if you have the `rpcrt4' library (-lrpcrt4). */
 /* #undef HAVE_LIBRPCRT4 */
+
+/* Define to 1 if you have the `rt' library (-lrt). */
+/* #undef HAVE_LIBRT */
 
 /* Define to 1 if you have the `shell32' library (-lshell32). */
 /* #undef HAVE_LIBSHELL32 */
@@ -234,6 +268,9 @@
 /* Define to 1 if you have the <string.h> header file. */
 #define HAVE_STRING_H 1
 
+/* Define to 1 if you have the <sys/endian.h> header file. */
+/* #undef HAVE_SYS_ENDIAN_H */
+
 /* Define to 1 if you have the <sys/prctl.h> header file. */
 #define HAVE_SYS_PRCTL_H 1
 
@@ -262,22 +299,22 @@
 #define LT_OBJDIR ".libs/"
 
 /* Define to the address where bug reports for this package should be sent. */
-#define PACKAGE_BUGREPORT "norply@alphacon.io"
+#define PACKAGE_BUGREPORT "https://github.com/bitcoin/bitcoin/issues"
 
 /* Define to the full name of this package. */
-#define PACKAGE_NAME "Alphacon Core"
+#define PACKAGE_NAME "Bitcoin Core"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "Alphacon Core 1.4.3"
+#define PACKAGE_STRING "Bitcoin Core 2.12.1"
 
 /* Define to the one symbol short name of this package. */
-#define PACKAGE_TARNAME "alphacon"
+#define PACKAGE_TARNAME "bitcoin"
 
 /* Define to the home page for this package. */
 #define PACKAGE_URL ""
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "1.4.3"
+#define PACKAGE_VERSION "2.12.1"
 
 /* Define to necessary symbol if this constant uses a non-standard name on
    your system. */
@@ -285,6 +322,9 @@
 
 /* Define this symbol if the qt platform is cocoa */
 /* #undef QT_QPA_PLATFORM_COCOA */
+
+/* Define this symbol if the minimal qt platform exists */
+/* #undef QT_QPA_PLATFORM_MINIMAL */
 
 /* Define this symbol if the qt platform is windows */
 /* #undef QT_QPA_PLATFORM_WINDOWS */
@@ -302,7 +342,7 @@
 #define STRERROR_R_CHAR_P 1
 
 /* Define if dbus support should be compiled in */
-/* #undef USE_DBUS */
+#define USE_DBUS 1
 
 /* Define if QR support should be compiled in */
 /* #undef USE_QRCODE */
