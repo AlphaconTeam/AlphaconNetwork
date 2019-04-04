@@ -1001,8 +1001,8 @@ rpc/libbitcoin_server_a-blockchain.o: rpc/blockchain.cpp \
  /usr/include/boost/mpl/equal.hpp /usr/include/boost/variant/get.hpp \
  /usr/include/boost/variant/detail/element_index.hpp \
  /usr/include/boost/variant/visitor_ptr.hpp \
- /usr/include/boost/variant/bad_visit.hpp main.h amount.h chain.h coins.h \
- net.h bloom.h limitedmap.h random.h streams.h \
+ /usr/include/boost/variant/bad_visit.hpp validation.h amount.h chain.h \
+ coins.h net.h bloom.h limitedmap.h random.h streams.h \
  support/allocators/zeroafterfree.h sync.h threadsafety.h \
  /usr/include/boost/thread/condition_variable.hpp \
  /usr/include/boost/thread/pthread/condition_variable.hpp \
@@ -3591,7 +3591,7 @@ script/script_error.h:
 
 /usr/include/boost/variant/bad_visit.hpp:
 
-main.h:
+validation.h:
 
 amount.h:
 

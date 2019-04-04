@@ -674,11 +674,11 @@ rpc/libbitcoin_server_a-net.o: rpc/net.cpp /usr/include/stdc-predef.h \
  /usr/include/ifaddrs.h /usr/include/netdb.h /usr/include/rpc/netdb.h \
  /usr/include/x86_64-linux-gnu/bits/siginfo.h \
  /usr/include/x86_64-linux-gnu/bits/netdb.h uint256.h version.h \
- clientversion.h main.h amount.h chain.h arith_uint256.h chainparams.h \
- pow.h tinyformat.h /usr/include/c++/5/iostream coins.h compressor.h \
- primitives/transaction.h script/script.h core_memusage.h memusage.h \
- /usr/include/boost/foreach.hpp /usr/include/boost/mpl/logical.hpp \
- /usr/include/boost/range/end.hpp \
+ clientversion.h validation.h amount.h chain.h arith_uint256.h \
+ chainparams.h pow.h tinyformat.h /usr/include/c++/5/iostream coins.h \
+ compressor.h primitives/transaction.h script/script.h core_memusage.h \
+ memusage.h /usr/include/boost/foreach.hpp \
+ /usr/include/boost/mpl/logical.hpp /usr/include/boost/range/end.hpp \
  /usr/include/boost/range/detail/implementation_help.hpp \
  /usr/include/boost/range/detail/common.hpp \
  /usr/include/boost/range/detail/sfinae.hpp \
@@ -2663,7 +2663,7 @@ version.h:
 
 clientversion.h:
 
-main.h:
+validation.h:
 
 amount.h:
 

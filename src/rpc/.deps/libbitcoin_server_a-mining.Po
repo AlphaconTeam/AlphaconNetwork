@@ -920,8 +920,8 @@ rpc/libbitcoin_server_a-mining.o: rpc/mining.cpp \
  /usr/include/boost/mpl/equal.hpp /usr/include/boost/variant/get.hpp \
  /usr/include/boost/variant/detail/element_index.hpp \
  /usr/include/boost/variant/visitor_ptr.hpp \
- /usr/include/boost/variant/bad_visit.hpp init.h main.h amount.h chain.h \
- coins.h compressor.h primitives/transaction.h script/script.h \
+ /usr/include/boost/variant/bad_visit.hpp init.h validation.h amount.h \
+ chain.h coins.h compressor.h primitives/transaction.h script/script.h \
  core_memusage.h memusage.h /usr/include/boost/foreach.hpp \
  /usr/include/boost/range/end.hpp /usr/include/boost/range/config.hpp \
  /usr/include/boost/range/detail/implementation_help.hpp \
@@ -1089,9 +1089,9 @@ rpc/libbitcoin_server_a-mining.o: rpc/mining.cpp \
  utilstrencodings.h leveldb/include/leveldb/db.h \
  leveldb/include/leveldb/iterator.h leveldb/include/leveldb/slice.h \
  leveldb/include/leveldb/status.h leveldb/include/leveldb/options.h \
- leveldb/include/leveldb/write_batch.h main.h consensus/validation.h \
- timedata.h script/sign.h rpc/server.h rpc/protocol.h \
- /usr/include/boost/filesystem.hpp \
+ leveldb/include/leveldb/write_batch.h validation.h \
+ consensus/validation.h timedata.h script/sign.h rpc/server.h \
+ rpc/protocol.h /usr/include/boost/filesystem.hpp \
  /usr/include/boost/filesystem/operations.hpp \
  /usr/include/boost/detail/scoped_enum_emulation.hpp \
  /usr/include/boost/detail/bitmask.hpp /usr/include/c++/5/stack \
@@ -3442,7 +3442,7 @@ script/script_error.h:
 
 init.h:
 
-main.h:
+validation.h:
 
 amount.h:
 
@@ -3874,7 +3874,7 @@ leveldb/include/leveldb/options.h:
 
 leveldb/include/leveldb/write_batch.h:
 
-main.h:
+validation.h:
 
 consensus/validation.h:
 

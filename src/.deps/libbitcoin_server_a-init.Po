@@ -1093,7 +1093,7 @@ libbitcoin_server_a-init.o: init.cpp /usr/include/stdc-predef.h \
  /usr/include/boost/detail/atomic_redef_macros.hpp httprpc.h key.h \
  pubkey.h hash.h crypto/sph_groestl.h crypto/sph_types.h \
  crypto/ripemd160.h crypto/sha256.h support/allocators/secure.h \
- support/pagelocker.h support/cleanse.h main.h coins.h compressor.h \
+ support/pagelocker.h support/cleanse.h validation.h coins.h compressor.h \
  primitives/transaction.h script/script.h core_memusage.h memusage.h \
  /usr/include/boost/foreach.hpp /usr/include/boost/range/end.hpp \
  /usr/include/boost/range/config.hpp \
@@ -3952,7 +3952,7 @@ support/pagelocker.h:
 
 support/cleanse.h:
 
-main.h:
+validation.h:
 
 coins.h:
 

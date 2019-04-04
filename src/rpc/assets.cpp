@@ -23,10 +23,10 @@
 #include "rpc/server.h"
 #include "script/sign.h"
 #include "timedata.h"
-#include "main.h"
+#include "validation.h"
 #include "util.h"
 #include "dstencode.h"
-#include "main.h"
+#include "validation.h"
 #include "utilmoneystr.h"
 // #include "wallet/coincontrol.h"
 // #include "wallet/feebumper.h"
@@ -157,7 +157,7 @@ UniValue issue(const UniValue& params, bool fHelp)
     bool fSubtractFeeFromAmount = false;
     CRecipient recipient = {scriptPubKey, Params().IssueAssetBurnAmount(), fSubtractFeeFromAmount};
     vecSend.push_back(recipient);
-    if (!pwalletMain->CreateTransactionWithAsset(vecSend, wtxNew, reservekey, nFeeRequired, nChangePosRet, strTxError, coin_control, asset, DecodeLegacyAddr(address, Params()))) {
+    if (!pwalletMain->CreateTransactionWithAsset(vecSend, wtxNew, reservekey, nFeeRequired, nChangePosRet, strTxError, &coin_control, asset, DecodeLegacyAddr(address, Params()))) {
         if (!fSubtractFeeFromAmount && Params().IssueAssetBurnAmount() + nFeeRequired > curBalance)
             strTxError = strprintf("Error: This transaction requires a transaction fee of at least %s", FormatMoney(nFeeRequired));
         throw JSONRPCError(RPC_WALLET_ERROR, strTxError);

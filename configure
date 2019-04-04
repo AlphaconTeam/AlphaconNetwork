@@ -595,7 +595,7 @@ PACKAGE_STRING='Bitcoin Core 2.12.1'
 PACKAGE_BUGREPORT='https://github.com/bitcoin/bitcoin/issues'
 PACKAGE_URL=''
 
-ac_unique_file="src/main.cpp"
+ac_unique_file="src/validation.cpp"
 # Factoring default headers for most tests.
 ac_includes_default="\
 #include <stdio.h>

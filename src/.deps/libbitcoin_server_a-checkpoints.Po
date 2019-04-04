@@ -233,11 +233,11 @@ libbitcoin_server_a-checkpoints.o: checkpoints.cpp \
  /usr/include/x86_64-linux-gnu/bits/confname.h /usr/include/getopt.h \
  /usr/include/x86_64-linux-gnu/bits/unistd.h serialize.h version.h pow.h \
  tinyformat.h /usr/include/c++/5/cassert /usr/include/c++/5/iostream \
- /usr/include/c++/5/sstream /usr/include/c++/5/bits/sstream.tcc main.h \
- amount.h coins.h compressor.h primitives/transaction.h script/script.h \
- core_memusage.h memusage.h /usr/include/boost/foreach.hpp \
- /usr/include/c++/5/cstddef /usr/include/boost/config.hpp \
- /usr/include/boost/config/user.hpp \
+ /usr/include/c++/5/sstream /usr/include/c++/5/bits/sstream.tcc \
+ validation.h amount.h coins.h compressor.h primitives/transaction.h \
+ script/script.h core_memusage.h memusage.h \
+ /usr/include/boost/foreach.hpp /usr/include/c++/5/cstddef \
+ /usr/include/boost/config.hpp /usr/include/boost/config/user.hpp \
  /usr/include/boost/config/select_compiler_config.hpp \
  /usr/include/boost/config/compiler/gcc.hpp \
  /usr/include/boost/config/select_stdlib_config.hpp \
@@ -1697,7 +1697,7 @@ tinyformat.h:
 
 /usr/include/c++/5/bits/sstream.tcc:
 
-main.h:
+validation.h:
 
 amount.h:
 

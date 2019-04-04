@@ -1071,8 +1071,8 @@ rpc/libbitcoin_server_a-rawtransaction.o: rpc/rawtransaction.cpp \
  /usr/include/boost/signals2/variadic_signal.hpp \
  /usr/include/boost/preprocessor/control/expr_if.hpp \
  /usr/include/boost/signals2/detail/variadic_slot_invoker.hpp \
- /usr/include/boost/signals2/detail/signal_template.hpp main.h amount.h \
- chain.h coins.h net.h bloom.h limitedmap.h random.h streams.h \
+ /usr/include/boost/signals2/detail/signal_template.hpp validation.h \
+ amount.h chain.h coins.h net.h bloom.h limitedmap.h random.h streams.h \
  /usr/include/boost/filesystem/path.hpp \
  /usr/include/boost/filesystem/config.hpp \
  /usr/include/boost/filesystem/path_traits.hpp /usr/include/c++/5/locale \
@@ -3778,7 +3778,7 @@ threadsafety.h:
 
 /usr/include/boost/signals2/detail/signal_template.hpp:
 
-main.h:
+validation.h:
 
 amount.h:
 

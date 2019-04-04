@@ -10,7 +10,7 @@
 #include "transactionrecord.h"
 #include "consensus/consensus.h"
 #include "dstencode.h"
-#include "main.h"
+#include "validation.h"
 #include "script/script.h"
 #include "timedata.h"
 #include "util.h"

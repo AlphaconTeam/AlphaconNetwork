@@ -1,4 +1,4 @@
-libbitcoin_server_a-main.o: main.cpp /usr/include/stdc-predef.h main.h \
+libbitcoin_server_a-main.o: validation.cpp /usr/include/stdc-predef.h main.h \
  config/bitcoin-config.h amount.h serialize.h compat/endian.h \
  config/bitcoin-config.h /usr/lib/gcc/x86_64-linux-gnu/5/include/stdint.h \
  /usr/include/stdint.h /usr/include/features.h \

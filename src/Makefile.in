@@ -403,7 +403,7 @@ am_libbitcoin_server_a_OBJECTS =  \
 	libbitcoin_server_a-httpserver.$(OBJEXT) \
 	libbitcoin_server_a-init.$(OBJEXT) \
 	libbitcoin_server_a-dbwrapper.$(OBJEXT) \
-	libbitcoin_server_a-main.$(OBJEXT) \
+	libbitcoin_server_a-validation.$(OBJEXT) \
 	libbitcoin_server_a-merkleblock.$(OBJEXT) \
 	libbitcoin_server_a-miner.$(OBJEXT) \
 	libbitcoin_server_a-net.$(OBJEXT) \
@@ -447,8 +447,8 @@ am__libbitcoin_util_a_SOURCES_DIST = support/pagelocker.cpp \
 	consensus/merkle.h consensus/params.h consensus/validation.h \
 	core_io.h core_memusage.h hash.h dstencode.h httprpc.h \
 	httpserver.h init.h key.h keystore.h dbwrapper.h limitedmap.h \
-	main.h memusage.h merkleblock.h miner.h net.h netbase.h noui.h \
-	policy/fees.h policy/policy.h policy/rbf.h pos.h pow.h \
+	validation.h memusage.h merkleblock.h miner.h net.h netbase.h \
+	noui.h policy/fees.h policy/policy.h policy/rbf.h pos.h pow.h \
 	prevector.h primitives/block.h primitives/transaction.h \
 	protocol.h pubkey.h random.h reverselock.h rpc/client.h \
 	rpc/protocol.h rpc/server.h rpc/register.h scheduler.h \
@@ -1772,7 +1772,7 @@ BITCOIN_CORE_H = \
   keystore.h \
   dbwrapper.h \
   limitedmap.h \
-  main.h \
+  validation.h \
   memusage.h \
   merkleblock.h \
   miner.h \
@@ -1850,7 +1850,7 @@ libbitcoin_server_a_SOURCES = \
   httpserver.cpp \
   init.cpp \
   dbwrapper.cpp \
-  main.cpp \
+  validation.cpp \
   merkleblock.cpp \
   miner.cpp \
   net.cpp \
@@ -3655,7 +3655,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbitcoin_server_a-httprpc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbitcoin_server_a-httpserver.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbitcoin_server_a-init.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbitcoin_server_a-main.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbitcoin_server_a-merkleblock.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbitcoin_server_a-miner.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbitcoin_server_a-net.Po@am__quote@
@@ -3668,6 +3667,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbitcoin_server_a-txdb.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbitcoin_server_a-txmempool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbitcoin_server_a-ui_interface.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbitcoin_server_a-validation.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbitcoin_server_a-validationinterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbitcoin_server_a-versionbits.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbitcoin_util_a-chainparamsbase.Po@am__quote@
@@ -5231,19 +5231,19 @@ libbitcoin_server_a-dbwrapper.obj: dbwrapper.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o libbitcoin_server_a-dbwrapper.obj `if test -f 'dbwrapper.cpp'; then $(CYGPATH_W) 'dbwrapper.cpp'; else $(CYGPATH_W) '$(srcdir)/dbwrapper.cpp'; fi`
 
-libbitcoin_server_a-main.o: main.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT libbitcoin_server_a-main.o -MD -MP -MF $(DEPDIR)/libbitcoin_server_a-main.Tpo -c -o libbitcoin_server_a-main.o `test -f 'main.cpp' || echo '$(srcdir)/'`main.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbitcoin_server_a-main.Tpo $(DEPDIR)/libbitcoin_server_a-main.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='main.cpp' object='libbitcoin_server_a-main.o' libtool=no @AMDEPBACKSLASH@
+libbitcoin_server_a-validation.o: validation.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT libbitcoin_server_a-validation.o -MD -MP -MF $(DEPDIR)/libbitcoin_server_a-validation.Tpo -c -o libbitcoin_server_a-validation.o `test -f 'validation.cpp' || echo '$(srcdir)/'`validation.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbitcoin_server_a-validation.Tpo $(DEPDIR)/libbitcoin_server_a-validation.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='validation.cpp' object='libbitcoin_server_a-validation.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o libbitcoin_server_a-main.o `test -f 'main.cpp' || echo '$(srcdir)/'`main.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o libbitcoin_server_a-validation.o `test -f 'validation.cpp' || echo '$(srcdir)/'`validation.cpp
 
-libbitcoin_server_a-main.obj: main.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT libbitcoin_server_a-main.obj -MD -MP -MF $(DEPDIR)/libbitcoin_server_a-main.Tpo -c -o libbitcoin_server_a-main.obj `if test -f 'main.cpp'; then $(CYGPATH_W) 'main.cpp'; else $(CYGPATH_W) '$(srcdir)/main.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbitcoin_server_a-main.Tpo $(DEPDIR)/libbitcoin_server_a-main.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='main.cpp' object='libbitcoin_server_a-main.obj' libtool=no @AMDEPBACKSLASH@
+libbitcoin_server_a-validation.obj: validation.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT libbitcoin_server_a-validation.obj -MD -MP -MF $(DEPDIR)/libbitcoin_server_a-validation.Tpo -c -o libbitcoin_server_a-validation.obj `if test -f 'validation.cpp'; then $(CYGPATH_W) 'validation.cpp'; else $(CYGPATH_W) '$(srcdir)/validation.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbitcoin_server_a-validation.Tpo $(DEPDIR)/libbitcoin_server_a-validation.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='validation.cpp' object='libbitcoin_server_a-validation.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o libbitcoin_server_a-main.obj `if test -f 'main.cpp'; then $(CYGPATH_W) 'main.cpp'; else $(CYGPATH_W) '$(srcdir)/main.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o libbitcoin_server_a-validation.obj `if test -f 'validation.cpp'; then $(CYGPATH_W) 'validation.cpp'; else $(CYGPATH_W) '$(srcdir)/validation.cpp'; fi`
 
 libbitcoin_server_a-merkleblock.o: merkleblock.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT libbitcoin_server_a-merkleblock.o -MD -MP -MF $(DEPDIR)/libbitcoin_server_a-merkleblock.Tpo -c -o libbitcoin_server_a-merkleblock.o `test -f 'merkleblock.cpp' || echo '$(srcdir)/'`merkleblock.cpp

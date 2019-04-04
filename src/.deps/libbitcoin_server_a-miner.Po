@@ -581,7 +581,7 @@ libbitcoin_server_a-miner.o: miner.cpp /usr/include/stdc-predef.h miner.h \
  /usr/include/boost/unordered/unordered_map_fwd.hpp hash.h \
  crypto/sph_groestl.h crypto/sph_types.h crypto/ripemd160.h \
  crypto/sha256.h prevector.h consensus/consensus.h consensus/merkle.h \
- primitives/block.h consensus/validation.h main.h net.h bloom.h \
+ primitives/block.h consensus/validation.h validation.h net.h bloom.h \
  limitedmap.h random.h streams.h support/allocators/zeroafterfree.h \
  support/cleanse.h sync.h threadsafety.h \
  /usr/include/boost/thread/condition_variable.hpp \
@@ -2736,7 +2736,7 @@ primitives/block.h:
 
 consensus/validation.h:
 
-main.h:
+validation.h:
 
 net.h:
 

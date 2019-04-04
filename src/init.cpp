@@ -20,7 +20,7 @@
 #include "httpserver.h"
 #include "httprpc.h"
 #include "key.h"
-#include "main.h"
+#include "validation.h"
 #include "miner.h"
 #include "net.h"
 #include "policy/policy.h"
@@ -1270,7 +1270,7 @@ bool AppInit2(Config& config, boost::thread_group& threadGroup, CScheduler& sche
                 delete pcoinscatcher;
                 delete pblocktree;
 
-                pblocktree = new CBlockTreeDB(nBlockTreeDBCache, false, fReindex, dbCompression, dbMaxOpenFiles);
+                pblocktree = new CBlockTreeDB(nBlockTreeDBCache, false, fReindex);
                 pcoinsdbview = new CCoinsViewDB(nCoinDBCache, false, fReindex || fReindexChainState);
                 pcoinscatcher = new CCoinsViewErrorCatcher(pcoinsdbview);
                 pcoinsTip = new CCoinsViewCache(pcoinscatcher);
@@ -1343,7 +1343,8 @@ bool AppInit2(Config& config, boost::thread_group& threadGroup, CScheduler& sche
                 }
                 
             } catch (const std::exception& e) {
-                if (fDebug) LogPrintf("%s\n", e.what());
+                // LogPrintf("%s\n", e.what());
+                printf("%s\n", e.what());
                 strLoadError = _("Error opening block database");
                 break;
             }

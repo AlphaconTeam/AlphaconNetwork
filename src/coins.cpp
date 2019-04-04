@@ -6,8 +6,12 @@
 
 #include "memusage.h"
 #include "random.h"
+#include "util.h"
+#include "validation.h"
+#include "tinyformat.h"
 
 #include <assert.h>
+#include <assets/assets.h>
 
 /**
  * calculate number of bytes for the bitmask, and its number of non-zero bytes

@@ -3,7 +3,7 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "main.h"
+#include "validation.h"
 
 #include "addrman.h"
 #include "alert.h"
@@ -2900,7 +2900,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
 
             // If we aren't just checking the block, databasethe assets
             if(!fJustCheck) {
-                if (!passets->AddNewAsset(asset, strAddress))
+                if (!passets->AddNewAsset(asset, strAddress, COutPoint(tx.GetHash(), tx.vout.size() - 1)))
                     return error("%s: Failed at adding a new asset to our database. asset: %s", __func__,
                                  asset.strName);
 

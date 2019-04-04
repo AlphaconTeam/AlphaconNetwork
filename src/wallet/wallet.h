@@ -771,8 +771,16 @@ public:
      * selected by SelectCoins(); Also create the change output, when needed
      * @note passing nChangePosInOut as -1 will result in setting a random position
      */
+
+    bool CreateTransactionWithAsset(const std::vector<CRecipient>& vecSend, CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet, int& nChangePosInOut,
+                                   std::string& strFailReason, const CCoinControl *coinControl, const CNewAsset& asset, const CTxDestination dest, bool sign = true);
+
     bool CreateTransaction(const std::vector<CRecipient>& vecSend, CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet, int& nChangePosInOut,
                            std::string& strFailReason, const CCoinControl *coinControl = NULL, bool sign = true);
+    
+    bool CreateTransactionAll(const std::vector<CRecipient>& vecSend, CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet, int& nChangePosInOut,
+                           std::string& strFailReason, const CCoinControl *coinControl, const CNewAsset& asset, const CTxDestination dest, bool sign = true);
+
     bool CommitTransaction(CWalletTx& wtxNew, CReserveKey& reservekey);
 
     bool AddAccountingEntry(const CAccountingEntry&, CWalletDB & pwalletdb);

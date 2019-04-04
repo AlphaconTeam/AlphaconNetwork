@@ -13,7 +13,7 @@
 #include "dstencode.h"
 #include "key.h"
 #include "keystore.h"
-#include "main.h"
+#include "validation.h"
 #include "net.h"
 #include "policy/policy.h"
 #include "pos.h"
@@ -2554,8 +2554,24 @@ bool CWallet::FundTransaction(CMutableTransaction& tx, CAmount& nFeeRet, bool ov
     return true;
 }
 
-bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet,
-                                int& nChangePosInOut, std::string& strFailReason, const CCoinControl* coinControl, bool sign)
+
+bool CWallet::CreateTransactionWithAsset(const std::vector<CRecipient>& vecSend, CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet, int& nChangePosInOut,
+                               std::string& strFailReason, const CCoinControl *coinControl, const CNewAsset& asset, const CTxDestination destination, bool sign) {
+
+    return CreateTransactionAll(vecSend, wtxNew, reservekey, nFeeRet, nChangePosInOut, strFailReason, coinControl, asset, destination, sign);
+}
+
+bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend, CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet, int& nChangePosInOut,
+                                        std::string& strFailReason, const CCoinControl *coinControl, bool sign) {
+
+    CNewAsset asset;
+    CTxDestination destination;
+    return CreateTransactionAll(vecSend, wtxNew, reservekey, nFeeRet, nChangePosInOut, strFailReason, coinControl, asset, destination, sign);
+}
+
+
+bool CWallet::CreateTransactionAll(const std::vector<CRecipient>& vecSend, CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet,
+                                int& nChangePosInOut, std::string& strFailReason, const CCoinControl *coinControl, const CNewAsset& asset, const CTxDestination destination, bool sign)
 {
     CAmount nValue = 0;
     int nChangePosRequest = nChangePosInOut;

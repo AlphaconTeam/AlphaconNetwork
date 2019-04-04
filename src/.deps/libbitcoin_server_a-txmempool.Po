@@ -1043,9 +1043,9 @@ libbitcoin_server_a-txmempool.o: txmempool.cpp /usr/include/stdc-predef.h \
  /usr/include/boost/multi_index/hashed_index_fwd.hpp \
  /usr/include/boost/multi_index/detail/hash_index_args.hpp \
  clientversion.h config/bitcoin-config.h consensus/consensus.h \
- consensus/validation.h main.h chain.h arith_uint256.h chainparams.h \
- chainparamsbase.h consensus/params.h protocol.h netbase.h compat.h \
- /usr/include/x86_64-linux-gnu/sys/fcntl.h /usr/include/fcntl.h \
+ consensus/validation.h validation.h chain.h arith_uint256.h \
+ chainparams.h chainparamsbase.h consensus/params.h protocol.h netbase.h \
+ compat.h /usr/include/x86_64-linux-gnu/sys/fcntl.h /usr/include/fcntl.h \
  /usr/include/x86_64-linux-gnu/bits/fcntl.h \
  /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \
  /usr/include/x86_64-linux-gnu/bits/uio.h \
@@ -3582,7 +3582,7 @@ consensus/consensus.h:
 
 consensus/validation.h:
 
-main.h:
+validation.h:
 
 chain.h:
 

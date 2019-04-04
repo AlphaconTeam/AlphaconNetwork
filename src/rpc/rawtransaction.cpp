@@ -11,7 +11,7 @@
 #include "dstencode.h"
 #include "init.h"
 #include "keystore.h"
-#include "main.h"
+#include "validation.h"
 #include "merkleblock.h"
 #include "net.h"
 #include "policy/policy.h"

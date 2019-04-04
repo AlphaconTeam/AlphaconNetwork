@@ -1036,8 +1036,8 @@ wallet/libbitcoin_wallet_a-wallet.o: wallet/wallet.cpp \
  /usr/include/x86_64-linux-gnu/bits/siginfo.h \
  /usr/include/x86_64-linux-gnu/bits/netdb.h pow.h tinyformat.h \
  checkpoints.h coincontrol.h primitives/transaction.h \
- consensus/consensus.h consensus/validation.h dstencode.h main.h amount.h \
- chain.h coins.h compressor.h core_memusage.h memusage.h \
+ consensus/consensus.h consensus/validation.h dstencode.h validation.h \
+ amount.h chain.h coins.h compressor.h core_memusage.h memusage.h \
  /usr/include/boost/foreach.hpp /usr/include/boost/range/end.hpp \
  /usr/include/boost/range/config.hpp \
  /usr/include/boost/range/detail/implementation_help.hpp \
@@ -1092,7 +1092,7 @@ wallet/libbitcoin_wallet_a-wallet.o: wallet/wallet.cpp \
  leveldb/include/leveldb/db.h leveldb/include/leveldb/iterator.h \
  leveldb/include/leveldb/slice.h leveldb/include/leveldb/status.h \
  leveldb/include/leveldb/options.h leveldb/include/leveldb/write_batch.h \
- main.h consensus/validation.h timedata.h script/sign.h \
+ validation.h consensus/validation.h timedata.h script/sign.h \
  primitives/block.h script/sign.h timedata.h txmempool.h addressindex.h \
  /usr/include/boost/multi_index_container.hpp \
  /usr/include/boost/detail/allocator_utilities.hpp \
@@ -1366,7 +1366,7 @@ wallet/libbitcoin_wallet_a-wallet.o: wallet/wallet.cpp \
  /usr/include/boost/smart_ptr/scoped_array.hpp \
  /usr/include/boost/type_traits/is_copy_constructible.hpp \
  /usr/include/boost/detail/atomic_undef_macros.hpp \
- /usr/include/boost/detail/atomic_redef_macros.hpp
+ /usr/include/boost/detail/atomic_redef_macros.hpp assets/assets.h
 
 /usr/include/stdc-predef.h:
 
@@ -3808,7 +3808,7 @@ consensus/validation.h:
 
 dstencode.h:
 
-main.h:
+validation.h:
 
 amount.h:
 
@@ -3980,7 +3980,7 @@ leveldb/include/leveldb/options.h:
 
 leveldb/include/leveldb/write_batch.h:
 
-main.h:
+validation.h:
 
 consensus/validation.h:
 
@@ -4565,3 +4565,5 @@ utilmoneystr.h:
 /usr/include/boost/detail/atomic_undef_macros.hpp:
 
 /usr/include/boost/detail/atomic_redef_macros.hpp:
+
+assets/assets.h:

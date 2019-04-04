@@ -7,7 +7,7 @@
 
 #include "pos.h"
 #include "txdb.h"
-#include "main.h"
+#include "validation.h"
 #include "arith_uint256.h"
 #include "consensus/validation.h"
 #include "hash.h"

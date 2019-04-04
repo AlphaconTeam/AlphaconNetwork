@@ -9,7 +9,7 @@
 #include "chainparams.h"
 #include "clientversion.h"
 #include "data/alertTests.raw.h"
-#include "main.h" // For PartitionCheck
+#include "validation.h" // For PartitionCheck
 #include "serialize.h"
 #include "streams.h"
 #include "util.h"

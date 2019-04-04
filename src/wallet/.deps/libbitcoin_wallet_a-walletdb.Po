@@ -960,8 +960,8 @@ wallet/libbitcoin_wallet_a-walletdb.o: wallet/walletdb.cpp \
  /usr/include/ifaddrs.h /usr/include/netdb.h /usr/include/rpc/netdb.h \
  /usr/include/x86_64-linux-gnu/bits/siginfo.h \
  /usr/include/x86_64-linux-gnu/bits/netdb.h key.h script/standard.h \
- consensus/validation.h main.h amount.h chain.h arith_uint256.h pow.h \
- tinyformat.h coins.h compressor.h primitives/transaction.h \
+ consensus/validation.h validation.h amount.h chain.h arith_uint256.h \
+ pow.h tinyformat.h coins.h compressor.h primitives/transaction.h \
  script/script.h core_memusage.h memusage.h \
  /usr/include/boost/foreach.hpp /usr/include/boost/range/end.hpp \
  /usr/include/boost/range/config.hpp \
@@ -3398,7 +3398,7 @@ script/standard.h:
 
 consensus/validation.h:
 
-main.h:
+validation.h:
 
 amount.h:
 

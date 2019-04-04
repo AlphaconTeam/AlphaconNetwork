@@ -11,7 +11,7 @@
 #include "chainparams.h"
 #include "config.h"
 #include "dstencode.h"
-#include "main.h" // For minRelayTxFee
+#include "validation.h" // For minRelayTxFee
 #include "ui_interface.h"
 #include "util.h"
 #include "wallet/wallet.h"
