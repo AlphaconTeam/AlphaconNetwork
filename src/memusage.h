@@ -1,19 +1,22 @@
-// Copyright (c) 2015 The Bitcoin developers
+// Copyright (c) 2015-2016 The Bitcoin Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_MEMUSAGE_H
-#define BITCOIN_MEMUSAGE_H
+#ifndef ALPHACON_MEMUSAGE_H
+#define ALPHACON_MEMUSAGE_H
+
+#include "indirectmap.h"
 
 #include <stdlib.h>
 
 #include <map>
 #include <set>
 #include <vector>
+#include <unordered_map>
+#include <unordered_set>
 
-#include <boost/foreach.hpp>
-#include <boost/unordered_set.hpp>
-#include <boost/unordered_map.hpp>
 
 namespace memusage
 {
@@ -70,6 +73,15 @@ private:
     X x;
 };
 
+struct stl_shared_counter
+{
+    /* Various platforms use different sized counters here.
+     * Conservatively assume that they won't be larger than size_t. */
+    void* class_type;
+    size_t use_count;
+    size_t weak_count;
+};
+
 template<typename X>
 static inline size_t DynamicUsage(const std::vector<X>& v)
 {
@@ -106,27 +118,54 @@ static inline size_t IncrementalDynamicUsage(const std::map<X, Y, Z>& m)
     return MallocUsage(sizeof(stl_tree_node<std::pair<const X, Y> >));
 }
 
-// Boost data structures
+// indirectmap has underlying map with pointer as key
+
+template<typename X, typename Y>
+static inline size_t DynamicUsage(const indirectmap<X, Y>& m)
+{
+    return MallocUsage(sizeof(stl_tree_node<std::pair<const X*, Y> >)) * m.size();
+}
+
+template<typename X, typename Y>
+static inline size_t IncrementalDynamicUsage(const indirectmap<X, Y>& m)
+{
+    return MallocUsage(sizeof(stl_tree_node<std::pair<const X*, Y> >));
+}
 
 template<typename X>
-struct boost_unordered_node : private X
+static inline size_t DynamicUsage(const std::unique_ptr<X>& p)
+{
+    return p ? MallocUsage(sizeof(X)) : 0;
+}
+
+template<typename X>
+static inline size_t DynamicUsage(const std::shared_ptr<X>& p)
+{
+    // A shared_ptr can either use a single continuous memory block for both
+    // the counter and the storage (when using std::make_shared), or separate.
+    // We can't observe the difference, however, so assume the worst.
+    return p ? MallocUsage(sizeof(X)) + MallocUsage(sizeof(stl_shared_counter)) : 0;
+}
+
+template<typename X>
+struct unordered_node : private X
 {
 private:
     void* ptr;
 };
 
 template<typename X, typename Y>
-static inline size_t DynamicUsage(const boost::unordered_set<X, Y>& s)
+static inline size_t DynamicUsage(const std::unordered_set<X, Y>& s)
 {
-    return MallocUsage(sizeof(boost_unordered_node<X>)) * s.size() + MallocUsage(sizeof(void*) * s.bucket_count());
+    return MallocUsage(sizeof(unordered_node<X>)) * s.size() + MallocUsage(sizeof(void*) * s.bucket_count());
 }
 
 template<typename X, typename Y, typename Z>
-static inline size_t DynamicUsage(const boost::unordered_map<X, Y, Z>& m)
+static inline size_t DynamicUsage(const std::unordered_map<X, Y, Z>& m)
 {
-    return MallocUsage(sizeof(boost_unordered_node<std::pair<const X, Y> >)) * m.size() + MallocUsage(sizeof(void*) * m.bucket_count());
+    return MallocUsage(sizeof(unordered_node<std::pair<const X, Y> >)) * m.size() + MallocUsage(sizeof(void*) * m.bucket_count());
 }
 
 }
 
-#endif // BITCOIN_MEMUSAGE_H
+#endif // ALPHACON_MEMUSAGE_H

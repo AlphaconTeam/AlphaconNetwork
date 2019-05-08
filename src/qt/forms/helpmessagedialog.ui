@@ -10,9 +10,6 @@
     <height>400</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string notr="true">Bitcoin Core - Command-line options</string>
-  </property>
   <layout class="QHBoxLayout" name="horizontalLayout_2">
    <property name="spacing">
     <number>0</number>
@@ -55,7 +52,7 @@
         </size>
        </property>
        <property name="pixmap">
-        <pixmap resource="../bitcoin.qrc">:/icons/bitcoin</pixmap>
+        <pixmap resource="../alphacon.qrc">:/icons/alphacon</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -153,7 +150,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../bitcoin.qrc"/>
+  <include location="../alphacon.qrc"/>
  </resources>
  <connections>
   <connection>

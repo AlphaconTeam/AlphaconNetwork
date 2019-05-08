@@ -1,13 +1,15 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The Bitcoin Core developers
+// Copyright (c) 2009-2016 The Bitcoin Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_COMPAT_H
-#define BITCOIN_COMPAT_H
+#ifndef ALPHACON_COMPAT_H
+#define ALPHACON_COMPAT_H
 
 #if defined(HAVE_CONFIG_H)
-#include "config/bitcoin-config.h"
+#include "config/alphacon-config.h"
 #endif
 
 #ifdef WIN32
@@ -47,10 +49,8 @@
 #include <unistd.h>
 #endif
 
-#ifdef WIN32
-#define MSG_DONTWAIT        0
-#else
-typedef u_int SOCKET;
+#ifndef WIN32
+typedef unsigned int SOCKET;
 #include "errno.h"
 #define WSAGetLastError()   errno
 #define WSAEINVAL           EINVAL
@@ -65,6 +65,22 @@ typedef u_int SOCKET;
 #define SOCKET_ERROR        -1
 #endif
 
+#ifndef PRIO_MAX
+#define PRIO_MAX 20
+#endif
+#ifndef THREAD_PRIORITY_LOWEST
+#define THREAD_PRIORITY_LOWEST          PRIO_MAX
+#endif
+#ifndef THREAD_PRIORITY_BELOW_NORMAL
+#define THREAD_PRIORITY_BELOW_NORMAL    2
+#endif
+#ifndef THREAD_PRIORITY_NORMAL
+#define THREAD_PRIORITY_NORMAL          0
+#endif
+#ifndef THREAD_PRIORITY_ABOVE_NORMAL
+#define THREAD_PRIORITY_ABOVE_NORMAL    (-2)
+#endif
+
 #ifdef WIN32
 #ifndef S_IRUSR
 #define S_IRUSR             0400
@@ -74,27 +90,11 @@ typedef u_int SOCKET;
 #define MAX_PATH            1024
 #endif
 
-// As Solaris does not have the MSG_NOSIGNAL flag for send(2) syscall, it is defined as 0
-#if !defined(HAVE_MSG_NOSIGNAL) && !defined(MSG_NOSIGNAL)
-#define MSG_NOSIGNAL 0
-#endif
-
-#ifndef WIN32
-// PRIO_MAX is not defined on Solaris
-#ifndef PRIO_MAX
-#define PRIO_MAX 20
-#endif
-#define THREAD_PRIORITY_LOWEST          PRIO_MAX
-#define THREAD_PRIORITY_BELOW_NORMAL    2
-#define THREAD_PRIORITY_NORMAL          0
-#define THREAD_PRIORITY_ABOVE_NORMAL    (-2)
-#endif
-
 #if HAVE_DECL_STRNLEN == 0
 size_t strnlen( const char *start, size_t max_len);
 #endif // HAVE_DECL_STRNLEN
 
-bool static inline IsSelectableSocket(SOCKET s) {
+bool static inline IsSelectableSocket(const SOCKET& s) {
 #ifdef WIN32
     return true;
 #else
@@ -102,4 +102,4 @@ bool static inline IsSelectableSocket(SOCKET s) {
 #endif
 }
 
-#endif // BITCOIN_COMPAT_H
+#endif // ALPHACON_COMPAT_H

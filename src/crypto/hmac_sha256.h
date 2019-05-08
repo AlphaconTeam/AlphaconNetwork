@@ -1,16 +1,18 @@
 // Copyright (c) 2014 The Bitcoin Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_CRYPTO_HMAC_SHA256_H
-#define BITCOIN_CRYPTO_HMAC_SHA256_H
+#ifndef ALPHACON_CRYPTO_HMAC_SHA256_H
+#define ALPHACON_CRYPTO_HMAC_SHA256_H
 
 #include "crypto/sha256.h"
 
 #include <stdint.h>
 #include <stdlib.h>
 
-/** A hasher class for HMAC-SHA-512. */
+/** A hasher class for HMAC-SHA-256. */
 class CHMAC_SHA256
 {
 private:
@@ -29,4 +31,4 @@ public:
     void Finalize(unsigned char hash[OUTPUT_SIZE]);
 };
 
-#endif // BITCOIN_CRYPTO_HMAC_SHA256_H
+#endif // ALPHACON_CRYPTO_HMAC_SHA256_H

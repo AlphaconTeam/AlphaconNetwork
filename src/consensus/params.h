@@ -1,10 +1,13 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The Bitcoin Core developers
+// Copyright (c) 2009-2016 The Bitcoin Core developers
+// Copyright (c) 2014 The BlackCoin developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_CONSENSUS_PARAMS_H
-#define BITCOIN_CONSENSUS_PARAMS_H
+#ifndef ALPHACON_CONSENSUS_PARAMS_H
+#define ALPHACON_CONSENSUS_PARAMS_H
 
 #include "uint256.h"
 #include "amount.h"
@@ -16,7 +19,10 @@ namespace Consensus {
 enum DeploymentPos
 {
     DEPLOYMENT_TESTDUMMY,
-    DEPLOYMENT_CSV, // Deployment of BIP68, BIP112, and BIP113.
+    DEPLOYMENT_ASSETS, // Deployment of RIP2
+    // DEPLOYMENT_CSV, // Deployment of BIP68, BIP112, and BIP113.
+//    DEPLOYMENT_SEGWIT, // Deployment of BIP141, BIP143, and BIP147.
+    // NOTE: Also add new deployments to VersionBitsDeploymentInfo in versionbits.cpp
     MAX_VERSION_BITS_DEPLOYMENTS
 };
 
@@ -37,16 +43,18 @@ struct BIP9Deployment {
  */
 struct Params {
     uint256 hashGenesisBlock;
-    int nMaxReorganizationDepth;
-    /** Used to check majorities for block version upgrade */
-    int nMajorityEnforceBlockUpgrade;
-    int nMajorityRejectBlockOutdated;
-    int nMajorityWindow;
+    int nSubsidyHalvingInterval;
     /** Block height and hash at which BIP34 becomes active */
-    int BIP34Height;
-    uint256 BIP34Hash;
+    bool nBIP34Enabled;
+    bool nBIP65Enabled;
+    bool nBIP66Enabled;
+    // uint256 BIP34Hash;
+    /** Block height at which BIP65 becomes active */
+    // int BIP65Height;
+    /** Block height at which BIP66 becomes active */
+    // int BIP66Height;
     /**
-     * Minimum blocks including miner confirmation of the total of 2016 blocks in a retargetting period,
+     * Minimum blocks including miner confirmation of the total of 2016 blocks in a retargeting period,
      * (nTargetTimespan / nTargetSpacing) which is also used for BIP9 deployments.
      * Examples: 1916 for 95%, 1512 for testchains.
      */
@@ -56,24 +64,25 @@ struct Params {
     /** Proof of work parameters */
     uint256 powLimit;
     uint256 posLimit;
-    bool fPowAllowMinDifficultyBlocks;
-    bool fPowNoRetargeting;
     int64_t nTargetSpacing;
     int64_t nTargetTimespan;
     int64_t DifficultyAdjustmentInterval() const { return nTargetTimespan / nTargetSpacing; }
-    unsigned int GetTargetSpacing(int nHeight) { return 64; }
+    uint256 nMinimumChainWork;
+    uint256 defaultAssumeValid;
+    bool nSegwitEnabled;
+    bool nCSVEnabled;
+    
+    // ALP
     int nLastPOWBlock;
-    int nStakeTimestampMask;
-    int nCoinbaseMaturity;
-    int nStakeMinConfirmations;
-    unsigned int nStakeMinAge;
-    uint32_t nGenesisTimestamp;
-    int nBlockRewardHalvingsWindow;
-    int nBlockRewardHalvings;
-    CAmount nBlockReward;
     CAmount nBlockRewardALP;
     int nRewardHeighALP;
+    CAmount nBlockReward;
+    int nBlockRewardHalvings;
+    int nBlockRewardHalvingsWindow;
+
+    int nStakeTimestampMask;
+    int nStakeMinConfirmations;
 };
 } // namespace Consensus
 
-#endif // BITCOIN_CONSENSUS_PARAMS_H
+#endif // ALPHACON_CONSENSUS_PARAMS_H

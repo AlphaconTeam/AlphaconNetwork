@@ -1,22 +1,24 @@
-// Copyright (c) 2011-2015 The Bitcoin Core developers
+// Copyright (c) 2011-2016 The Bitcoin Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "walletframe.h"
 
-#include "bitcoingui.h"
+#include "alphacongui.h"
 #include "walletview.h"
 
+#include <cassert>
 #include <cstdio>
 
 #include <QHBoxLayout>
 #include <QLabel>
 
-WalletFrame::WalletFrame(const PlatformStyle *platformStyle, const Config *cfg, BitcoinGUI *_gui) :
+WalletFrame::WalletFrame(const PlatformStyle *_platformStyle, AlphaconGUI *_gui) :
     QFrame(_gui),
     gui(_gui),
-    platformStyle(platformStyle),
-    cfg(cfg)
+    platformStyle(_platformStyle)
 {
     // Leave HBox hook for adding a list view later
     QHBoxLayout *walletFrameLayout = new QHBoxLayout(this);
@@ -34,9 +36,9 @@ WalletFrame::~WalletFrame()
 {
 }
 
-void WalletFrame::setClientModel(ClientModel *clientModel)
+void WalletFrame::setClientModel(ClientModel *_clientModel)
 {
-    this->clientModel = clientModel;
+    this->clientModel = _clientModel;
 }
 
 bool WalletFrame::addWallet(const QString& name, WalletModel *walletModel)
@@ -44,8 +46,8 @@ bool WalletFrame::addWallet(const QString& name, WalletModel *walletModel)
     if (!gui || !clientModel || !walletModel || mapWalletViews.count(name) > 0)
         return false;
 
-    WalletView *walletView = new WalletView(platformStyle, cfg, this);
-    walletView->setBitcoinGUI(gui);
+    WalletView *walletView = new WalletView(platformStyle, this);
+    walletView->setAlphaconGUI(gui);
     walletView->setClientModel(clientModel);
     walletView->setWalletModel(walletModel);
     walletView->showOutOfSyncWarning(bOutOfSync);
@@ -58,6 +60,8 @@ bool WalletFrame::addWallet(const QString& name, WalletModel *walletModel)
     // Ensure a walletView is able to show the main window
     connect(walletView, SIGNAL(showNormalIfMinimized()), gui, SLOT(showNormalIfMinimized()));
 
+    connect(walletView, SIGNAL(outOfSyncWarningClicked()), this, SLOT(outOfSyncWarningClicked()));
+
     return true;
 }
 
@@ -68,6 +72,7 @@ bool WalletFrame::setCurrentWallet(const QString& name)
 
     WalletView *walletView = mapWalletViews.value(name);
     walletStack->setCurrentWidget(walletView);
+    assert(walletView);
     walletView->updateEncryptionStatus();
     return true;
 }
@@ -172,19 +177,9 @@ void WalletFrame::changePassphrase()
 
 void WalletFrame::unlockWallet()
 {
-	QObject* object = sender();
-	QString objectName = object ? object->objectName() : "";
-	bool fromMenu = objectName == "unlockWalletAction";
     WalletView *walletView = currentWalletView();
     if (walletView)
         walletView->unlockWallet();
-}
-
-void WalletFrame::lockWallet()
-{
-    WalletView *walletView = currentWalletView();
-    if (walletView)
-        walletView->lockWallet();
 }
 
 void WalletFrame::usedSendingAddresses()
@@ -206,3 +201,29 @@ WalletView *WalletFrame::currentWalletView()
     return qobject_cast<WalletView*>(walletStack->currentWidget());
 }
 
+void WalletFrame::outOfSyncWarningClicked()
+{
+    Q_EMIT requestedSyncWarningInfo();
+}
+
+/** RVN START */
+void WalletFrame::gotoAssetsPage()
+{
+    QMap<QString, WalletView*>::const_iterator i;
+    for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
+        i.value()->gotoAssetsPage();
+}
+
+void WalletFrame::gotoCreateAssetsPage()
+{
+    QMap<QString, WalletView*>::const_iterator i;
+    for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
+        i.value()->gotoCreateAssetsPage();
+}
+
+void WalletFrame::gotoManageAssetsPage()
+{
+    QMap<QString, WalletView*>::const_iterator i;
+    for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
+        i.value()->gotoManageAssetsPage();
+}

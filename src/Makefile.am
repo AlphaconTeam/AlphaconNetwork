@@ -1,7 +1,12 @@
+# Copyright (c) 2013-2016 The Bitcoin Core developers
+# Copyright (c) 2017 The Alphacon Core developers
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
 DIST_SUBDIRS = secp256k1 univalue
 
 AM_LDFLAGS = $(PTHREAD_CFLAGS) $(LIBTOOL_LDFLAGS) $(HARDENED_LDFLAGS)
-AM_CXXFLAGS = $(HARDENED_CXXFLAGS)
+AM_CXXFLAGS = $(HARDENED_CXXFLAGS) $(ERROR_CXXFLAGS)
 AM_CPPFLAGS = $(HARDENED_CPPFLAGS)
 EXTRA_LIBRARIES =
 
@@ -14,29 +19,28 @@ else
 LIBUNIVALUE = $(UNIVALUE_LIBS)
 endif
 
-BITCOIN_CONFIG_INCLUDES=-I$(builddir)/config
-BITCOIN_INCLUDES=-I$(builddir) -I$(builddir)/obj $(BDB_CPPFLAGS) $(BOOST_CPPFLAGS) $(LEVELDB_CPPFLAGS) $(CRYPTO_CFLAGS) $(SSL_CFLAGS)
+ALPHACON_INCLUDES=-I$(builddir) -I$(builddir)/obj $(BDB_CPPFLAGS) $(BOOST_CPPFLAGS) $(LEVELDB_CPPFLAGS) $(CRYPTO_CFLAGS) $(SSL_CFLAGS)
 
-BITCOIN_INCLUDES += -I$(srcdir)/secp256k1/include
-BITCOIN_INCLUDES += $(UNIVALUE_CFLAGS)
+ALPHACON_INCLUDES += -I$(srcdir)/secp256k1/include
+ALPHACON_INCLUDES += $(UNIVALUE_CFLAGS)
 
-LIBBITCOIN_SERVER=libbitcoin_server.a
-
-LIBBITCOIN_COMMON=libbitcoin_common.a
-LIBBITCOIN_CLI=libbitcoin_cli.a
-LIBBITCOIN_UTIL=libbitcoin_util.a
-LIBBITCOIN_CRYPTO=crypto/libbitcoin_crypto.a
-LIBBITCOINQT=qt/libbitcoinqt.a
+LIBALPHACON_SERVER=libalphacon_server.a
+LIBALPHACON_COMMON=libalphacon_common.a
+LIBALPHACON_CONSENSUS=libalphacon_consensus.a
+LIBALPHACON_CLI=libalphacon_cli.a
+LIBALPHACON_UTIL=libalphacon_util.a
+LIBALPHACON_CRYPTO=crypto/libalphacon_crypto.a
+LIBALPHACONQT=qt/libalphaconqt.a
 LIBSECP256K1=secp256k1/libsecp256k1.la
 
 if ENABLE_ZMQ
-LIBBITCOIN_ZMQ=libbitcoin_zmq.a
+LIBALPHACON_ZMQ=libalphacon_zmq.a
 endif
-if BUILD_BITCOIN_LIBS
-LIBBITCOINCONSENSUS=libbitcoinconsensus.la
+if BUILD_ALPHACON_LIBS
+LIBALPHACONCONSENSUS=libalphaconconsensus.la
 endif
 if ENABLE_WALLET
-LIBBITCOIN_WALLET=libbitcoin_wallet.a
+LIBALPHACON_WALLET=libalphacon_wallet.a
 endif
 
 $(LIBSECP256K1): $(wildcard secp256k1/src/*) $(wildcard secp256k1/include/*)
@@ -45,45 +49,48 @@ $(LIBSECP256K1): $(wildcard secp256k1/src/*) $(wildcard secp256k1/include/*)
 # Make is not made aware of per-object dependencies to avoid limiting building parallelization
 # But to build the less dependent modules first, we manually select their order here:
 EXTRA_LIBRARIES += \
-  $(LIBBITCOIN_CRYPTO) \
-  $(LIBBITCOIN_UTIL) \
-  $(LIBBITCOIN_COMMON) \
-  $(LIBBITCOIN_CONSENSUS) \
-  $(LIBBITCOIN_SERVER) \
-  $(LIBBITCOIN_CLI) \
-  $(LIBBITCOIN_WALLET) \
-  $(LIBBITCOIN_ZMQ)
+  $(LIBALPHACON_CRYPTO) \
+  $(LIBALPHACON_UTIL) \
+  $(LIBALPHACON_COMMON) \
+  $(LIBALPHACON_CONSENSUS) \
+  $(LIBALPHACON_SERVER) \
+  $(LIBALPHACON_CLI) \
+  $(LIBALPHACON_WALLET) \
+  $(LIBALPHACON_ZMQ)
 
-lib_LTLIBRARIES = $(LIBBITCOINCONSENSUS)
+lib_LTLIBRARIES = $(LIBALPHACONCONSENSUS)
 
 bin_PROGRAMS =
+noinst_PROGRAMS =
 TESTS =
 BENCHMARKS =
 
-if BUILD_BITCOIND
-  bin_PROGRAMS += lored
+if BUILD_ALPHACOND
+  bin_PROGRAMS += alphacond
 endif
 
-if BUILD_BITCOIN_UTILS
-  bin_PROGRAMS += lore-cli lore-tx
-if ENABLE_WALLET
-  bin_PROGRAMS += wallet-utility
+if BUILD_ALPHACON_CLI
+  bin_PROGRAMS += alphacon-cli
 endif
+
+if BUILD_ALPHACON_TX
+  bin_PROGRAMS += alphacon-tx
 endif
 
 .PHONY: FORCE check-symbols check-security
-# bitcoin core #
-BITCOIN_CORE_H = \
+# alphacon core #
+ALPHACON_CORE_H = \
+  addrdb.h \
   addressindex.h \
   spentindex.h \
+  timestampindex.h \
   addrman.h \
-  alert.h \
-  amount.h \
-  arith_uint256.h \
+  assets/assets.h \
+  assets/assetdb.h \
+  assets/assettypes.h \
   base58.h \
   bloom.h \
-  cashaddr.h \
-  cashaddrenc.h \
+  blockencodings.h \
   chain.h \
   chainparams.h \
   chainparamsbase.h \
@@ -91,88 +98,88 @@ BITCOIN_CORE_H = \
   checkpoints.h \
   checkqueue.h \
   clientversion.h \
-  coincontrol.h \
   coins.h \
   compat.h \
   compat/byteswap.h \
   compat/endian.h \
   compat/sanity.h \
   compressor.h \
-  config.h \
   consensus/consensus.h \
-  consensus/merkle.h \
-  consensus/params.h \
-  consensus/validation.h \
+  consensus/tx_verify.h \
   core_io.h \
   core_memusage.h \
-  hash.h \
-  dstencode.h \
+  cuckoocache.h \
+  fs.h \
   httprpc.h \
   httpserver.h \
+  indirectmap.h \
   init.h \
   key.h \
   keystore.h \
   dbwrapper.h \
   limitedmap.h \
-  validation.h \
   memusage.h \
   merkleblock.h \
   miner.h \
   net.h \
+  net_processing.h \
+  netaddress.h \
   netbase.h \
+  netmessagemaker.h \
   noui.h \
+  policy/feerate.h \
   policy/fees.h \
   policy/policy.h \
   policy/rbf.h \
   pos.h \
   pow.h \
-  prevector.h \
-  primitives/block.h \
-  primitives/transaction.h \
   protocol.h \
-  pubkey.h \
   random.h \
+  reverse_iterator.h \
   reverselock.h \
+  rpc/blockchain.h \
   rpc/client.h \
+  rpc/mining.h \
   rpc/protocol.h \
+  rpc/safemode.h \
   rpc/server.h \
   rpc/register.h \
   scheduler.h \
-  script/interpreter.h \
-  script/script.h \
-  script/script_error.h \
   script/sigcache.h \
   script/sign.h \
   script/standard.h \
   script/ismine.h \
-  serialize.h \
   streams.h \
   support/allocators/secure.h \
   support/allocators/zeroafterfree.h \
   support/cleanse.h \
-  support/pagelocker.h \
+  support/events.h \
+  support/lockedpool.h \
   sync.h \
   threadsafety.h \
+  threadinterrupt.h \
   timedata.h \
-  tinyformat.h \
   torcontrol.h \
   txdb.h \
   txmempool.h \
   ui_interface.h \
-  uint256.h \
   undo.h \
   util.h \
   utilmoneystr.h \
-  utilstrencodings.h \
   utiltime.h \
+  validation.h \
   validationinterface.h \
-  version.h \
   versionbits.h \
+  wallet/coincontrol.h \
   wallet/crypter.h \
   wallet/db.h \
+  wallet/feebumper.h \
+  wallet/fees.h \
+  wallet/init.h \
   wallet/rpcwallet.h \
   wallet/wallet.h \
   wallet/walletdb.h \
+  warnings.h \
   zmq/zmqabstractnotifier.h \
   zmq/zmqconfig.h\
   zmq/zmqnotificationinterface.h \
@@ -181,30 +188,37 @@ BITCOIN_CORE_H = \
 
 obj/build.h: FORCE
 	@$(MKDIR_P) $(builddir)/obj
-	@$(top_srcdir)/share/genbuild.sh $(abs_top_builddir)/src/obj/build.h \
-	  $(abs_top_srcdir)
-libbitcoin_util_a-clientversion.$(OBJEXT): obj/build.h
+	@$(top_srcdir)/share/genbuild.sh "$(abs_top_builddir)/src/obj/build.h" \
+	  "$(abs_top_srcdir)"
+libalphacon_util_a-clientversion.$(OBJEXT): obj/build.h
 
-# server: shared between bitcoind and bitcoin-qt
-libbitcoin_server_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(MINIUPNPC_CPPFLAGS) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS)
-libbitcoin_server_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libbitcoin_server_a_SOURCES = \
+# server: shared between alphacond and alphacon-qt
+libalphacon_server_a_CPPFLAGS = $(AM_CPPFLAGS) $(ALPHACON_INCLUDES) $(MINIUPNPC_CPPFLAGS) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS)
+libalphacon_server_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libalphacon_server_a_SOURCES = \
+  addrdb.cpp \
   addrman.cpp \
-  alert.cpp \
   bloom.cpp \
+  blockencodings.cpp \
   chain.cpp \
   checkpoints.cpp \
+  consensus/consensus.cpp \
+  consensus/tx_verify.cpp \
   httprpc.cpp \
   httpserver.cpp \
   init.cpp \
   dbwrapper.cpp \
-  validation.cpp \
   merkleblock.cpp \
   miner.cpp \
   net.cpp \
+  net_processing.cpp \
   noui.cpp \
+  assets/assets.cpp \
+  assets/assetdb.cpp \
+  assets/assettypes.cpp \
   policy/fees.cpp \
   policy/policy.cpp \
+  policy/rbf.cpp \
   pos.cpp \
   pow.cpp \
   rest.cpp \
@@ -214,71 +228,84 @@ libbitcoin_server_a_SOURCES = \
   rpc/misc.cpp \
   rpc/net.cpp \
   rpc/rawtransaction.cpp \
+  rpc/safemode.cpp \
   rpc/server.cpp \
   script/sigcache.cpp \
   script/ismine.cpp \
-  script/drivechain.cpp \
-  script/drivechain.h \
   timedata.cpp \
   torcontrol.cpp \
   txdb.cpp \
   txmempool.cpp \
   ui_interface.cpp \
+  validation.cpp \
   validationinterface.cpp \
   versionbits.cpp \
-  $(BITCOIN_CORE_H)
+  $(ALPHACON_CORE_H)
 
 if ENABLE_ZMQ
-libbitcoin_zmq_a_CPPFLAGS = $(BITCOIN_INCLUDES) $(ZMQ_CFLAGS)
-libbitcoin_zmq_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libbitcoin_zmq_a_SOURCES = \
+libalphacon_zmq_a_CPPFLAGS = $(ALPHACON_INCLUDES) $(ZMQ_CFLAGS)
+libalphacon_zmq_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libalphacon_zmq_a_SOURCES = \
   zmq/zmqabstractnotifier.cpp \
   zmq/zmqnotificationinterface.cpp \
   zmq/zmqpublishnotifier.cpp
 endif
 
 
-# wallet: shared between bitcoind and bitcoin-qt, but only linked
+# wallet: shared between alphacond and alphacon-qt, but only linked
 # when wallet enabled
-libbitcoin_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-libbitcoin_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libbitcoin_wallet_a_SOURCES = \
+libalphacon_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(ALPHACON_INCLUDES)
+libalphacon_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libalphacon_wallet_a_SOURCES = \
   wallet/crypter.cpp \
   wallet/db.cpp \
+  wallet/feebumper.cpp \
+  wallet/fees.cpp \
+  wallet/init.cpp \
   wallet/rpcdump.cpp \
   wallet/rpcwallet.cpp \
   wallet/wallet.cpp \
   wallet/walletdb.cpp \
-  policy/rbf.cpp \
-  $(BITCOIN_CORE_H)
+  $(ALPHACON_CORE_H)
 
 # crypto primitives library
-crypto_libbitcoin_crypto_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_CONFIG_INCLUDES) $(SSL_CFLAGS)
-crypto_libbitcoin_crypto_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-crypto_libbitcoin_crypto_a_SOURCES = \
+crypto_libalphacon_crypto_a_CPPFLAGS = $(AM_CPPFLAGS)
+crypto_libalphacon_crypto_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+crypto_libalphacon_crypto_a_SOURCES = \
   crypto/aes.cpp \
   crypto/aes.h \
+  crypto/chacha20.h \
+  crypto/chacha20.cpp \
   crypto/common.h \
   crypto/hmac_sha256.cpp \
   crypto/hmac_sha256.h \
   crypto/hmac_sha512.cpp \
   crypto/hmac_sha512.h \
   crypto/ripemd160.cpp \
+  crypto/aes_helper.c \
+  crypto/groestl.c \
+  crypto/sph_sha2.c \
+  crypto/sph_sha512.c \
   crypto/ripemd160.h \
-  crypto/sph_groestl.cpp \
-  crypto/sph_groestl.h \
-  crypto/sph_types.h \
   crypto/sha1.cpp \
   crypto/sha1.h \
   crypto/sha256.cpp \
   crypto/sha256.h \
+  crypto/sha512.h \
+  crypto/sph_groestl.h \
+  crypto/sph_sha2.h \
+  crypto/sph_types.h \
   crypto/sha512.cpp \
   crypto/sha512.h
 
+if USE_ASM
+crypto_libalphacon_crypto_a_SOURCES += crypto/sha256_sse4.cpp
+endif
+
 # consensus: shared between all executables that validate any consensus rules.
-libbitcoin_consensus_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-libbitcoin_consensus_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libbitcoin_consensus_a_SOURCES = \
+libalphacon_consensus_a_CPPFLAGS = $(AM_CPPFLAGS) $(ALPHACON_INCLUDES)
+libalphacon_consensus_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libalphacon_consensus_a_SOURCES = \
   amount.h \
   arith_uint256.cpp \
   arith_uint256.h \
@@ -295,7 +322,7 @@ libbitcoin_consensus_a_SOURCES = \
   primitives/transaction.h \
   pubkey.cpp \
   pubkey.h \
-  script/bitcoinconsensus.cpp \
+  script/alphaconconsensus.cpp \
   script/interpreter.cpp \
   script/interpreter.h \
   script/script.cpp \
@@ -303,6 +330,8 @@ libbitcoin_consensus_a_SOURCES = \
   script/script_error.cpp \
   script/script_error.h \
   serialize.h \
+  support/cleanse.h \
+  support/cleanse.cpp \
   tinyformat.h \
   uint256.cpp \
   uint256.h \
@@ -310,169 +339,146 @@ libbitcoin_consensus_a_SOURCES = \
   utilstrencodings.h \
   version.h
 
-# common: shared between bitcoind, and bitcoin-qt and non-server tools
-libbitcoin_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-libbitcoin_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libbitcoin_common_a_SOURCES = \
-  amount.cpp \
-  arith_uint256.cpp \
+# common: shared between alphacond, and alphacon-qt and non-server tools
+libalphacon_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(ALPHACON_INCLUDES)
+libalphacon_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libalphacon_common_a_SOURCES = \
   base58.cpp \
-  cashaddr.cpp \
-  cashaddrenc.cpp \
   chainparams.cpp \
   coins.cpp \
   compressor.cpp \
-  consensus/merkle.cpp \
   core_read.cpp \
   core_write.cpp \
-  hash.cpp \
-  config.cpp \
-  dstencode.cpp \
   key.cpp \
   keystore.cpp \
+  netaddress.cpp \
   netbase.cpp \
-  primitives/block.cpp \
-  primitives/transaction.cpp \
+  policy/feerate.cpp \
   protocol.cpp \
-  pubkey.cpp \
   scheduler.cpp \
-  script/interpreter.cpp \
-  script/script.cpp \
-  script/script_error.cpp \
   script/sign.cpp \
   script/standard.cpp \
-  assets/assetdb.cpp \
-  assets/assetdb.h \
-  assets/assets.cpp \
-  assets/assets.h \
-  $(BITCOIN_CORE_H)
+  warnings.cpp \
+  $(ALPHACON_CORE_H)
 
 # util: shared between all executables.
 # This library *must* be included to make sure that the glibc
 # backward-compatibility objects and their sanity checks are linked.
-libbitcoin_util_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-libbitcoin_util_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libbitcoin_util_a_SOURCES = \
-  support/pagelocker.cpp \
+libalphacon_util_a_CPPFLAGS = $(AM_CPPFLAGS) $(ALPHACON_INCLUDES)
+libalphacon_util_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libalphacon_util_a_SOURCES = \
+  support/lockedpool.cpp \
   chainparamsbase.cpp \
   clientversion.cpp \
   compat/glibc_sanity.cpp \
   compat/glibcxx_sanity.cpp \
   compat/strnlen.cpp \
+  fs.cpp \
   random.cpp \
   rpc/protocol.cpp \
   support/cleanse.cpp \
   sync.cpp \
-  uint256.cpp \
+  threadinterrupt.cpp \
   util.cpp \
   utilmoneystr.cpp \
   utilstrencodings.cpp \
   utiltime.cpp \
-  $(BITCOIN_CORE_H)
+  $(ALPHACON_CORE_H)
 
 if GLIBC_BACK_COMPAT
-libbitcoin_util_a_SOURCES += compat/glibc_compat.cpp
+libalphacon_util_a_SOURCES += compat/glibc_compat.cpp
+AM_LDFLAGS += $(COMPAT_LDFLAGS)
 endif
 
-# cli: shared between bitcoin-cli and bitcoin-qt
-libbitcoin_cli_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-libbitcoin_cli_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libbitcoin_cli_a_SOURCES = \
+# cli: shared between alphacon-cli and alphacon-qt
+libalphacon_cli_a_CPPFLAGS = $(AM_CPPFLAGS) $(ALPHACON_INCLUDES)
+libalphacon_cli_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libalphacon_cli_a_SOURCES = \
   rpc/client.cpp \
-  $(BITCOIN_CORE_H)
+  $(ALPHACON_CORE_H)
 
-nodist_libbitcoin_util_a_SOURCES = $(srcdir)/obj/build.h
+nodist_libalphacon_util_a_SOURCES = $(srcdir)/obj/build.h
 #
 
-# lored binary #
-lored_SOURCES = bitcoind.cpp
-lored_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-lored_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-lored_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+# alphacond binary #
+alphacond_SOURCES = alphacond.cpp
+alphacond_CPPFLAGS = $(AM_CPPFLAGS) $(ALPHACON_INCLUDES)
+alphacond_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+alphacond_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-lored_SOURCES += bitcoind-res.rc
+alphacond_SOURCES += alphacond-res.rc
 endif
 
-lored_LDADD = \
-  $(LIBBITCOIN_SERVER) \
-  $(LIBBITCOIN_COMMON) \
+alphacond_LDADD = \
+  $(LIBALPHACON_SERVER) \
+  $(LIBALPHACON_COMMON) \
   $(LIBUNIVALUE) \
-  $(LIBBITCOIN_UTIL) \
-  $(LIBBITCOIN_WALLET) \
-  $(LIBBITCOIN_ZMQ) \
-  $(LIBBITCOIN_CONSENSUS) \
-  $(LIBBITCOIN_CRYPTO) \
+  $(LIBALPHACON_UTIL) \
+  $(LIBALPHACON_WALLET) \
+  $(LIBALPHACON_ZMQ) \
+  $(LIBALPHACON_CONSENSUS) \
+  $(LIBALPHACON_CRYPTO) \
   $(LIBLEVELDB) \
+  $(LIBLEVELDB_SSE42) \
   $(LIBMEMENV) \
   $(LIBSECP256K1)
-  
-lored_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS)
 
-# lore-cli binary #
-lore_cli_SOURCES = bitcoin-cli.cpp
-lore_cli_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS)
-lore_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-lore_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+alphacond_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS)
 
-# wallet-utility binary #
-if ENABLE_WALLET
-wallet_utility_SOURCES = wallet-utility.cpp
-wallet_utility_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAG)
-wallet_utility_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-wallet_utility_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
-endif
+# alphacon-cli binary #
+alphacon_cli_SOURCES = alphacon-cli.cpp
+alphacon_cli_CPPFLAGS = $(AM_CPPFLAGS) $(ALPHACON_INCLUDES) $(EVENT_CFLAGS)
+alphacon_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+alphacon_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-lore_cli_SOURCES += bitcoin-cli-res.rc
+alphacon_cli_SOURCES += alphacon-cli-res.rc
 endif
 
-lore_cli_LDADD = \
-  $(LIBBITCOIN_CLI) \
+alphacon_cli_LDADD = \
+  $(LIBALPHACON_CLI) \
   $(LIBUNIVALUE) \
-  $(LIBBITCOIN_UTIL) \
-  $(LIBBITCOIN_CRYPTO)
+  $(LIBALPHACON_UTIL) \
+  $(LIBALPHACON_CRYPTO)
 
-lore_cli_LDADD += $(BOOST_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS)
-if ENABLE_WALLET
-wallet_utility_LDADD = libbitcoin_wallet.a $(LIBBITCOIN_COMMON) $(LIBBITCOIN_CRYPTO) $(LIBSECP256K1) $(LIBBITCOIN_UTIL) $(BOOST_LIBS) $(BDB_LIBS) $(CRYPTO_LIBS)
-endif
-
+alphacon_cli_LDADD += $(BOOST_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS)
 #
 
-# lore-tx binary #
-lore_tx_SOURCES = bitcoin-tx.cpp
-lore_tx_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-lore_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-lore_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+# alphacon-tx binary #
+alphacon_tx_SOURCES = alphacon-tx.cpp
+alphacon_tx_CPPFLAGS = $(AM_CPPFLAGS) $(ALPHACON_INCLUDES)
+alphacon_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+alphacon_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-lore_tx_SOURCES += bitcoin-tx-res.rc
+alphacon_tx_SOURCES += alphacon-tx-res.rc
 endif
 
-lore_tx_LDADD = \
+alphacon_tx_LDADD = \
   $(LIBUNIVALUE) \
-  $(LIBBITCOIN_COMMON) \
-  $(LIBBITCOIN_UTIL) \
-  $(LIBBITCOIN_CRYPTO) \
+  $(LIBALPHACON_COMMON) \
+  $(LIBALPHACON_UTIL) \
+  $(LIBALPHACON_CONSENSUS) \
+  $(LIBALPHACON_CRYPTO) \
   $(LIBSECP256K1)
 
-lore_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS)
+alphacon_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS)
 #
 
-# bitcoinconsensus library #
-if BUILD_BITCOIN_LIBS
-include_HEADERS = script/bitcoinconsensus.h
-libbitcoinconsensus_la_SOURCES = $(crypto_libbitcoin_crypto_a_SOURCES) $(libbitcoin_consensus_a_SOURCES)
+# alphaconconsensus library #
+if BUILD_ALPHACON_LIBS
+include_HEADERS = script/alphaconconsensus.h
+libalphaconconsensus_la_SOURCES = $(crypto_libalphacon_crypto_a_SOURCES) $(libalphacon_consensus_a_SOURCES)
 
 if GLIBC_BACK_COMPAT
-  libbitcoinconsensus_la_SOURCES += compat/glibc_compat.cpp
+  libalphaconconsensus_la_SOURCES += compat/glibc_compat.cpp
 endif
 
-libbitcoinconsensus_la_LDFLAGS = $(AM_LDFLAGS) -no-undefined $(RELDFLAGS)
-libbitcoinconsensus_la_LIBADD = $(LIBSECP256K1) $(CRYPTO_LIBS)
-libbitcoinconsensus_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(builddir)/obj -I$(srcdir)/secp256k1/include -DBUILD_BITCOIN_INTERNAL $(SSL_CFLAGS)
-libbitcoinconsensus_la_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libalphaconconsensus_la_LDFLAGS = $(AM_LDFLAGS) -no-undefined $(RELDFLAGS)
+libalphaconconsensus_la_LIBADD = $(LIBSECP256K1)
+libalphaconconsensus_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(builddir)/obj -I$(srcdir)/secp256k1/include -DBUILD_ALPHACON_INTERNAL
+libalphaconconsensus_la_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 
 endif
 #
@@ -497,24 +503,29 @@ CLEANFILES += univalue/*.gcda univalue/*.gcno
 CLEANFILES += wallet/*.gcda wallet/*.gcno
 CLEANFILES += wallet/test/*.gcda wallet/test/*.gcno
 CLEANFILES += zmq/*.gcda zmq/*.gcno
-
-DISTCLEANFILES = obj/build.h
+CLEANFILES += obj/build.h
 
 EXTRA_DIST = $(CTAES_DIST)
+
+
+config/alphacon-config.h: config/stamp-h1
+	@$(MAKE) -C $(top_builddir) $(subdir)/$(@)
+config/stamp-h1: $(top_srcdir)/$(subdir)/config/alphacon-config.h.in $(top_builddir)/config.status
+	$(AM_V_at)$(MAKE) -C $(top_builddir) $(subdir)/$(@)
+$(top_srcdir)/$(subdir)/config/alphacon-config.h.in:  $(am__configure_deps)
+	$(AM_V_at)$(MAKE) -C $(top_srcdir) $(subdir)/config/alphacon-config.h.in
 
 clean-local:
 	-$(MAKE) -C secp256k1 clean
 	-$(MAKE) -C univalue clean
 	-rm -f leveldb/*/*.gcda leveldb/*/*.gcno leveldb/helpers/memenv/*.gcda leveldb/helpers/memenv/*.gcno
+	-rm -f config.h
 	-rm -rf test/__pycache__
 
 .rc.o:
 	@test -f $(WINDRES)
-	$(AM_V_GEN) $(WINDRES) -DWINDRES_PREPROC -i $< -o $@
-
-.mm.o:
-	$(AM_V_CXX) $(OBJCXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
-	  $(CPPFLAGS) $(AM_CXXFLAGS) $(QT_INCLUDES) $(AM_CXXFLAGS) $(PIE_FLAGS) $(CXXFLAGS) -c -o $@ $<
+	## FIXME: How to get the appropriate modulename_CPPFLAGS in here?
+	$(AM_V_GEN) $(WINDRES) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(CPPFLAGS) -DWINDRES_PREPROC -i $< -o $@
 
 check-symbols: $(bin_PROGRAMS)
 if GLIBC_BACK_COMPAT

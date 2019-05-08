@@ -1,4 +1,6 @@
-// Copyright (c) 2011-2013 The Bitcoin Core developers
+// Copyright (c) 2011-2014 The Bitcoin Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -10,14 +12,13 @@
 
 #include <QUrl>
 
-OpenURIDialog::OpenURIDialog(const Config *cfg, QWidget *parent) :
+OpenURIDialog::OpenURIDialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::OpenURIDialog),
-    cfg(cfg)
+    ui(new Ui::OpenURIDialog)
 {
     ui->setupUi(this);
 #if QT_VERSION >= 0x040700
-    ui->uriEdit->setPlaceholderText("blackcoin:");
+    ui->uriEdit->setPlaceholderText("alphacon:");
 #endif
 }
 
@@ -34,8 +35,7 @@ QString OpenURIDialog::getURI()
 void OpenURIDialog::accept()
 {
     SendCoinsRecipient rcp;
-    QString uriScheme = GUIUtil::bitcoinURIScheme(*cfg);
-    if (GUIUtil::parseBitcoinURI(uriScheme, getURI(), &rcp))
+    if(GUIUtil::parseAlphaconURI(getURI(), &rcp))
     {
         /* Only accept value URIs */
         QDialog::accept();
@@ -46,9 +46,9 @@ void OpenURIDialog::accept()
 
 void OpenURIDialog::on_selectFileButton_clicked()
 {
-    QString filename = GUIUtil::getOpenFileName(this, tr("Select payment request file to open"), "", "", NULL);
+    QString filename = GUIUtil::getOpenFileName(this, tr("Select payment request file to open"), "", "", nullptr);
     if(filename.isEmpty())
         return;
     QUrl fileUri = QUrl::fromLocalFile(filename);
-    ui->uriEdit->setText(GUIUtil::bitcoinURIScheme(*cfg) + ":?r=" + QUrl::toPercentEncoding(fileUri.toString()));
+    ui->uriEdit->setText("alphacon:?r=" + QUrl::toPercentEncoding(fileUri.toString()));
 }

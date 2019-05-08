@@ -1,12 +1,15 @@
-// Copyright (c) 2014 The Bitcoin Core developers
+// Copyright (c) 2014-2016 The Bitcoin Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_CRYPTO_SHA256_H
-#define BITCOIN_CRYPTO_SHA256_H
+#ifndef ALPHACON_CRYPTO_SHA256_H
+#define ALPHACON_CRYPTO_SHA256_H
 
 #include <stdint.h>
 #include <stdlib.h>
+#include <string>
 
 /** A hasher class for SHA-256. */
 class CSHA256
@@ -25,4 +28,9 @@ public:
     CSHA256& Reset();
 };
 
-#endif // BITCOIN_CRYPTO_SHA256_H
+/** Autodetect the best available SHA256 implementation.
+ *  Returns the name of the implementation.
+ */
+std::string SHA256AutoDetect();
+
+#endif // ALPHACON_CRYPTO_SHA256_H

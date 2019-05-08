@@ -1,9 +1,11 @@
-// Copyright (c) 2011-2013 The Bitcoin Core developers
+// Copyright (c) 2011-2014 The Bitcoin Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_QT_TRANSACTIONFILTERPROXY_H
-#define BITCOIN_QT_TRANSACTIONFILTERPROXY_H
+#ifndef ALPHACON_QT_TRANSACTIONFILTERPROXY_H
+#define ALPHACON_QT_TRANSACTIONFILTERPROXY_H
 
 #include "amount.h"
 
@@ -36,6 +38,7 @@ public:
 
     void setDateRange(const QDateTime &from, const QDateTime &to);
     void setAddressPrefix(const QString &addrPrefix);
+    void setAssetNamePrefix(const QString &assetNamePrefix);
     /**
       @note Type filter takes a bit field created with TYPE() or ALL_TYPES
      */
@@ -58,11 +61,11 @@ private:
     QDateTime dateFrom;
     QDateTime dateTo;
     QString addrPrefix;
+    QString assetNamePrefix;
     quint32 typeFilter;
     WatchOnlyFilter watchOnlyFilter;
     CAmount minAmount;
     int limitRows;
     bool showInactive;
 };
-
-#endif // BITCOIN_QT_TRANSACTIONFILTERPROXY_H
+#endif // ALPHACON_QT_TRANSACTIONFILTERPROXY_H

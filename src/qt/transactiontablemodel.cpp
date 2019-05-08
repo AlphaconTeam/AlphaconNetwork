@@ -1,4 +1,6 @@
-// Copyright (c) 2011-2015 The Bitcoin Core developers
+// Copyright (c) 2011-2016 The Bitcoin Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -26,8 +28,6 @@
 #include <QIcon>
 #include <QList>
 
-#include <boost/foreach.hpp>
-
 // Amount column is right-aligned it contains numbers
 static int column_alignments[] = {
         Qt::AlignLeft|Qt::AlignVCenter, /* status */
@@ -35,7 +35,8 @@ static int column_alignments[] = {
         Qt::AlignLeft|Qt::AlignVCenter, /* date */
         Qt::AlignLeft|Qt::AlignVCenter, /* type */
         Qt::AlignLeft|Qt::AlignVCenter, /* address */
-        Qt::AlignRight|Qt::AlignVCenter /* amount */
+        Qt::AlignRight|Qt::AlignVCenter,  /* amount */
+        Qt::AlignLeft|Qt::AlignVCenter /* assetName */
     };
 
 // Comparison operator for sort/binary search of model tx list
@@ -59,9 +60,9 @@ struct TxLessThan
 class TransactionTablePriv
 {
 public:
-    TransactionTablePriv(CWallet *wallet, TransactionTableModel *parent) :
-        wallet(wallet),
-        parent(parent)
+    TransactionTablePriv(CWallet *_wallet, TransactionTableModel *_parent) :
+        wallet(_wallet),
+        parent(_parent)
     {
     }
 
@@ -145,7 +146,7 @@ public:
                 {
                     parent->beginInsertRows(QModelIndex(), lowerIndex, lowerIndex+toInsert.size()-1);
                     int insert_idx = lowerIndex;
-                    Q_FOREACH(const TransactionRecord &rec, toInsert)
+                    for (const TransactionRecord &rec : toInsert)
                     {
                         cachedWallet.insert(insert_idx, rec);
                         insert_idx += 1;
@@ -166,12 +167,12 @@ public:
             parent->endRemoveRows();
             break;
         case CT_UPDATED:
-            Q_EMIT parent->dataChanged(parent->index(lowerIndex, parent->Status), parent->index(upperIndex-1, parent->Amount));
-            break;
-        case CT_GOT_CONFLICT:
-            Q_EMIT parent->message(parent->tr("Conflict Received"),
-                                 parent->tr("WARNING: Transaction may never be confirmed. Its input was seen being spent by another transaction on the network."),
-                                 CClientUIInterface::MSG_WARNING);
+            // Miscellaneous updates -- nothing to do, status update will take care of this, and is only computed for
+            // visible transactions.
+            for (int i = lowerIndex; i < upperIndex; i++) {
+                TransactionRecord *rec = &cachedWallet[i];
+                rec->status.needsUpdate = true;
+            }
             break;
         }
     }
@@ -191,21 +192,20 @@ public:
             // stuck if the core is holding the locks for a longer time - for
             // example, during a wallet rescan.
             //
-            // If a status update is needed (blocks or conflicts came in since last check),
-            // update the status of this transaction from the wallet. Otherwise,
+            // If a status update is needed (blocks came in since last check),
+            //  update the status of this transaction from the wallet. Otherwise,
             // simply re-use the cached status.
             TRY_LOCK(cs_main, lockMain);
             if(lockMain)
             {
                 TRY_LOCK(wallet->cs_wallet, lockWallet);
-                if(lockWallet && rec->statusUpdateNeeded(wallet->nConflictsReceived))
+                if(lockWallet && rec->statusUpdateNeeded())
                 {
                     std::map<uint256, CWalletTx>::iterator mi = wallet->mapWallet.find(rec->hash);
 
                     if(mi != wallet->mapWallet.end())
                     {
                         rec->updateStatus(mi->second);
-                        rec->status.cur_num_conflicts = wallet->nConflictsReceived;
                     }
                 }
             }
@@ -240,19 +240,19 @@ public:
     }
 };
 
-TransactionTableModel::TransactionTableModel(const PlatformStyle *platformStyle, CWallet* wallet, WalletModel *parent):
+TransactionTableModel::TransactionTableModel(const PlatformStyle *_platformStyle, CWallet* _wallet, WalletModel *parent):
         QAbstractTableModel(parent),
-        wallet(wallet),
+        wallet(_wallet),
         walletModel(parent),
-        priv(new TransactionTablePriv(wallet, this)),
+        priv(new TransactionTablePriv(_wallet, this)),
         fProcessingQueuedTransactions(false),
-        platformStyle(platformStyle)
+        platformStyle(_platformStyle)
 {
-    columns << QString() << QString() << tr("Date") << tr("Type") << tr("Label") << BitcoinUnits::getAmountColumnTitle(walletModel->getOptionsModel()->getDisplayUnit());
+    columns << QString() << QString() << tr("Date") << tr("Type") << tr("Label") << tr("Amount") << tr("Asset");
+
     priv->refreshWallet();
 
     connect(walletModel->getOptionsModel(), SIGNAL(displayUnitChanged(int)), this, SLOT(updateDisplayUnit()));
-    connect(this, SIGNAL(message(QString,QString,unsigned int)), walletModel, SIGNAL(message(QString,QString,unsigned int)));
 
     subscribeToCoreSignals();
 }
@@ -266,7 +266,7 @@ TransactionTableModel::~TransactionTableModel()
 /** Updates the column title to "Amount (DisplayUnit)" and emits headerDataChanged() signal for table headers to react. */
 void TransactionTableModel::updateAmountColumnTitle()
 {
-    columns[Amount] = BitcoinUnits::getAmountColumnTitle(walletModel->getOptionsModel()->getDisplayUnit());
+    columns[Amount] = AlphaconUnits::getAmountColumnTitle(walletModel->getOptionsModel()->getDisplayUnit());
     Q_EMIT headerDataChanged(Qt::Horizontal,Amount,Amount);
 }
 
@@ -386,8 +386,14 @@ QString TransactionTableModel::formatTxType(const TransactionRecord *wtx) const
         return tr("Payment to yourself");
     case TransactionRecord::Generated:
         return tr("Mined");
-    case TransactionRecord::Other:
-        return tr("Other");
+    case TransactionRecord::Issue:
+        return tr("Asset Issued");
+    case TransactionRecord::Reissue:
+        return tr("Asset Reissued");
+    case TransactionRecord::TransferFrom:
+        return tr("Assets Received");
+    case TransactionRecord::TransferTo:
+        return tr("Assets Sent");
     default:
         return QString();
     }
@@ -405,6 +411,12 @@ QVariant TransactionTableModel::txAddressDecoration(const TransactionRecord *wtx
     case TransactionRecord::SendToAddress:
     case TransactionRecord::SendToOther:
         return QIcon(":/icons/tx_output");
+    case TransactionRecord::Issue:
+    case TransactionRecord::Reissue:
+    case TransactionRecord::TransferFrom:
+        return QIcon(":/icons/tx_asset_input");
+    case TransactionRecord::TransferTo:
+        return QIcon(":/icons/tx_asset_output");
     default:
         return QIcon(":/icons/tx_inout");
     }
@@ -420,6 +432,11 @@ QString TransactionTableModel::formatTxToAddress(const TransactionRecord *wtx, b
 
     switch(wtx->type)
     {
+    case TransactionRecord::Issue:
+    case TransactionRecord::Reissue:
+    case TransactionRecord::TransferTo:
+    case TransactionRecord::TransferFrom:
+        return QString::fromStdString(wtx->address) + watchAddress;
     case TransactionRecord::RecvFromOther:
         return QString::fromStdString(wtx->address) + watchAddress;
     case TransactionRecord::RecvWithAddress:
@@ -455,13 +472,25 @@ QVariant TransactionTableModel::addressColor(const TransactionRecord *wtx) const
     return QVariant();
 }
 
-QString TransactionTableModel::formatTxAmount(const TransactionRecord *wtx, bool showUnconfirmed, BitcoinUnits::SeparatorStyle separators) const
+QString TransactionTableModel::formatTxAmount(const TransactionRecord *wtx, bool showUnconfirmed, AlphaconUnits::SeparatorStyle separators) const
 {
-    QString str = BitcoinUnits::format(walletModel->getOptionsModel()->getDisplayUnit(), wtx->credit + wtx->debit, false, separators);
-    if(showUnconfirmed)
-    {
-        if(!wtx->status.countsForBalance)
-        {
+    QString str;
+    switch(wtx->type) {
+        case TransactionRecord::Issue:
+        case TransactionRecord::Reissue:
+        case TransactionRecord::TransferTo:
+        case TransactionRecord::TransferFrom:
+            {
+            str = QString::fromStdString(ValueFromAmountString(wtx->credit, wtx->units));
+            } break;
+        default:
+            {
+            str = AlphaconUnits::format(walletModel->getOptionsModel()->getDisplayUnit(), wtx->credit + wtx->debit,
+                                             false, separators);
+            } break;
+    }
+    if (showUnconfirmed) {
+        if (!wtx->status.countsForBalance) {
             str = QString("[") + str + QString("]");
         }
     }
@@ -543,6 +572,8 @@ QVariant TransactionTableModel::data(const QModelIndex &index, int role) const
             return txWatchonlyDecoration(rec);
         case ToAddress:
             return txAddressDecoration(rec);
+        case AssetName:
+            return QString::fromStdString(rec->assetName);
         }
         break;
     case Qt::DecorationRole:
@@ -560,7 +591,9 @@ QVariant TransactionTableModel::data(const QModelIndex &index, int role) const
         case ToAddress:
             return formatTxToAddress(rec, false);
         case Amount:
-            return formatTxAmount(rec, true, BitcoinUnits::separatorAlways);
+            return formatTxAmount(rec, true, AlphaconUnits::separatorAlways);
+        case AssetName:
+            return QString::fromStdString(rec->assetName);
         }
         break;
     case Qt::EditRole:
@@ -579,19 +612,15 @@ QVariant TransactionTableModel::data(const QModelIndex &index, int role) const
             return formatTxToAddress(rec, true);
         case Amount:
             return qint64(rec->credit + rec->debit);
+        case AssetName:
+            return QString::fromStdString(rec->assetName);
         }
         break;
     case Qt::ToolTipRole:
         return formatTooltip(rec);
     case Qt::TextAlignmentRole:
         return column_alignments[index.column()];
-    case Qt::BackgroundColorRole:
-        if (rec->status.hasConflicting)
-            return COLOR_HASCONFLICTING_BG;
-        break;
     case Qt::ForegroundRole:
-        if (rec->status.hasConflicting)
-            return COLOR_HASCONFLICTING;
         // Use the "danger" color for abandoned transactions
         if(rec->status.status == TransactionStatus::Abandoned)
         {
@@ -658,14 +687,20 @@ QVariant TransactionTableModel::data(const QModelIndex &index, int role) const
                 details.append(QString::fromStdString(rec->address));
                 details.append(" ");
             }
-            details.append(formatTxAmount(rec, false, BitcoinUnits::separatorNever));
+            details.append(formatTxAmount(rec, false, AlphaconUnits::separatorNever));
             return details;
         }
     case ConfirmedRole:
         return rec->status.countsForBalance;
     case FormattedAmountRole:
         // Used for copy/export, so don't include separators
-        return formatTxAmount(rec, false, BitcoinUnits::separatorNever);
+        return formatTxAmount(rec, false, AlphaconUnits::separatorNever);
+    case AssetNameRole:
+        {
+            QString assetName;
+            assetName.append(QString::fromStdString(rec->assetName));
+            return assetName;
+        }
     case StatusRole:
         return rec->status.status;
     }
@@ -699,6 +734,8 @@ QVariant TransactionTableModel::headerData(int section, Qt::Orientation orientat
                 return tr("User-defined intent/purpose of the transaction.");
             case Amount:
                 return tr("Amount removed from or added to balance.");
+            case AssetName:
+                return tr("The asset (or ALP) removed or added to balance.");
             }
         }
     }
@@ -728,8 +765,8 @@ struct TransactionNotification
 {
 public:
     TransactionNotification() {}
-    TransactionNotification(uint256 hash, ChangeType status, bool showTransaction):
-        hash(hash), status(status), showTransaction(showTransaction) {}
+    TransactionNotification(uint256 _hash, ChangeType _status, bool _showTransaction):
+        hash(_hash), status(_status), showTransaction(_showTransaction) {}
 
     void invoke(QObject *ttm)
     {

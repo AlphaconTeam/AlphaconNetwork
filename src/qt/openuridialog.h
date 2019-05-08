@@ -1,13 +1,13 @@
 // Copyright (c) 2011-2015 The Bitcoin Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_QT_OPENURIDIALOG_H
-#define BITCOIN_QT_OPENURIDIALOG_H
+#ifndef ALPHACON_QT_OPENURIDIALOG_H
+#define ALPHACON_QT_OPENURIDIALOG_H
 
 #include <QDialog>
-
-class Config;
 
 namespace Ui {
     class OpenURIDialog;
@@ -18,7 +18,7 @@ class OpenURIDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit OpenURIDialog(const Config *cfg, QWidget *parent);
+    explicit OpenURIDialog(QWidget *parent);
     ~OpenURIDialog();
 
     QString getURI();
@@ -31,7 +31,6 @@ private Q_SLOTS:
 
 private:
     Ui::OpenURIDialog *ui;
-    const Config *cfg;
 };
 
-#endif // BITCOIN_QT_OPENURIDIALOG_H
+#endif // ALPHACON_QT_OPENURIDIALOG_H

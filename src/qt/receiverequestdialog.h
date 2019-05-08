@@ -1,9 +1,11 @@
-// Copyright (c) 2011-2015 The Bitcoin Core developers
+// Copyright (c) 2011-2016 The Bitcoin Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_QT_RECEIVEREQUESTDIALOG_H
-#define BITCOIN_QT_RECEIVEREQUESTDIALOG_H
+#ifndef ALPHACON_QT_RECEIVEREQUESTDIALOG_H
+#define ALPHACON_QT_RECEIVEREQUESTDIALOG_H
 
 #include "walletmodel.h"
 
@@ -11,10 +13,8 @@
 #include <QImage>
 #include <QLabel>
 #include <QPainter>
-#include <QString>
 
 class OptionsModel;
-class Config;
 
 namespace Ui {
     class ReceiveRequestDialog;
@@ -52,7 +52,7 @@ class ReceiveRequestDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit ReceiveRequestDialog(const Config *cfg, QWidget *parent = 0);
+    explicit ReceiveRequestDialog(QWidget *parent = 0);
     ~ReceiveRequestDialog();
 
     void setModel(OptionsModel *model);
@@ -68,10 +68,6 @@ private:
     Ui::ReceiveRequestDialog *ui;
     OptionsModel *model;
     SendCoinsRecipient info;
-    const Config *cfg;
 };
 
-// exported for unittesting
-QString ToCurrentEncoding(const QString &addr, const Config &);
-
-#endif // BITCOIN_QT_RECEIVEREQUESTDIALOG_H
+#endif // ALPHACON_QT_RECEIVEREQUESTDIALOG_H

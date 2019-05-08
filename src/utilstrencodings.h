@@ -1,13 +1,15 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The Bitcoin Core developers
+// Copyright (c) 2009-2016 The Bitcoin Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 /**
  * Utilities for converting data from/to strings.
  */
-#ifndef BITCOIN_UTILSTRENCODINGS_H
-#define BITCOIN_UTILSTRENCODINGS_H
+#ifndef ALPHACON_UTILSTRENCODINGS_H
+#define ALPHACON_UTILSTRENCODINGS_H
 
 #include <stdint.h>
 #include <string>
@@ -19,14 +21,12 @@
 #define UEND(a)             ((unsigned char*)&((&(a))[1]))
 #define ARRAYLEN(array)     (sizeof(array)/sizeof((array)[0]))
 
-/** This is needed because the foreach macro can't get over the comma in pair<t1, t2> */
-#define PAIRTYPE(t1, t2)    std::pair<t1, t2>
-
 /** Used by SanitizeString() */
 enum SafeChars
 {
     SAFE_CHARS_DEFAULT, //!< The full set of allowed chars
-    SAFE_CHARS_UA_COMMENT //!< BIP-0014 subset
+    SAFE_CHARS_UA_COMMENT, //!< BIP-0014 subset
+    SAFE_CHARS_FILENAME, //!< Chars allowed in filenames
 };
 
 /**
@@ -40,16 +40,23 @@ std::string SanitizeString(const std::string& str, int rule = SAFE_CHARS_DEFAULT
 std::vector<unsigned char> ParseHex(const char* psz);
 std::vector<unsigned char> ParseHex(const std::string& str);
 signed char HexDigit(char c);
+/* Returns true if each character in str is a hex character, and has an even
+ * number of hex digits.*/
 bool IsHex(const std::string& str);
-std::vector<unsigned char> DecodeBase64(const char* p, bool* pfInvalid = NULL);
+/**
+* Return true if the string is a hex number, optionally prefixed with "0x"
+*/
+bool IsHexNumber(const std::string& str);
+std::vector<unsigned char> DecodeBase64(const char* p, bool* pfInvalid = nullptr);
 std::string DecodeBase64(const std::string& str);
 std::string EncodeBase64(const unsigned char* pch, size_t len);
 std::string EncodeBase64(const std::string& str);
-std::vector<unsigned char> DecodeBase32(const char* p, bool* pfInvalid = NULL);
+std::vector<unsigned char> DecodeBase32(const char* p, bool* pfInvalid = nullptr);
 std::string DecodeBase32(const std::string& str);
 std::string EncodeBase32(const unsigned char* pch, size_t len);
 std::string EncodeBase32(const std::string& str);
 
+void SplitHostPort(std::string in, int &portOut, std::string &hostOut);
 std::string i64tostr(int64_t n);
 std::string itostr(int n);
 int64_t atoi64(const char* psz);
@@ -69,6 +76,20 @@ bool ParseInt32(const std::string& str, int32_t *out);
  *   false if not the entire string could be parsed or when overflow or underflow occurred.
  */
 bool ParseInt64(const std::string& str, int64_t *out);
+
+/**
+ * Convert decimal string to unsigned 32-bit integer with strict parse error feedback.
+ * @returns true if the entire string could be parsed as valid integer,
+ *   false if not the entire string could be parsed or when overflow or underflow occurred.
+ */
+bool ParseUInt32(const std::string& str, uint32_t *out);
+
+/**
+ * Convert decimal string to unsigned 64-bit integer with strict parse error feedback.
+ * @returns true if the entire string could be parsed as valid integer,
+ *   false if not the entire string could be parsed or when overflow or underflow occurred.
+ */
+bool ParseUInt64(const std::string& str, uint64_t *out);
 
 /**
  * Convert string to double with strict parse error feedback.
@@ -130,44 +151,4 @@ bool TimingResistantEqual(const T& a, const T& b)
  */
 bool ParseFixedPoint(const std::string &val, int decimals, int64_t *amount_out);
 
-/**
- * Convert from one power-of-2 number base to another.
- *
- * If padding is enabled, this always return true. If not, then it returns true
- * of all the bits of the input are encoded in the output.
- */
-template <int frombits, int tobits, bool pad, typename O, typename I>
-bool ConvertBits(O &out, I it, I end)
-{
-    size_t acc = 0;
-    size_t bits = 0;
-    constexpr size_t maxv = (1 << tobits) - 1;
-    constexpr size_t max_acc = (1 << (frombits + tobits - 1)) - 1;
-    while (it != end)
-    {
-        acc = ((acc << frombits) | *it) & max_acc;
-        bits += frombits;
-        while (bits >= tobits)
-        {
-            bits -= tobits;
-            out.push_back((acc >> bits) & maxv);
-        }
-        ++it;
-    }
-
-    // We have remaining bits to encode but do not pad.
-    if (!pad && bits)
-    {
-        return false;
-    }
-
-    // We have remaining bits to encode so we do pad.
-    if (pad && bits)
-    {
-        out.push_back((acc << (tobits - bits)) & maxv);
-    }
-
-    return true;
-}
-
-#endif // BITCOIN_UTILSTRENCODINGS_H
+#endif // ALPHACON_UTILSTRENCODINGS_H

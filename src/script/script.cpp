@@ -1,14 +1,18 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The Bitcoin Core developers
+// Copyright (c) 2009-2016 The Bitcoin Core developers
+// Copyright (c) 2014 The BlackCoin developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
-
+#include "streams.h"
+#include "version.h"
+#include "assets/assets.h"
 #include "script.h"
 
 #include "tinyformat.h"
 #include "utilstrencodings.h"
-
-using namespace std;
+#include "standard.h"
 
 const char* GetOpName(opcodetype opcode)
 {
@@ -129,10 +133,10 @@ const char* GetOpName(opcodetype opcode)
     case OP_CHECKMULTISIG          : return "OP_CHECKMULTISIG";
     case OP_CHECKMULTISIGVERIFY    : return "OP_CHECKMULTISIGVERIFY";
 
-    // expanson
+    // expansion
     case OP_NOP1                   : return "OP_NOP1";
     case OP_CHECKLOCKTIMEVERIFY    : return "OP_CHECKLOCKTIMEVERIFY";
-    case OP_NOP3                   : return "OP_NOP3";
+    case OP_CHECKSEQUENCEVERIFY    : return "OP_CHECKSEQUENCEVERIFY";
     case OP_NOP4                   : return "OP_NOP4";
     case OP_NOP5                   : return "OP_NOP5";
     case OP_NOP6                   : return "OP_NOP6";
@@ -140,6 +144,10 @@ const char* GetOpName(opcodetype opcode)
     case OP_NOP8                   : return "OP_NOP8";
     case OP_NOP9                   : return "OP_NOP9";
     case OP_NOP10                  : return "OP_NOP10";
+
+    /** RVN START */
+    case OP_ALP_ASSET              : return "OP_ALP_ASSET";
+    /** RVN END */
 
     case OP_INVALIDOPCODE          : return "OP_INVALIDOPCODE";
 
@@ -186,18 +194,18 @@ unsigned int CScript::GetSigOpCount(const CScript& scriptSig) const
     // get the last item that the scriptSig
     // pushes onto the stack:
     const_iterator pc = scriptSig.begin();
-    vector<unsigned char> data;
+    std::vector<unsigned char> vData;
     while (pc < scriptSig.end())
     {
         opcodetype opcode;
-        if (!scriptSig.GetOp(pc, opcode, data))
+        if (!scriptSig.GetOp(pc, opcode, vData))
             return 0;
         if (opcode > OP_16)
             return 0;
     }
 
     /// ... and return its opcount:
-    CScript subscript(data.begin(), data.end());
+    CScript subscript(vData.begin(), vData.end());
     return subscript.GetSigOpCount(true);
 }
 
@@ -221,14 +229,142 @@ bool CScript::IsPayToScriptHash() const
             (*this)[22] == OP_EQUAL);
 }
 
+/** RVN START */
+bool CScript::IsAssetScript() const
+{
+    int nType = 0;
+    bool isOwner = false;
+    int start = 0;
+    return IsAssetScript(nType, isOwner, start);
+}
+
+bool CScript::IsAssetScript(int& nType, bool& isOwner) const
+{
+    int start = 0;
+    return IsAssetScript(nType, isOwner, start);
+}
+
+bool CScript::IsAssetScript(int& nType, bool& fIsOwner, int& nStartingIndex) const
+{
+    if (this->size() > 30) {
+        if ((*this)[25] == OP_ALP_ASSET) { // OP_ALP_ASSET is always in the 25 index of the script if it exists
+            int index = -1;
+            if ((*this)[27] == ALP_R) { // Check to see if ALP starts at 27 ( this->size() < 105)
+                if ((*this)[28] == ALP_V)
+                    if ((*this)[29] == ALP_N)
+                        index = 30;
+            } else {
+                if ((*this)[28] == ALP_R) // Check to see if ALP starts at 28 ( this->size() >= 105)
+                    if ((*this)[29] == ALP_V)
+                        if ((*this)[30] == ALP_N)
+                            index = 31;
+            }
+
+            if (index > 0) {
+                nStartingIndex = index + 1; // Set the index where the asset data begins. Use to serialize the asset data into asset objects
+                if ((*this)[index] == ALP_T) { // Transfer first anticipating more transfers than other assets operations
+                    nType = TX_TRANSFER_ASSET;
+                    return true;
+                } else if ((*this)[index] == ALP_Q && this->size() > 39) {
+                    nType = TX_NEW_ASSET;
+                    fIsOwner = false;
+                    return true;
+                } else if ((*this)[index] == ALP_O) {
+                    nType = TX_NEW_ASSET;
+                    fIsOwner = true;
+                    return true;
+                } else if ((*this)[index] == ALP_R) {
+                    nType = TX_REISSUE_ASSET;
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
 
 
+bool CScript::IsNewAsset() const
+{
+
+    int nType = 0;
+    bool fIsOwner = false;
+    if (IsAssetScript(nType, fIsOwner))
+        return !fIsOwner && nType == TX_NEW_ASSET;
+
+    return false;
+}
+
+bool CScript::IsOwnerAsset() const
+{
+    int nType = 0;
+    bool fIsOwner = false;
+    if (IsAssetScript(nType, fIsOwner))
+        return fIsOwner && nType == TX_NEW_ASSET;
+
+    return false;
+}
+
+bool CScript::IsReissueAsset() const
+{
+    int nType = 0;
+    bool fIsOwner = false;
+    if (IsAssetScript(nType, fIsOwner))
+        return nType == TX_REISSUE_ASSET;
+
+    return false;
+}
+
+bool CScript::IsTransferAsset() const
+{
+    int nType = 0;
+    bool fIsOwner = false;
+    if (IsAssetScript(nType, fIsOwner))
+        return nType == TX_TRANSFER_ASSET;
+
+    return false;
+}
+/** RVN END */
+
+bool CScript::IsPayToWitnessScriptHash() const
+{
+    // Extra-fast test for pay-to-witness-script-hash CScripts:
+    return (this->size() == 34 &&
+            (*this)[0] == OP_0 &&
+            (*this)[1] == 0x20);
+}
+
+// A witness program is any valid CScript that consists of a 1-byte push opcode
+// followed by a data push between 2 and 40 bytes.
+bool CScript::IsWitnessProgram(int& version, std::vector<unsigned char>& program) const
+{
+    if (this->size() < 4 || this->size() > 42) {
+        return false;
+    }
+    if ((*this)[0] != OP_0 && ((*this)[0] < OP_1 || (*this)[0] > OP_16)) {
+        return false;
+    }
+    if ((size_t)((*this)[1] + 2) == this->size()) {
+        version = DecodeOP_N((opcodetype)(*this)[0]);
+        program = std::vector<unsigned char>(this->begin() + 2, this->end());
+        return true;
+    }
+    return false;
+}
 bool CScript::IsPayToPublicKey() const
 {
-    // Extra-fast test for pay-to-pubkey CScripts:
-    return (this->size() == 35 &&
-			(*this)[0] == 0x21 &&
-            (*this)[34] == OP_CHECKSIG);
+    // Test for pay-to-pubkey CScript with both
+    // compressed or uncompressed pubkey
+    if (this->size() == 35) {
+        return ((*this)[1] == 0x02 || (*this)[1] == 0x03) &&
+                (*this)[34] == OP_CHECKSIG;
+    }
+    if (this->size() == 67) {
+        return (*this)[1] == 0x04 &&
+                (*this)[66] == OP_CHECKSIG;
+
+    }
+    return false;
 }
 
 bool CScript::IsPushOnly(const_iterator pc) const
@@ -253,40 +389,177 @@ bool CScript::IsPushOnly() const
     return this->IsPushOnly(begin());
 }
 
-bool CScript::HasCanonicalPushes() const
+std::string CScriptWitness::ToString() const
 {
-    const_iterator pc = begin();
-    while (pc < end())
-    {
+    std::string ret = "CScriptWitness(";
+    for (unsigned int i = 0; i < stack.size(); i++) {
+        if (i) {
+            ret += ", ";
+        }
+        ret += HexStr(stack[i]);
+    }
+    return ret + ")";
+}
+
+bool CScript::HasValidOps() const
+{
+    CScript::const_iterator it = begin();
+    while (it < end()) {
         opcodetype opcode;
-        std::vector<unsigned char> data;
-        if (!GetOp(pc, opcode, data))
+        std::vector<unsigned char> item;
+        if (!GetOp(it, opcode, item) || opcode > MAX_OPCODE || item.size() > MAX_SCRIPT_ELEMENT_SIZE) {
             return false;
-        if (opcode > OP_16)
-            continue;
-        if (opcode < OP_PUSHDATA1 && opcode > OP_0 && (data.size() == 1 && data[0] <= 16))
-            // Could have used an OP_n code, rather than a 1-byte push.
-            return false;
-        if (opcode == OP_PUSHDATA1 && data.size() < OP_PUSHDATA1)
-            // Could have used a normal n-byte push, rather than OP_PUSHDATA1.
-            return false;
-        if (opcode == OP_PUSHDATA2 && data.size() <= 0xFF)
-            // Could have used an OP_PUSHDATA1.
-            return false;
-        if (opcode == OP_PUSHDATA4 && data.size() <= 0xFFFF)
-            // Could have used an OP_PUSHDATA2.
-            return false;
+        }
     }
     return true;
 }
 
-bool CScript::IsNewAsset() const
+bool CScript::IsUnspendable() const
 {
-    // Extra-fast test for new-asset CScripts:
-    return (this->size() > 39 &&
-            (*this)[25] == OP_RETURN &&
-            (*this)[27] == 114 &&
-            (*this)[28] == 118 &&
-            (*this)[29] == 110 &&
-            (*this)[30] == 113);
+    CAmount nAmount;
+    return (size() > 0 && *begin() == OP_RETURN) || (size() > MAX_SCRIPT_SIZE) || (GetAssetAmountFromScript(*this, nAmount) && nAmount == 0);
 }
+
+//!--------------------------------------------------------------------------------------------------------------------------!//
+//! These are needed because script.h and script.cpp do not have access to asset.h and asset.cpp functions. This is
+//! because the make file compiles them at different times. The script files are compiled with other
+//! consensus files, and asset files are compiled with core files.
+
+//! Used to check if an asset script contains zero assets. Is so, it should be unspendable
+bool GetAssetAmountFromScript(const CScript& script, CAmount& nAmount)
+{
+    // Placeholder strings that will get set if you successfully get the transfer or asset from the script
+    std::string address = "";
+    std::string assetName = "";
+
+    int nType = 0;
+    bool fIsOwner = false;
+    if (!script.IsAssetScript(nType, fIsOwner)) {
+        return false;
+    }
+
+    txnouttype type = txnouttype(nType);
+
+    // Get the New Asset or Transfer Asset from the scriptPubKey
+    if (type == TX_NEW_ASSET && !fIsOwner) {
+        if (AmountFromNewAssetScript(script, nAmount)) {
+            return true;
+        }
+    } else if (type == TX_TRANSFER_ASSET) {
+        if (AmountFromTransferScript(script, nAmount)) {
+            return true;
+        }
+    } else if (type == TX_NEW_ASSET && fIsOwner) {
+            nAmount = OWNER_ASSET_AMOUNT;
+            return true;
+    } else if (type == TX_REISSUE_ASSET) {
+        if (AmountFromReissueScript(script, nAmount)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool ScriptNewAsset(const CScript& scriptPubKey, int& nStartingIndex)
+{
+    int nType = 0;
+    bool fIsOwner =false;
+    if (scriptPubKey.IsAssetScript(nType, fIsOwner, nStartingIndex)) {
+        return nType == TX_NEW_ASSET && !fIsOwner;
+    }
+
+    return false;
+}
+
+bool ScriptTransferAsset(const CScript& scriptPubKey, int& nStartingIndex)
+{
+    int nType = 0;
+    bool fIsOwner =false;
+    if (scriptPubKey.IsAssetScript(nType, fIsOwner, nStartingIndex)) {
+        return nType == TX_TRANSFER_ASSET;
+    }
+
+    return false;
+}
+
+bool ScriptReissueAsset(const CScript& scriptPubKey, int& nStartingIndex)
+{
+    int nType = 0;
+    bool fIsOwner =false;
+    if (scriptPubKey.IsAssetScript(nType, fIsOwner, nStartingIndex)) {
+        return nType == TX_REISSUE_ASSET;
+    }
+
+    return false;
+}
+
+
+bool AmountFromNewAssetScript(const CScript& scriptPubKey, CAmount& nAmount)
+{
+    int nStartingIndex = 0;
+    if (!ScriptNewAsset(scriptPubKey, nStartingIndex))
+        return false;
+
+    std::vector<unsigned char> vchNewAsset;
+    vchNewAsset.insert(vchNewAsset.end(), scriptPubKey.begin() + nStartingIndex, scriptPubKey.end());
+    CDataStream ssAsset(vchNewAsset, SER_NETWORK, PROTOCOL_VERSION);
+
+    CNewAsset assetNew;
+    try {
+        ssAsset >> assetNew;
+    } catch(std::exception& e) {
+        std::cout << "Failed to get the asset from the stream: " << e.what() << std::endl;
+        return false;
+    }
+
+    nAmount = assetNew.nAmount;
+    return true;
+}
+
+bool AmountFromTransferScript(const CScript& scriptPubKey, CAmount& nAmount)
+{
+    int nStartingIndex = 0;
+    if (!ScriptTransferAsset(scriptPubKey, nStartingIndex))
+        return false;
+
+    std::vector<unsigned char> vchAsset;
+    vchAsset.insert(vchAsset.end(), scriptPubKey.begin() + nStartingIndex, scriptPubKey.end());
+    CDataStream ssAsset(vchAsset, SER_NETWORK, PROTOCOL_VERSION);
+
+    CAssetTransfer asset;
+    try {
+        ssAsset >> asset;
+    } catch(std::exception& e) {
+        std::cout << "Failed to get the asset from the stream: " << e.what() << std::endl;
+        return false;
+    }
+
+    nAmount = asset.nAmount;
+    return true;
+}
+
+bool AmountFromReissueScript(const CScript& scriptPubKey, CAmount& nAmount)
+{
+    int nStartingIndex = 0;
+    if (!ScriptReissueAsset(scriptPubKey, nStartingIndex))
+        return false;
+
+    std::vector<unsigned char> vchNewAsset;
+    vchNewAsset.insert(vchNewAsset.end(), scriptPubKey.begin() + nStartingIndex, scriptPubKey.end());
+    CDataStream ssAsset(vchNewAsset, SER_NETWORK, PROTOCOL_VERSION);
+
+    CReissueAsset asset;
+    try {
+        ssAsset >> asset;
+    } catch(std::exception& e) {
+        std::cout << "Failed to get the asset from the stream: " << e.what() << std::endl;
+        return false;
+    }
+
+    nAmount = asset.nAmount;
+    return true;
+}
+//!--------------------------------------------------------------------------------------------------------------------------!//
+
+

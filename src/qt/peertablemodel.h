@@ -1,11 +1,13 @@
-// Copyright (c) 2011-2015 The Bitcoin Core developers
+// Copyright (c) 2011-2016 The Bitcoin Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_QT_PEERTABLEMODEL_H
-#define BITCOIN_QT_PEERTABLEMODEL_H
+#ifndef ALPHACON_QT_PEERTABLEMODEL_H
+#define ALPHACON_QT_PEERTABLEMODEL_H
 
-#include "validation.h" // For CNodeStateStats
+#include "net_processing.h" // For CNodeStateStats
 #include "net.h"
 
 #include <QAbstractTableModel>
@@ -53,9 +55,12 @@ public:
     void stopAutoRefresh();
 
     enum ColumnIndex {
-        Address = 0,
-        Subversion = 1,
-        Ping = 2
+        NetNodeId = 0,
+        Address = 1,
+        Ping = 2,
+        Sent = 3,
+        Received = 4,
+        Subversion = 5
     };
 
     /** @name Methods overridden from QAbstractTableModel
@@ -79,4 +84,4 @@ private:
     QTimer *timer;
 };
 
-#endif // BITCOIN_QT_PEERTABLEMODEL_H
+#endif // ALPHACON_QT_PEERTABLEMODEL_H

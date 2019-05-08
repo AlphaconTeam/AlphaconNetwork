@@ -1,28 +1,28 @@
-Name "Bitcoin Core (-bit)"
+Name "Alphacon Core (-bit)"
 
 RequestExecutionLevel highest
 SetCompressor /SOLID lzma
 
 # General Symbol Definitions
 !define REGKEY "SOFTWARE\$(^Name)"
-!define VERSION 2.12.1
-!define COMPANY "Bitcoin Core project"
-!define URL https://bitcoincore.org/
+!define VERSION 2.2.2
+!define COMPANY "Alphacon Core project"
+!define URL https://alphacon.io/
 
 # MUI Symbol Definitions
-!define MUI_ICON "/home/vova/Shared/Lore/share/pixmaps/bitcoin.ico"
-!define MUI_WELCOMEFINISHPAGE_BITMAP "/home/vova/Shared/Lore/share/pixmaps/nsis-wizard.bmp"
+!define MUI_ICON "/Users/vova/Desktop/AlpRaven/share/pixmaps/alphacon.ico"
+!define MUI_WELCOMEFINISHPAGE_BITMAP "/Users/vova/Desktop/AlpRaven/share/pixmaps/nsis-wizard.bmp"
 !define MUI_HEADERIMAGE
 !define MUI_HEADERIMAGE_RIGHT
-!define MUI_HEADERIMAGE_BITMAP "/home/vova/Shared/Lore/share/pixmaps/nsis-header.bmp"
+!define MUI_HEADERIMAGE_BITMAP "/Users/vova/Desktop/AlpRaven/share/pixmaps/nsis-header.bmp"
 !define MUI_FINISHPAGE_NOAUTOCLOSE
 !define MUI_STARTMENUPAGE_REGISTRY_ROOT HKLM
 !define MUI_STARTMENUPAGE_REGISTRY_KEY ${REGKEY}
 !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME StartMenuGroup
-!define MUI_STARTMENUPAGE_DEFAULTFOLDER "Bitcoin Core"
-!define MUI_FINISHPAGE_RUN $INSTDIR\lore-qt
+!define MUI_STARTMENUPAGE_DEFAULTFOLDER "Alphacon Core"
+!define MUI_FINISHPAGE_RUN $INSTDIR\alphacon-qt
 !define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall.ico"
-!define MUI_UNWELCOMEFINISHPAGE_BITMAP "/home/vova/Shared/Lore/share/pixmaps/nsis-wizard.bmp"
+!define MUI_UNWELCOMEFINISHPAGE_BITMAP "/Users/vova/Desktop/AlpRaven/share/pixmaps/nsis-wizard.bmp"
 !define MUI_UNFINISHPAGE_NOAUTOCLOSE
 
 # Included files
@@ -48,18 +48,18 @@ Var StartMenuGroup
 !insertmacro MUI_LANGUAGE English
 
 # Installer attributes
-OutFile /home/vova/Shared/Lore/bitcoin-${VERSION}-win-setup.exe
+OutFile /Users/vova/Desktop/AlpRaven/alphacon-${VERSION}-win-setup.exe
 !if "" == "64"
-InstallDir $PROGRAMFILES64\Bitcoin
+InstallDir $PROGRAMFILES64\Alphacon
 !else
-InstallDir $PROGRAMFILES\Bitcoin
+InstallDir $PROGRAMFILES\Alphacon
 !endif
 CRCCheck on
 XPStyle on
 BrandingText " "
 ShowInstDetails show
 VIProductVersion ${VERSION}.0
-VIAddVersionKey ProductName "Bitcoin Core"
+VIAddVersionKey ProductName "Alphacon Core"
 VIAddVersionKey ProductVersion "${VERSION}"
 VIAddVersionKey CompanyName "${COMPANY}"
 VIAddVersionKey CompanyWebsite "${URL}"
@@ -73,14 +73,14 @@ ShowUninstDetails show
 Section -Main SEC0000
     SetOutPath $INSTDIR
     SetOverwrite on
-    File /home/vova/Shared/Lore/release/lore-qt
-    File /oname=COPYING.txt /home/vova/Shared/Lore/COPYING
-    File /oname=readme.txt /home/vova/Shared/Lore/doc/README_windows.txt
+    File /Users/vova/Desktop/AlpRaven/release/alphacon-qt
+    File /oname=COPYING.txt /Users/vova/Desktop/AlpRaven/COPYING
+    File /oname=readme.txt /Users/vova/Desktop/AlpRaven/doc/README_windows.txt
     SetOutPath $INSTDIR\daemon
-    File /home/vova/Shared/Lore/release/lored
-    File /home/vova/Shared/Lore/release/lore-cli
+    File /Users/vova/Desktop/AlpRaven/release/alphacond
+    File /Users/vova/Desktop/AlpRaven/release/alphacon-cli
     SetOutPath $INSTDIR\doc
-    File /r /home/vova/Shared/Lore/doc\*.*
+    File /r /Users/vova/Desktop/AlpRaven/doc\*.*
     SetOutPath $INSTDIR
     WriteRegStr HKCU "${REGKEY}\Components" Main 1
 SectionEnd
@@ -91,8 +91,8 @@ Section -post SEC0001
     WriteUninstaller $INSTDIR\uninstall.exe
     !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
     CreateDirectory $SMPROGRAMS\$StartMenuGroup
-    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^Name).lnk" $INSTDIR\lore-qt
-    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\Bitcoin Core (testnet, -bit).lnk" "$INSTDIR\lore-qt" "-testnet" "$INSTDIR\lore-qt" 1
+    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^Name).lnk" $INSTDIR\alphacon-qt
+    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\Alphacon Core (testnet, -bit).lnk" "$INSTDIR\alphacon-qt" "-testnet" "$INSTDIR\alphacon-qt" 1
     CreateShortcut "$SMPROGRAMS\$StartMenuGroup\Uninstall $(^Name).lnk" $INSTDIR\uninstall.exe
     !insertmacro MUI_STARTMENU_WRITE_END
     WriteRegStr HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayName "$(^Name)"
@@ -103,10 +103,10 @@ Section -post SEC0001
     WriteRegStr HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" UninstallString $INSTDIR\uninstall.exe
     WriteRegDWORD HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" NoModify 1
     WriteRegDWORD HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" NoRepair 1
-    WriteRegStr HKCR "bitcoin" "URL Protocol" ""
-    WriteRegStr HKCR "bitcoin" "" "URL:Bitcoin"
-    WriteRegStr HKCR "bitcoin\DefaultIcon" "" $INSTDIR\lore-qt
-    WriteRegStr HKCR "bitcoin\shell\open\command" "" '"$INSTDIR\lore-qt" "%1"'
+    WriteRegStr HKCR "alphacon" "URL Protocol" ""
+    WriteRegStr HKCR "alphacon" "" "URL:Alphacon"
+    WriteRegStr HKCR "alphacon\DefaultIcon" "" $INSTDIR\alphacon-qt
+    WriteRegStr HKCR "alphacon\shell\open\command" "" '"$INSTDIR\alphacon-qt" "%1"'
 SectionEnd
 
 # Macro for selecting uninstaller sections
@@ -124,7 +124,7 @@ done${UNSECTION_ID}:
 
 # Uninstaller sections
 Section /o -un.Main UNSEC0000
-    Delete /REBOOTOK $INSTDIR\lore-qt
+    Delete /REBOOTOK $INSTDIR\alphacon-qt
     Delete /REBOOTOK $INSTDIR\COPYING.txt
     Delete /REBOOTOK $INSTDIR\readme.txt
     RMDir /r /REBOOTOK $INSTDIR\daemon
@@ -136,8 +136,8 @@ Section -un.post UNSEC0001
     DeleteRegKey HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\Uninstall $(^Name).lnk"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^Name).lnk"
-    Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\Bitcoin Core (testnet, -bit).lnk"
-    Delete /REBOOTOK "$SMSTARTUP\Bitcoin.lnk"
+    Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\Alphacon Core (testnet, -bit).lnk"
+    Delete /REBOOTOK "$SMSTARTUP\Alphacon.lnk"
     Delete /REBOOTOK $INSTDIR\uninstall.exe
     Delete /REBOOTOK $INSTDIR\debug.log
     Delete /REBOOTOK $INSTDIR\db.log
@@ -145,7 +145,7 @@ Section -un.post UNSEC0001
     DeleteRegValue HKCU "${REGKEY}" Path
     DeleteRegKey /IfEmpty HKCU "${REGKEY}\Components"
     DeleteRegKey /IfEmpty HKCU "${REGKEY}"
-    DeleteRegKey HKCR "bitcoin"
+    DeleteRegKey HKCR "alphacon"
     RmDir /REBOOTOK $SMPROGRAMS\$StartMenuGroup
     RmDir /REBOOTOK $INSTDIR
     Push $R0

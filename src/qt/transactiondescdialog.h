@@ -1,9 +1,11 @@
-// Copyright (c) 2011-2013 The Bitcoin Core developers
+// Copyright (c) 2011-2014 The Bitcoin Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_QT_TRANSACTIONDESCDIALOG_H
-#define BITCOIN_QT_TRANSACTIONDESCDIALOG_H
+#ifndef ALPHACON_QT_TRANSACTIONDESCDIALOG_H
+#define ALPHACON_QT_TRANSACTIONDESCDIALOG_H
 
 #include <QDialog>
 
@@ -28,4 +30,4 @@ private:
     Ui::TransactionDescDialog *ui;
 };
 
-#endif // BITCOIN_QT_TRANSACTIONDESCDIALOG_H
+#endif // ALPHACON_QT_TRANSACTIONDESCDIALOG_H

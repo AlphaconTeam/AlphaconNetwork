@@ -1,12 +1,18 @@
+buildspecs
+Jenkinsfile
 *.tar.gz
 
 *.exe
-src/lore
-src/lored
-src/lore-cli
-src/lore-tx
-src/test/test_bitcoin
-src/qt/test/test_bitcoin-qt
+src/alphacon
+src/alphacond
+src/alphacon-cli
+src/alphacon-tx
+src/test/test_alphacon
+src/test/test_alphacon_fuzzy
+src/test/test_alphacon_hash
+src/qt/test/test_alphacon-qt
+.vscode
+output.txt
 
 # autoreconf
 Makefile.in
@@ -29,19 +35,24 @@ config.log
 config.status
 configure
 libtool
-src/config/bitcoin-config.h
-src/config/bitcoin-config.h.in
+src/config/alphacon-config.h
+src/config/alphacon-config.h.in
 src/config/stamp-h1
 share/setup.nsi
 share/qt/Info.plist
 
-src/univalue/gen
+
 
 src/qt/*.moc
 src/qt/moc_*.cpp
 src/qt/forms/ui_*.h
 
 src/qt/test/moc*.cpp
+
+.settings
+.cproject
+.project
+.vscode
 
 .deps
 .dirstamp
@@ -55,7 +66,6 @@ src/qt/test/moc*.cpp
 *.o
 *.o-*
 *.patch
-.bitcoin
 *.a
 *.pb.cc
 *.pb.h
@@ -74,13 +84,12 @@ src/qt/test/moc*.cpp
 # Compilation and Qt preprocessor part
 *.qm
 Makefile
-lore-qt
-Bitcoin-Qt.app
+alphacon-qt
+Alphacon-Qt.app
 
 # Unit-tests
 Makefile.test
-bitcoin-qt_test
-src/test/buildenv.py
+alphacon-qt_test
 
 # Resources cpp
 qrc_*.cpp
@@ -93,7 +102,7 @@ build
 *.gcno
 *.gcda
 /*.info
-test_bitcoin.coverage/
+test_alphacon.coverage/
 total.coverage/
 coverage_percent.txt
 
@@ -101,19 +110,16 @@ coverage_percent.txt
 linux-coverage-build
 linux-build
 win32-build
-qa/pull-tester/run-bitcoind-for-test.sh
-qa/pull-tester/tests_config.py
-qa/pull-tester/cache/*
-qa/pull-tester/test.*/*
-qa/tmp
-cache/
-share/BitcoindComparisonTool.jar
+test/config.ini
+test/cache/*
 
 !src/leveldb*/Makefile
 
 /doc/doxygen/
 
-libbitcoinconsensus.pc
-wallet-utility
-/.cproject
-/.project
+libalphaconconsensus.pc
+contrib/devtools/split-debug.sh
+.idea
+cmake-build-debug
+
+CMakeLists.txt

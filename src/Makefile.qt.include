@@ -1,99 +1,109 @@
-bin_PROGRAMS += qt/lore-qt
-EXTRA_LIBRARIES += qt/libbitcoinqt.a
+# Copyright (c) 2013-2016 The Bitcoin Core developers
+# Copyright (c) 2017 The Alphacon Core developers
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-# bitcoin qt core #
+bin_PROGRAMS += qt/alphacon-qt
+EXTRA_LIBRARIES += qt/libalphaconqt.a
+
+# alphacon qt core #
 QT_TS = \
-  qt/locale/bitcoin_af.ts \
-  qt/locale/bitcoin_af_ZA.ts \
-  qt/locale/bitcoin_ar.ts \
-  qt/locale/bitcoin_be_BY.ts \
-  qt/locale/bitcoin_bg_BG.ts \
-  qt/locale/bitcoin_bg.ts \
-  qt/locale/bitcoin_bs.ts \
-  qt/locale/bitcoin_ca_ES.ts \
-  qt/locale/bitcoin_ca.ts \
-  qt/locale/bitcoin_ca@valencia.ts \
-  qt/locale/bitcoin_cs_CZ.ts \
-  qt/locale/bitcoin_cs.ts \
-  qt/locale/bitcoin_cy.ts \
-  qt/locale/bitcoin_da.ts \
-  qt/locale/bitcoin_de.ts \
-  qt/locale/bitcoin_el_GR.ts \
-  qt/locale/bitcoin_el.ts \
-  qt/locale/bitcoin_en_GB.ts \
-  qt/locale/bitcoin_en.ts \
-  qt/locale/bitcoin_eo.ts \
-  qt/locale/bitcoin_es_AR.ts \
-  qt/locale/bitcoin_es_CL.ts \
-  qt/locale/bitcoin_es_CO.ts \
-  qt/locale/bitcoin_es_DO.ts \
-  qt/locale/bitcoin_es_ES.ts \
-  qt/locale/bitcoin_es_MX.ts \
-  qt/locale/bitcoin_es.ts \
-  qt/locale/bitcoin_es_UY.ts \
-  qt/locale/bitcoin_es_VE.ts \
-  qt/locale/bitcoin_et.ts \
-  qt/locale/bitcoin_eu_ES.ts \
-  qt/locale/bitcoin_fa_IR.ts \
-  qt/locale/bitcoin_fa.ts \
-  qt/locale/bitcoin_fi.ts \
-  qt/locale/bitcoin_fr_CA.ts \
-  qt/locale/bitcoin_fr_FR.ts \
-  qt/locale/bitcoin_fr.ts \
-  qt/locale/bitcoin_gl.ts \
-  qt/locale/bitcoin_he.ts \
-  qt/locale/bitcoin_hi_IN.ts \
-  qt/locale/bitcoin_hr.ts \
-  qt/locale/bitcoin_hu.ts \
-  qt/locale/bitcoin_id_ID.ts \
-  qt/locale/bitcoin_it.ts \
-  qt/locale/bitcoin_ja.ts \
-  qt/locale/bitcoin_ka.ts \
-  qt/locale/bitcoin_kk_KZ.ts \
-  qt/locale/bitcoin_ko_KR.ts \
-  qt/locale/bitcoin_ky.ts \
-  qt/locale/bitcoin_la.ts \
-  qt/locale/bitcoin_lt.ts \
-  qt/locale/bitcoin_lv_LV.ts \
-  qt/locale/bitcoin_mk_MK.ts \
-  qt/locale/bitcoin_mn.ts \
-  qt/locale/bitcoin_ms_MY.ts \
-  qt/locale/bitcoin_nb.ts \
-  qt/locale/bitcoin_nl.ts \
-  qt/locale/bitcoin_pam.ts \
-  qt/locale/bitcoin_pl.ts \
-  qt/locale/bitcoin_pt_BR.ts \
-  qt/locale/bitcoin_pt_PT.ts \
-  qt/locale/bitcoin_ro_RO.ts \
-  qt/locale/bitcoin_ro.ts \
-  qt/locale/bitcoin_ru_RU.ts \
-  qt/locale/bitcoin_ru.ts \
-  qt/locale/bitcoin_sk.ts \
-  qt/locale/bitcoin_sl_SI.ts \
-  qt/locale/bitcoin_sq.ts \
-  qt/locale/bitcoin_sr.ts \
-  qt/locale/bitcoin_sv.ts \
-  qt/locale/bitcoin_ta.ts \
-  qt/locale/bitcoin_th_TH.ts \
-  qt/locale/bitcoin_tr_TR.ts \
-  qt/locale/bitcoin_tr.ts \
-  qt/locale/bitcoin_uk.ts \
-  qt/locale/bitcoin_ur_PK.ts \
-  qt/locale/bitcoin_uz@Cyrl.ts \
-  qt/locale/bitcoin_uz@Latn.ts \
-  qt/locale/bitcoin_vi.ts \
-  qt/locale/bitcoin_vi_VN.ts \
-  qt/locale/bitcoin_zh_CN.ts \
-  qt/locale/bitcoin_zh.ts \
-  qt/locale/bitcoin_zh_TW.ts
+  qt/locale/alphacon_af.ts \
+  qt/locale/alphacon_af_ZA.ts \
+  qt/locale/alphacon_ar.ts \
+  qt/locale/alphacon_be_BY.ts \
+  qt/locale/alphacon_bg_BG.ts \
+  qt/locale/alphacon_bg.ts \
+  qt/locale/alphacon_ca_ES.ts \
+  qt/locale/alphacon_ca.ts \
+  qt/locale/alphacon_ca@valencia.ts \
+  qt/locale/alphacon_cs.ts \
+  qt/locale/alphacon_cy.ts \
+  qt/locale/alphacon_da.ts \
+  qt/locale/alphacon_de.ts \
+  qt/locale/alphacon_el_GR.ts \
+  qt/locale/alphacon_el.ts \
+  qt/locale/alphacon_en_GB.ts \
+  qt/locale/alphacon_en.ts \
+  qt/locale/alphacon_eo.ts \
+  qt/locale/alphacon_es_AR.ts \
+  qt/locale/alphacon_es_CL.ts \
+  qt/locale/alphacon_es_CO.ts \
+  qt/locale/alphacon_es_DO.ts \
+  qt/locale/alphacon_es_ES.ts \
+  qt/locale/alphacon_es_MX.ts \
+  qt/locale/alphacon_es.ts \
+  qt/locale/alphacon_es_UY.ts \
+  qt/locale/alphacon_es_VE.ts \
+  qt/locale/alphacon_et_EE.ts \
+  qt/locale/alphacon_et.ts \
+  qt/locale/alphacon_eu_ES.ts \
+  qt/locale/alphacon_fa_IR.ts \
+  qt/locale/alphacon_fa.ts \
+  qt/locale/alphacon_fi.ts \
+  qt/locale/alphacon_fr_CA.ts \
+  qt/locale/alphacon_fr_FR.ts \
+  qt/locale/alphacon_fr.ts \
+  qt/locale/alphacon_gl.ts \
+  qt/locale/alphacon_he.ts \
+  qt/locale/alphacon_hi_IN.ts \
+  qt/locale/alphacon_hr.ts \
+  qt/locale/alphacon_hu.ts \
+  qt/locale/alphacon_id_ID.ts \
+  qt/locale/alphacon_it_IT.ts \
+  qt/locale/alphacon_it.ts \
+  qt/locale/alphacon_ja.ts \
+  qt/locale/alphacon_ka.ts \
+  qt/locale/alphacon_kk_KZ.ts \
+  qt/locale/alphacon_ko_KR.ts \
+  qt/locale/alphacon_ku_IQ.ts \
+  qt/locale/alphacon_ky.ts \
+  qt/locale/alphacon_la.ts \
+  qt/locale/alphacon_lt.ts \
+  qt/locale/alphacon_lv_LV.ts \
+  qt/locale/alphacon_mk_MK.ts \
+  qt/locale/alphacon_mn.ts \
+  qt/locale/alphacon_ms_MY.ts \
+  qt/locale/alphacon_nb.ts \
+  qt/locale/alphacon_ne.ts \
+  qt/locale/alphacon_nl.ts \
+  qt/locale/alphacon_pam.ts \
+  qt/locale/alphacon_pl.ts \
+  qt/locale/alphacon_pt_BR.ts \
+  qt/locale/alphacon_pt_PT.ts \
+  qt/locale/alphacon_ro_RO.ts \
+  qt/locale/alphacon_ro.ts \
+  qt/locale/alphacon_ru_RU.ts \
+  qt/locale/alphacon_ru.ts \
+  qt/locale/alphacon_sk.ts \
+  qt/locale/alphacon_sl_SI.ts \
+  qt/locale/alphacon_sq.ts \
+  qt/locale/alphacon_sr@latin.ts \
+  qt/locale/alphacon_sr.ts \
+  qt/locale/alphacon_sv.ts \
+  qt/locale/alphacon_ta.ts \
+  qt/locale/alphacon_th_TH.ts \
+  qt/locale/alphacon_tr_TR.ts \
+  qt/locale/alphacon_tr.ts \
+  qt/locale/alphacon_uk.ts \
+  qt/locale/alphacon_ur_PK.ts \
+  qt/locale/alphacon_uz@Cyrl.ts \
+  qt/locale/alphacon_vi.ts \
+  qt/locale/alphacon_vi_VN.ts \
+  qt/locale/alphacon_zh_CN.ts \
+  qt/locale/alphacon_zh_HK.ts \
+  qt/locale/alphacon_zh.ts \
+  qt/locale/alphacon_zh_TW.ts
 
 QT_FORMS_UI = \
   qt/forms/addressbookpage.ui \
   qt/forms/askpassphrasedialog.ui \
+  qt/forms/assetcontroldialog.ui \
   qt/forms/coincontroldialog.ui \
   qt/forms/editaddressdialog.ui \
   qt/forms/helpmessagedialog.ui \
   qt/forms/intro.ui \
+  qt/forms/modaloverlay.ui \
   qt/forms/openuridialog.ui \
   qt/forms/optionsdialog.ui \
   qt/forms/overviewpage.ui \
@@ -103,30 +113,41 @@ QT_FORMS_UI = \
   qt/forms/sendcoinsdialog.ui \
   qt/forms/sendcoinsentry.ui \
   qt/forms/signverifymessagedialog.ui \
-  qt/forms/transactiondescdialog.ui
+  qt/forms/transactiondescdialog.ui \
+  qt/forms/assetsdialog.ui \
+  qt/forms/createassetdialog.ui \
+  qt/forms/reissueassetdialog.ui \
+  qt/forms/sendassetsentry.ui
 
 QT_MOC_CPP = \
   qt/moc_addressbookpage.cpp \
   qt/moc_addresstablemodel.cpp \
   qt/moc_askpassphrasedialog.cpp \
+  qt/moc_assetcontroldialog.cpp \
+  qt/moc_assetcontroltreewidget.cpp \
+  qt/moc_assetfilterproxy.cpp \
   qt/moc_bantablemodel.cpp \
-  qt/moc_bitcoinaddressvalidator.cpp \
-  qt/moc_bitcoinamountfield.cpp \
-  qt/moc_bitcoingui.cpp \
-  qt/moc_bitcoinunits.cpp \
+  qt/moc_alphaconaddressvalidator.cpp \
+  qt/moc_alphaconamountfield.cpp \
+  qt/moc_alphacongui.cpp \
+  qt/moc_alphaconunits.cpp \
+  qt/moc_callback.cpp \
   qt/moc_clientmodel.cpp \
   qt/moc_coincontroldialog.cpp \
   qt/moc_coincontroltreewidget.cpp \
   qt/moc_csvmodelwriter.cpp \
+  qt/moc_darkstyle.cpp \
   qt/moc_editaddressdialog.cpp \
   qt/moc_guiutil.cpp \
   qt/moc_intro.cpp \
   qt/moc_macdockiconhandler.cpp \
   qt/moc_macnotificationhandler.cpp \
+  qt/moc_modaloverlay.cpp \
   qt/moc_notificator.cpp \
   qt/moc_openuridialog.cpp \
   qt/moc_optionsdialog.cpp \
   qt/moc_optionsmodel.cpp \
+  qt/moc_assettablemodel.cpp \
   qt/moc_overviewpage.cpp \
   qt/moc_peertablemodel.cpp \
   qt/moc_paymentserver.cpp \
@@ -149,52 +170,67 @@ QT_MOC_CPP = \
   qt/moc_utilitydialog.cpp \
   qt/moc_walletframe.cpp \
   qt/moc_walletmodel.cpp \
-  qt/moc_walletview.cpp
+  qt/moc_walletview.cpp \
+  qt/moc_assetsdialog.cpp \
+  qt/moc_createassetdialog.cpp \
+  qt/moc_reissueassetdialog.cpp \
+  qt/moc_sendassetsentry.cpp
 
-BITCOIN_MM = \
+ALPHACON_MM = \
   qt/macdockiconhandler.mm \
   qt/macnotificationhandler.mm
 
 QT_MOC = \
-  qt/bitcoin.moc \
-  qt/bitcoinamountfield.moc \
+  qt/alphacon.moc \
+  qt/alphaconamountfield.moc \
+  qt/callback.moc \
   qt/intro.moc \
   qt/overviewpage.moc \
   qt/rpcconsole.moc
 
-QT_QRC_CPP = qt/qrc_bitcoin.cpp
-QT_QRC = qt/bitcoin.qrc
-QT_QRC_LOCALE_CPP = qt/qrc_bitcoin_locale.cpp
-QT_QRC_LOCALE = qt/bitcoin_locale.qrc
+QT_QRC_CPP = qt/qrc_alphacon.cpp
+QT_QRC = qt/alphacon.qrc
+QT_QRC_LOCALE_CPP = qt/qrc_alphacon_locale.cpp
+QT_QRC_LOCALE = qt/alphacon_locale.qrc
 
 PROTOBUF_CC = qt/paymentrequest.pb.cc
 PROTOBUF_H = qt/paymentrequest.pb.h
 PROTOBUF_PROTO = qt/paymentrequest.proto
 
-BITCOIN_QT_H = \
+ALPHACON_QT_H = \
   qt/addressbookpage.h \
   qt/addresstablemodel.h \
   qt/askpassphrasedialog.h \
+  qt/assetcontroldialog.h \
+  qt/assetcontroltreewidget.h \
+  qt/assetfilterproxy.h \
+  qt/assetrecord.h \
+  qt/assetsdialog.h \
+  qt/createassetdialog.h \
   qt/bantablemodel.h \
-  qt/bitcoinaddressvalidator.h \
-  qt/bitcoinamountfield.h \
-  qt/bitcoingui.h \
-  qt/bitcoinunits.h \
+  qt/alphaconaddressvalidator.h \
+  qt/alphaconamountfield.h \
+  qt/alphacongui.h \
+  qt/alphaconunits.h \
+  qt/callback.h \
   qt/clientmodel.h \
   qt/coincontroldialog.h \
   qt/coincontroltreewidget.h \
   qt/csvmodelwriter.h \
+  qt/darkstyle.h \
   qt/editaddressdialog.h \
   qt/guiconstants.h \
   qt/guiutil.h \
   qt/intro.h \
   qt/macdockiconhandler.h \
   qt/macnotificationhandler.h \
+  qt/modaloverlay.h \
   qt/networkstyle.h \
   qt/notificator.h \
   qt/openuridialog.h \
   qt/optionsdialog.h \
   qt/optionsmodel.h \
+  qt/assettablemodel.h \
   qt/overviewpage.h \
   qt/paymentrequestplus.h \
   qt/paymentserver.h \
@@ -205,7 +241,9 @@ BITCOIN_QT_H = \
   qt/receivecoinsdialog.h \
   qt/receiverequestdialog.h \
   qt/recentrequeststablemodel.h \
+  qt/reissueassetdialog.h \
   qt/rpcconsole.h \
+  qt/sendassetsentry.h \
   qt/sendcoinsdialog.h \
   qt/sendcoinsentry.h \
   qt/signverifymessagedialog.h \
@@ -227,11 +265,15 @@ BITCOIN_QT_H = \
 RES_ICONS = \
   qt/res/icons/add.png \
   qt/res/icons/address-book.png \
-  qt/res/icons/about.png \
+  qt/res/icons/about_alp.png \
   qt/res/icons/about_qt.png \
-  qt/res/icons/bitcoin.ico \
-  qt/res/icons/bitcoin_testnet.ico \
-  qt/res/icons/bitcoin.png \
+  qt/res/icons/asset_administrator.png \
+  qt/res/icons/asset_create.png \
+  qt/res/icons/asset_manage.png \
+  qt/res/icons/asset_transfer.png \
+  qt/res/icons/alphacon.ico \
+  qt/res/icons/alphacon_testnet.ico \
+  qt/res/icons/alphacon.png \
   qt/res/icons/chevron.png \
   qt/res/icons/clock1.png \
   qt/res/icons/clock2.png \
@@ -262,40 +304,79 @@ RES_ICONS = \
   qt/res/icons/key.png \
   qt/res/icons/lock_closed.png \
   qt/res/icons/lock_open.png \
-  qt/res/icons/staking_off.png \
-  qt/res/icons/staking_on.png \
+  qt/res/icons/network_disabled.png \
   qt/res/icons/open.png \
   qt/res/icons/overview.png \
   qt/res/icons/quit.png \
   qt/res/icons/receive.png \
+  qt/res/icons/refresh.png \
   qt/res/icons/remove.png \
   qt/res/icons/send.png \
   qt/res/icons/synced.png \
   qt/res/icons/transaction0.png \
   qt/res/icons/transaction2.png \
+  qt/res/icons/transaction_abandoned.png \
   qt/res/icons/transaction_conflicted.png \
   qt/res/icons/tx_inout.png \
   qt/res/icons/tx_input.png \
   qt/res/icons/tx_output.png \
   qt/res/icons/tx_mined.png \
+  qt/res/icons/tx_asset_input.png \
+  qt/res/icons/tx_asset_output.png \
   qt/res/icons/warning.png \
   qt/res/icons/verify.png \
-  qt/res/icons/transaction_abandoned.png
+  qt/res/darkstyle/icon_close.png \
+  qt/res/darkstyle/icon_restore.png \
+  qt/res/darkstyle/icon_undock.png \
+  qt/res/darkstyle/icon_branch_closed.png \
+  qt/res/darkstyle/icon_branch_end.png \
+  qt/res/darkstyle/icon_branch_more.png \
+  qt/res/darkstyle/icon_branch_open.png \
+  qt/res/darkstyle/icon_vline.png \
+  qt/res/darkstyle/icon_checkbox_checked.png \
+  qt/res/darkstyle/icon_checkbox_indeterminate.png \
+  qt/res/darkstyle/icon_checkbox_unchecked.png \
+  qt/res/darkstyle/icon_checkbox_checked_pressed.png \
+  qt/res/darkstyle/icon_checkbox_indeterminate_pressed.png \
+  qt/res/darkstyle/icon_checkbox_unchecked_pressed.png \
+  qt/res/darkstyle/icon_checkbox_checked_disabled.png \
+  qt/res/darkstyle/icon_checkbox_indeterminate_disabled.png \
+  qt/res/darkstyle/icon_checkbox_unchecked_disabled.png \
+  qt/res/darkstyle/icon_radiobutton_checked.png \
+  qt/res/darkstyle/icon_radiobutton_unchecked.png \
+  qt/res/darkstyle/icon_radiobutton_checked_pressed.png \
+  qt/res/darkstyle/icon_radiobutton_unchecked_pressed.png \
+  qt/res/darkstyle/icon_radiobutton_checked_disabled.png \
+  qt/res/darkstyle/icon_radiobutton_unchecked_disabled.png \
+  qt/res/fonts/OpenSans-Bold.ttf \
+  qt/res/fonts/OpenSans-BoldItalic.ttf \
+  qt/res/fonts/OpenSans-ExtraBold.ttf \
+  qt/res/fonts/OpenSans-ExtraBoldItalic.ttf \
+  qt/res/fonts/OpenSans-Italic.ttf \
+  qt/res/fonts/OpenSans-Light.ttf \
+  qt/res/fonts/OpenSans-LightItalic.ttf \
+  qt/res/fonts/OpenSans-Regular.ttf \
+  qt/res/fonts/OpenSans-SemiBold.ttf \
+  qt/res/fonts/OpenSans-SemiBoldItalic.ttf
 
-BITCOIN_QT_CPP = \
+
+ALPHACON_QT_BASE_CPP = \
   qt/bantablemodel.cpp \
-  qt/bitcoinaddressvalidator.cpp \
-  qt/bitcoinamountfield.cpp \
-  qt/bitcoingui.cpp \
-  qt/bitcoinunits.cpp \
+  qt/alphaconaddressvalidator.cpp \
+  qt/alphaconamountfield.cpp \
+  qt/alphacongui.cpp \
+  qt/alphaconunits.cpp \
   qt/clientmodel.cpp \
   qt/csvmodelwriter.cpp \
+  qt/darkstyle.cpp \
   qt/guiutil.cpp \
   qt/intro.cpp \
+  qt/modaloverlay.cpp \
   qt/networkstyle.cpp \
   qt/notificator.cpp \
   qt/optionsdialog.cpp \
   qt/optionsmodel.cpp \
+  qt/assettablemodel.cpp \
   qt/peertablemodel.cpp \
   qt/platformstyle.cpp \
   qt/qvalidatedlineedit.cpp \
@@ -305,15 +386,17 @@ BITCOIN_QT_CPP = \
   qt/trafficgraphwidget.cpp \
   qt/utilitydialog.cpp
 
-if TARGET_WINDOWS
-BITCOIN_QT_CPP += qt/winshutdownmonitor.cpp
-endif
+ALPHACON_QT_WINDOWS_CPP = qt/winshutdownmonitor.cpp
 
-if ENABLE_WALLET
-BITCOIN_QT_CPP += \
+ALPHACON_QT_WALLET_CPP = \
   qt/addressbookpage.cpp \
   qt/addresstablemodel.cpp \
   qt/askpassphrasedialog.cpp \
+  qt/assetcontroldialog.cpp \
+  qt/assetcontroltreewidget.cpp \
+  qt/assetfilterproxy.cpp \
+  qt/assetsdialog.cpp \
+  qt/createassetdialog.cpp \
   qt/coincontroldialog.cpp \
   qt/coincontroltreewidget.cpp \
   qt/editaddressdialog.cpp \
@@ -324,6 +407,8 @@ BITCOIN_QT_CPP += \
   qt/receivecoinsdialog.cpp \
   qt/receiverequestdialog.cpp \
   qt/recentrequeststablemodel.cpp \
+  qt/reissueassetdialog.cpp \
+  qt/sendassetsentry.cpp \
   qt/sendcoinsdialog.cpp \
   qt/sendcoinsentry.cpp \
   qt/signverifymessagedialog.cpp \
@@ -337,25 +422,32 @@ BITCOIN_QT_CPP += \
   qt/walletmodel.cpp \
   qt/walletmodeltransaction.cpp \
   qt/walletview.cpp
+
+ALPHACON_QT_CPP = $(ALPHACON_QT_BASE_CPP)
+if TARGET_WINDOWS
+ALPHACON_QT_CPP += $(ALPHACON_QT_WINDOWS_CPP)
+endif
+if ENABLE_WALLET
+ALPHACON_QT_CPP += $(ALPHACON_QT_WALLET_CPP)
 endif
 
 RES_IMAGES = 
 
-RES_MOVIES = $(wildcard qt/res/movies/spinner-*.png)
+RES_MOVIES = $(wildcard $(srcdir)/qt/res/movies/spinner-*.png)
 
-BITCOIN_RC = qt/res/bitcoin-qt-res.rc
+ALPHACON_RC = qt/res/alphacon-qt-res.rc
 
-BITCOIN_QT_INCLUDES = -I$(builddir)/qt -I$(srcdir)/qt -I$(srcdir)/qt/forms \
+ALPHACON_QT_INCLUDES = -I$(builddir)/qt -I$(srcdir)/qt -I$(srcdir)/qt/forms \
   -I$(builddir)/qt/forms -DQT_NO_KEYWORDS
 
-qt_libbitcoinqt_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(BITCOIN_QT_INCLUDES) \
+qt_libalphaconqt_a_CPPFLAGS = $(AM_CPPFLAGS) $(ALPHACON_INCLUDES) $(ALPHACON_QT_INCLUDES) \
   $(QT_INCLUDES) $(QT_DBUS_INCLUDES) $(PROTOBUF_CFLAGS) $(QR_CFLAGS)
-qt_libbitcoinqt_a_CXXFLAGS = $(AM_CXXFLAGS) $(QT_PIE_FLAGS)
+qt_libalphaconqt_a_CXXFLAGS = $(AM_CXXFLAGS) $(QT_PIE_FLAGS)
 
-qt_libbitcoinqt_a_SOURCES = $(BITCOIN_QT_CPP) $(BITCOIN_QT_H) $(QT_FORMS_UI) \
+qt_libalphaconqt_a_SOURCES = $(ALPHACON_QT_CPP) $(ALPHACON_QT_H) $(QT_FORMS_UI) \
   $(QT_QRC) $(QT_QRC_LOCALE) $(QT_TS) $(PROTOBUF_PROTO) $(RES_ICONS) $(RES_IMAGES) $(RES_MOVIES)
 
-nodist_qt_libbitcoinqt_a_SOURCES = $(QT_MOC_CPP) $(QT_MOC) $(PROTOBUF_CC) \
+nodist_qt_libalphaconqt_a_SOURCES = $(QT_MOC_CPP) $(QT_MOC) $(PROTOBUF_CC) \
   $(PROTOBUF_H) $(QT_QRC_CPP) $(QT_QRC_LOCALE_CPP)
 
 # forms/foo.h -> forms/ui_foo.h
@@ -364,71 +456,71 @@ QT_FORMS_H=$(join $(dir $(QT_FORMS_UI)),$(addprefix ui_, $(notdir $(QT_FORMS_UI:
 # Most files will depend on the forms and moc files as includes. Generate them
 # before anything else.
 $(QT_MOC): $(QT_FORMS_H)
-$(qt_libbitcoinqt_a_OBJECTS) $(qt_lore_qt_OBJECTS) : | $(QT_MOC)
+$(qt_libalphaconqt_a_OBJECTS) $(qt_alphacon_qt_OBJECTS) : | $(QT_MOC)
 
 #Generating these with a half-written protobuf header leads to wacky results.
 #This makes sure it's done.
 $(QT_MOC): $(PROTOBUF_H)
 $(QT_MOC_CPP): $(PROTOBUF_H)
 
-# lore-qt binary #
-qt_lore_qt_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(BITCOIN_QT_INCLUDES) \
+# alphacon-qt binary #
+qt_alphacon_qt_CPPFLAGS = $(AM_CPPFLAGS) $(ALPHACON_INCLUDES) $(ALPHACON_QT_INCLUDES) \
   $(QT_INCLUDES) $(PROTOBUF_CFLAGS) $(QR_CFLAGS)
-qt_lore_qt_CXXFLAGS = $(AM_CXXFLAGS) $(QT_PIE_FLAGS)
+qt_alphacon_qt_CXXFLAGS = $(AM_CXXFLAGS) $(QT_PIE_FLAGS)
 
-qt_lore_qt_SOURCES = qt/bitcoin.cpp
+qt_alphacon_qt_SOURCES = qt/alphacon.cpp
 if TARGET_DARWIN
-  qt_lore_qt_SOURCES += $(BITCOIN_MM)
+  qt_alphacon_qt_SOURCES += $(ALPHACON_MM)
 endif
 if TARGET_WINDOWS
-  qt_lore_qt_SOURCES += $(BITCOIN_RC)
+  qt_alphacon_qt_SOURCES += $(ALPHACON_RC)
 endif
-qt_lore_qt_LDADD = qt/libbitcoinqt.a $(LIBBITCOIN_SERVER)
+qt_alphacon_qt_LDADD = qt/libalphaconqt.a $(LIBALPHACON_SERVER)
 if ENABLE_WALLET
-qt_lore_qt_LDADD += $(LIBBITCOIN_WALLET)
+qt_alphacon_qt_LDADD += $(LIBALPHACON_WALLET)
 endif
 if ENABLE_ZMQ
-qt_lore_qt_LDADD += $(LIBBITCOIN_ZMQ) $(ZMQ_LIBS)
+qt_alphacon_qt_LDADD += $(LIBALPHACON_ZMQ) $(ZMQ_LIBS)
 endif
-qt_lore_qt_LDADD += $(LIBBITCOIN_CLI) $(LIBBITCOIN_COMMON) $(LIBBITCOIN_UTIL) $(LIBBITCOIN_CRYPTO) $(LIBUNIVALUE) $(LIBLEVELDB) $(LIBMEMENV) \
+qt_alphacon_qt_LDADD += $(LIBALPHACON_CLI) $(LIBALPHACON_COMMON) $(LIBALPHACON_UTIL) $(LIBALPHACON_CONSENSUS) $(LIBALPHACON_CRYPTO) $(LIBUNIVALUE) $(LIBLEVELDB) $(LIBLEVELDB_SSE42) $(LIBMEMENV) \
   $(BOOST_LIBS) $(QT_LIBS) $(QT_DBUS_LIBS) $(QR_LIBS) $(PROTOBUF_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(LIBSECP256K1) \
   $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS)
-qt_lore_qt_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(QT_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
-qt_lore_qt_LIBTOOLFLAGS = --tag CXX
+qt_alphacon_qt_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(QT_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+qt_alphacon_qt_LIBTOOLFLAGS = --tag CXX
 
 #locale/foo.ts -> locale/foo.qm
 QT_QM=$(QT_TS:.ts=.qm)
 
 SECONDARY: $(QT_QM)
 
-$(srcdir)/qt/bitcoinstrings.cpp: $(libbitcoin_server_a_SOURCES) $(libbitcoin_wallet_a_SOURCES)
+$(srcdir)/qt/alphaconstrings.cpp: $(libalphacon_server_a_SOURCES) $(libalphacon_wallet_a_SOURCES) $(libalphacon_common_a_SOURCES) $(libalphacon_zmq_a_SOURCES) $(libalphacon_consensus_a_SOURCES) $(libalphacon_util_a_SOURCES)
 	@test -n $(XGETTEXT) || echo "xgettext is required for updating translations"
-	$(AM_V_GEN) cd $(srcdir); XGETTEXT=$(XGETTEXT) $(PYTHON) ../share/qt/extract_strings_qt.py $^
+	$(AM_V_GEN) cd $(srcdir); XGETTEXT=$(XGETTEXT) PACKAGE_NAME="$(PACKAGE_NAME)" COPYRIGHT_HOLDERS="$(COPYRIGHT_HOLDERS)" COPYRIGHT_HOLDERS_SUBSTITUTION="$(COPYRIGHT_HOLDERS_SUBSTITUTION)" $(PYTHON) ../share/qt/extract_strings_qt.py $^
 
-translate: $(srcdir)/qt/bitcoinstrings.cpp $(QT_FORMS_UI) $(QT_FORMS_UI) $(BITCOIN_QT_CPP) $(BITCOIN_QT_H) $(BITCOIN_MM)
+translate: $(srcdir)/qt/alphaconstrings.cpp $(QT_FORMS_UI) $(QT_FORMS_UI) $(ALPHACON_QT_BASE_CPP) qt/alphacon.cpp $(ALPHACON_QT_WINDOWS_CPP) $(ALPHACON_QT_WALLET_CPP) $(ALPHACON_QT_H) $(ALPHACON_MM)
 	@test -n $(LUPDATE) || echo "lupdate is required for updating translations"
-	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(LUPDATE) $^ -locations relative -no-obsolete -ts $(srcdir)/qt/locale/bitcoin_en.ts
+	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(LUPDATE) $^ -locations relative -no-obsolete -ts $(srcdir)/qt/locale/alphacon_en.ts
 
 $(QT_QRC_LOCALE_CPP): $(QT_QRC_LOCALE) $(QT_QM)
 	@test -f $(RCC)
 	@cp -f $< $(@D)/temp_$(<F)
-	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(RCC) -name bitcoin_locale $(@D)/temp_$(<F) | \
+	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(RCC) -name alphacon_locale $(@D)/temp_$(<F) | \
 	  $(SED) -e '/^\*\*.*Created:/d' -e '/^\*\*.*by:/d' > $@
 	@rm $(@D)/temp_$(<F)
 
 $(QT_QRC_CPP): $(QT_QRC) $(QT_FORMS_H) $(RES_ICONS) $(RES_IMAGES) $(RES_MOVIES) $(PROTOBUF_H)
 	@test -f $(RCC)
-	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(RCC) -name bitcoin $< | \
+	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(RCC) -name alphacon $< | \
 	  $(SED) -e '/^\*\*.*Created:/d' -e '/^\*\*.*by:/d' > $@
 
-CLEAN_QT = $(nodist_qt_libbitcoinqt_a_SOURCES) $(QT_QM) $(QT_FORMS_H) qt/*.gcda qt/*.gcno
+CLEAN_QT = $(nodist_qt_libalphaconqt_a_SOURCES) $(QT_QM) $(QT_FORMS_H) qt/*.gcda qt/*.gcno
 
 CLEANFILES += $(CLEAN_QT)
 
-bitcoin_qt_clean: FORCE
-	rm -f $(CLEAN_QT) $(qt_libbitcoinqt_a_OBJECTS) $(qt_lore_qt_OBJECTS) qt/lore-qt$(EXEEXT) $(LIBBITCOINQT)
+alphacon_qt_clean: FORCE
+	rm -f $(CLEAN_QT) $(qt_libalphaconqt_a_OBJECTS) $(qt_alphacon_qt_OBJECTS) qt/alphacon-qt$(EXEEXT) $(LIBALPHACONQT)
 
-bitcoin_qt : qt/lore-qt$(EXEEXT)
+alphacon_qt : qt/alphacon-qt$(EXEEXT)
 
 ui_%.h: %.ui
 	@test -f $(UIC)

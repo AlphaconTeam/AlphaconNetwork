@@ -1,10 +1,12 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2015 The Bitcoin Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_KEYSTORE_H
-#define BITCOIN_KEYSTORE_H
+#ifndef ALPHACON_KEYSTORE_H
+#define ALPHACON_KEYSTORE_H
 
 #include "key.h"
 #include "pubkey.h"
@@ -13,7 +15,6 @@
 #include "sync.h"
 
 #include <boost/signals2/signal.hpp>
-#include <boost/variant.hpp>
 
 /** A virtual base class for key stores */
 class CKeyStore
@@ -31,10 +32,10 @@ public:
     //! Check whether a key corresponding to a given address is present in the store.
     virtual bool HaveKey(const CKeyID &address) const =0;
     virtual bool GetKey(const CKeyID &address, CKey& keyOut) const =0;
-    virtual void GetKeys(std::set<CKeyID> &setAddress) const =0;
+    virtual std::set<CKeyID> GetKeys() const =0;
     virtual bool GetPubKey(const CKeyID &address, CPubKey& vchPubKeyOut) const =0;
 
-    //! Support for BIP 0013 : see https://github.com/bitcoin/bips/blob/master/bip-0013.mediawiki
+    //! Support for BIP 0013 : see https://github.com/alphacon/bips/blob/master/bip-0013.mediawiki
     virtual bool AddCScript(const CScript& redeemScript) =0;
     virtual bool HaveCScript(const CScriptID &hash) const =0;
     virtual bool GetCScript(const CScriptID &hash, CScript& redeemScriptOut) const =0;
@@ -61,9 +62,9 @@ protected:
     WatchOnlySet setWatchOnly;
 
 public:
-    bool AddKeyPubKey(const CKey& key, const CPubKey &pubkey);
-    bool GetPubKey(const CKeyID &address, CPubKey& vchPubKeyOut) const;
-    bool HaveKey(const CKeyID &address) const
+    bool AddKeyPubKey(const CKey& key, const CPubKey &pubkey) override;
+    bool GetPubKey(const CKeyID &address, CPubKey& vchPubKeyOut) const override;
+    bool HaveKey(const CKeyID &address) const override
     {
         bool result;
         {
@@ -72,20 +73,16 @@ public:
         }
         return result;
     }
-    void GetKeys(std::set<CKeyID> &setAddress) const
+    std::set<CKeyID> GetKeys() const override
     {
-        setAddress.clear();
-        {
-            LOCK(cs_KeyStore);
-            KeyMap::const_iterator mi = mapKeys.begin();
-            while (mi != mapKeys.end())
-            {
-                setAddress.insert((*mi).first);
-                mi++;
-            }
+        LOCK(cs_KeyStore);
+        std::set<CKeyID> set_address;
+        for (const auto& mi : mapKeys) {
+            set_address.insert(mi.first);
         }
+        return set_address;
     }
-    bool GetKey(const CKeyID &address, CKey &keyOut) const
+    bool GetKey(const CKeyID &address, CKey &keyOut) const override
     {
         {
             LOCK(cs_KeyStore);
@@ -98,17 +95,17 @@ public:
         }
         return false;
     }
-    virtual bool AddCScript(const CScript& redeemScript);
-    virtual bool HaveCScript(const CScriptID &hash) const;
-    virtual bool GetCScript(const CScriptID &hash, CScript& redeemScriptOut) const;
+    bool AddCScript(const CScript& redeemScript) override;
+    bool HaveCScript(const CScriptID &hash) const override;
+    bool GetCScript(const CScriptID &hash, CScript& redeemScriptOut) const override;
 
-    virtual bool AddWatchOnly(const CScript &dest);
-    virtual bool RemoveWatchOnly(const CScript &dest);
-    virtual bool HaveWatchOnly(const CScript &dest) const;
-    virtual bool HaveWatchOnly() const;
+    bool AddWatchOnly(const CScript &dest) override;
+    bool RemoveWatchOnly(const CScript &dest) override;
+    bool HaveWatchOnly(const CScript &dest) const override;
+    bool HaveWatchOnly() const override;
 };
 
 typedef std::vector<unsigned char, secure_allocator<unsigned char> > CKeyingMaterial;
 typedef std::map<CKeyID, std::pair<CPubKey, std::vector<unsigned char> > > CryptedKeyMap;
 
-#endif // BITCOIN_KEYSTORE_H
+#endif // ALPHACON_KEYSTORE_H

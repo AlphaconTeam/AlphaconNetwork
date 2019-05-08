@@ -1,9 +1,11 @@
-// Copyright (c) 2009-2015 The Bitcoin Core developers
+// Copyright (c) 2009-2016 The Bitcoin Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_CHECKPOINTS_H
-#define BITCOIN_CHECKPOINTS_H
+#ifndef ALPHACON_CHECKPOINTS_H
+#define ALPHACON_CHECKPOINTS_H
 
 #include "uint256.h"
 
@@ -19,14 +21,9 @@ struct CCheckpointData;
 namespace Checkpoints
 {
 
-//! Return conservative estimate of total number of blocks, 0 if unknown
-int GetTotalBlocksEstimate(const CCheckpointData& data);
-
 //! Returns last CBlockIndex* in mapBlockIndex that is a checkpoint
 CBlockIndex* GetLastCheckpoint(const CCheckpointData& data);
 
-double GuessVerificationProgress(const CCheckpointData& data, CBlockIndex* pindex, bool fSigchecks = true);
-
 } //namespace Checkpoints
 
-#endif // BITCOIN_CHECKPOINTS_H
+#endif // ALPHACON_CHECKPOINTS_H

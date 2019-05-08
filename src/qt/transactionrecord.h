@@ -1,9 +1,11 @@
-// Copyright (c) 2011-2013 The Bitcoin Core developers
+// Copyright (c) 2011-2016 The Bitcoin Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_QT_TRANSACTIONRECORD_H
-#define BITCOIN_QT_TRANSACTIONRECORD_H
+#ifndef ALPHACON_QT_TRANSACTIONRECORD_H
+#define ALPHACON_QT_TRANSACTIONRECORD_H
 
 #include "amount.h"
 #include "uint256.h"
@@ -20,17 +22,9 @@ class TransactionStatus
 {
 public:
     TransactionStatus():
-        countsForBalance(false),
-        sortKey(""),
-        matures_in(0),
-        status(Offline),
-        hasConflicting(false),
-        depth(0),
-        open_for(0),
-        cur_num_blocks(-1),
-        cur_num_conflicts(-1)
-    {
-    }
+        countsForBalance(false), sortKey(""),
+        matures_in(0), status(Offline), depth(0), open_for(0), cur_num_blocks(-1)
+    { }
 
     enum Status {
         Confirmed,          /**< Have 6 or more confirmations (normal tx) or fully mature (mined tx) **/
@@ -61,10 +55,6 @@ public:
     /** @name Reported status
        @{*/
     Status status;
-
-    // Has conflicting transactions spending same prevout
-    bool hasConflicting;
-
     qint64 depth;
     qint64 open_for; /**< Timestamp if status==OpenUntilDate, otherwise number
                       of additional blocks that need to be mined before
@@ -74,8 +64,7 @@ public:
     /** Current number of blocks (to know whether cached status is still valid) */
     int cur_num_blocks;
 
-    /** Number of conflicts received into wallet as of last status update */
-    int64_t cur_num_conflicts;
+    bool needsUpdate;
 };
 
 /** UI model for a transaction. A core transaction can be represented by multiple UI transactions if it has
@@ -92,28 +81,32 @@ public:
         SendToOther,
         RecvWithAddress,
         RecvFromOther,
-        SendToSelf
+        SendToSelf,
+        Issue,
+        Reissue,
+        TransferTo,
+        TransferFrom
     };
 
     /** Number of confirmation recommended for accepting a transaction */
-    static const int RecommendedNumConfirmations = 10;
+    static const int RecommendedNumConfirmations = 6;
 
     TransactionRecord():
-            hash(), time(0), type(Other), address(""), debit(0), credit(0), idx(0)
+            hash(), time(0), type(Other), address(""), debit(0), credit(0), assetName("ALP"), units(8), idx(0)
     {
     }
 
-    TransactionRecord(uint256 hash, qint64 time):
-            hash(hash), time(time), type(Other), address(""), debit(0),
-            credit(0), idx(0)
+    TransactionRecord(uint256 _hash, qint64 _time):
+            hash(_hash), time(_time), type(Other), address(""), debit(0),
+            credit(0), assetName("ALP"), units(8), idx(0)
     {
     }
 
-    TransactionRecord(uint256 hash, qint64 time,
-                Type type, const std::string &address,
-                const CAmount& debit, const CAmount& credit):
-            hash(hash), time(time), type(type), address(address), debit(debit), credit(credit),
-            idx(0)
+    TransactionRecord(uint256 _hash, qint64 _time,
+                Type _type, const std::string &_address,
+                const CAmount& _debit, const CAmount& _credit):
+            hash(_hash), time(_time), type(_type), address(_address), debit(_debit), credit(_credit),
+            assetName("ALP"), units(8), idx(0)
     {
     }
 
@@ -130,6 +123,8 @@ public:
     std::string address;
     CAmount debit;
     CAmount credit;
+    std::string assetName;
+    uint8_t units;
     /**@}*/
 
     /** Subtransaction index, for sort key */
@@ -153,7 +148,7 @@ public:
 
     /** Return whether a status update is needed.
      */
-    bool statusUpdateNeeded(int64_t nConflictsReceived);
+    bool statusUpdateNeeded() const;
 };
 
-#endif // BITCOIN_QT_TRANSACTIONRECORD_H
+#endif // ALPHACON_QT_TRANSACTIONRECORD_H

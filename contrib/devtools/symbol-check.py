@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/env python
 # Copyright (c) 2014 Wladimir J. van der Laan
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -47,13 +47,13 @@ MAX_VERSIONS = {
 
 # Ignore symbols that are exported as part of every executable
 IGNORE_EXPORTS = {
-b'_edata', b'_end', b'_init', b'__bss_start', b'_fini', b'_IO_stdin_used'
+b'_edata', b'_end', b'_init', b'__bss_start', b'_fini', b'_IO_stdin_used', b'stdin', b'stdout', b'stderr'
 }
 READELF_CMD = os.getenv('READELF', '/usr/bin/readelf')
 CPPFILT_CMD = os.getenv('CPPFILT', '/usr/bin/c++filt')
 # Allowed NEEDED libraries
 ALLOWED_LIBRARIES = {
-# bitcoind and bitcoin-qt
+# alphacond and alphacon-qt
 b'libgcc_s.so.1', # GCC base support
 b'libc.so.6', # C library
 b'libpthread.so.0', # threading
@@ -62,7 +62,7 @@ b'libm.so.6', # math library
 b'librt.so.1', # real-time (clock)
 b'ld-linux-x86-64.so.2', # 64-bit dynamic linker
 b'ld-linux.so.2', # 32-bit dynamic linker
-# bitcoin-qt only
+# alphacon-qt only
 b'libX11-xcb.so.1', # part of X11
 b'libX11.so.6', # part of X11
 b'libxcb.so.1', # part of X11
@@ -159,6 +159,4 @@ if __name__ == '__main__':
                 print('%s: NEEDED library %s is not allowed' % (filename, library_name.decode('utf-8')))
                 retval = 1
 
-    exit(retval)
-
-
+    sys.exit(retval)

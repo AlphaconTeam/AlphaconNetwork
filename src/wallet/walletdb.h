@@ -1,17 +1,15 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The Bitcoin Core developers
-// Copyright (c) 2015-2017 The Bitcoin Unlimited developers
-// Copyright (c) 2017 The Bitcoin developers
+// Copyright (c) 2009-2016 The Bitcoin Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_WALLET_WALLETDB_H
-#define BITCOIN_WALLET_WALLETDB_H
+#ifndef ALPHACON_WALLET_WALLETDB_H
+#define ALPHACON_WALLET_WALLETDB_H
 
 #include "amount.h"
-#include "key.h"
 #include "primitives/transaction.h"
-#include "script/standard.h" // for CTxDestination
 #include "wallet/db.h"
 #include "key.h"
 
@@ -20,6 +18,21 @@
 #include <string>
 #include <utility>
 #include <vector>
+
+/**
+ * Overview of wallet database classes:
+ *
+ * - CDBEnv is an environment in which the database exists (has no analog in dbwrapper.h)
+ * - CWalletDBWrapper represents a wallet database (similar to CDBWrapper in dbwrapper.h)
+ * - CDB is a low-level database transaction (similar to CDBBatch in dbwrapper.h)
+ * - CWalletDB is a modifier object for the wallet, and encapsulates a database
+ *   transaction as well as methods to act on the database (no analog in
+ *   dbwrapper.h)
+ *
+ * The latter two are named confusingly, in contrast to what the names CDB
+ * and CWalletDB suggest they are transient transaction objects and don't
+ * represent the database itself.
+ */
 
 static const bool DEFAULT_FLUSHWALLET = true;
 
@@ -50,27 +63,32 @@ class CHDChain
 {
 public:
     uint32_t nExternalChainCounter;
-    CKeyID masterKeyID; //!< master key hash160
+    uint32_t nInternalChainCounter;
+    CKeyID seed_id; //!< seed hash160
 
-    static const int CURRENT_VERSION = 1;
+    static const int VERSION_HD_BASE        = 1;
+    static const int VERSION_HD_CHAIN_SPLIT = 2;
+    static const int CURRENT_VERSION        = VERSION_HD_CHAIN_SPLIT;
     int nVersion;
 
     CHDChain() { SetNull(); }
     ADD_SERIALIZE_METHODS;
     template <typename Stream, typename Operation>
-    inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion)
+    inline void SerializationOp(Stream& s, Operation ser_action)
     {
         READWRITE(this->nVersion);
-        nVersion = this->nVersion;
         READWRITE(nExternalChainCounter);
-        READWRITE(masterKeyID);
+        READWRITE(seed_id);
+        if (this->nVersion >= VERSION_HD_CHAIN_SPLIT)
+            READWRITE(nInternalChainCounter);
     }
 
     void SetNull()
     {
         nVersion = CHDChain::CURRENT_VERSION;
         nExternalChainCounter = 0;
-        masterKeyID.SetNull();
+        nInternalChainCounter = 0;
+        seed_id.SetNull();
     }
 };
 
@@ -83,29 +101,28 @@ public:
     int nVersion;
     int64_t nCreateTime; // 0 means unknown
     std::string hdKeypath; //optional HD/bip32 keypath
-    CKeyID hdMasterKeyID; //id of the HD masterkey used to derive this key
+    CKeyID hd_seed_id; //id of the HD seed used to derive this key
 
     CKeyMetadata()
     {
         SetNull();
     }
-    CKeyMetadata(int64_t nCreateTime_)
+    explicit CKeyMetadata(int64_t nCreateTime_)
     {
-    	SetNull();
+        SetNull();
         nCreateTime = nCreateTime_;
     }
 
     ADD_SERIALIZE_METHODS;
 
     template <typename Stream, typename Operation>
-    inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
+    inline void SerializationOp(Stream& s, Operation ser_action) {
         READWRITE(this->nVersion);
-        nVersion = this->nVersion;
         READWRITE(nCreateTime);
         if (this->nVersion >= VERSION_WITH_HDDATA)
         {
             READWRITE(hdKeypath);
-            READWRITE(hdMasterKeyID);
+            READWRITE(hd_seed_id);
         }
     }
 
@@ -114,23 +131,52 @@ public:
         nVersion = CKeyMetadata::CURRENT_VERSION;
         nCreateTime = 0;
         hdKeypath.clear();
-        hdMasterKeyID.SetNull();
+        hd_seed_id.SetNull();
     }
 };
 
-/** Access to the wallet database */
-class CWalletDB : public CDB
+/** Access to the wallet database.
+ * This should really be named CWalletDBBatch, as it represents a single transaction at the
+ * database. It will be committed when the object goes out of scope.
+ * Optionally (on by default) it will flush to disk as well.
+ */
+class CWalletDB
 {
-public:
-    CWalletDB(const std::string& strFilename, const char* pszMode = "r+", bool fFlushOnClose = true) : CDB(strFilename, pszMode, fFlushOnClose)
+private:
+    template <typename K, typename T>
+    bool WriteIC(const K& key, const T& value, bool fOverwrite = true)
     {
+        if (!batch.Write(key, value, fOverwrite)) {
+            return false;
+        }
+        m_dbw.IncrementUpdateCounter();
+        return true;
     }
 
-    bool WriteName(const CTxDestination &address, const std::string &strName);
-    bool EraseName(const CTxDestination &address);
+    template <typename K>
+    bool EraseIC(const K& key)
+    {
+        if (!batch.Erase(key)) {
+            return false;
+        }
+        m_dbw.IncrementUpdateCounter();
+        return true;
+    }
 
-    bool WritePurpose(const CTxDestination &address, const std::string &purpose);
-    bool ErasePurpose(const CTxDestination &address);
+public:
+    explicit CWalletDB(CWalletDBWrapper& dbw, const char* pszMode = "r+", bool _fFlushOnClose = true) :
+        batch(dbw, pszMode, _fFlushOnClose),
+        m_dbw(dbw)
+    {
+    }
+    CWalletDB(const CWalletDB&) = delete;
+    CWalletDB& operator=(const CWalletDB&) = delete;
+
+    bool WriteName(const std::string& strAddress, const std::string& strName);
+    bool EraseName(const std::string& strAddress);
+
+    bool WritePurpose(const std::string& strAddress, const std::string& purpose);
+    bool ErasePurpose(const std::string& strAddress);
 
     bool WriteTx(const CWalletTx& wtx);
     bool EraseTx(uint256 hash);
@@ -141,15 +187,13 @@ public:
 
     bool WriteCScript(const uint160& hash, const CScript& redeemScript);
 
-    bool WriteWatchOnly(const CScript &script);
+    bool WriteWatchOnly(const CScript &script, const CKeyMetadata &keymeta);
     bool EraseWatchOnly(const CScript &script);
 
     bool WriteBestBlock(const CBlockLocator& locator);
     bool ReadBestBlock(CBlockLocator& locator);
 
     bool WriteOrderPosNext(int64_t nOrderPosNext);
-
-    bool WriteDefaultKey(const CPubKey& vchPubKey);
 
     bool ReadPool(int64_t nPool, CKeyPool& keypool);
     bool WritePool(int64_t nPool, const CKeyPool& keypool);
@@ -159,32 +203,54 @@ public:
 
     /// This writes directly to the database, and will not update the CWallet's cached accounting entries!
     /// Use wallet.AddAccountingEntry instead, to write *and* update its caches.
-    bool WriteAccountingEntry(const uint64_t nAccEntryNum, const CAccountingEntry &acentry);
-    bool WriteAccountingEntry_Backend(const CAccountingEntry &acentry);
-    bool ReadAccount(const std::string &strAccount, CAccount &account);
-    bool WriteAccount(const std::string &strAccount, const CAccount &account);
+    bool WriteAccountingEntry(const uint64_t nAccEntryNum, const CAccountingEntry& acentry);
+    bool ReadAccount(const std::string& strAccount, CAccount& account);
+    bool WriteAccount(const std::string& strAccount, const CAccount& account);
 
     /// Write destination data key,value tuple to database
-    bool WriteDestData(const CTxDestination &address, const std::string &key, const std::string &value);
+    bool WriteDestData(const std::string &address, const std::string &key, const std::string &value);
     /// Erase destination data tuple from wallet database
-    bool EraseDestData(const CTxDestination &address, const std::string &key);
-    bool WriteHDChain(const CHDChain& chain);
+    bool EraseDestData(const std::string &address, const std::string &key);
+
     CAmount GetAccountCreditDebit(const std::string& strAccount);
     void ListAccountCreditDebit(const std::string& strAccount, std::list<CAccountingEntry>& acentries);
 
-    DBErrors ReorderTransactions(CWallet* pwallet);
     DBErrors LoadWallet(CWallet* pwallet);
-    DBErrors FindWalletTx(CWallet* pwallet, std::vector<uint256>& vTxHash, std::vector<CWalletTx>& vWtx);
-    DBErrors ZapWalletTx(CWallet* pwallet, std::vector<CWalletTx>& vWtx);
-    DBErrors ZapSelectTx(CWallet* pwallet, std::vector<uint256>& vHashIn, std::vector<uint256>& vHashOut);
-    static bool Recover(CDBEnv& dbenv, const std::string& filename, bool fOnlyKeys);
-    static bool Recover(CDBEnv& dbenv, const std::string& filename);
+    DBErrors FindWalletTx(std::vector<uint256>& vTxHash, std::vector<CWalletTx>& vWtx);
+    DBErrors ZapWalletTx(std::vector<CWalletTx>& vWtx);
+    DBErrors ZapSelectTx(std::vector<uint256>& vHashIn, std::vector<uint256>& vHashOut);
+    /* Try to (very carefully!) recover wallet database (with a possible key type filter) */
+    static bool Recover(const std::string& filename, void *callbackDataIn, bool (*recoverKVcallback)(void* callbackData, CDataStream ssKey, CDataStream ssValue), std::string& out_backup_filename);
+    /* Recover convenience-function to bypass the key filter callback, called when verify fails, recovers everything */
+    static bool Recover(const std::string& filename, std::string& out_backup_filename);
+    /* Recover filter (used as callback), will only let keys (cryptographical keys) as KV/key-type pass through */
+    static bool RecoverKeysOnlyFilter(void *callbackData, CDataStream ssKey, CDataStream ssValue);
+    /* Function to determine if a certain KV/key-type is a key (cryptographical key) type */
+    static bool IsKeyType(const std::string& strType);
+    /* verifies the database environment */
+    static bool VerifyEnvironment(const std::string& walletFile, const fs::path& dataDir, std::string& errorStr);
+    /* verifies the database file */
+    static bool VerifyDatabaseFile(const std::string& walletFile, const fs::path& dataDir, std::string& warningStr, std::string& errorStr);
 
+    //! write the hdchain model (external chain child index counter)
+    bool WriteHDChain(const CHDChain& chain);
+
+    //! Begin a new transaction
+    bool TxnBegin();
+    //! Commit current transaction
+    bool TxnCommit();
+    //! Abort current transaction
+    bool TxnAbort();
+    //! Read wallet version
+    bool ReadVersion(int& nVersion);
+    //! Write wallet version
+    bool WriteVersion(int nVersion);
 private:
-    CWalletDB(const CWalletDB&);
-    void operator=(const CWalletDB&);
+    CDB batch;
+    CWalletDBWrapper& m_dbw;
 };
 
-void ThreadFlushWalletDB(const std::string& strFile);
+//! Compacts BDB state so that wallet.dat is self-contained (if there are changes)
+void MaybeCompactWalletDB();
 
-#endif // BITCOIN_WALLET_WALLETDB_H
+#endif // ALPHACON_WALLET_WALLETDB_H

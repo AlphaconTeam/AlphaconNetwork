@@ -1,10 +1,12 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The Bitcoin Core developers
+// Copyright (c) 2009-2016 The Bitcoin Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_UINT256_H
-#define BITCOIN_UINT256_H
+#ifndef ALPHACON_UINT256_H
+#define ALPHACON_UINT256_H
 
 #include <assert.h>
 #include <cstring>
@@ -42,9 +44,11 @@ public:
         memset(data, 0, sizeof(data));
     }
 
-    friend inline bool operator==(const base_blob& a, const base_blob& b) { return memcmp(a.data, b.data, sizeof(a.data)) == 0; }
-    friend inline bool operator!=(const base_blob& a, const base_blob& b) { return memcmp(a.data, b.data, sizeof(a.data)) != 0; }
-    friend inline bool operator<(const base_blob& a, const base_blob& b) { return memcmp(a.data, b.data, sizeof(a.data)) < 0; }
+    inline int Compare(const base_blob& other) const { return memcmp(data, other.data, sizeof(data)); }
+
+    friend inline bool operator==(const base_blob& a, const base_blob& b) { return a.Compare(b) == 0; }
+    friend inline bool operator!=(const base_blob& a, const base_blob& b) { return a.Compare(b) != 0; }
+    friend inline bool operator<(const base_blob& a, const base_blob& b) { return a.Compare(b) < 0; }
 
     std::string GetHex() const;
     void SetHex(const char* psz);
@@ -76,11 +80,6 @@ public:
         return sizeof(data);
     }
 
-    unsigned int GetSerializeSize(int nType, int nVersion) const
-    {
-        return sizeof(data);
-    }
-
     uint64_t GetUint64(int pos) const
     {
         const uint8_t* ptr = data + pos * 8;
@@ -95,13 +94,13 @@ public:
     }
 
     template<typename Stream>
-    void Serialize(Stream& s, int nType, int nVersion) const
+    void Serialize(Stream& s) const
     {
         s.write((char*)data, sizeof(data));
     }
 
     template<typename Stream>
-    void Unserialize(Stream& s, int nType, int nVersion)
+    void Unserialize(Stream& s)
     {
         s.read((char*)data, sizeof(data));
     }
@@ -114,7 +113,6 @@ public:
 class uint160 : public base_blob<160> {
 public:
     uint160() {}
-    uint160(const base_blob<160>& b) : base_blob<160>(b) {}
     explicit uint160(const std::vector<unsigned char>& vch) : base_blob<160>(vch) {}
 };
 
@@ -126,9 +124,15 @@ public:
 class uint256 : public base_blob<256> {
 public:
     uint256() {}
-    uint256(const base_blob<256>& b) : base_blob<256>(b) {}
     explicit uint256(const std::vector<unsigned char>& vch) : base_blob<256>(vch) {}
 
+    int GetNibble(int index) const 
+    {
+        index = 63 - index;
+        if (index % 2 == 1)
+            return(data[index / 2] >> 4);
+        return(data[index / 2] & 0x0F); 
+    }
     /** A cheap hash function that just returns 64 bits from the result, it can be
      * used when the contents are considered uniformly random. It is not appropriate
      * when the value can easily be influenced from outside as e.g. a network adversary could
@@ -138,8 +142,6 @@ public:
     {
         return ReadLE64(data);
     }
-
-    uint64_t GetLow64() const;
 };
 
 /* uint256 from const char *.
@@ -163,17 +165,16 @@ inline uint256 uint256S(const std::string& str)
     return rv;
 }
 
-inline uint160 uint160S(const char *str)
-{
-    uint160 rv;
-    rv.SetHex(str);
-    return rv;
-}
-
-inline uint160 uint160S(const std::string &str)
-{
-    uint160 rv;
-    rv.SetHex(str);
-    return rv;
-}
-#endif // BITCOIN_UINT256_H
+class uint512 : public base_blob<512> {
+public:
+    uint512() {}
+    uint512(const base_blob<512>& b) : base_blob<512>(b) {}
+    explicit uint512(const std::vector<unsigned char>& vch) : base_blob<512>(vch) {}
+    uint256 trim256() const
+    {
+        uint256 result;
+        memcpy((void*)&result, (void*)data, 32);
+        return result;
+    }
+};
+#endif // ALPHACON_UINT256_H

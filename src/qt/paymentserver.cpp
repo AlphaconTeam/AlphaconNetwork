@@ -1,17 +1,18 @@
-// Copyright (c) 2011-2015 The Bitcoin Core developers
+// Copyright (c) 2011-2016 The Bitcoin Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "paymentserver.h"
 
-#include "bitcoinunits.h"
+#include "alphaconunits.h"
 #include "guiutil.h"
 #include "optionsmodel.h"
 
+#include "base58.h"
 #include "chainparams.h"
-#include "config.h"
-#include "dstencode.h"
-#include "validation.h" // For minRelayTxFee
+#include "policy/policy.h"
 #include "ui_interface.h"
 #include "util.h"
 #include "wallet/wallet.h"
@@ -47,17 +48,15 @@
 #include <QUrlQuery>
 #endif
 
-const int BITCOIN_IPC_CONNECT_TIMEOUT = 1000; // milliseconds
-const QString BITCOIN_IPC_PREFIX("blackcoin:");
+const int ALPHACON_IPC_CONNECT_TIMEOUT = 1000; // milliseconds
+const QString ALPHACON_IPC_PREFIX("alphacon:");
 // BIP70 payment protocol messages
 const char* BIP70_MESSAGE_PAYMENTACK = "PaymentACK";
 const char* BIP70_MESSAGE_PAYMENTREQUEST = "PaymentRequest";
 // BIP71 payment protocol media types
-const char* BIP71_MIMETYPE_PAYMENT = "application/blackcoin-payment";
-const char* BIP71_MIMETYPE_PAYMENTACK = "application/blackcoin-paymentack";
-const char* BIP71_MIMETYPE_PAYMENTREQUEST = "application/blackcoin-paymentrequest";
-// BIP70 max payment request size in bytes (DoS protection)
-const qint64 BIP70_MAX_PAYMENTREQUEST_SIZE = 50000;
+const char* BIP71_MIMETYPE_PAYMENT = "application/alphacon-payment";
+const char* BIP71_MIMETYPE_PAYMENTACK = "application/alphacon-paymentack";
+const char* BIP71_MIMETYPE_PAYMENTREQUEST = "application/alphacon-paymentrequest";
 
 struct X509StoreDeleter {
       void operator()(X509_STORE* b) {
@@ -81,7 +80,7 @@ namespace // Anon namespace
 //
 static QString ipcServerName()
 {
-    QString name("BitcoinQt");
+    QString name("AlphaconQt");
 
     // Append a simple hash of the datadir
     // Note that GetDataDir(true) returns a different path
@@ -125,7 +124,7 @@ void PaymentServer::LoadRootCAs(X509_STORE* _store)
 
     // Note: use "-system-" default here so that users can pass -rootcertificates=""
     // and get 'I don't like X.509 certificates, don't trust anybody' behavior:
-    QString certFile = QString::fromStdString(GetArg("-rootcertificates", "-system-"));
+    QString certFile = QString::fromStdString(gArgs.GetArg("-rootcertificates", "-system-"));
 
     // Empty store
     if (certFile.isEmpty()) {
@@ -147,7 +146,7 @@ void PaymentServer::LoadRootCAs(X509_STORE* _store)
     int nRootCerts = 0;
     const QDateTime currentTime = QDateTime::currentDateTime();
 
-    Q_FOREACH (const QSslCertificate& cert, certList) {
+    for (const QSslCertificate& cert : certList) {
         // Don't log NULL certificates
         if (cert.isNull())
             continue;
@@ -193,37 +192,6 @@ void PaymentServer::LoadRootCAs(X509_STORE* _store)
     //   "certificate stapling" with server-side caching is more efficient
 }
 
-static std::string ipcParseURI(const QString &arg, const CChainParams &params, bool useCashAddr)
-{
-    const QString scheme = GUIUtil::bitcoinURIScheme(params, useCashAddr);
-    if (!arg.startsWith(scheme + ":", Qt::CaseInsensitive))
-    {
-        return {};
-    }
-
-    SendCoinsRecipient r;
-    if (!GUIUtil::parseBitcoinURI(scheme, arg, &r))
-    {
-        return {};
-    }
-
-    return r.address.toStdString();
-}
-
-static bool ipcCanParseCashAddrURI(const QString &arg, const std::string &network)
-{
-    const CChainParams &params(Params(network));
-    std::string addr = ipcParseURI(arg, params, true);
-    return IsValidDestinationString(addr, params);
-}
-
-static bool ipcCanParseLegacyURI(const QString &arg, const std::string &network)
-{
-    const CChainParams &params(Params(network));
-    std::string addr = ipcParseURI(arg, params, false);
-    return IsValidDestinationString(addr, params);
-}
-
 //
 // Sending to the server is done synchronously, at startup.
 // If the server isn't already running, startup continues,
@@ -235,77 +203,58 @@ static bool ipcCanParseLegacyURI(const QString &arg, const std::string &network)
 //
 void PaymentServer::ipcParseCommandLine(int argc, char* argv[])
 {
-    std::array<const std::string *, 3> networks = {
-        &CBaseChainParams::MAIN, &CBaseChainParams::TESTNET, &CBaseChainParams::REGTEST};
-
-    const std::string *chosenNetwork = nullptr;
-
     for (int i = 1; i < argc; i++)
     {
         QString arg(argv[i]);
         if (arg.startsWith("-"))
             continue;
 
-        const std::string *itemNetwork = nullptr;
-
-        // Try to parse as a URI
-        for (auto net : networks)
+        // If the alphacon: URI contains a payment request, we are not able to detect the
+        // network as that would require fetching and parsing the payment request.
+        // That means clicking such an URI which contains a testnet payment request
+        // will start a mainnet instance and throw a "wrong network" error.
+        if (arg.startsWith(ALPHACON_IPC_PREFIX, Qt::CaseInsensitive)) // alphacon: URI
         {
-            if (ipcCanParseCashAddrURI(arg, *net))
-            {
-                itemNetwork = net;
-                break;
-            }
+            savedPaymentRequests.append(arg);
 
-            if (ipcCanParseLegacyURI(arg, *net))
+            SendCoinsRecipient r;
+            if (GUIUtil::parseAlphaconURI(arg, &r) && !r.address.isEmpty())
             {
-                itemNetwork = net;
-                break;
-            }
-        }
+                auto tempChainParams = CreateChainParams(CBaseChainParams::MAIN);
 
-        if (!itemNetwork && QFile::exists(arg))
-        {
-            // Filename
-            PaymentRequestPlus request;
-            if (readPaymentRequestFromFile(arg, request))
-            {
-                for (auto net : networks)
-                {
-                    if (*net == request.getDetails().network())
-                    {
-                        itemNetwork = net;
+                if (IsValidDestinationString(r.address.toStdString(), *tempChainParams)) {
+                    SelectParams(CBaseChainParams::MAIN);
+                } else {
+                    tempChainParams = CreateChainParams(CBaseChainParams::TESTNET);
+                    if (IsValidDestinationString(r.address.toStdString(), *tempChainParams)) {
+                        SelectParams(CBaseChainParams::TESTNET);
                     }
                 }
             }
         }
-
-        if (itemNetwork == nullptr)
+        else if (QFile::exists(arg)) // Filename
         {
-            // Printing to debug.log is about the best we can do here, the GUI
-            // hasn't started yet so we can't pop up a message box.
-            qWarning() << "PaymentServer::ipcSendCommandLine: Payment request "
-                          "file or URI does not exist or is invalid: "
-                       << arg;
-            continue;
-        }
+            savedPaymentRequests.append(arg);
 
-        if (chosenNetwork && chosenNetwork != itemNetwork)
+            PaymentRequestPlus request;
+            if (readPaymentRequestFromFile(arg, request))
+            {
+                if (request.getDetails().network() == "main")
+                {
+                    SelectParams(CBaseChainParams::MAIN);
+                }
+                else if (request.getDetails().network() == "test")
+                {
+                    SelectParams(CBaseChainParams::TESTNET);
+                }
+            }
+        }
+        else
         {
-            qWarning() << "PaymentServer::ipcSendCommandLine: Payment request "
-                          "from network "
-                       << QString(itemNetwork->c_str()) << " does not match already chosen network "
-                       << QString(chosenNetwork->c_str());
-            continue;
+            // Printing to debug.log is about the best we can do here, the
+            // GUI hasn't started yet so we can't pop up a message box.
+            qWarning() << "PaymentServer::ipcSendCommandLine: Payment request file does not exist: " << arg;
         }
-
-        savedPaymentRequests.append(arg);
-        chosenNetwork = itemNetwork;
-    }
-
-    if (chosenNetwork)
-    {
-        SelectParams(*chosenNetwork);
     }
 }
 
@@ -318,14 +267,14 @@ void PaymentServer::ipcParseCommandLine(int argc, char* argv[])
 bool PaymentServer::ipcSendCommandLine()
 {
     bool fResult = false;
-    Q_FOREACH (const QString& r, savedPaymentRequests)
+    for (const QString& r : savedPaymentRequests)
     {
         QLocalSocket* socket = new QLocalSocket();
         socket->connectToServer(ipcServerName(), QIODevice::WriteOnly);
-        if (!socket->waitForConnected(BITCOIN_IPC_CONNECT_TIMEOUT))
+        if (!socket->waitForConnected(ALPHACON_IPC_CONNECT_TIMEOUT))
         {
             delete socket;
-            socket = NULL;
+            socket = nullptr;
             return false;
         }
 
@@ -337,11 +286,11 @@ bool PaymentServer::ipcSendCommandLine()
 
         socket->write(block);
         socket->flush();
-        socket->waitForBytesWritten(BITCOIN_IPC_CONNECT_TIMEOUT);
+        socket->waitForBytesWritten(ALPHACON_IPC_CONNECT_TIMEOUT);
         socket->disconnectFromServer();
 
         delete socket;
-        socket = NULL;
+        socket = nullptr;
         fResult = true;
     }
 
@@ -360,7 +309,7 @@ PaymentServer::PaymentServer(QObject* parent, bool startLocalServer) :
     GOOGLE_PROTOBUF_VERIFY_VERSION;
 
     // Install global event filter to catch QFileOpenEvents
-    // on Mac: sent when you click blackcoin: links
+    // on Mac: sent when you click alphacon: links
     // other OSes: helpful when dealing with payment request files
     if (parent)
         parent->installEventFilter(this);
@@ -374,11 +323,10 @@ PaymentServer::PaymentServer(QObject* parent, bool startLocalServer) :
     {
         uriServer = new QLocalServer(this);
 
-        if (!uriServer->listen(name))
-        {
-            // constructor is called early in init, so don't use "Q_EMIT
-            // message()" here
-            QMessageBox::critical(0, tr("Payment request error"), tr("Cannot start click-to-pay handler"));
+        if (!uriServer->listen(name)) {
+            // constructor is called early in init, so don't use "Q_EMIT message()" here
+            QMessageBox::critical(0, tr("Payment request error"),
+                tr("Cannot start alphacon: click-to-pay handler"));
         }
         else {
             connect(uriServer, SIGNAL(newConnection()), this, SLOT(handleURIConnection()));
@@ -393,7 +341,7 @@ PaymentServer::~PaymentServer()
 }
 
 //
-// OSX-specific way of handling blackcoin: URIs and PaymentRequest mime types.
+// OSX-specific way of handling alphacon: URIs and PaymentRequest mime types.
 // Also used by paymentservertests.cpp and when opening a payment request file
 // via "Open URI..." menu entry.
 //
@@ -416,10 +364,10 @@ void PaymentServer::initNetManager()
 {
     if (!optionsModel)
         return;
-    if (netManager != NULL)
+    if (netManager != nullptr)
         delete netManager;
 
-    // netManager is used to fetch paymentrequests given in blackcoin: URIs
+    // netManager is used to fetch paymentrequests given in alphacon: URIs
     netManager = new QNetworkAccessManager(this);
 
     QNetworkProxy proxy;
@@ -444,72 +392,14 @@ void PaymentServer::uiReady()
     initNetManager();
 
     saveURIs = false;
-    Q_FOREACH (const QString& s, savedPaymentRequests)
+    for (const QString& s : savedPaymentRequests)
     {
         handleURIOrFile(s);
     }
     savedPaymentRequests.clear();
 }
 
-bool PaymentServer::handleURI(const QString &scheme, const QString &s)
-{
-    if (!s.startsWith(scheme + ":", Qt::CaseInsensitive))
-    {
-        return false;
-    }
-#if QT_VERSION < 0x050000
-    QUrl uri(s);
-#else
-    QUrlQuery uri((QUrl(s)));
-#endif
-    if (uri.hasQueryItem("r"))
-    {
-        // payment request URI
-        QByteArray temp;
-        temp.append(uri.queryItemValue("r"));
-        QString decoded = QUrl::fromPercentEncoding(temp);
-        QUrl fetchUrl(decoded, QUrl::StrictMode);
-
-        if (fetchUrl.isValid())
-        {
-            qDebug() << "PaymentServer::handleURIOrFile: fetchRequest(" << fetchUrl << ")";
-            fetchRequest(fetchUrl);
-        }
-        else
-        {
-            qWarning() << "PaymentServer::handleURIOrFile: Invalid URL: " << fetchUrl;
-            Q_EMIT message(tr("URI handling"), tr("Payment request fetch URL is invalid: %1").arg(fetchUrl.toString()),
-                CClientUIInterface::ICON_WARNING);
-        }
-
-        return true;
-    }
-
-    // normal URI
-    SendCoinsRecipient recipient;
-    if (GUIUtil::parseBitcoinURI(scheme, s, &recipient))
-    {
-        if (!IsValidDestinationString(recipient.address.toStdString()))
-        {
-            Q_EMIT message(tr("URI handling"), tr("Invalid payment address %1").arg(recipient.address),
-                CClientUIInterface::MSG_ERROR);
-        }
-        else
-        {
-            Q_EMIT receivedPaymentRequest(recipient);
-        }
-    }
-    else
-    {
-        Q_EMIT message(tr("URI handling"), tr("URI cannot be parsed! This can be caused by an invalid "
-                                              "Bitcoin address or malformed URI parameters."),
-            CClientUIInterface::ICON_WARNING);
-    }
-
-    return true;
-}
-
-void PaymentServer::handleURIOrFile(const QString &s)
+void PaymentServer::handleURIOrFile(const QString& s)
 {
     if (saveURIs)
     {
@@ -517,18 +407,54 @@ void PaymentServer::handleURIOrFile(const QString &s)
         return;
     }
 
-    // blackcoin: CashAddr URI
-    QString schemeCash = GUIUtil::bitcoinURIScheme(Params(), true);
-    if (handleURI(schemeCash, s))
+    if (s.startsWith(ALPHACON_IPC_PREFIX, Qt::CaseInsensitive)) // alphacon: URI
     {
-        return;
-    }
+#if QT_VERSION < 0x050000
+        QUrl uri(s);
+#else
+        QUrlQuery uri((QUrl(s)));
+#endif
+        if (uri.hasQueryItem("r")) // payment request URI
+        {
+            QByteArray temp;
+            temp.append(uri.queryItemValue("r"));
+            QString decoded = QUrl::fromPercentEncoding(temp);
+            QUrl fetchUrl(decoded, QUrl::StrictMode);
 
-    // blackcoin: Legacy URI
-    QString schemeLegacy = GUIUtil::bitcoinURIScheme(Params(), false);
-    if (handleURI(schemeLegacy, s))
-    {
-        return;
+            if (fetchUrl.isValid())
+            {
+                qDebug() << "PaymentServer::handleURIOrFile: fetchRequest(" << fetchUrl << ")";
+                fetchRequest(fetchUrl);
+            }
+            else
+            {
+                qWarning() << "PaymentServer::handleURIOrFile: Invalid URL: " << fetchUrl;
+                Q_EMIT message(tr("URI handling"),
+                    tr("Payment request fetch URL is invalid: %1").arg(fetchUrl.toString()),
+                    CClientUIInterface::ICON_WARNING);
+            }
+
+            return;
+        }
+        else // normal URI
+        {
+            SendCoinsRecipient recipient;
+            if (GUIUtil::parseAlphaconURI(s, &recipient))
+            {
+                if (!IsValidDestinationString(recipient.address.toStdString())) {
+                    Q_EMIT message(tr("URI handling"), tr("Invalid payment address %1").arg(recipient.address),
+                        CClientUIInterface::MSG_ERROR);
+                }
+                else
+                    Q_EMIT receivedPaymentRequest(recipient);
+            }
+            else
+                Q_EMIT message(tr("URI handling"),
+                    tr("URI cannot be parsed! This can be caused by an invalid Alphacon address or malformed URI parameters."),
+                    CClientUIInterface::ICON_WARNING);
+
+            return;
+        }
     }
 
     if (QFile::exists(s)) // payment request file
@@ -628,25 +554,24 @@ bool PaymentServer::processPaymentRequest(const PaymentRequestPlus& request, Sen
     QList<std::pair<CScript, CAmount> > sendingTos = request.getPayTo();
     QStringList addresses;
 
-    Q_FOREACH(const PAIRTYPE(CScript, CAmount)& sendingTo, sendingTos) {
+    for (const std::pair<CScript, CAmount>& sendingTo : sendingTos) {
         // Extract and check destination addresses
         CTxDestination dest;
         if (ExtractDestination(sendingTo.first, dest)) {
             // Append destination address
             addresses.append(QString::fromStdString(EncodeDestination(dest)));
         }
-        else if (!recipient.authenticatedMerchant.isEmpty())
-        {
-            // Unauthenticated payment requests to custom bitcoin addresses are
-            // not supported (there is no good way to tell the user where they
-            // are paying in a way they'd have a chance of understanding).
+        else if (!recipient.authenticatedMerchant.isEmpty()) {
+            // Unauthenticated payment requests to custom alphacon addresses are not supported
+            // (there is no good way to tell the user where they are paying in a way they'd
+            // have a chance of understanding).
             Q_EMIT message(tr("Payment request rejected"),
                 tr("Unverified payment requests to custom payment scripts are unsupported."),
                 CClientUIInterface::MSG_ERROR);
             return false;
         }
 
-        // Bitcoin amounts are stored as (optional) uint64 in the protobuf messages (see paymentrequest.proto),
+        // Alphacon amounts are stored as (optional) uint64 in the protobuf messages (see paymentrequest.proto),
         // but CAmount is defined as int64_t. Because of that we need to verify that amounts are in a valid range
         // and no overflow has happened.
         if (!verifyAmount(sendingTo.second)) {
@@ -656,9 +581,9 @@ bool PaymentServer::processPaymentRequest(const PaymentRequestPlus& request, Sen
 
         // Extract and check amounts
         CTxOut txOut(sendingTo.second, sendingTo.first);
-        if (txOut.IsDust(::minRelayTxFee)) {
+        if (IsDust(txOut, ::dustRelayFee)) {
             Q_EMIT message(tr("Payment request error"), tr("Requested payment amount of %1 is too small (considered dust).")
-                .arg(BitcoinUnits::formatWithUnit(optionsModel->getDisplayUnit(), sendingTo.second)),
+                .arg(AlphaconUnits::formatWithUnit(optionsModel->getDisplayUnit(), sendingTo.second)),
                 CClientUIInterface::MSG_ERROR);
 
             return false;
@@ -694,7 +619,7 @@ void PaymentServer::fetchRequest(const QUrl& url)
     netManager->get(netRequest);
 }
 
-void PaymentServer::fetchPaymentACK(CWallet* wallet, SendCoinsRecipient recipient, QByteArray transaction)
+void PaymentServer::fetchPaymentACK(CWallet* wallet, const SendCoinsRecipient& recipient, QByteArray transaction)
 {
     const payments::PaymentDetails& details = recipient.paymentRequest.getDetails();
     if (!details.has_payment_url())
@@ -816,16 +741,16 @@ void PaymentServer::reportSslErrors(QNetworkReply* reply, const QList<QSslError>
     Q_UNUSED(reply);
 
     QString errString;
-    Q_FOREACH (const QSslError& err, errs) {
+    for (const QSslError& err : errs) {
         qWarning() << "PaymentServer::reportSslErrors: " << err;
         errString += err.errorString() + "\n";
     }
     Q_EMIT message(tr("Network request error"), errString, CClientUIInterface::MSG_ERROR);
 }
 
-void PaymentServer::setOptionsModel(OptionsModel *optionsModel)
+void PaymentServer::setOptionsModel(OptionsModel *_optionsModel)
 {
-    this->optionsModel = optionsModel;
+    this->optionsModel = _optionsModel;
 }
 
 void PaymentServer::handlePaymentACK(const QString& paymentACKMsg)

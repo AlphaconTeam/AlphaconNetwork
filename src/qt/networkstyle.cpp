@@ -1,4 +1,6 @@
-// Copyright (c) 2014-2015 The Bitcoin Core developers
+// Copyright (c) 2014-2016 The Bitcoin Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -22,12 +24,12 @@ static const struct {
 static const unsigned network_styles_count = sizeof(network_styles)/sizeof(*network_styles);
 
 // titleAddText needs to be const char* for tr()
-NetworkStyle::NetworkStyle(const QString &appName, const int iconColorHueShift, const int iconColorSaturationReduction, const char *titleAddText):
-    appName(appName),
-    titleAddText(qApp->translate("SplashScreen", titleAddText))
+NetworkStyle::NetworkStyle(const QString &_appName, const int iconColorHueShift, const int iconColorSaturationReduction, const char *_titleAddText):
+    appName(_appName),
+    titleAddText(qApp->translate("SplashScreen", _titleAddText))
 {
     // load pixmap
-    QPixmap pixmap(":/icons/bitcoin");
+    QPixmap pixmap(":/icons/alphacon");
 
     if(iconColorHueShift != 0 && iconColorSaturationReduction != 0)
     {
@@ -44,7 +46,7 @@ NetworkStyle::NetworkStyle(const QString &appName, const int iconColorHueShift, 
             // loop through pixels
             for(int x=0;x<img.width();x++)
             {
-                // preserve alpha because QColor::getHsl doesen't return the alpha value
+                // preserve alpha because QColor::getHsl doesn't return the alpha value
                 a = qAlpha(scL[x]);
                 QColor col(scL[x]);
 
@@ -74,7 +76,8 @@ NetworkStyle::NetworkStyle(const QString &appName, const int iconColorHueShift, 
         pixmap = QPixmap::fromImage(img);
 #endif
     }
-
+    
+    splashIcon          = QIcon(pixmap.scaled(QSize(310,310),Qt::KeepAspectRatio,Qt::SmoothTransformation));
     appIcon             = QIcon(pixmap);
     trayAndWindowIcon   = QIcon(pixmap.scaled(QSize(256,256)));
 }

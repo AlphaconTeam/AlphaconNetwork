@@ -1,4 +1,6 @@
-// Copyright (c) 2011-2015 The Bitcoin Core developers
+// Copyright (c) 2011-2016 The Bitcoin Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -7,20 +9,21 @@
 
 #include "addressbookpage.h"
 #include "addresstablemodel.h"
-#include "config.h"
 #include "guiutil.h"
 #include "optionsmodel.h"
 #include "platformstyle.h"
 #include "walletmodel.h"
+#include "guiconstants.h"
+#include "darkstyle.h"
 
 #include <QApplication>
 #include <QClipboard>
 
-SendCoinsEntry::SendCoinsEntry(const PlatformStyle *platformStyle, QWidget *parent) :
+SendCoinsEntry::SendCoinsEntry(const PlatformStyle *_platformStyle, QWidget *parent) :
     QStackedWidget(parent),
     ui(new Ui::SendCoinsEntry),
     model(0),
-    platformStyle(platformStyle)
+    platformStyle(_platformStyle)
 {
     ui->setupUi(this);
 
@@ -30,11 +33,6 @@ SendCoinsEntry::SendCoinsEntry(const PlatformStyle *platformStyle, QWidget *pare
     ui->deleteButton_is->setIcon(platformStyle->SingleColorIcon(":/icons/remove"));
     ui->deleteButton_s->setIcon(platformStyle->SingleColorIcon(":/icons/remove"));
 
-    ui->messageTextLabel->setToolTip(tr("A message that was attached to the %1 URI which will be"
-                                        " stored with the transaction for your reference. Note: "
-                                        "This message will not be sent over the Bitcoin network.")
-                                         .arg(GUIUtil::bitcoinURIScheme(GetConfig())));
-
     setCurrentWidget(ui->SendCoins);
 
     if (platformStyle->getUseExtraSpacing())
@@ -43,10 +41,10 @@ SendCoinsEntry::SendCoinsEntry(const PlatformStyle *platformStyle, QWidget *pare
     ui->addAsLabel->setPlaceholderText(tr("Enter a label for this address to add it to your address book"));
 #endif
 
-    // normal bitcoin address field
+    // normal alphacon address field
     GUIUtil::setupAddressWidget(ui->payTo, this);
-    // just a label for displaying bitcoin address(es)
-    ui->payTo_is->setFont(GUIUtil::fixedPitchFont());
+    // just a label for displaying alphacon address(es)
+    ui->payTo_is->setFont(GUIUtil::getSubLabelFont());
 
     // Connect signals
     connect(ui->payAmount, SIGNAL(valueChanged()), this, SIGNAL(payAmountChanged()));
@@ -54,6 +52,26 @@ SendCoinsEntry::SendCoinsEntry(const PlatformStyle *platformStyle, QWidget *pare
     connect(ui->deleteButton, SIGNAL(clicked()), this, SLOT(deleteClicked()));
     connect(ui->deleteButton_is, SIGNAL(clicked()), this, SLOT(deleteClicked()));
     connect(ui->deleteButton_s, SIGNAL(clicked()), this, SLOT(deleteClicked()));
+
+    this->setStyleSheet(QString(".SendCoinsEntry {background-color: %1; padding-top: 10px; padding-right: 30px; border: none;}").arg(platformStyle->SendEntriesBackGroundColor().name()));
+
+    ui->payToLabel->setStyleSheet(STRING_LABEL_COLOR);
+    ui->payToLabel->setFont(GUIUtil::getSubLabelFont());
+
+    ui->labellLabel->setStyleSheet(STRING_LABEL_COLOR);
+    ui->labellLabel->setFont(GUIUtil::getSubLabelFont());
+
+    ui->amountLabel->setStyleSheet(STRING_LABEL_COLOR);
+    ui->amountLabel->setFont(GUIUtil::getSubLabelFont());
+
+    ui->messageLabel->setStyleSheet(STRING_LABEL_COLOR);
+    ui->messageLabel->setFont(GUIUtil::getSubLabelFont());
+
+    ui->checkboxSubtractFeeFromAmount->setStyleSheet(QString(".QCheckBox{ %1; }").arg(STRING_LABEL_COLOR));
+    ui->payTo->setFont(GUIUtil::getSubLabelFont());
+    ui->addAsLabel->setFont(GUIUtil::getSubLabelFont());
+    ui->payAmount->setFont(GUIUtil::getSubLabelFont());
+    ui->messageTextLabel->setFont(GUIUtil::getSubLabelFont());
 }
 
 SendCoinsEntry::~SendCoinsEntry()
@@ -85,12 +103,12 @@ void SendCoinsEntry::on_payTo_textChanged(const QString &address)
     updateLabel(address);
 }
 
-void SendCoinsEntry::setModel(WalletModel *model)
+void SendCoinsEntry::setModel(WalletModel *_model)
 {
-    this->model = model;
+    this->model = _model;
 
-    if (model && model->getOptionsModel())
-        connect(model->getOptionsModel(), SIGNAL(displayUnitChanged(int)), this, SLOT(updateDisplayUnit()));
+    if (_model && _model->getOptionsModel())
+        connect(_model->getOptionsModel(), SIGNAL(displayUnitChanged(int)), this, SLOT(updateDisplayUnit()));
 
     clear();
 }
@@ -114,7 +132,7 @@ void SendCoinsEntry::clear()
     ui->memoTextLabel_s->clear();
     ui->payAmount_s->clear();
 
-    // update the display unit, to not use the default ("BTC")
+    // update the display unit, to not use the default ("ALP")
     updateDisplayUnit();
 }
 

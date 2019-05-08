@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_SPENTINDEX_H
-#define BITCOIN_SPENTINDEX_H
+#ifndef ALPHACON_SPENTINDEX_H
+#define ALPHACON_SPENTINDEX_H
 
 #include "uint256.h"
 #include "amount.h"
@@ -16,7 +16,7 @@ struct CSpentIndexKey {
     ADD_SERIALIZE_METHODS;
 
     template <typename Stream, typename Operation>
-    inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
+    inline void SerializationOp(Stream& s, Operation ser_action) {
         READWRITE(txid);
         READWRITE(outputIndex);
     }
@@ -48,7 +48,7 @@ struct CSpentIndexValue {
     ADD_SERIALIZE_METHODS;
 
     template <typename Stream, typename Operation>
-    inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
+    inline void SerializationOp(Stream& s, Operation ser_action) {
         READWRITE(txid);
         READWRITE(inputIndex);
         READWRITE(blockHeight);
@@ -95,4 +95,4 @@ struct CSpentIndexKeyCompare
     }
 };
 
-#endif // BITCOIN_SPENTINDEX_H
+#endif // ALPHACON_SPENTINDEX_H

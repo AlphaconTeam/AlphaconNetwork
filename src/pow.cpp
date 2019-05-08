@@ -1,5 +1,8 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2014 The Bitcoin Core developers
+// Copyright (c) 2009-2016 The Bitcoin Core developers
+// Copyright (c) 2014 The BlackCoin developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -10,8 +13,55 @@
 #include "primitives/block.h"
 #include "uint256.h"
 #include "util.h"
-#include <stdio.h>
+#include "validation.h"
+#include "chainparams.h"
+#include "tinyformat.h"
 
+unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params)
+{
+    unsigned int nTargetLimit = UintToArith256(params.powLimit).GetCompact();
+
+    // Genesis block
+    if (pindexLast == NULL) {
+        return nTargetLimit;
+    }
+
+    const CBlockIndex* pindexPrev = pindexLast;
+    if (pindexPrev->pprev == NULL) {
+        return nTargetLimit; // first block
+    }
+
+    const CBlockIndex* pindexPrevPrev = pindexPrev->pprev;
+    if (pindexPrevPrev->pprev == NULL) {
+        return nTargetLimit; // second block
+    }
+
+    return CalculateNextTargetRequired(pindexPrev, pindexPrevPrev->GetBlockTime(), params);
+}
+
+unsigned int CalculateNextWorkRequired(const CBlockIndex* pindexLast, int64_t nFirstBlockTime, const Consensus::Params& params)
+{
+    // Limit adjustment step
+    int64_t nActualTimespan = pindexLast->GetBlockTime() - nFirstBlockTime;
+    if (nActualTimespan < params.nTargetTimespan/4)
+        nActualTimespan = params.nTargetTimespan/4;
+    if (nActualTimespan > params.nTargetTimespan*4)
+        nActualTimespan = params.nTargetTimespan*4;
+
+    // Retarget
+    const arith_uint256 bnPowLimit = UintToArith256(params.powLimit);
+    arith_uint256 bnNew;
+    bnNew.SetCompact(pindexLast->nBits);
+    bnNew *= nActualTimespan;
+    bnNew /= params.nTargetTimespan;
+
+    if (bnNew > bnPowLimit)
+        bnNew = bnPowLimit;
+
+    return bnNew.GetCompact();
+}
+
+/* Proof-of-Stake */
 static arith_uint256 GetTargetLimit(int64_t nTime, bool fProofOfStake, const Consensus::Params& params)
 {
     uint256 nLimit;
@@ -27,7 +77,7 @@ static arith_uint256 GetTargetLimit(int64_t nTime, bool fProofOfStake, const Con
 
 unsigned int GetNextTargetRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock, bool fProofOfStake, const Consensus::Params& params)
 {
-	unsigned int nTargetLimit = UintToArith256(fProofOfStake ? params.posLimit : params.powLimit).GetCompact();
+    unsigned int nTargetLimit = UintToArith256(fProofOfStake ? params.posLimit : params.powLimit).GetCompact();
 
     // Genesis block
     if (pindexLast == NULL) {
@@ -44,14 +94,11 @@ unsigned int GetNextTargetRequired(const CBlockIndex* pindexLast, const CBlockHe
         return nTargetLimit; // second block
     }
 
-	return CalculateNextTargetRequired(pindexPrev, pindexPrevPrev->GetBlockTime(), params);
+    return CalculateNextTargetRequired(pindexPrev, pindexPrevPrev->GetBlockTime(), params);
 }
 
 unsigned int CalculateNextTargetRequired(const CBlockIndex* pindexLast, int64_t nFirstBlockTime, const Consensus::Params& params)
 {
-	if (params.fPowNoRetargeting)
-	    	return pindexLast->nBits;
-
     int64_t nActualSpacing = pindexLast->GetBlockTime() - nFirstBlockTime;
     int64_t nTargetSpacing = params.nTargetSpacing;
 
@@ -77,6 +124,8 @@ unsigned int CalculateNextTargetRequired(const CBlockIndex* pindexLast, int64_t 
 
     return bnNew.GetCompact();
 }
+/* Proof-of-Stake */
+
 bool CheckProofOfWork(uint256 hash, unsigned int nBits, const Consensus::Params& params)
 {
     bool fNegative;
@@ -87,44 +136,11 @@ bool CheckProofOfWork(uint256 hash, unsigned int nBits, const Consensus::Params&
 
     // Check range
     if (fNegative || bnTarget == 0 || fOverflow || bnTarget > UintToArith256(params.powLimit))
-    	return error("CheckProofOfWork(): nBits below minimum work");
-
+        return false;
 
     // Check proof of work matches claimed amount
     if (UintToArith256(hash) > bnTarget)
-        return error("CheckProofOfWork(): hash doesn't match nBits");
+        return false;
 
     return true;
-}
-
-arith_uint256 GetBlockProof(const CBlockIndex& block)
-{
-    arith_uint256 bnTarget;
-    bool fNegative;
-    bool fOverflow;
-    bnTarget.SetCompact(block.nBits, &fNegative, &fOverflow);
-    if (fNegative || fOverflow || bnTarget == 0)
-        return 0;
-    // We need to compute 2**256 / (bnTarget+1), but we can't represent 2**256
-    // as it's too large for a arith_uint256. However, as 2**256 is at least as large
-    // as bnTarget+1, it is equal to ((2**256 - bnTarget - 1) / (bnTarget+1)) + 1,
-    // or ~bnTarget / (nTarget+1) + 1.
-    return (~bnTarget / (bnTarget + 1)) + 1;
-}
-
-int64_t GetBlockProofEquivalentTime(const CBlockIndex& to, const CBlockIndex& from, const CBlockIndex& tip, const Consensus::Params& params)
-{
-    arith_uint256 r;
-    int sign = 1;
-    if (to.nChainWork > from.nChainWork) {
-        r = to.nChainWork - from.nChainWork;
-    } else {
-        r = from.nChainWork - to.nChainWork;
-        sign = -1;
-    }
-    r = r * arith_uint256(params.nTargetSpacing) / GetBlockProof(tip);
-    if (r.bits() > 63) {
-        return sign * std::numeric_limits<int64_t>::max();
-    }
-    return sign * r.GetLow64();
 }

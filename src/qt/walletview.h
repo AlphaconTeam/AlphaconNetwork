@@ -1,15 +1,17 @@
-// Copyright (c) 2011-2015 The Bitcoin Core developers
+// Copyright (c) 2011-2016 The Bitcoin Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_QT_WALLETVIEW_H
-#define BITCOIN_QT_WALLETVIEW_H
+#ifndef ALPHACON_QT_WALLETVIEW_H
+#define ALPHACON_QT_WALLETVIEW_H
 
 #include "amount.h"
 
 #include <QStackedWidget>
 
-class BitcoinGUI;
+class AlphaconGUI;
 class ClientModel;
 class OverviewPage;
 class PlatformStyle;
@@ -19,7 +21,9 @@ class SendCoinsRecipient;
 class TransactionView;
 class WalletModel;
 class AddressBookPage;
-class Config;
+class AssetsDialog;
+class CreateAssetDialog;
+class ReissueAssetDialog;
 
 QT_BEGIN_NAMESPACE
 class QModelIndex;
@@ -37,16 +41,16 @@ class WalletView : public QStackedWidget
     Q_OBJECT
 
 public:
-    explicit WalletView(const PlatformStyle *platformStyle, const Config *cfg, QWidget *parent);
+    explicit WalletView(const PlatformStyle *platformStyle, QWidget *parent);
     ~WalletView();
 
-    void setBitcoinGUI(BitcoinGUI *gui);
+    void setAlphaconGUI(AlphaconGUI *gui);
     /** Set the client model.
         The client model represents the part of the core that communicates with the P2P network, and is wallet-agnostic.
     */
     void setClientModel(ClientModel *clientModel);
     /** Set the wallet model.
-        The wallet model represents a bitcoin wallet, and offers access to the list of transactions, address book and sending
+        The wallet model represents a alphacon wallet, and offers access to the list of transactions, address book and sending
         functionality.
     */
     void setWalletModel(WalletModel *walletModel);
@@ -71,6 +75,13 @@ private:
     QProgressDialog *progressDialog;
     const PlatformStyle *platformStyle;
 
+
+    /** RVN START */
+    AssetsDialog *assetsPage;
+    CreateAssetDialog *createAssetsPage;
+    ReissueAssetDialog *manageAssetsPage;
+    /** RVN END */
+
 public Q_SLOTS:
     /** Switch to overview (home) page */
     void gotoOverviewPage();
@@ -90,7 +101,7 @@ public Q_SLOTS:
 
         The new items are those between start and end inclusive, under the given parent item.
     */
-    void processNewTransaction(const QModelIndex& parent, int start, int /*end*/);
+    void processNewTransaction(const QModelIndex& parent, int start, int end);
     /** Encrypt the wallet */
     void encryptWallet(bool status);
     /** Backup the wallet */
@@ -98,9 +109,7 @@ public Q_SLOTS:
     /** Change encrypted wallet passphrase */
     void changePassphrase();
     /** Ask for passphrase to unlock wallet temporarily */
-    void unlockWallet(bool fromMenu = false);
-
-    void lockWallet();
+    void unlockWallet();
 
     /** Show used sending addresses */
     void usedSendingAddresses();
@@ -113,6 +122,17 @@ public Q_SLOTS:
     /** Show progress dialog e.g. for rescan */
     void showProgress(const QString &title, int nProgress);
 
+    /** User has requested more information about the out of sync state */
+    void requestedSyncWarningInfo();
+
+
+    /** RVN START */
+    /** Switch to assets page */
+    void gotoAssetsPage();
+    void gotoCreateAssetsPage();
+    void gotoManageAssetsPage();
+    /** RVN END */
+
 Q_SIGNALS:
     /** Signal that we want to show the main window */
     void showNormalIfMinimized();
@@ -123,7 +143,11 @@ Q_SIGNALS:
     /** HD-Enabled status of wallet changed (only possible during startup) */
     void hdEnabledStatusChanged(int hdEnabled);
     /** Notify that a new transaction appeared */
-    void incomingTransaction(const QString& date, int unit, const CAmount& amount, const QString& type, const QString& address, const QString& label);
+    void incomingTransaction(const QString& date, int unit, const CAmount& amount, const QString& type, const QString& address, const QString& label, const QString& assetName);
+    /** Notify that the out of sync warning icon has been pressed */
+    void outOfSyncWarningClicked();
+    /** Show the assets GUI */
+    void checkAssets();
 };
 
-#endif // BITCOIN_QT_WALLETVIEW_H
+#endif // ALPHACON_QT_WALLETVIEW_H

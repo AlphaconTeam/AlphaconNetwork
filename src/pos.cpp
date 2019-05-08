@@ -1,21 +1,20 @@
-// Copyright (c) 2014-2016 The BlackCoin Core developers
+// Copyright (c) 2014-2016 The BlackCoin developers
 // Copyright (c) 2012-2013 The PPCoin developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "pos.h"
+#include <pos.h>
 
-#include "chain.h"
-#include "chainparams.h"
-#include "clientversion.h"
-#include "coins.h"
-#include "hash.h"
-#include "validation.h"
-#include "uint256.h"
-#include "primitives/transaction.h"
-#include <stdio.h>
-#include "util.h"
+#include <txdb.h>
+#include <validation.h>
+#include <arith_uint256.h>
+#include <hash.h>
+#include <timedata.h>
+#include <chainparams.h>
+#include <script/sign.h>
+#include <consensus/consensus.h>
 
+using namespace std;
 
 // Stake Modifier (hash modifier of proof-of-stake):
 // The purpose of stake modifier is to prevent a txout (coin) owner from
@@ -25,24 +24,11 @@
 uint256 ComputeStakeModifier(const CBlockIndex* pindexPrev, const uint256& kernel)
 {
     if (!pindexPrev)
-        return uint256(); // genesis block's modifier is 0
+        return uint256();  // genesis block's modifier is 0
 
-    CHashWriter ss(SER_GETHASH, 0);
+    CDataStream ss(SER_GETHASH, 0);
     ss << kernel << pindexPrev->nStakeModifier;
-    return ss.GetHash();
-}
-
-// Check whether the coinstake timestamp meets protocol
-bool CheckCoinStakeTimestamp(int64_t nTimeBlock, int64_t nTimeTx)
-{
-    const Consensus::Params& params = Params().GetConsensus();
-    return (nTimeBlock == nTimeTx) && ((nTimeTx & params.nStakeTimestampMask) == 0);
-}
-
-// Simplified version of CheckCoinStakeTimestamp() to check header-only timestamp
-bool CheckStakeBlockTimestamp(int64_t nTimeBlock)
-{
-   return CheckCoinStakeTimestamp(nTimeBlock, nTimeBlock);
+    return Hash(ss.begin(), ss.end());
 }
 
 // BlackCoin kernel protocol v3
@@ -64,12 +50,12 @@ bool CheckStakeBlockTimestamp(int64_t nTimeBlock)
 //   quantities so as to generate blocks faster, degrading the system back into
 //   a proof-of-work situation.
 //
-bool CheckStakeKernelHash(const CBlockIndex* pindexPrev, unsigned int nBits, const CCoins& txPrev, const COutPoint& prevout, unsigned int nTimeTx)
+bool CheckStakeKernelHash(const CBlockIndex* pindexPrev, unsigned int nBits, CAmount nValueIn, const COutPoint& prevout, unsigned int nTimeTx, unsigned int nTimeTxPoS)
 {
-    // Weight
-    int64_t nValueIn = txPrev.vout[prevout.n].nValue;
+    bool result = true;
+
     if (nValueIn == 0)
-        return false;
+        result = false;
 
     // Base target
     arith_uint256 bnTarget;
@@ -77,136 +63,119 @@ bool CheckStakeKernelHash(const CBlockIndex* pindexPrev, unsigned int nBits, con
 
     // Calculate hash
     CHashWriter ss(SER_GETHASH, 0);
-    ss << pindexPrev->nStakeModifier << txPrev.nTime << prevout.hash << prevout.n << nTimeTx;
+    ss << pindexPrev->nStakeModifier << nTimeTxPoS << prevout.hash << prevout.n << nTimeTx;
     uint256 hashProofOfStake = ss.GetHash();
 
     // Now check if proof-of-stake hash meets target protocol
-    if (UintToArith256(hashProofOfStake) / nValueIn > bnTarget)
-        return false;
+    if (UintToArith256(hashProofOfStake) / nValueIn > bnTarget) {
+        result = false;
+    }
 
-    return true;
+    // If something bad happens, we should receive debug about it
+    // if (result == false)
+    // {
+    //     std::cout << "\n ---------- DEBUG CheckStakeKernelHash START ---------- \n" << std::endl;
+    //     std::cout << "pindexPrev->nStakeModifier: " << pindexPrev->nStakeModifier.ToString() << std::endl;
+    //     std::cout << "nTimeTxPoS: " << nTimeTxPoS << std::endl;
+    //     std::cout << "prevout.n: " << prevout.n << std::endl;
+    //     std::cout << "nTimeTx: " << nTimeTx << std::endl;
+    //     std::cout << "\n ----------  DEBUG CheckStakeKernelHash END  ---------- \n" << std::endl;
+    // }
+
+    return result;
 }
 
-bool IsConfirmedInNPrevBlocks(const CDiskTxPos& txindex, const CBlockIndex* pindexFrom, int nMaxDepth, int& nActualDepth)
+// Check whether the coinstake timestamp meets protocol
+bool CheckCoinStakeTimestamp(int64_t nTimeBlock, int64_t nTimeTx)
 {
-	for (const CBlockIndex* pindex = pindexFrom; pindex && pindexFrom->nHeight - pindex->nHeight < nMaxDepth; pindex = pindex->pprev)
-	    {
-	        if (pindex->nDataPos == txindex.nPos && pindex->nFile == txindex.nFile)
-	        {
-	            nActualDepth = pindexFrom->nHeight - pindex->nHeight;
-	            return true;
-	        }
-	    }
+    return (nTimeBlock == nTimeTx);
+}
 
-	  return false;
+// Simplified version of CheckCoinStakeTimestamp() to check header-only timestamp
+bool CheckStakeBlockTimestamp(int64_t nTimeBlock)
+{
+   return CheckCoinStakeTimestamp(nTimeBlock, nTimeBlock);
+}
+
+bool CheckKernel(CBlockIndex* pindexPrev, unsigned int nBits, uint32_t nTimeBlock, const COutPoint& prevout, CCoinsViewCache& view)
+{
+    std::map<COutPoint, CStakeCache> tmp;
+    return CheckKernel(pindexPrev, nBits, nTimeBlock, prevout, view, tmp);
+}
+
+bool CheckKernel(CBlockIndex* pindexPrev, unsigned int nBits, uint32_t nTimeBlock, const COutPoint& prevout, CCoinsViewCache& view, const std::map<COutPoint, CStakeCache>& cache)
+{
+    uint256 hashProofOfStake, targetProofOfStake;
+    auto it=cache.find(prevout);
+    if (it == cache.end()) {
+        //not found in cache (shouldn't happen during staking, only during verification which does not use cache)
+        Coin coinPrev;
+        if(!view.GetCoin(prevout, coinPrev)){
+            return false;
+        }
+
+        if(pindexPrev->nHeight + 1 - coinPrev.nHeight < COINSTAKE_MATURITY){
+            return false;
+        }
+
+        CBlockIndex* blockFrom = pindexPrev->GetAncestor(coinPrev.nHeight);
+        if(!blockFrom) {
+            return false;
+        }
+        if(coinPrev.IsSpent()){
+            return false;
+        }
+
+        return CheckStakeKernelHash(pindexPrev, nBits, coinPrev.out.nValue, prevout,
+                                    nTimeBlock, coinPrev.nTime);
+    } else {
+        Coin coinPrev;
+        if(!view.GetCoin(prevout, coinPrev)){
+            return false;
+        }
+
+        //found in cache
+        const CStakeCache& stake = it->second;
+        if (CheckStakeKernelHash(pindexPrev, nBits, stake.amount, prevout,
+                                    nTimeBlock, coinPrev.nTime)) {
+            //Cache could potentially cause false positive stakes in the event of deep reorgs, so check without cache also
+            return CheckKernel(pindexPrev, nBits, nTimeBlock, prevout, view);
+        }
+    }
+
+    return false;
 }
 
 // Check kernel hash target and coinstake signature
-bool CheckProofOfStake(CBlockIndex* pindexPrev, const CTransaction& tx, unsigned int nBits, CValidationState &state)
+bool CheckProofOfStake(CBlockIndex* pindexPrev, CValidationState& state, const CTransaction& tx, unsigned int nBits, uint32_t nTimeBlock, uint256& hashProofOfStake, uint256& targetProofOfStake, CCoinsViewCache& view)
 {
     if (!tx.IsCoinStake())
         return error("CheckProofOfStake() : called on non-coinstake %s", tx.GetHash().ToString());
 
-    // Kernel (input 0) must match the stake hash target per coin age (nBits)
+    // Kernel (input 0) must match the stake hash target (nBits)
     const CTxIn& txin = tx.vin[0];
 
-    // First try finding the previous transaction in database
-    CTransaction txPrev;
-    CDiskTxPos txindex;
+    Coin coinPrev;
 
-    if (!ReadFromDisk(txPrev, txindex, *pblocktree, txin.prevout))
-       return state.DoS(1, error("CheckProofOfStake() : INFO: read txPrev failed"));  // previous transaction not in main chain, may occur during initial download
+    if(!view.GetCoin(txin.prevout, coinPrev)){
+        return state.DoS(100, error("CheckProofOfStake() : Stake prevout does not exist %s", txin.prevout.hash.ToString()));
+    }
+
+    if(pindexPrev->nHeight + 1 - coinPrev.nHeight < COINBASE_MATURITY){
+        return state.DoS(100, error("CheckProofOfStake() : Stake prevout is not mature, expecting %i and only matured to %i", COINBASE_MATURITY, pindexPrev->nHeight + 1 - coinPrev.nHeight));
+    }
+    CBlockIndex* blockFrom = pindexPrev->GetAncestor(coinPrev.nHeight);
+    if(!blockFrom) {
+        return state.DoS(100, error("CheckProofOfStake() : Block at height %i for prevout can not be loaded", coinPrev.nHeight));
+    }
 
     // Verify signature
-    if (!VerifySignature(txPrev, tx, 0, SCRIPT_VERIFY_NONE, 0))
-       return state.DoS(100, error("CheckProofOfStake() : VerifySignature failed on coinstake %s", tx.GetHash().ToString()));
+    if (!VerifySignature(coinPrev, txin.prevout.hash, tx, 0, SCRIPT_VERIFY_NONE))
+        return state.DoS(100, error("CheckProofOfStake() : VerifySignature failed on coinstake %s", tx.GetHash().ToString()));
 
-    // Read block header
-    CBlock block;
-    const CDiskBlockPos& pos = CDiskBlockPos(txindex.nFile, txindex.nPos);
-    if (!ReadBlockFromDisk(block, pos, Params().GetConsensus()))
-       return fDebug? error("CheckProofOfStake() : read block failed") : false; // unable to read block of previous transaction
-
-    // Min age requirement
-    int nDepth;
-    if (IsConfirmedInNPrevBlocks(txindex, pindexPrev, Params().GetConsensus().nStakeMinConfirmations - 1, nDepth))
-       return state.DoS(100, error("CheckProofOfStake() : tried to stake at depth %d", nDepth + 1));
-
-    if (!CheckStakeKernelHash(pindexPrev, nBits, CCoins(txPrev, pindexPrev->nHeight), txin.prevout, tx.nTime))
-       return state.DoS(1, error("CheckProofOfStake() : INFO: check kernel failed on coinstake %s", tx.GetHash().ToString())); // may occur during initial download or if behind on block chain sync
+    if (!CheckStakeKernelHash(pindexPrev, nBits, coinPrev.out.nValue, txin.prevout, nTimeBlock, coinPrev.nTime))
+        return state.DoS(1, error("CheckProofOfStake() : INFO: check kernel failed on coinstake %s, hashProof=%s", tx.GetHash().ToString(), hashProofOfStake.ToString())); // may occur during initial download or if behind on block chain sync
 
     return true;
-}
-
-bool VerifySignature(const CTransaction& txFrom, const CTransaction& txTo, unsigned int nIn, unsigned int flags, int nHashType)
-{
-    assert(nIn < txTo.vin.size());
-    const CTxIn& txin = txTo.vin[nIn];
-    if (txin.prevout.n >= txFrom.vout.size())
-        return false;
-    const CTxOut& txout = txFrom.vout[txin.prevout.n];
-
-    if (txin.prevout.hash != txFrom.GetHash())
-        return false;
-
-    return VerifyScript(txin.scriptSig, txout.scriptPubKey, flags, TransactionSignatureChecker(&txTo, nIn),  NULL);
-}
-
-bool CheckKernel(CBlockIndex* pindexPrev, unsigned int nBits, uint32_t nTimeBlock, const COutPoint& prevout, uint32_t* pBlockTime){
-    std::map<COutPoint, CStakeCache> tmp;
-    return CheckKernel(pindexPrev, nBits, nTimeBlock, prevout, pBlockTime, tmp);
-}
-
-bool CheckKernel(CBlockIndex* pindexPrev, unsigned int nBits, uint32_t nTime, const COutPoint& prevout, uint32_t* pBlockTime, const std::map<COutPoint, CStakeCache>& cache)
-{
-    uint256 hashProofOfStake, targetProofOfStake;
-    auto it=cache.find(prevout);
-
-    if(it == cache.end()) {
-    	CTransaction txPrev;
-		CDiskTxPos txindex;
-		if (!ReadFromDisk(txPrev, txindex, *pblocktree, prevout))
-			return false;
-
-		// Read block header
-		CBlock block;
-		const CDiskBlockPos& pos = CDiskBlockPos(txindex.nFile, txindex.nPos);
-		if (!ReadBlockFromDisk(block, pos, Params().GetConsensus()))
-			return false;
-
-		int nDepth;
-		if (IsConfirmedInNPrevBlocks(txindex, pindexPrev, Params().GetConsensus().nStakeMinConfirmations - 1, nDepth))
-			return false;
-
-		if (pBlockTime)
-			*pBlockTime = block.GetBlockTime();
-
-		return CheckStakeKernelHash(pindexPrev, nBits, CCoins(txPrev, pindexPrev->nHeight), prevout, nTime);
-    }else{
-    	//found in cache
-    	const CStakeCache& stake = it->second;
-    	if (pBlockTime)
-    		*pBlockTime = stake.blockFrom.GetBlockTime();
-    	return CheckStakeKernelHash(pindexPrev, nBits, CCoins(stake.txPrev, pindexPrev->nHeight), prevout, nTime);
-    }
-
-}
-
-void CacheKernel(std::map<COutPoint, CStakeCache>& cache, const COutPoint& prevout){
-    if(cache.find(prevout) != cache.end()){
-        //already in cache
-        return;
-    }
-    CTransaction txPrev;
-    CDiskTxPos txindex;
-    if (!ReadFromDisk(txPrev, txindex, *pblocktree, prevout))
-        return;
-    // Read block
-    CBlock block;
-    const CDiskBlockPos& pos = CDiskBlockPos(txindex.nFile, txindex.nPos);
-    if (!ReadBlockFromDisk(block, pos, Params().GetConsensus()))
-        return;
-    CStakeCache c(block, txindex, txPrev);
-    cache.insert({prevout, c});
 }
 

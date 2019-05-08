@@ -1,15 +1,13 @@
-// Copyright (c) 2011-2013 The Bitcoin Core developers
-// Copyright (c) 2015-2017 The Bitcoin Unlimited developers
-// Copyright (c) 2017 The Bitcoin developers
+// Copyright (c) 2011-2016 The Bitcoin Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "receiverequestdialog.h"
 #include "ui_receiverequestdialog.h"
 
-#include "bitcoinunits.h"
-#include "config.h"
-#include "dstencode.h"
+#include "alphaconunits.h"
 #include "guiconstants.h"
 #include "guiutil.h"
 #include "optionsmodel.h"
@@ -26,7 +24,7 @@
 #endif
 
 #if defined(HAVE_CONFIG_H)
-#include "config/bitcoin-config.h" /* for USE_QRCODE */
+#include "config/alphacon-config.h" /* for USE_QRCODE */
 #endif
 
 #ifdef USE_QRCODE
@@ -49,7 +47,7 @@ QImage QRImageWidget::exportImage()
 {
     if(!pixmap())
         return QImage();
-    return pixmap()->toImage().scaled(QR_IMAGE_SIZE, QR_IMAGE_SIZE);
+    return pixmap()->toImage();
 }
 
 void QRImageWidget::mousePressEvent(QMouseEvent *event)
@@ -72,7 +70,7 @@ void QRImageWidget::saveImage()
 {
     if(!pixmap())
         return;
-    QString fn = GUIUtil::getSaveFileName(this, tr("Save QR Code"), QString(), tr("PNG Image (*.png)"), NULL);
+    QString fn = GUIUtil::getSaveFileName(this, tr("Save QR Code"), QString(), tr("PNG Image (*.png)"), nullptr);
     if (!fn.isEmpty())
     {
         exportImage().save(fn);
@@ -93,11 +91,10 @@ void QRImageWidget::contextMenuEvent(QContextMenuEvent *event)
     contextMenu->exec(event->globalPos());
 }
 
-ReceiveRequestDialog::ReceiveRequestDialog(const Config *cfg, QWidget *parent) :
+ReceiveRequestDialog::ReceiveRequestDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ReceiveRequestDialog),
-    model(0),
-    cfg(cfg)
+    model(0)
 {
     ui->setupUi(this);
 
@@ -107,6 +104,12 @@ ReceiveRequestDialog::ReceiveRequestDialog(const Config *cfg, QWidget *parent) :
 #endif
 
     connect(ui->btnSaveAs, SIGNAL(clicked()), ui->lblQRCode, SLOT(saveImage()));
+
+    ui->outUri->setFont(GUIUtil::getSubLabelFont());
+    ui->btnCopyURI->setFont(GUIUtil::getSubLabelFont());
+    ui->btnCopyAddress->setFont(GUIUtil::getSubLabelFont());
+    ui->btnSaveAs->setFont(GUIUtil::getSubLabelFont());
+    ui->buttonBox->setFont(GUIUtil::getSubLabelFont());
 }
 
 ReceiveRequestDialog::~ReceiveRequestDialog()
@@ -114,37 +117,20 @@ ReceiveRequestDialog::~ReceiveRequestDialog()
     delete ui;
 }
 
-void ReceiveRequestDialog::setModel(OptionsModel *model)
+void ReceiveRequestDialog::setModel(OptionsModel *_model)
 {
-    this->model = model;
+    this->model = _model;
 
-    if (model)
-        connect(model, SIGNAL(displayUnitChanged(int)), this, SLOT(update()));
+    if (_model)
+        connect(_model, SIGNAL(displayUnitChanged(int)), this, SLOT(update()));
 
     // update the display unit if necessary
     update();
 }
 
-// Addresses are stored in the database with the encoding that the client was
-// configured with at the time of creation.
-//
-// This converts to clients current configuration.
-QString ToCurrentEncoding(const QString &addr, const Config &cfg)
-{
-    if (!IsValidDestinationString(addr.toStdString(), cfg.GetChainParams()))
-    {
-        // We have something sketchy as input. Do not try to convert.
-        return addr;
-    }
-    CTxDestination dst = DecodeDestination(addr.toStdString(), cfg.GetChainParams());
-    return QString::fromStdString(EncodeDestination(dst, cfg.GetChainParams(), cfg));
-}
-
 void ReceiveRequestDialog::setInfo(const SendCoinsRecipient &_info)
 {
     this->info = _info;
-    // Display addresses with currently configured encoding.
-    this->info.address = ToCurrentEncoding(this->info.address, *cfg);
     update();
 }
 
@@ -157,7 +143,7 @@ void ReceiveRequestDialog::update()
         target = info.address;
     setWindowTitle(tr("Request payment to %1").arg(target));
 
-    QString uri = GUIUtil::formatBitcoinURI(*cfg, info);
+    QString uri = GUIUtil::formatAlphaconURI(info);
     ui->btnSaveAs->setEnabled(false);
     QString html;
     html += "<html><font face='verdana, arial, helvetica, sans-serif'>";
@@ -166,7 +152,7 @@ void ReceiveRequestDialog::update()
     html += "<a href=\""+uri+"\">" + GUIUtil::HtmlEscape(uri) + "</a><br>";
     html += "<b>"+tr("Address")+"</b>: " + GUIUtil::HtmlEscape(info.address) + "<br>";
     if(info.amount)
-        html += "<b>"+tr("Amount")+"</b>: " + BitcoinUnits::formatHtmlWithUnit(model->getDisplayUnit(), info.amount) + "<br>";
+        html += "<b>"+tr("Amount")+"</b>: " + AlphaconUnits::formatHtmlWithUnit(model->getDisplayUnit(), info.amount) + "<br>";
     if(!info.label.isEmpty())
         html += "<b>"+tr("Label")+"</b>: " + GUIUtil::HtmlEscape(info.label) + "<br>";
     if(!info.message.isEmpty())
@@ -174,8 +160,6 @@ void ReceiveRequestDialog::update()
     ui->outUri->setText(html);
 
 #ifdef USE_QRCODE
-    int fontSize = cfg->UseCashAddrEncoding() ? 10 : 12;
-
     ui->lblQRCode->setText("");
     if(!uri.isEmpty())
     {
@@ -203,16 +187,16 @@ void ReceiveRequestDialog::update()
             }
             QRcode_free(code);
 
-            QImage qrAddrImage = QImage(QR_IMAGE_SIZE, QR_IMAGE_SIZE + 20, QImage::Format_RGB32);
+            QImage qrAddrImage = QImage(QR_IMAGE_SIZE, QR_IMAGE_SIZE+20, QImage::Format_RGB32);
             qrAddrImage.fill(0xffffff);
             QPainter painter(&qrAddrImage);
             painter.drawImage(0, 0, qrImage.scaled(QR_IMAGE_SIZE, QR_IMAGE_SIZE));
             QFont font = GUIUtil::fixedPitchFont();
-            font.setPixelSize(fontSize);
+            font.setPixelSize(12);
             painter.setFont(font);
             QRect paddedRect = qrAddrImage.rect();
-            paddedRect.setHeight(QR_IMAGE_SIZE + 12);
-            painter.drawText(paddedRect, Qt::AlignBottom | Qt::AlignCenter, info.address);
+            paddedRect.setHeight(QR_IMAGE_SIZE+12);
+            painter.drawText(paddedRect, Qt::AlignBottom|Qt::AlignCenter, info.address);
             painter.end();
 
             ui->lblQRCode->setPixmap(QPixmap::fromImage(qrAddrImage));
@@ -224,7 +208,7 @@ void ReceiveRequestDialog::update()
 
 void ReceiveRequestDialog::on_btnCopyURI_clicked()
 {
-    GUIUtil::setClipboard(GUIUtil::formatBitcoinURI(*cfg, info));
+    GUIUtil::setClipboard(GUIUtil::formatAlphaconURI(info));
 }
 
 void ReceiveRequestDialog::on_btnCopyAddress_clicked()

@@ -1,13 +1,18 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The Bitcoin Core developers
+// Copyright (c) 2009-2016 The Bitcoin Core developers
+// Copyright (c) 2014 The BlackCoin developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_SCRIPT_SCRIPT_H
-#define BITCOIN_SCRIPT_SCRIPT_H
+#ifndef ALPHACON_SCRIPT_SCRIPT_H
+#define ALPHACON_SCRIPT_SCRIPT_H
 
 #include "crypto/common.h"
 #include "prevector.h"
+#include "serialize.h"
+#include "amount.h"
 
 #include <assert.h>
 #include <climits>
@@ -17,6 +22,7 @@
 #include <string.h>
 #include <string>
 #include <vector>
+
 
 // Maximum number of bytes pushable to the stack
 static const unsigned int MAX_SCRIPT_ELEMENT_SIZE = 520;
@@ -30,21 +36,12 @@ static const int MAX_PUBKEYS_PER_MULTISIG = 20;
 // Maximum script length in bytes
 static const int MAX_SCRIPT_SIZE = 10000;
 
+// Maximum number of values on script interpreter stack
+static const int MAX_STACK_SIZE = 1000;
+
 // Threshold for nLockTime: below this value it is interpreted as block number,
 // otherwise as UNIX timestamp.
 static const unsigned int LOCKTIME_THRESHOLD = 500000000; // Tue Nov  5 00:53:20 1985 UTC
-
-// Maximum chain id length
-static const int MAX_CHAIN_ID_LENGTH = 20;
-
-// Maximum chain ack period (in blocks)
-static const int MAX_ACK_PERIOD = 144;
-
-// Minimum chain ack liveness period
-static const int MIN_LIVENESS_PERIOD = 100;
-
-// Maximum chain ack liveness period
-static const int MAX_LIVENESS_PERIOD = 144;
 
 template <typename T>
 std::vector<unsigned char> ToByteVector(const T& in)
@@ -179,16 +176,19 @@ enum opcodetype
     OP_NOP1 = 0xb0,
     OP_CHECKLOCKTIMEVERIFY = 0xb1,
     OP_NOP2 = OP_CHECKLOCKTIMEVERIFY,
-    OP_NOP3 = 0xb2,
-    OP_CHECKSEQUENCEVERIFY = OP_NOP3,
-	OP_COUNT_ACKS = 0xb3,
-	OP_NOP4 = OP_COUNT_ACKS,
+    OP_CHECKSEQUENCEVERIFY = 0xb2,
+    OP_NOP3 = OP_CHECKSEQUENCEVERIFY,
+    OP_NOP4 = 0xb3,
     OP_NOP5 = 0xb4,
     OP_NOP6 = 0xb5,
     OP_NOP7 = 0xb6,
     OP_NOP8 = 0xb7,
     OP_NOP9 = 0xb8,
     OP_NOP10 = 0xb9,
+
+    /** RVN START */
+    OP_ALP_ASSET = 0xc0,
+    /** RVN END */
 
 
     // template matching params
@@ -199,6 +199,9 @@ enum opcodetype
 
     OP_INVALIDOPCODE = 0xff,
 };
+
+// Maximum value that an opcode can be
+static const unsigned int MAX_OPCODE = OP_NOP10;
 
 const char* GetOpName(opcodetype opcode);
 
@@ -383,6 +386,12 @@ private:
     int64_t m_value;
 };
 
+/**
+ * We use a prevector for the script to reduce the considerable memory overhead
+ *  of vectors in cases where they normally contain a small number of small elements.
+ * Tests in October 2015 showed use of this reduced dbcache memory usage by 23%
+ *  and made an initial sync 13% faster.
+ */
 typedef prevector<28, unsigned char> CScriptBase;
 
 /** Serialized script, used inside transaction inputs and outputs */
@@ -407,13 +416,20 @@ protected:
     }
 public:
     CScript() { }
-    CScript(const CScript& b) : CScriptBase(b.begin(), b.end()) { }
     CScript(const_iterator pbegin, const_iterator pend) : CScriptBase(pbegin, pend) { }
     CScript(std::vector<unsigned char>::const_iterator pbegin, std::vector<unsigned char>::const_iterator pend) : CScriptBase(pbegin, pend) { }
     CScript(const unsigned char* pbegin, const unsigned char* pend) : CScriptBase(pbegin, pend) { }
 
+    ADD_SERIALIZE_METHODS;
+
+    template <typename Stream, typename Operation>
+    inline void SerializationOp(Stream& s, Operation ser_action) {
+        READWRITE(static_cast<CScriptBase&>(*this));
+    }
+
     CScript& operator+=(const CScript& b)
     {
+        reserve(size() + b.size());
         insert(end(), b.begin(), b.end());
         return *this;
     }
@@ -462,16 +478,16 @@ public:
         else if (b.size() <= 0xffff)
         {
             insert(end(), OP_PUSHDATA2);
-            uint8_t data[2];
-            WriteLE16(data, b.size());
-            insert(end(), data, data + sizeof(data));
+            uint8_t _data[2];
+            WriteLE16(_data, b.size());
+            insert(end(), _data, _data + sizeof(_data));
         }
         else
         {
             insert(end(), OP_PUSHDATA4);
-            uint8_t data[4];
-            WriteLE32(data, b.size());
-            insert(end(), data, data + sizeof(data));
+            uint8_t _data[4];
+            WriteLE32(_data, b.size());
+            insert(end(), _data, _data + sizeof(_data));
         }
         insert(end(), b.begin(), b.end());
         return *this;
@@ -498,7 +514,7 @@ public:
     bool GetOp(iterator& pc, opcodetype& opcodeRet)
     {
          const_iterator pc2 = pc;
-         bool fRet = GetOp2(pc2, opcodeRet, NULL);
+         bool fRet = GetOp2(pc2, opcodeRet, nullptr);
          pc = begin() + (pc2 - begin());
          return fRet;
     }
@@ -510,7 +526,7 @@ public:
 
     bool GetOp(const_iterator& pc, opcodetype& opcodeRet) const
     {
-        return GetOp2(pc, opcodeRet, NULL);
+        return GetOp2(pc, opcodeRet, nullptr);
     }
 
     bool GetOp2(const_iterator& pc, opcodetype& opcodeRet, std::vector<unsigned char>* pvchRet) const
@@ -619,7 +635,7 @@ public:
     }
 
     /**
-     * Pre-version-0.6, Bitcoin always counted CHECKMULTISIGs
+     * Pre-version-0.6, Alphacon always counted CHECKMULTISIGs
      * as 20 sigops. With pay-to-script-hash, that changed:
      * CHECKMULTISIGs serialized in scriptSigs are
      * counted more accurately, assuming they are of the form
@@ -636,26 +652,60 @@ public:
     bool IsPayToPublicKeyHash() const;
 
     bool IsPayToScriptHash() const;
+    bool IsPayToWitnessScriptHash() const;
+    bool IsWitnessProgram(int& version, std::vector<unsigned char>& program) const;
 
+    /** RVN START */
+    enum class txnouttype;
+    bool IsAssetScript(int& nType, bool& fIsOwner, int& nStartingIndex) const;
+    bool IsAssetScript(int& nType, bool& fIsOwner) const;
+    bool IsAssetScript() const;
+    bool IsNewAsset() const;
+    bool IsOwnerAsset() const;
+    bool IsReissueAsset() const;
+    bool IsTransferAsset() const;
+    bool IsAsset() const;
+    /** RVN END */
+
+    /** Used for obsolete pay-to-pubkey addresses indexing. */
     bool IsPayToPublicKey() const;
-
     /** Called by IsStandardTx and P2SH/BIP62 VerifyScript (which makes it consensus-critical). */
     bool IsPushOnly(const_iterator pc) const;
     bool IsPushOnly() const;
-    bool HasCanonicalPushes() const;
 
-    bool IsNewAsset() const;
+    /** Check if the script contains valid OP_CODES */
+    bool HasValidOps() const;
 
-    bool IsUnspendable() const
-    {
-        return (size() > 0 && *begin() == OP_RETURN) || (size() > MAX_SCRIPT_SIZE);
-    }
+    /**
+     * Returns whether the script is guaranteed to fail at execution,
+     * regardless of the initial stack. This allows outputs to be pruned
+     * instantly when entering the UTXO set.
+     */
+    bool IsUnspendable() const;
+
 
     void clear()
     {
-        // The default std::vector::clear() does not release memory.
-        CScriptBase().swap(*this);
+        // The default prevector::clear() does not release memory
+        CScriptBase::clear();
+        shrink_to_fit();
     }
+};
+
+struct CScriptWitness
+{
+    // Note that this encodes the data elements being pushed, rather than
+    // encoding them as a CScript that pushes them.
+    std::vector<std::vector<unsigned char> > stack;
+
+    // Some compilers complain without a default constructor
+    CScriptWitness() { }
+
+    bool IsNull() const { return stack.empty(); }
+
+    void SetNull() { stack.clear(); stack.shrink_to_fit(); }
+
+    std::string ToString() const;
 };
 
 class CReserveScript
@@ -667,4 +717,15 @@ public:
     virtual ~CReserveScript() {}
 };
 
-#endif // BITCOIN_SCRIPT_SCRIPT_H
+//! These are needed because script.h and script.cpp do not have access to asset.h and asset.cpp functions. This is
+//! because the make file compiles them at different times. This is becauses script files are compiled with other
+//! consensus files, and asset files are compiled with core files
+bool GetAssetAmountFromScript(const CScript& script, CAmount& nAmount);
+bool AmountFromNewAssetScript(const CScript& scriptPubKey, CAmount& nAmount);
+bool AmountFromTransferScript(const CScript& scriptPubKey, CAmount& nAmount);
+bool AmountFromReissueScript(const CScript& scriptPubKey, CAmount& nAmount);
+bool ScriptNewAsset(const CScript& scriptPubKey, int& nStartingIndex);
+bool ScriptTransferAsset(const CScript& scriptPubKey, int& nStartingIndex);
+bool ScriptReissueAsset(const CScript& scriptPubKey, int& nStartingIndex);
+
+#endif // ALPHACON_SCRIPT_SCRIPT_H

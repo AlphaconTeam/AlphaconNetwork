@@ -1,9 +1,11 @@
 // Copyright (c) 2015 The Bitcoin Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_ZMQ_ZMQABSTRACTNOTIFIER_H
-#define BITCOIN_ZMQ_ZMQABSTRACTNOTIFIER_H
+#ifndef ALPHACON_ZMQ_ZMQABSTRACTNOTIFIER_H
+#define ALPHACON_ZMQ_ZMQABSTRACTNOTIFIER_H
 
 #include "zmqconfig.h"
 
@@ -15,7 +17,7 @@ typedef CZMQAbstractNotifier* (*CZMQNotifierFactory)();
 class CZMQAbstractNotifier
 {
 public:
-    CZMQAbstractNotifier() : psocket(0) { }
+    CZMQAbstractNotifier() : psocket(nullptr) { }
     virtual ~CZMQAbstractNotifier();
 
     template <typename T>
@@ -41,4 +43,4 @@ protected:
     std::string address;
 };
 
-#endif // BITCOIN_ZMQ_ZMQABSTRACTNOTIFIER_H
+#endif // ALPHACON_ZMQ_ZMQABSTRACTNOTIFIER_H

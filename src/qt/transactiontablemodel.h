@@ -1,11 +1,13 @@
-// Copyright (c) 2011-2015 The Bitcoin Core developers
+// Copyright (c) 2011-2016 The Bitcoin Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_QT_TRANSACTIONTABLEMODEL_H
-#define BITCOIN_QT_TRANSACTIONTABLEMODEL_H
+#ifndef ALPHACON_QT_TRANSACTIONTABLEMODEL_H
+#define ALPHACON_QT_TRANSACTIONTABLEMODEL_H
 
-#include "bitcoinunits.h"
+#include "alphaconunits.h"
 
 #include <QAbstractTableModel>
 #include <QStringList>
@@ -33,7 +35,8 @@ public:
         Date = 2,
         Type = 3,
         ToAddress = 4,
-        Amount = 5
+        Amount = 5,
+        AssetName = 6
     };
 
     /** Roles to get specific information from a transaction row.
@@ -72,6 +75,8 @@ public:
         StatusRole,
         /** Unprocessed icon */
         RawDecorationRole,
+        /** ALP or name of an asset */
+        AssetNameRole,
     };
 
     int rowCount(const QModelIndex &parent) const;
@@ -79,7 +84,7 @@ public:
     QVariant data(const QModelIndex &index, int role) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
     QModelIndex index(int row, int column, const QModelIndex & parent = QModelIndex()) const;
-    bool processingQueuedTransactions() { return fProcessingQueuedTransactions; }
+    bool processingQueuedTransactions() const { return fProcessingQueuedTransactions; }
 
 private:
     CWallet* wallet;
@@ -98,15 +103,11 @@ private:
     QString formatTxDate(const TransactionRecord *wtx) const;
     QString formatTxType(const TransactionRecord *wtx) const;
     QString formatTxToAddress(const TransactionRecord *wtx, bool tooltip) const;
-    QString formatTxAmount(const TransactionRecord *wtx, bool showUnconfirmed=true, BitcoinUnits::SeparatorStyle separators=BitcoinUnits::separatorStandard) const;
+    QString formatTxAmount(const TransactionRecord *wtx, bool showUnconfirmed=true, AlphaconUnits::SeparatorStyle separators=AlphaconUnits::separatorStandard) const;
     QString formatTooltip(const TransactionRecord *rec) const;
     QVariant txStatusDecoration(const TransactionRecord *wtx) const;
     QVariant txWatchonlyDecoration(const TransactionRecord *wtx) const;
     QVariant txAddressDecoration(const TransactionRecord *wtx) const;
-
-Q_SIGNALS:
-    // Fired when a message should be reported to the user
-    void message(const QString &title, const QString &message, unsigned int style);
 
 public Q_SLOTS:
     /* New transaction, or transaction changed status */
@@ -121,4 +122,4 @@ public Q_SLOTS:
     friend class TransactionTablePriv;
 };
 
-#endif // BITCOIN_QT_TRANSACTIONTABLEMODEL_H
+#endif // ALPHACON_QT_TRANSACTIONTABLEMODEL_H

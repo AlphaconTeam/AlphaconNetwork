@@ -1,9 +1,11 @@
-// Copyright (c) 2011-2015 The Bitcoin Core developers
+// Copyright (c) 2011-2016 The Bitcoin Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_QT_BANTABLEMODEL_H
-#define BITCOIN_QT_BANTABLEMODEL_H
+#ifndef ALPHACON_QT_BANTABLEMODEL_H
+#define ALPHACON_QT_BANTABLEMODEL_H
 
 #include "net.h"
 
@@ -70,4 +72,4 @@ private:
     std::unique_ptr<BanTablePriv> priv;
 };
 
-#endif // BITCOIN_QT_BANTABLEMODEL_H
+#endif // ALPHACON_QT_BANTABLEMODEL_H

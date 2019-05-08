@@ -1,0 +1,13 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Alphacon Core
+Comment=Connect to the Alphacon P2P Network
+Comment[de]=Verbinde mit dem Alphacon peer-to-peer Netzwerk
+Comment[fr]=Alphacon, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=Alphacon, eşten eşe kriptografik sanal para birimi
+Exec=alphacon-qt %u
+Terminal=false
+Type=Application
+Icon=alphacon128
+MimeType=x-scheme-handler/alphacon;
+Categories=Office;Finance;

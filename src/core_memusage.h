@@ -1,16 +1,18 @@
-// Copyright (c) 2015 The Bitcoin Core developers
+// Copyright (c) 2015-2016 The Bitcoin Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_CORE_MEMUSAGE_H
-#define BITCOIN_CORE_MEMUSAGE_H
+#ifndef ALPHACON_CORE_MEMUSAGE_H
+#define ALPHACON_CORE_MEMUSAGE_H
 
 #include "primitives/transaction.h"
 #include "primitives/block.h"
 #include "memusage.h"
 
 static inline size_t RecursiveDynamicUsage(const CScript& script) {
-    return memusage::DynamicUsage(*static_cast<const CScriptBase*>(&script));
+    return memusage::DynamicUsage(script);
 }
 
 static inline size_t RecursiveDynamicUsage(const COutPoint& out) {
@@ -18,7 +20,11 @@ static inline size_t RecursiveDynamicUsage(const COutPoint& out) {
 }
 
 static inline size_t RecursiveDynamicUsage(const CTxIn& in) {
-    return RecursiveDynamicUsage(in.scriptSig) + RecursiveDynamicUsage(in.prevout);
+    size_t mem = RecursiveDynamicUsage(in.scriptSig) + RecursiveDynamicUsage(in.prevout) + memusage::DynamicUsage(in.scriptWitness.stack);
+    for (std::vector<std::vector<unsigned char> >::const_iterator it = in.scriptWitness.stack.begin(); it != in.scriptWitness.stack.end(); it++) {
+         mem += memusage::DynamicUsage(*it);
+    }
+    return mem;
 }
 
 static inline size_t RecursiveDynamicUsage(const CTxOut& out) {
@@ -49,8 +55,8 @@ static inline size_t RecursiveDynamicUsage(const CMutableTransaction& tx) {
 
 static inline size_t RecursiveDynamicUsage(const CBlock& block) {
     size_t mem = memusage::DynamicUsage(block.vtx);
-    for (std::vector<CTransaction>::const_iterator it = block.vtx.begin(); it != block.vtx.end(); it++) {
-        mem += RecursiveDynamicUsage(*it);
+    for (const auto& tx : block.vtx) {
+        mem += memusage::DynamicUsage(tx) + RecursiveDynamicUsage(*tx);
     }
     return mem;
 }
@@ -59,4 +65,9 @@ static inline size_t RecursiveDynamicUsage(const CBlockLocator& locator) {
     return memusage::DynamicUsage(locator.vHave);
 }
 
-#endif // BITCOIN_CORE_MEMUSAGE_H
+template<typename X>
+static inline size_t RecursiveDynamicUsage(const std::shared_ptr<X>& p) {
+    return p ? memusage::DynamicUsage(p) + RecursiveDynamicUsage(*p) : 0;
+}
+
+#endif // ALPHACON_CORE_MEMUSAGE_H

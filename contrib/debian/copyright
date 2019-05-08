@@ -1,23 +1,19 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: Bitcoin
+Upstream-Name: Alphacon
 Upstream-Contact: Satoshi Nakamoto <satoshin@gmx.com>
- irc://#bitcoin@freenode.net
-Source: https://github.com/bitcoin/bitcoin
+ irc://#alphacon@freenode.net
+Source: https://github.com/AlphaconNetwork/AlphaconNetwork
 
 Files: *
-Copyright: 2009-2016, Bitcoin Core Developers
+Copyright: 2009-2017, Alphacon Core Developers
 License: Expat
-Comment: The Bitcoin Core Developers encompasses the current developers listed on bitcoin.org,
+Comment: The Alphacon Core Developers encompasses the current developers listed on alphacon.org,
          as well as the numerous contributors to the project.
 
 Files: debian/*
 Copyright: 2010-2011, Jonas Smedegaard <dr@jones.dk>
            2011, Matt Corallo <matt@bluematt.me>
 License: GPL-2+
-
-Files: debian/manpages/*
-Copyright: Micah Anderson <micah@debian.org>
-License: GPL-3+
 
 Files: src/qt/res/icons/add.png
        src/qt/res/icons/address-book.png
@@ -51,7 +47,10 @@ Comment: Site: https://github.com/stephenhutchings/typicons.font
 
 Files: src/qt/res/icons/connect*.png
        src/qt/res/src/connect-*.svg
+       src/qt/res/icons/network_disabled.png
+       src/qt/res/src/network_disabled.svg
 Copyright: Marco Falke
+           Luke Dashjr
 License: Expat
 Comment: Inspired by Stephan Hutchings Typicons
 
@@ -79,12 +78,12 @@ License: Expat
 Comment: Modifications of Stephan Hutchings Typicons
 
 Files: src/qt/res/icons/about.png
-       src/qt/res/icons/bitcoin.*
-       share/pixmaps/bitcoin*
-       src/qt/res/src/bitcoin.svg
+       src/qt/res/icons/alphacon.*
+       share/pixmaps/alphacon*
+       src/qt/res/src/alphacon.svg
 Copyright: Bitboy, Jonas Schnelli
 License: public-domain
-Comment: Site: https://bitcointalk.org/?topic=1756.0
+Comment: Site: https://alphacontalk.org/?topic=1756.0
 
 
 License: Expat

@@ -1,9 +1,11 @@
-// Copyright (c) 2015 The Bitcoin Core developers
+// Copyright (c) 2015-2016 The Bitcoin Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_ZMQ_ZMQPUBLISHNOTIFIER_H
-#define BITCOIN_ZMQ_ZMQPUBLISHNOTIFIER_H
+#ifndef ALPHACON_ZMQ_ZMQPUBLISHNOTIFIER_H
+#define ALPHACON_ZMQ_ZMQPUBLISHNOTIFIER_H
 
 #include "zmqabstractnotifier.h"
 
@@ -12,7 +14,7 @@ class CBlockIndex;
 class CZMQAbstractPublishNotifier : public CZMQAbstractNotifier
 {
 private:
-    uint32_t nSequence; //! upcounting per message sequence number
+    uint32_t nSequence; //!< upcounting per message sequence number
 
 public:
 
@@ -24,32 +26,32 @@ public:
     */
     bool SendMessage(const char *command, const void* data, size_t size);
 
-    bool Initialize(void *pcontext);
-    void Shutdown();
+    bool Initialize(void *pcontext) override;
+    void Shutdown() override;
 };
 
 class CZMQPublishHashBlockNotifier : public CZMQAbstractPublishNotifier
 {
 public:
-    bool NotifyBlock(const CBlockIndex *pindex);
+    bool NotifyBlock(const CBlockIndex *pindex) override;
 };
 
 class CZMQPublishHashTransactionNotifier : public CZMQAbstractPublishNotifier
 {
 public:
-    bool NotifyTransaction(const CTransaction &transaction);
+    bool NotifyTransaction(const CTransaction &transaction) override;
 };
 
 class CZMQPublishRawBlockNotifier : public CZMQAbstractPublishNotifier
 {
 public:
-    bool NotifyBlock(const CBlockIndex *pindex);
+    bool NotifyBlock(const CBlockIndex *pindex) override;
 };
 
 class CZMQPublishRawTransactionNotifier : public CZMQAbstractPublishNotifier
 {
 public:
-    bool NotifyTransaction(const CTransaction &transaction);
+    bool NotifyTransaction(const CTransaction &transaction) override;
 };
 
-#endif // BITCOIN_ZMQ_ZMQPUBLISHNOTIFIER_H
+#endif // ALPHACON_ZMQ_ZMQPUBLISHNOTIFIER_H

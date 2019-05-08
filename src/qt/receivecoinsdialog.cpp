@@ -1,4 +1,6 @@
-// Copyright (c) 2011-2015 The Bitcoin Core developers
+// Copyright (c) 2011-2016 The Bitcoin Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -7,14 +9,14 @@
 
 #include "addressbookpage.h"
 #include "addresstablemodel.h"
-#include "bitcoinunits.h"
-#include "config.h"
+#include "alphaconunits.h"
 #include "guiutil.h"
 #include "optionsmodel.h"
 #include "platformstyle.h"
 #include "receiverequestdialog.h"
 #include "recentrequeststablemodel.h"
 #include "walletmodel.h"
+#include "guiconstants.h"
 
 #include <QAction>
 #include <QCursor>
@@ -23,26 +25,25 @@
 #include <QScrollBar>
 #include <QTextDocument>
 
-ReceiveCoinsDialog::ReceiveCoinsDialog(const PlatformStyle *platformStyle, const Config *cfg, QWidget *parent) :
+ReceiveCoinsDialog::ReceiveCoinsDialog(const PlatformStyle *_platformStyle, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ReceiveCoinsDialog),
     columnResizingFixer(0),
     model(0),
-    platformStyle(platformStyle),
-    cfg(cfg)
+    platformStyle(_platformStyle)
 {
     ui->setupUi(this);
 
-    if (!platformStyle->getImagesOnButtons()) {
+    if (!_platformStyle->getImagesOnButtons()) {
         ui->clearButton->setIcon(QIcon());
         ui->receiveButton->setIcon(QIcon());
         ui->showRequestButton->setIcon(QIcon());
         ui->removeRequestButton->setIcon(QIcon());
     } else {
-        ui->clearButton->setIcon(platformStyle->SingleColorIcon(":/icons/remove"));
-        ui->receiveButton->setIcon(platformStyle->SingleColorIcon(":/icons/receiving_addresses"));
-        ui->showRequestButton->setIcon(platformStyle->SingleColorIcon(":/icons/edit"));
-        ui->removeRequestButton->setIcon(platformStyle->SingleColorIcon(":/icons/remove"));
+        ui->clearButton->setIcon(_platformStyle->SingleColorIcon(":/icons/remove"));
+        ui->receiveButton->setIcon(_platformStyle->SingleColorIcon(":/icons/receiving_addresses"));
+        ui->showRequestButton->setIcon(_platformStyle->SingleColorIcon(":/icons/edit"));
+        ui->removeRequestButton->setIcon(_platformStyle->SingleColorIcon(":/icons/remove"));
     }
 
     // context menu actions
@@ -66,23 +67,26 @@ ReceiveCoinsDialog::ReceiveCoinsDialog(const PlatformStyle *platformStyle, const
     connect(copyAmountAction, SIGNAL(triggered()), this, SLOT(copyAmount()));
 
     connect(ui->clearButton, SIGNAL(clicked()), this, SLOT(clear()));
+
+    setupRequestFrame(platformStyle);
+    setupHistoryFrame(platformStyle);
 }
 
-void ReceiveCoinsDialog::setModel(WalletModel *model)
+void ReceiveCoinsDialog::setModel(WalletModel *_model)
 {
-    this->model = model;
+    this->model = _model;
 
-    if(model && model->getOptionsModel())
+    if(_model && _model->getOptionsModel())
     {
-        model->getRecentRequestsTableModel()->sort(RecentRequestsTableModel::Date, Qt::DescendingOrder);
-        connect(model->getOptionsModel(), SIGNAL(displayUnitChanged(int)), this, SLOT(updateDisplayUnit()));
+        _model->getRecentRequestsTableModel()->sort(RecentRequestsTableModel::Date, Qt::DescendingOrder);
+        connect(_model->getOptionsModel(), SIGNAL(displayUnitChanged(int)), this, SLOT(updateDisplayUnit()));
         updateDisplayUnit();
 
         QTableView* tableView = ui->recentRequestsView;
 
         tableView->verticalHeader()->hide();
         tableView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-        tableView->setModel(model->getRecentRequestsTableModel());
+        tableView->setModel(_model->getRecentRequestsTableModel());
         tableView->setAlternatingRowColors(true);
         tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
         tableView->setSelectionMode(QAbstractItemView::ContiguousSelection);
@@ -95,6 +99,8 @@ void ReceiveCoinsDialog::setModel(WalletModel *model)
             SLOT(recentRequestsView_selectionChanged(QItemSelection, QItemSelection)));
         // Last 2 columns are set by the columnResizingFixer, when the table geometry is ready.
         columnResizingFixer = new GUIUtil::TableViewLastColumnResizingFixer(tableView, AMOUNT_MINIMUM_COLUMN_WIDTH, DATE_COLUMN_WIDTH, this);
+
+        tableView->show();
     }
 }
 
@@ -120,6 +126,55 @@ void ReceiveCoinsDialog::reject()
 void ReceiveCoinsDialog::accept()
 {
     clear();
+}
+
+void ReceiveCoinsDialog::setupRequestFrame(const PlatformStyle *platformStyle)
+{
+    /** Update the coincontrol frame */
+    ui->frame2->setStyleSheet(QString(".QFrame {background-color: %1; border: none;}").arg(platformStyle->WidgetBackGroundColor().name()));
+    /** Create the shadow effects on the frames */
+
+    ui->label_5->setStyleSheet(STRING_LABEL_COLOR);
+
+    ui->label_2->setStyleSheet(STRING_LABEL_COLOR);
+    ui->label_2->setFont(GUIUtil::getSubLabelFont());
+
+    ui->label->setStyleSheet(STRING_LABEL_COLOR);
+    ui->label->setFont(GUIUtil::getSubLabelFont());
+
+    ui->label_3->setStyleSheet(STRING_LABEL_COLOR);
+    ui->label_3->setFont(GUIUtil::getSubLabelFont());
+
+    ui->label_4->setStyleSheet(STRING_LABEL_COLOR);
+    ui->label_4->setFont(GUIUtil::getSubLabelFont());
+
+    ui->label_7->setStyleSheet(STRING_LABEL_COLOR);
+    ui->label_7->setFont(GUIUtil::getSubLabelFont());
+
+    ui->reuseAddress->setStyleSheet(QString(".QCheckBox{ %1; }").arg(STRING_LABEL_COLOR));
+    ui->reqLabel->setFont(GUIUtil::getSubLabelFont());
+    ui->reqAmount->setFont(GUIUtil::getSubLabelFont());
+    ui->reqMessage->setFont(GUIUtil::getSubLabelFont());
+    ui->receiveButton->setFont(GUIUtil::getSubLabelFont());
+    ui->clearButton->setFont(GUIUtil::getSubLabelFont());
+    ui->recentRequestsView->setFont(GUIUtil::getSubLabelFont());
+    ui->showRequestButton->setFont(GUIUtil::getSubLabelFont());
+    ui->removeRequestButton->setFont(GUIUtil::getSubLabelFont());
+    ui->label_5->setFont(GUIUtil::getSubLabelFont());
+
+    ui->label_6->setFont(GUIUtil::getSubLabelFontBolded());
+}
+
+void ReceiveCoinsDialog::setupHistoryFrame(const PlatformStyle *platformStyle)
+{
+    /** Update the coincontrol frame */
+    ui->frame->setStyleSheet(QString(".QFrame {background-color: %1; border: none;}").arg(platformStyle->WidgetBackGroundColor().name()));
+    /** Create the shadow effects on the frames */
+
+    ui->label_6->setStyleSheet(STRING_LABEL_COLOR);
+
+    contextMenu->setFont(GUIUtil::getSubLabelFont());
+
 }
 
 void ReceiveCoinsDialog::updateDisplayUnit()
@@ -158,7 +213,7 @@ void ReceiveCoinsDialog::on_receiveButton_clicked()
     }
     SendCoinsRecipient info(address, label,
         ui->reqAmount->value(), ui->reqMessage->text());
-    ReceiveRequestDialog *dialog = new ReceiveRequestDialog(cfg, this);
+    ReceiveRequestDialog *dialog = new ReceiveRequestDialog(this);
     dialog->setAttribute(Qt::WA_DeleteOnClose);
     dialog->setModel(model->getOptionsModel());
     dialog->setInfo(info);
@@ -172,7 +227,7 @@ void ReceiveCoinsDialog::on_receiveButton_clicked()
 void ReceiveCoinsDialog::on_recentRequestsView_doubleClicked(const QModelIndex &index)
 {
     const RecentRequestsTableModel *submodel = model->getRecentRequestsTableModel();
-    ReceiveRequestDialog *dialog = new ReceiveRequestDialog(cfg, this);
+    ReceiveRequestDialog *dialog = new ReceiveRequestDialog(this);
     dialog->setModel(model->getOptionsModel());
     dialog->setInfo(submodel->entry(index.row()).recipient);
     dialog->setAttribute(Qt::WA_DeleteOnClose);
@@ -193,7 +248,7 @@ void ReceiveCoinsDialog::on_showRequestButton_clicked()
         return;
     QModelIndexList selection = ui->recentRequestsView->selectionModel()->selectedRows();
 
-    Q_FOREACH (const QModelIndex& index, selection) {
+    for (const QModelIndex& index : selection) {
         on_recentRequestsView_doubleClicked(index);
     }
 }
@@ -236,10 +291,10 @@ void ReceiveCoinsDialog::keyPressEvent(QKeyEvent *event)
 
 QModelIndex ReceiveCoinsDialog::selectedRow()
 {
-    if (!model || !model->getRecentRequestsTableModel() || !ui->recentRequestsView->selectionModel())
+    if(!model || !model->getRecentRequestsTableModel() || !ui->recentRequestsView->selectionModel())
         return QModelIndex();
     QModelIndexList selection = ui->recentRequestsView->selectionModel()->selectedRows();
-    if (selection.empty())
+    if(selection.empty())
         return QModelIndex();
     // correct for selection mode ContiguousSelection
     QModelIndex firstIndex = selection.at(0);
@@ -250,20 +305,16 @@ QModelIndex ReceiveCoinsDialog::selectedRow()
 void ReceiveCoinsDialog::copyColumnToClipboard(int column)
 {
     QModelIndex firstIndex = selectedRow();
-    if (!firstIndex.isValid())
-    {
+    if (!firstIndex.isValid()) {
         return;
     }
-    GUIUtil::setClipboard(model->getRecentRequestsTableModel()
-                              ->data(firstIndex.child(firstIndex.row(), column), Qt::EditRole)
-                              .toString());
+    GUIUtil::setClipboard(model->getRecentRequestsTableModel()->data(firstIndex.child(firstIndex.row(), column), Qt::EditRole).toString());
 }
 
 // context menu
 void ReceiveCoinsDialog::showMenu(const QPoint &point)
 {
-    if (!selectedRow().isValid())
-    {
+    if (!selectedRow().isValid()) {
         return;
     }
     contextMenu->exec(QCursor::pos());
@@ -273,13 +324,12 @@ void ReceiveCoinsDialog::showMenu(const QPoint &point)
 void ReceiveCoinsDialog::copyURI()
 {
     QModelIndex sel = selectedRow();
-    if (!sel.isValid())
-    {
+    if (!sel.isValid()) {
         return;
     }
 
-    const RecentRequestsTableModel *const submodel = model->getRecentRequestsTableModel();
-    const QString uri = GUIUtil::formatBitcoinURI(*cfg, submodel->entry(sel.row()).recipient);
+    const RecentRequestsTableModel * const submodel = model->getRecentRequestsTableModel();
+    const QString uri = GUIUtil::formatAlphaconURI(submodel->entry(sel.row()).recipient);
     GUIUtil::setClipboard(uri);
 }
 

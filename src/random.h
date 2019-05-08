@@ -1,11 +1,15 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2014 The Bitcoin Core developers
+// Copyright (c) 2009-2016 The Bitcoin Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_RANDOM_H
-#define BITCOIN_RANDOM_H
+#ifndef ALPHACON_RANDOM_H
+#define ALPHACON_RANDOM_H
 
+#include "crypto/chacha20.h"
+#include "crypto/common.h"
 #include "uint256.h"
 
 #include <stdint.h>
@@ -22,27 +26,44 @@ int GetRandInt(int nMax);
 uint256 GetRandHash();
 
 /**
+ * Add a little bit of randomness to the output of GetStrongRangBytes.
+ * This sleeps for a millisecond, so should only be called when there is
+ * no other work to be done.
+ */
+void RandAddSeedSleep();
+
+/**
  * Function to gather random data from multiple sources, failing whenever any
  * of those source fail to provide a result.
  */
 void GetStrongRandBytes(unsigned char* buf, int num);
 
 /**
- * Seed insecure_rand using the random pool.
- * @param Deterministic Use a deterministic seed
- */
-void seed_insecure_rand(bool fDeterministic = false);
-
-/**
  * Fast randomness source. This is seeded once with secure random data, but
  * is completely deterministic and insecure after that.
  * This class is not thread-safe.
  */
-class FastRandomContext
-{
+class FastRandomContext {
 private:
+    bool requires_seed;
+    ChaCha20 rng;
+
+    unsigned char bytebuf[64];
+    int bytebuf_size;
+
     uint64_t bitbuf;
     int bitbuf_size;
+
+    void RandomSeed();
+
+    void FillByteBuffer()
+    {
+        if (requires_seed) {
+            RandomSeed();
+        }
+        rng.Output(bytebuf, sizeof(bytebuf));
+        bytebuf_size = sizeof(bytebuf);
+    }
 
     void FillBitBuffer()
     {
@@ -53,45 +74,55 @@ private:
 public:
     explicit FastRandomContext(bool fDeterministic = false);
 
-    uint32_t Rz;
-    uint32_t Rw;
+    /** Initialize with explicit seed (only for testing) */
+    explicit FastRandomContext(const uint256& seed);
 
-    uint32_t rand32()
-    {
-        Rz = 36969 * (Rz & 65535) + (Rz >> 16);
-        Rw = 18000 * (Rw & 65535) + (Rw >> 16);
-        return (Rw << 16) + Rz;
-    }
-
+    /** Generate a random 64-bit integer. */
     uint64_t rand64()
     {
-        uint64_t a = rand32();
-        uint64_t b = rand32();
-        return (b << 32) + a;
+        if (bytebuf_size < 8) FillByteBuffer();
+        uint64_t ret = ReadLE64(bytebuf + 64 - bytebuf_size);
+        bytebuf_size -= 8;
+        return ret;
     }
 
-    bool randbool() { return rand32() & 1; }
-    uint64_t randbits(int bits)
-    {
-        if (bits == 0)
-        {
+    /** Generate a random (bits)-bit integer. */
+    uint64_t randbits(int bits) {
+        if (bits == 0) {
             return 0;
-        }
-        else if (bits > 32)
-        {
+        } else if (bits > 32) {
             return rand64() >> (64 - bits);
-        }
-        else
-        {
-            if (bitbuf_size < bits)
-                FillBitBuffer();
-
-            uint64_t ret = bitbuf & (~uint64_t(0) >> (64 - bits));
+        } else {
+            if (bitbuf_size < bits) FillBitBuffer();
+            uint64_t ret = bitbuf & (~(uint64_t)0 >> (64 - bits));
             bitbuf >>= bits;
             bitbuf_size -= bits;
             return ret;
         }
     }
+
+    /** Generate a random integer in the range [0..range). */
+    uint64_t randrange(uint64_t range)
+    {
+        --range;
+        int bits = CountBits(range);
+        while (true) {
+            uint64_t ret = randbits(bits);
+            if (ret <= range) return ret;
+        }
+    }
+
+    /** Generate random bytes. */
+    std::vector<unsigned char> randbytes(size_t len);
+
+    /** Generate a random 32-bit integer. */
+    uint32_t rand32() { return randbits(32); }
+
+    /** generate a random uint256. */
+    uint256 rand256();
+
+    /** Generate a random boolean. */
+    bool randbool() { return randbits(1); }
 };
 
 /* Number of random bytes returned by GetOSRand.
@@ -109,13 +140,9 @@ void GetOSRand(unsigned char *ent32);
 /** Check that OS randomness is available and returning the requested number
  * of bytes.
  */
-extern uint32_t insecure_rand_Rz;
-extern uint32_t insecure_rand_Rw;
-static inline uint32_t insecure_rand(void)
-{
-    insecure_rand_Rz = 36969 * (insecure_rand_Rz & 65535) + (insecure_rand_Rz >> 16);
-    insecure_rand_Rw = 18000 * (insecure_rand_Rw & 65535) + (insecure_rand_Rw >> 16);
-    return (insecure_rand_Rw << 16) + insecure_rand_Rz;
-}
+bool Random_SanityCheck();
 
-#endif // BITCOIN_RANDOM_H
+/** Initialize the RNG. */
+void RandomInit();
+
+#endif // ALPHACON_RANDOM_H
