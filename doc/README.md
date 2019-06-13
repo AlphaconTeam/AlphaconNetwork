@@ -79,11 +79,11 @@ The GUI wallet requires the QR Code encoding library and Google's data interchan
 
 3) Drag Alphacon Core icon to the Applications Folder
 
-![alt tag](https://i.imgur.com/GLhBFUV.png)
+![alt tag](https://i.imgur.com/DC3qvhb.png)
 
 4) Open the Applications folder and Launch Alphacon Core. The client will begin synchronizing with the network.
 
-![alt tag](https://i.imgur.com/v3962qo.png)
+![alt tag](https://i.imgur.com/4HRJhZk.png)
 
 Note: You may get the follow error on first launch:
 ```
@@ -100,13 +100,7 @@ To resolve, you will need to copy libboost_system.dylib to libboost_system-mt.dy
 
 2) Double click the alphacon-qt.exe to launch it.
 
-### Need Help?
-
-- See the documentation at the [Alphacon Wiki](https://alphacon.wiki/wiki/Alphacon_Wiki)
-for help and more information.
-- Ask for help on [Discord](https://discord.gg/DUkcBst), [Telegram](https://t.me/AlphaconDev) or [Reddit](https://www.reddit.com/r/Alphacon/).
-
-Building from source
+### Building from source
 ---------------------
 The following are developer notes on how to build the Alphacon core software on your native platform. They are not complete guides, but include notes on the necessary libraries, compile flags, etc.
 
@@ -133,11 +127,6 @@ Alphacon repo's [root README](https://github.com/AlphaconNetwork/AlphaconNetwork
 - [BIPS](https://github.com/AlphaconNetwork/AlphaconNetwork/blob/master/doc/bips.md)
 - [Dnsseed Policy](https://github.com/AlphaconNetwork/AlphaconNetwork/blob/master/doc/dnsseed-policy.md)
 - [Benchmarking](https://github.com/AlphaconNetwork/AlphaconNetwork/blob/master/doc/benchmarking.md)
-
-### Resources
-- Discuss on chat [Discord](https://discord.gg/DUkcBst), [Telegram](https://t.me/AlphaconDev) or [Reddit](https://www.reddit.com/r/Alphacon/).
-- Find out more on the [Alphacon Wiki](https://alphacon.wiki/wiki/Alphacon_Wiki)
-- Visit the project home [Alphacon.org](https://alphacon.io)
 
 ### Miscellaneous
 - [Assets Attribution](https://github.com/AlphaconNetwork/AlphaconNetwork/blob/master/doc/assets-attribution.md)

@@ -17,7 +17,3 @@ Alphacon Core is the original Alphacon client and it builds the backbone of the 
 However, it downloads and stores the entire history of Alphacon transactions;
 depending on the speed of your computer and network connection, the synchronization
 process can take anywhere from a few hours to a day or more.
-
-See the alphacon wiki at:
-  https://alphacon.wiki/wiki/Alphacon_Wiki
-for more help and information.
