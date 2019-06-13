@@ -1,15 +1,31 @@
-#ifndef OVERVIEWPAGE_H
-#define OVERVIEWPAGE_H
+// Copyright (c) 2011-2016 The Bitcoin Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
+// Distributed under the MIT software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
+#ifndef ALPHACON_QT_OVERVIEWPAGE_H
+#define ALPHACON_QT_OVERVIEWPAGE_H
+
+#include "amount.h"
+
+#include <QSortFilterProxyModel>
 #include <QWidget>
+#include <QMenu>
+#include <memory>
+
+class ClientModel;
+class TransactionFilterProxy;
+class TxViewDelegate;
+class PlatformStyle;
+class WalletModel;
+class TokenFilterProxy;
+
+class TokenViewDelegate;
 
 namespace Ui {
     class OverviewPage;
 }
-class ClientModel;
-class WalletModel;
-class TxViewDelegate;
-class TransactionFilterProxy;
 
 QT_BEGIN_NAMESPACE
 class QModelIndex;
@@ -21,35 +37,59 @@ class OverviewPage : public QWidget
     Q_OBJECT
 
 public:
-    explicit OverviewPage(QWidget *parent = 0);
+    explicit OverviewPage(const PlatformStyle *platformStyle, QWidget *parent = 0);
     ~OverviewPage();
 
     void setClientModel(ClientModel *clientModel);
     void setWalletModel(WalletModel *walletModel);
     void showOutOfSyncWarning(bool fShow);
+    void showTokens();
 
-public slots:
-    void setBalance(qint64 balance, qint64 stake, qint64 unconfirmedBalance, qint64 immatureBalance);
+public Q_SLOTS:
+    void setBalance(const CAmount& balance, const CAmount& unconfirmedBalance, const CAmount& immatureBalance, const CAmount& stake,
+                    const CAmount& watchOnlyBalance, const CAmount& watchUnconfBalance, const CAmount& watchImmatureBalance, const CAmount& watchOnlyStake);
 
-signals:
+Q_SIGNALS:
     void transactionClicked(const QModelIndex &index);
+    void tokenSendClicked(const QModelIndex &index);
+    void tokenIssueSubClicked(const QModelIndex &index);
+    void tokenIssueUniqueClicked(const QModelIndex &index);
+    void tokenReissueClicked(const QModelIndex &index);
+    void outOfSyncWarningClicked();
 
 private:
     Ui::OverviewPage *ui;
     ClientModel *clientModel;
     WalletModel *walletModel;
-    qint64 currentBalance;
-    qint64 currentStake;
-    qint64 currentUnconfirmedBalance;
-    qint64 currentImmatureBalance;
+    CAmount currentBalance;
+    CAmount currentUnconfirmedBalance;
+    CAmount currentImmatureBalance;
+    CAmount currentStake;
+    CAmount currentWatchOnlyBalance;
+    CAmount currentWatchUnconfBalance;
+    CAmount currentWatchImmatureBalance;
+    CAmount currentWatchOnlyStake;
 
     TxViewDelegate *txdelegate;
-    TransactionFilterProxy *filter;
+    std::unique_ptr<TransactionFilterProxy> filter;
+    std::unique_ptr<TokenFilterProxy> tokenFilter;
 
-private slots:
+    TokenViewDelegate *tokendelegate;
+    QMenu *contextMenu;
+    QAction *sendAction;
+    QAction *issueSub;
+    QAction *issueUnique;
+    QAction *reissue;
+
+
+private Q_SLOTS:
     void updateDisplayUnit();
     void handleTransactionClicked(const QModelIndex &index);
+    void handleTokenClicked(const QModelIndex &index);
     void updateAlerts(const QString &warnings);
+    void updateWatchOnlyLabels(bool showWatchOnly);
+    void handleOutOfSyncWarningClicks();
+    void tokenSearchChanged();
 };
 
-#endif // OVERVIEWPAGE_H
+#endif // ALPHACON_QT_OVERVIEWPAGE_H

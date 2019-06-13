@@ -1,32 +1,29 @@
-// Copyright (c) 2009-2012 The Bitcoin developers
+// Copyright (c) 2009-2016 The Bitcoin Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
-#ifndef BITCOIN_CHECKPOINT_H
-#define BITCOIN_CHECKPOINT_H
+
+#ifndef ALPHACON_CHECKPOINTS_H
+#define ALPHACON_CHECKPOINTS_H
+
+#include "uint256.h"
 
 #include <map>
-#include "net.h"
-#include "util.h"
 
-class uint256;
 class CBlockIndex;
+struct CCheckpointData;
 
-/** Block-chain checkpoints are compiled-in sanity checks.
+/**
+ * Block-chain checkpoints are compiled-in sanity checks.
  * They are updated every release or three.
  */
 namespace Checkpoints
 {
-    // Returns true if block passes checkpoint checks
-    bool CheckHardened(int nHeight, const uint256& hash);
 
-    // Return conservative estimate of total number of blocks, 0 if unknown
-    int GetTotalBlocksEstimate();
+//! Returns last CBlockIndex* in mapBlockIndex that is a checkpoint
+CBlockIndex* GetLastCheckpoint(const CCheckpointData& data);
 
-    // Returns last CBlockIndex* in mapBlockIndex that is a checkpoint
-    CBlockIndex* GetLastCheckpoint(const std::map<uint256, CBlockIndex*>& mapBlockIndex);
+} //namespace Checkpoints
 
-    const CBlockIndex* AutoSelectSyncCheckpoint();
-    bool CheckSync(int nHeight);
-}
-
-#endif
+#endif // ALPHACON_CHECKPOINTS_H

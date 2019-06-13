@@ -1,8 +1,14 @@
-#ifndef CSVMODELWRITER_H
-#define CSVMODELWRITER_H
+// Copyright (c) 2011-2014 The Bitcoin Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
+// Distributed under the MIT software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <QObject>
+#ifndef ALPHACON_QT_CSVMODELWRITER_H
+#define ALPHACON_QT_CSVMODELWRITER_H
+
 #include <QList>
+#include <QObject>
 
 QT_BEGIN_NAMESPACE
 class QAbstractItemModel;
@@ -39,4 +45,4 @@ private:
     QList<Column> columns;
 };
 
-#endif // CSVMODELWRITER_H
+#endif // ALPHACON_QT_CSVMODELWRITER_H

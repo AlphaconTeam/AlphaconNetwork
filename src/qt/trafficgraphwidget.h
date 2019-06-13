@@ -1,5 +1,11 @@
-#ifndef TRAFFICGRAPHWIDGET_H
-#define TRAFFICGRAPHWIDGET_H
+// Copyright (c) 2011-2015 The Bitcoin Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
+// Distributed under the MIT software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
+#ifndef ALPHACON_QT_TRAFFICGRAPHWIDGET_H
+#define ALPHACON_QT_TRAFFICGRAPHWIDGET_H
 
 #include <QWidget>
 #include <QQueue>
@@ -23,7 +29,7 @@ public:
 protected:
     void paintEvent(QPaintEvent *);
 
-public slots:
+public Q_SLOTS:
     void updateRates();
     void setGraphRangeMins(int mins);
     void clear();
@@ -41,4 +47,4 @@ private:
     ClientModel *clientModel;
 };
 
-#endif // TRAFFICGRAPHWIDGET_H
+#endif // ALPHACON_QT_TRAFFICGRAPHWIDGET_H

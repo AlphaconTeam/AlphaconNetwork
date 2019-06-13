@@ -1,0 +1,6 @@
+usr/local/bin/alphacon-qt usr/bin
+share/pixmaps/alphacon32.xpm usr/share/pixmaps
+share/pixmaps/alphacon16.xpm usr/share/pixmaps
+share/pixmaps/alphacon128.png usr/share/pixmaps
+debian/alphacon-qt.desktop usr/share/applications
+debian/alphacon-qt.protocol usr/share/kde4/services/

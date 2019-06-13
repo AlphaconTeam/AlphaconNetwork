@@ -1,34 +1,47 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2013 The Bitcoin developers
-// Copyright (c) 2009-2013 Alphacon developers
+// Copyright (c) 2009-2016 The Bitcoin Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_CHAIN_PARAMS_H
-#define BITCOIN_CHAIN_PARAMS_H
+#ifndef ALPHACON_CHAINPARAMS_H
+#define ALPHACON_CHAINPARAMS_H
 
-#include "bignum.h"
-#include "uint256.h"
-#include "util.h"
+#include "chainparamsbase.h"
+#include "consensus/params.h"
+#include "primitives/block.h"
+#include "protocol.h"
 
+#include <memory>
 #include <vector>
 
-using namespace std;
-
-#define MESSAGE_START_SIZE 4
-typedef unsigned char MessageStartChars[MESSAGE_START_SIZE];
-
-class CAddress;
-class CBlock;
-
 struct CDNSSeedData {
-    string name, host;
-    CDNSSeedData(const string &strName, const string &strHost) : name(strName), host(strHost) {}
+    std::string host;
+    bool supportsServiceBitsFiltering;
+    CDNSSeedData(const std::string &strHost, bool supportsServiceBitsFilteringIn) : host(strHost), supportsServiceBitsFiltering(supportsServiceBitsFilteringIn) {}
+};
+
+struct SeedSpec6 {
+    uint8_t addr[16];
+    uint16_t port;
+};
+
+typedef std::map<int, uint256> MapCheckpoints;
+
+struct CCheckpointData {
+    MapCheckpoints mapCheckpoints;
+};
+
+struct ChainTxData {
+    int64_t nTime;
+    int64_t nTxCount;
+    double dTxRate;
 };
 
 /**
  * CChainParams defines various tweakable parameters of a given instance of the
- * Bitcoin system. There are three: the main network on which people trade goods
+ * Alphacon system. There are three: the main network on which people trade goods
  * and services, the public test network which gets reset from time to time and
  * a regression test mode which is intended for private networks only. It has
  * minimal difficulty to ensure that blocks can be found instantly.
@@ -36,14 +49,6 @@ struct CDNSSeedData {
 class CChainParams
 {
 public:
-    enum Network {
-        MAIN,
-        TESTNET,
-        REGTEST,
-
-        MAX_NETWORK_TYPES
-    };
-
     enum Base58Type {
         PUBKEY_ADDRESS,
         SCRIPT_ADDRESS,
@@ -54,69 +59,121 @@ public:
         MAX_BASE58_TYPES
     };
 
-    int64_t BlockRewardPos() const { return blockReward; }
-    int64_t BlockReward() const { return blockReward; }
-    int64_t BlockRewardALP() const { return blockRewardALP; }
-    bool IsALPBlock(int nHeight) const { return (nHeight == rewardHeighALP && rewardReceiverALP != "");}
-    std::string rewardReceiverALP;
-    int blockRewardHalvingsWindow;
-    int blockRewardHalvings;
-    
-    const uint256& HashGenesisBlock() const { return hashGenesisBlock; }
-    const MessageStartChars& MessageStart() const { return pchMessageStart; }
-    const vector<unsigned char>& AlertKey() const { return vAlertPubKey; }
+    const Consensus::Params& GetConsensus() const { return consensus; }
+    const CMessageHeader::MessageStartChars& MessageStart() const { return pchMessageStart; }
     int GetDefaultPort() const { return nDefaultPort; }
-    const CBigNum& ProofOfWorkLimit() const { return bnProofOfWorkLimit; }
-    int SubsidyHalvingInterval() const { return nSubsidyHalvingInterval; }
-    virtual const CBlock& GenesisBlock() const = 0;
-    virtual bool RequireRPCPassword() const { return true; }
-    const string& DataDir() const { return strDataDir; }
-    virtual Network NetworkID() const = 0;
-    const vector<CDNSSeedData>& DNSSeeds() const { return vSeeds; }
-    const std::vector<unsigned char> &Base58Prefix(Base58Type type) const { return base58Prefixes[type]; }
-    virtual const vector<CAddress>& FixedSeeds() const = 0;
-    int RPCPort() const { return nRPCPort; }
-    int LastPOWBlock() const { return nLastPOWBlock; }
+
+    bool MiningRequiresPeers() const {return fMiningRequiresPeers; }
+    const CBlock& GenesisBlock() const { return genesis; }
+    /** Default value for -checkmempool and -checkblockindex argument */
+    bool DefaultConsistencyChecks() const { return fDefaultConsistencyChecks; }
+    /** Policy: Filter transactions that do not match well-defined patterns */
+    bool RequireStandard() const { return fRequireStandard; }
+    uint64_t PruneAfterHeight() const { return nPruneAfterHeight; }
+    /** Make miner stop after a block is found. In RPC, don't return until nGenProcLimit blocks are generated */
+    bool MineBlocksOnDemand() const { return fMineBlocksOnDemand; }
+    /** Return the BIP70 network string (main, test or regtest) */
+    std::string NetworkIDString() const { return strNetworkID; }
+    const std::vector<CDNSSeedData>& DNSSeeds() const { return vSeeds; }
+    const std::vector<unsigned char>& Base58Prefix(Base58Type type) const { return base58Prefixes[type]; }
+    const std::vector<SeedSpec6>& FixedSeeds() const { return vFixedSeeds; }
+    const CCheckpointData& Checkpoints() const { return checkpointData; }
+    const ChainTxData& TxData() const { return chainTxData; }
+    void UpdateVersionBitsParameters(Consensus::DeploymentPos d, int64_t nStartTime, int64_t nTimeout);
+    void TurnOffSegwit();
+    void TurnOffCSV();
+    void TurnOffBIP34();
+    void TurnOffBIP65();
+    void TurnOffBIP66();
+    bool BIP34();
+    bool BIP65();
+    bool BIP66();
+    bool CSVEnabled() const;
+
+    /** TOKENS START **/
+    const CAmount& MainFeeAmount() const { return nFeeAmountMain; }
+    const CAmount& SecondaryFeeAmount() const { return nFeeAmountSecondary; }
+
+    const std::string& IssueTokenBurnAddress() const { return strTokenFeeAddress; }
+    const std::string& ReissueTokenBurnAddress() const { return strTokenFeeAddress; }
+    const std::string& IssueSubTokenBurnAddress() const { return strTokenFeeAddress; }
+    const std::string& IssueUniqueTokenBurnAddress() const { return strTokenFeeAddress; }
+    const std::string& GlobalBurnAddress() const { return strBurnAddress; }
+
+    int MaxReorganizationDepth() const { return nMaxReorganizationDepth; }
+    int MinReorganizationPeers() const { return nMinReorganizationPeers; }
+    int MinReorganizationAge() const { return nMinReorganizationAge; }
+    /** TOKENS END **/
+
 protected:
-    CChainParams() {};
+    CChainParams() {}
 
-    int64_t blockReward;
-    int64_t blockRewardALP;
-    int64_t posBlockReward;
-    int rewardHeighALP;
-
-    uint256 hashGenesisBlock;
-    MessageStartChars pchMessageStart;
-    // Raw pub key bytes for the broadcast alert signing key.
-    vector<unsigned char> vAlertPubKey;
+    Consensus::Params consensus;
+    CMessageHeader::MessageStartChars pchMessageStart;
     int nDefaultPort;
-    int nRPCPort;
-    CBigNum bnProofOfWorkLimit;
-    int nSubsidyHalvingInterval;
-    string strDataDir;
-    vector<CDNSSeedData> vSeeds;
+    uint64_t nPruneAfterHeight;
+    std::vector<CDNSSeedData> vSeeds;
     std::vector<unsigned char> base58Prefixes[MAX_BASE58_TYPES];
-    int nLastPOWBlock;
+    std::string strNetworkID;
+    CBlock genesis;
+    std::vector<SeedSpec6> vFixedSeeds;
+    bool fDefaultConsistencyChecks;
+    bool fRequireStandard;
+    bool fMineBlocksOnDemand;
+    bool fMiningRequiresPeers;
+    CCheckpointData checkpointData;
+    ChainTxData chainTxData;
+
+    /** TOKENS START **/
+    // Burn Amounts
+    CAmount nFeeAmountMain;
+    CAmount nFeeAmountSecondary;
+
+    // Burn Addresses
+    std::string strTokenFeeAddress;
+
+    // Global Burn Address
+    std::string strBurnAddress;
+
+    int nMaxReorganizationDepth;
+    int nMinReorganizationPeers;
+    int nMinReorganizationAge;
+    /** TOKENS END **/
 };
 
 /**
- * Return the currently selected parameters. This won't change after app startup
- * outside of the unit tests.
+ * Creates and returns a std::unique_ptr<CChainParams> of the chosen chain.
+ * @returns a CChainParams* of the chosen chain.
+ * @throws a std::runtime_error if the chain is not supported.
  */
-const CChainParams &Params();
-
-/** Sets the params returned by Params() to those for the given network. */
-void SelectParams(CChainParams::Network network);
+std::unique_ptr<CChainParams> CreateChainParams(const std::string& chain);
 
 /**
- * Looks for -regtest or -testnet and then calls SelectParams as appropriate.
- * Returns false if an invalid combination is given.
+ * Return the currently selected parameters. This won't change after app
+ * startup, except for unit tests.
  */
-bool SelectParamsFromCommandLine();
+const CChainParams &Params();
+const CChainParams &CParams();
 
-inline bool TestNet() {
-    // Note: it's deliberate that this returns "false" for regression test mode.
-    return Params().NetworkID() == CChainParams::TESTNET;
-}
+/**
+ * Sets the params returned by Params() to those for the given BIP70 chain name.
+ * @throws std::runtime_error when the chain is not supported.
+ */
+void SelectParams(const std::string& chain);
 
-#endif
+/**
+ * Allows modifying the Version Bits regtest parameters.
+ */
+void UpdateVersionBitsParameters(Consensus::DeploymentPos d, int64_t nStartTime, int64_t nTimeout);
+
+void TurnOffSegwit();
+
+void TurnOffBIP34();
+
+void TurnOffBIP65();
+
+void TurnOffBIP66();
+
+void TurnOffCSV();
+
+#endif // ALPHACON_CHAINPARAMS_H

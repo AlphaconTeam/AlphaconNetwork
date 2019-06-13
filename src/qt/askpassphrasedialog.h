@@ -1,12 +1,19 @@
-#ifndef ASKPASSPHRASEDIALOG_H
-#define ASKPASSPHRASEDIALOG_H
+// Copyright (c) 2011-2015 The Bitcoin Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
+// Distributed under the MIT software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
+#ifndef ALPHACON_QT_ASKPASSPHRASEDIALOG_H
+#define ALPHACON_QT_ASKPASSPHRASEDIALOG_H
 
 #include <QDialog>
+
+class WalletModel;
 
 namespace Ui {
     class AskPassphraseDialog;
 }
-class WalletModel;
 
 /** Multifunctional dialog to ask for passphrases. Used for encryption, unlocking, and changing the passphrase.
  */
@@ -16,14 +23,13 @@ class AskPassphraseDialog : public QDialog
 
 public:
     enum Mode {
-        Encrypt,       /**< Ask passphrase twice and encrypt */
-        UnlockStaking, /**< Ask passphrase and unlock */
-        Unlock,        /**< Ask passphrase and unlock */
-        ChangePass,    /**< Ask old passphrase + new passphrase twice */
-        Decrypt        /**< Ask passphrase and decrypt wallet */
+        Encrypt,    /**< Ask passphrase twice and encrypt */
+        Unlock,     /**< Ask passphrase and unlock */
+        ChangePass, /**< Ask old passphrase + new passphrase twice */
+        Decrypt     /**< Ask passphrase and decrypt wallet */
     };
 
-    explicit AskPassphraseDialog(Mode mode, QWidget *parent = 0);
+    explicit AskPassphraseDialog(Mode mode, QWidget *parent);
     ~AskPassphraseDialog();
 
     void accept();
@@ -36,11 +42,13 @@ private:
     WalletModel *model;
     bool fCapsLock;
 
-private slots:
+private Q_SLOTS:
     void textChanged();
-    bool event(QEvent *event);
-    bool eventFilter(QObject *, QEvent *event);
     void secureClearPassFields();
+
+protected:
+    bool event(QEvent *event);
+    bool eventFilter(QObject *object, QEvent *event);
 };
 
-#endif // ASKPASSPHRASEDIALOG_H
+#endif // ALPHACON_QT_ASKPASSPHRASEDIALOG_H

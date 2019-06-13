@@ -1,12 +1,19 @@
-#ifndef EDITADDRESSDIALOG_H
-#define EDITADDRESSDIALOG_H
+// Copyright (c) 2011-2015 The Bitcoin Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
+// Distributed under the MIT software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
+#ifndef ALPHACON_QT_EDITADDRESSDIALOG_H
+#define ALPHACON_QT_EDITADDRESSDIALOG_H
 
 #include <QDialog>
+
+class AddressTableModel;
 
 namespace Ui {
     class EditAddressDialog;
 }
-class AddressTableModel;
 
 QT_BEGIN_NAMESPACE
 class QDataWidgetMapper;
@@ -26,7 +33,7 @@ public:
         EditSendingAddress
     };
 
-    explicit EditAddressDialog(Mode mode, QWidget *parent = 0);
+    explicit EditAddressDialog(Mode mode, QWidget *parent);
     ~EditAddressDialog();
 
     void setModel(AddressTableModel *model);
@@ -35,7 +42,7 @@ public:
     QString getAddress() const;
     void setAddress(const QString &address);
 
-public slots:
+public Q_SLOTS:
     void accept();
 
 private:
@@ -49,4 +56,4 @@ private:
     QString address;
 };
 
-#endif // EDITADDRESSDIALOG_H
+#endif // ALPHACON_QT_EDITADDRESSDIALOG_H

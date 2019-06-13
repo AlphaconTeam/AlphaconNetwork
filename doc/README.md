@@ -1,24 +1,155 @@
-## Alphacon
+Alphacon Core
+==============
 
-### Intro
-
-Alphacon is a free open source project derived from Peercoin, with
-the goal of providing a long-term energy-efficient crypto-currency.
-Built on the foundation of Bitcoin, innovations such as proof-of-stake
-help further advance the field of crypto-currency.
-
-The software automatically finds other nodes to connect to.  You can
-enable Universal Plug and Play (UPnP) with your router/firewall
-or forward port 9901 (TCP) to your computer so you can receive
-incoming connections.  Alphacon works without incoming connections,
-but allowing incoming connections helps the Alphacon network.
-
-### Other Pages
+Setup
 ---------------------
-- [Build Notes for Unix](build-unix.md)
-- [Build Notes for Windows](build-msw.md)
-- [Build Notes for macOS](build-mac.md)
-- [Unit Tests](unit-tests.md)
+Alphacon Core is the original Alphacon client and it builds the backbone of the network. It downloads and, by default, stores the entire history of Alphacon transactions; depending on the speed of your computer and network connection, the synchronization process is typically complete in under an hour.
 
-See the documentation at the [Bitcoin Wiki](https://en.bitcoin.it/wiki/Main_Page)
+To download compiled binaries of the Alphacon Core and wallet, visit the [GitHub release page](https://github.com/AlphaconNetwork/AlphaconNetwork/releases).
+
+Running
+---------------------
+The following are some helpful notes on how to run Alphacon on your native platform.
+
+### Linux
+
+1) Download and extract binaries to desired folder.
+
+2) Install distribution-specific dependencies listed below.
+
+3) Run the GUI wallet or only the Alphacon core deamon
+
+   a. GUI wallet:
+   
+   `./alphacon-qt`
+
+   b. Core deamon:
+   
+   `./alphacond -deamon`
+
+#### Ubuntu 16.04, 17.04/17.10 and 18.04
+
+Update apt cache and install general dependencies:
+
+```
+sudo apt update
+sudo apt install libevent-dev libboost-all-dev libminiupnpc10 libzmq5 software-properties-common
+```
+
+The wallet requires version 4.8 of the Berkeley DB. The easiest way to get it is from the bitcoin repository: 
+
+```
+sudo add-apt-repository ppa:bitcoin/bitcoin
+sudo apt update
+sudo apt install libdb4.8-dev libdb4.8++-dev
+```
+
+The GUI wallet requires the QR Code encoding library. Install with:
+
+`sudo apt install libqrencode3`
+
+#### Fedora 27
+
+Install general dependencies:
+
+`sudo dnf install zeromq libevent boost libdb4-cxx miniupnpc`
+
+The GUI wallet requires the QR Code encoding library and Google's data interchange format Protocol Buffers. Install with:
+
+`sudo dnf install qrencode protobuf`
+
+#### CentOS 7
+
+Add the EPEL repository and install general depencencies:
+
+```
+sudo yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+sudo yum install zeromq libevent boost libdb4-cxx miniupnpc
+```
+
+The GUI wallet requires the QR Code encoding library and Google's data interchange format Protocol Buffers. Install with:
+
+`sudo yum install qrencode protobuf`
+
+### OS X
+
+1) Download Alphacon-Qt.dmg.
+
+2) Double click the DMG to mount it. 
+
+3) Drag Alphacon Core icon to the Applications Folder
+
+![alt tag](https://i.imgur.com/GLhBFUV.png)
+
+4) Open the Applications folder and Launch Alphacon Core. The client will begin synchronizing with the network.
+
+![alt tag](https://i.imgur.com/v3962qo.png)
+
+Note: You may get the follow error on first launch:
+```
+Dyld Error Message:
+  Library not loaded: @loader_path/libboost_system-mt.dylib
+  Referenced from: /Applications/Alphacon-Qt.app/Contents/Frameworks/libboost_thread-mt.dylib
+  Reason: image not found
+```
+To resolve, you will need to copy libboost_system.dylib to libboost_system-mt.dylib in the /Applications/Alphacon-Qt.app/Contents/Frameworks folder
+
+### Windows
+
+1) Download windows-x86_64.zip and unpack executables to desired folder.
+
+2) Double click the alphacon-qt.exe to launch it.
+
+### Need Help?
+
+- See the documentation at the [Alphacon Wiki](https://alphacon.wiki/wiki/Alphacon_Wiki)
 for help and more information.
+- Ask for help on [Discord](https://discord.gg/DUkcBst), [Telegram](https://t.me/AlphaconDev) or [Reddit](https://www.reddit.com/r/Alphacon/).
+
+Building from source
+---------------------
+The following are developer notes on how to build the Alphacon core software on your native platform. They are not complete guides, but include notes on the necessary libraries, compile flags, etc.
+
+- [Dependencies](https://github.com/AlphaconNetwork/AlphaconNetwork/tree/master/doc/dependencies.md)
+- [OS X Build Notes](https://github.com/AlphaconNetwork/AlphaconNetwork/tree/master/doc/build-osx.md)
+- [Unix Build Notes](https://github.com/AlphaconNetwork/AlphaconNetwork/tree/master/doc/build-unix.md)
+- [Windows Build Notes](https://github.com/AlphaconNetwork/AlphaconNetwork/tree/master/doc/build-windows.md)
+- [OpenBSD Build Notes](https://github.com/AlphaconNetwork/AlphaconNetwork/tree/master/doc/build-openbsd.md)
+- [Gitian Building Guide](https://github.com/AlphaconNetwork/AlphaconNetwork/tree/master/doc/gitian-building.md)
+
+Development
+---------------------
+Alphacon repo's [root README](https://github.com/AlphaconNetwork/AlphaconNetwork/blob/master/README.md) contains relevant information on the development process and automated testing.
+
+- [Developer Notes](https://github.com/AlphaconNetwork/AlphaconNetwork/blob/master/doc/developer-notes.md)
+- [Release Notes](https://github.com/AlphaconNetwork/AlphaconNetwork/blob/master/doc/release-notes.md)
+- [Release Process](https://github.com/AlphaconNetwork/AlphaconNetwork/blob/master/doc/release-process.md)
+- [Source Code Documentation (External Link)](https://dev.visucore.com/alphacon/doxygen/) -- 2018-05-11 -- Broken link
+- [Translation Process](https://github.com/AlphaconNetwork/AlphaconNetwork/blob/master/doc/translation_process.md)
+- [Translation Strings Policy](https://github.com/AlphaconNetwork/AlphaconNetwork/blob/master/doc/translation_strings_policy.md)
+- [Travis CI](https://github.com/AlphaconNetwork/AlphaconNetwork/blob/master/doc/travis-ci.md)
+- [Unauthenticated REST Interface](https://github.com/AlphaconNetwork/AlphaconNetwork/blob/master/doc/REST-interface.md)
+- [Shared Libraries](https://github.com/AlphaconNetwork/AlphaconNetwork/blob/master/doc/shared-libraries.md)
+- [BIPS](https://github.com/AlphaconNetwork/AlphaconNetwork/blob/master/doc/bips.md)
+- [Dnsseed Policy](https://github.com/AlphaconNetwork/AlphaconNetwork/blob/master/doc/dnsseed-policy.md)
+- [Benchmarking](https://github.com/AlphaconNetwork/AlphaconNetwork/blob/master/doc/benchmarking.md)
+
+### Resources
+- Discuss on chat [Discord](https://discord.gg/DUkcBst), [Telegram](https://t.me/AlphaconDev) or [Reddit](https://www.reddit.com/r/Alphacon/).
+- Find out more on the [Alphacon Wiki](https://alphacon.wiki/wiki/Alphacon_Wiki)
+- Visit the project home [Alphacon.org](https://alphacon.io)
+
+### Miscellaneous
+- [Assets Attribution](https://github.com/AlphaconNetwork/AlphaconNetwork/blob/master/doc/assets-attribution.md)
+- [Files](https://github.com/AlphaconNetwork/AlphaconNetwork/blob/master/doc/files.md)
+- [Fuzz-testing](https://github.com/AlphaconNetwork/AlphaconNetwork/blob/master/doc/fuzzing.md)
+- [Reduce Traffic](https://github.com/AlphaconNetwork/AlphaconNetwork/blob/master/doc/reduce-traffic.md)
+- [Tor Support](https://github.com/AlphaconNetwork/AlphaconNetwork/blob/master/doc/tor.md)
+- [Init Scripts (systemd/upstart/openrc)](https://github.com/AlphaconNetwork/AlphaconNetwork/blob/master/doc/init.md)
+- [ZMQ](https://github.com/AlphaconNetwork/AlphaconNetwork/blob/master/doc/zmq.md)
+
+License
+---------------------
+Distributed under the [MIT software license](https://github.com/AlphaconNetwork/AlphaconNetwork/blob/master/COPYING).
+This product includes software developed by the OpenSSL Project for use in the [OpenSSL Toolkit](https://www.openssl.org/). This product includes
+cryptographic software written by Eric Young ([eay@cryptsoft.com](mailto:eay@cryptsoft.com)), and UPnP software written by Thomas Bernard.

@@ -1,17 +1,24 @@
 // Copyright (c) 2010 Satoshi Nakamoto
-// Copyright (c) 2009-2013 The Bitcoin developers
+// Copyright (c) 2009-2016 The Bitcoin Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOINRPC_CLIENT_H
-#define BITCOINRPC_CLIENT_H 1
+#ifndef ALPHACON_RPCCLIENT_H
+#define ALPHACON_RPCCLIENT_H
 
-#include <json/json_spirit_reader_template.h>
-#include <json/json_spirit_utils.h>
-#include <json/json_spirit_writer_template.h>
+#include <univalue.h>
 
-int CommandLineRPC(int argc, char *argv[]);
+/** Convert positional arguments to command-specific RPC representation */
+UniValue RPCConvertValues(const std::string& strMethod, const std::vector<std::string>& strParams);
 
-json_spirit::Array RPCConvertValues(const std::string &strMethod, const std::vector<std::string> &strParams);
+/** Convert named arguments to command-specific RPC representation */
+UniValue RPCConvertNamedValues(const std::string& strMethod, const std::vector<std::string>& strParams);
 
-#endif
+/** Non-RFC4627 JSON parser, accepts internal values (such as numbers, true, false, null)
+ * as well as objects and arrays.
+ */
+UniValue ParseNonRFCJSONValue(const std::string& strVal);
+
+#endif // ALPHACON_RPCCLIENT_H

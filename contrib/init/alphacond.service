@@ -1,0 +1,22 @@
+[Unit]
+Description=Alphacon's distributed currency daemon
+After=network.target
+
+[Service]
+User=alphacon
+Group=alphacon
+
+Type=forking
+PIDFile=/var/lib/alphacond/alphacond.pid
+ExecStart=/usr/bin/alphacond -daemon -pid=/var/lib/alphacond/alphacond.pid \
+-conf=/etc/alphacon/alphacon.conf -datadir=/var/lib/alphacond -disablewallet
+
+Restart=always
+PrivateTmp=true
+TimeoutStopSec=60s
+TimeoutStartSec=2s
+StartLimitInterval=120s
+StartLimitBurst=5
+
+[Install]
+WantedBy=multi-user.target

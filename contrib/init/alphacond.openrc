@@ -1,0 +1,92 @@
+#!/sbin/runscript
+
+# backward compatibility for existing gentoo layout 
+#
+if [ -d "/var/lib/alphacon/.alphacon" ]; then
+	ALPHACOND_DEFAULT_DATADIR="/var/lib/alphacon/.alphacon"
+else
+	ALPHACOND_DEFAULT_DATADIR="/var/lib/alphacond"
+fi
+
+ALPHACOND_CONFIGFILE=${ALPHACOND_CONFIGFILE:-/etc/alphacon/alphacon.conf}
+ALPHACOND_PIDDIR=${ALPHACOND_PIDDIR:-/var/run/alphacond}
+ALPHACOND_PIDFILE=${ALPHACOND_PIDFILE:-${ALPHACOND_PIDDIR}/alphacond.pid}
+ALPHACOND_DATADIR=${ALPHACOND_DATADIR:-${ALPHACOND_DEFAULT_DATADIR}}
+ALPHACOND_USER=${ALPHACOND_USER:-${ALPHACON_USER:-alphacon}}
+ALPHACOND_GROUP=${ALPHACOND_GROUP:-alphacon}
+ALPHACOND_BIN=${ALPHACOND_BIN:-/usr/bin/alphacond}
+ALPHACOND_NICE=${ALPHACOND_NICE:-${NICELEVEL:-0}}
+ALPHACOND_OPTS="${ALPHACOND_OPTS:-${ALPHACON_OPTS}}"
+
+name="Alphacon Core Daemon"
+description="Alphacon cryptocurrency P2P network daemon"
+
+command="/usr/bin/alphacond"
+command_args="-pid=\"${ALPHACOND_PIDFILE}\" \
+		-conf=\"${ALPHACOND_CONFIGFILE}\" \
+		-datadir=\"${ALPHACOND_DATADIR}\" \
+		-daemon \
+		${ALPHACOND_OPTS}"
+
+required_files="${ALPHACOND_CONFIGFILE}"
+start_stop_daemon_args="-u ${ALPHACOND_USER} \
+			-N ${ALPHACOND_NICE} -w 2000"
+pidfile="${ALPHACOND_PIDFILE}"
+
+# The retry schedule to use when stopping the daemon. Could be either
+# a timeout in seconds or multiple signal/timeout pairs (like
+# "SIGKILL/180 SIGTERM/300")
+retry="${ALPHACOND_SIGTERM_TIMEOUT}"
+
+depend() {
+	need localmount net
+}
+
+# verify
+# 1) that the datadir exists and is writable (or create it)
+# 2) that a directory for the pid exists and is writable
+# 3) ownership and permissions on the config file
+start_pre() {
+	checkpath \
+	-d \
+	--mode 0750 \
+	--owner "${ALPHACOND_USER}:${ALPHACOND_GROUP}" \
+	"${ALPHACOND_DATADIR}"
+
+	checkpath \
+	-d \
+	--mode 0755 \
+	--owner "${ALPHACOND_USER}:${ALPHACOND_GROUP}" \
+	"${ALPHACOND_PIDDIR}"
+
+	checkpath -f \
+	-o ${ALPHACOND_USER}:${ALPHACOND_GROUP} \
+	-m 0660 \
+	${ALPHACOND_CONFIGFILE}
+
+	checkconfig || return 1
+}
+
+checkconfig()
+{
+	if ! grep -qs '^rpcpassword=' "${ALPHACOND_CONFIGFILE}" ; then
+		eerror ""
+		eerror "ERROR: You must set a secure rpcpassword to run alphacond."
+		eerror "The setting must appear in ${ALPHACOND_CONFIGFILE}"
+		eerror ""
+		eerror "This password is security critical to securing wallets "
+		eerror "and must not be the same as the rpcuser setting."
+		eerror "You can generate a suitable random password using the following "
+		eerror "command from the shell:"
+		eerror ""
+		eerror "bash -c 'tr -dc a-zA-Z0-9 < /dev/urandom | head -c32 && echo'"
+		eerror ""
+		eerror "It is recommended that you also set alertnotify so you are "
+		eerror "notified of problems:"
+		eerror ""
+		eerror "ie: alertnotify=echo %%s | mail -s \"Alphacon Alert\"" \
+			"admin@foo.com"
+		eerror ""
+		return 1
+	fi
+}
