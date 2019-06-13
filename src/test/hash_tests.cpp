@@ -82,32 +82,6 @@ BOOST_FIXTURE_TEST_SUITE(hash_tests, BasicTestingSetup)
             0x6ca4ecb15c5f91e1, 0x9f626da15c9625f3, 0xe51b38608ef25f57, 0x958a324ceb064572
     };
 
-    BOOST_AUTO_TEST_CASE(hash16R_test)
-    {
-        BOOST_TEST_MESSAGE("Running Hash16R Test");
-
-        CBlock block;
-        block.nVersion = 42;
-        std::string hashHex = "19bcdaa780349350b210ca84d73dc1c08fbae659990b47a9d28655e7e9be3970";
-
-        //decimal order of hash16R is d28655e7e9be3970 hex converted to 13 2 8 6 5 5 14 7 14 9 11 14 3 9 7 0
-
-        int expectedPositions[16] = {13, 2, 8, 6, 5, 5, 14, 7, 14, 9, 11, 14, 3, 9, 7, 0};
-
-        uint256 *hash = new uint256();
-        hash->SetHex(hashHex);
-        uint256 hash256 = hash[0];
-
-        BOOST_CHECK_EQUAL(hash256.GetHex(), hashHex);
-        for (int i = 0; i < 15; i++)
-        {
-            int pos = GetHashSelection(hash256, i);
-            //BOOST_TEST_MESSAGE("pos " << i << ", " << pos);
-            BOOST_CHECK_EQUAL(expectedPositions[i], pos);
-        }
-
-    };
-
     BOOST_AUTO_TEST_CASE(siphash_test)
     {
         BOOST_TEST_MESSAGE("Running SipHash Test");

@@ -24,7 +24,7 @@ BOOST_FIXTURE_TEST_SUITE(token_tx_tests, BasicTestingSetup)
         SelectParams(CBaseChainParams::MAIN);
 
         // Create the token scriptPubKey
-        CTokenTransfer token("ALPHACON", 1000);
+        CTokenTransfer token("ALPHACON", 1000, 0);
         CScript scriptPubKey = GetScriptForDestination(DecodeDestination(Params().GlobalBurnAddress()));
         token.ConstructTransaction(scriptPubKey);
 
@@ -41,7 +41,7 @@ BOOST_FIXTURE_TEST_SUITE(token_tx_tests, BasicTestingSetup)
 
         // Add the coin to the cache
         COutPoint outpoint(hash, 1);
-        coins.AddCoin(outpoint, Coin(txOut, 10, 0), true);
+        coins.AddCoin(outpoint, Coin(txOut, 10, 0, 0, 0), true);
 
         // Create transaction and input for the outpoint of the coin we just created
         CMutableTransaction mutTx;
@@ -70,7 +70,7 @@ BOOST_FIXTURE_TEST_SUITE(token_tx_tests, BasicTestingSetup)
         SelectParams(CBaseChainParams::MAIN);
 
         // Create the token scriptPubKey
-        CTokenTransfer token("ALPHACON", 1000);
+        CTokenTransfer token("ALPHACON", 1000, 0);
         CScript scriptPubKey = GetScriptForDestination(DecodeDestination(Params().GlobalBurnAddress()));
         token.ConstructTransaction(scriptPubKey);
 
@@ -87,7 +87,7 @@ BOOST_FIXTURE_TEST_SUITE(token_tx_tests, BasicTestingSetup)
 
         // Add the coin to the cache
         COutPoint outpoint(hash, 1);
-        coins.AddCoin(outpoint, Coin(txOut, 10, 0), true);
+        coins.AddCoin(outpoint, Coin(txOut, 10, 0, 0, 0), true);
 
         // Create transaction and input for the outpoint of the coin we just created
         CMutableTransaction mutTx;
@@ -97,7 +97,7 @@ BOOST_FIXTURE_TEST_SUITE(token_tx_tests, BasicTestingSetup)
 
         // Create CTxOut that will only send 100 of the token
         // This should fail because 900 ALPHACON doesn't have a destination
-        CTokenTransfer tokenTransfer("ALPHACON", 100);
+        CTokenTransfer tokenTransfer("ALPHACON", 100, 0);
         CScript scriptLess = GetScriptForDestination(DecodeDestination(Params().GlobalBurnAddress()));
         tokenTransfer.ConstructTransaction(scriptLess);
 
@@ -126,7 +126,7 @@ BOOST_FIXTURE_TEST_SUITE(token_tx_tests, BasicTestingSetup)
         SelectParams(CBaseChainParams::MAIN);
 
         // Create the token scriptPubKey
-        CTokenTransfer token("ALPHACON", 1000);
+        CTokenTransfer token("ALPHACON", 1000, 0);
         CScript scriptPubKey = GetScriptForDestination(DecodeDestination(Params().GlobalBurnAddress()));
         token.ConstructTransaction(scriptPubKey);
 
@@ -143,7 +143,7 @@ BOOST_FIXTURE_TEST_SUITE(token_tx_tests, BasicTestingSetup)
 
         // Add the coin to the cache
         COutPoint outpoint(hash, 1);
-        coins.AddCoin(outpoint, Coin(txOut, 10, 0), true);
+        coins.AddCoin(outpoint, Coin(txOut, 10, 0, 0, 0), true);
 
         // Create transaction and input for the outpoint of the coin we just created
         CMutableTransaction mutTx;
@@ -154,7 +154,7 @@ BOOST_FIXTURE_TEST_SUITE(token_tx_tests, BasicTestingSetup)
         // Create CTxOut that will only send 100 of the token 10 times total = 1000
         for (int i = 0; i < 10; i++)
         {
-            CTokenTransfer token2("ALPHACON", 100);
+            CTokenTransfer token2("ALPHACON", 100, 0);
             CScript scriptPubKey2 = GetScriptForDestination(DecodeDestination(Params().GlobalBurnAddress()));
             token2.ConstructTransaction(scriptPubKey2);
 
@@ -186,7 +186,7 @@ BOOST_FIXTURE_TEST_SUITE(token_tx_tests, BasicTestingSetup)
         SelectParams(CBaseChainParams::MAIN);
 
         // Create the token scriptPubKey
-        CTokenTransfer token("ALPHACON", 1000);
+        CTokenTransfer token("ALPHACON", 1000, 0);
         CScript scriptPubKey = GetScriptForDestination(DecodeDestination(Params().GlobalBurnAddress()));
         token.ConstructTransaction(scriptPubKey);
 
@@ -203,7 +203,7 @@ BOOST_FIXTURE_TEST_SUITE(token_tx_tests, BasicTestingSetup)
 
         // Add the coin to the cache
         COutPoint outpoint(hash, 1);
-        coins.AddCoin(outpoint, Coin(txOut, 10, 0), true);
+        coins.AddCoin(outpoint, Coin(txOut, 10, 0, 0, 0), true);
 
         // Create transaction and input for the outpoint of the coin we just created
         CMutableTransaction mutTx;
@@ -214,7 +214,7 @@ BOOST_FIXTURE_TEST_SUITE(token_tx_tests, BasicTestingSetup)
         // Create CTxOut that will only send 100 of the token 12 times, total = 1200
         for (int i = 0; i < 12; i++)
         {
-            CTokenTransfer token2("ALPHACON", 100);
+            CTokenTransfer token2("ALPHACON", 100, 0);
             CScript scriptPubKey2 = GetScriptForDestination(DecodeDestination(Params().GlobalBurnAddress()));
             token2.ConstructTransaction(scriptPubKey2);
 
@@ -246,15 +246,15 @@ BOOST_FIXTURE_TEST_SUITE(token_tx_tests, BasicTestingSetup)
         SelectParams(CBaseChainParams::MAIN);
 
         // Create the token scriptPubKeys
-        CTokenTransfer token("ALPHACON", 1000);
+        CTokenTransfer token("ALPHACON", 1000, 0);
         CScript scriptPubKey = GetScriptForDestination(DecodeDestination(Params().GlobalBurnAddress()));
         token.ConstructTransaction(scriptPubKey);
 
-        CTokenTransfer token2("ALPHACONTEST", 1000);
+        CTokenTransfer token2("ALPHACONTEST", 1000, 0);
         CScript scriptPubKey2 = GetScriptForDestination(DecodeDestination(Params().GlobalBurnAddress()));
         token2.ConstructTransaction(scriptPubKey2);
 
-        CTokenTransfer token3("ALPHACONTESTTEST", 1000);
+        CTokenTransfer token3("ALPHACONTESTTEST", 1000, 0);
         CScript scriptPubKey3 = GetScriptForDestination(DecodeDestination(Params().GlobalBurnAddress()));
         token3.ConstructTransaction(scriptPubKey3);
 
@@ -281,13 +281,13 @@ BOOST_FIXTURE_TEST_SUITE(token_tx_tests, BasicTestingSetup)
 
         // Add the coins to the cache
         COutPoint outpoint(hash, 1);
-        coins.AddCoin(outpoint, Coin(txOut, 10, 0), true);
+        coins.AddCoin(outpoint, Coin(txOut, 10, 0, 0, 0), true);
 
         COutPoint outpoint2(hash2, 1);
-        coins.AddCoin(outpoint2, Coin(txOut2, 10, 0), true);
+        coins.AddCoin(outpoint2, Coin(txOut2, 10, 0, 0, 0), true);
 
         COutPoint outpoint3(hash3, 1);
-        coins.AddCoin(outpoint3, Coin(txOut3, 10, 0), true);
+        coins.AddCoin(outpoint3, Coin(txOut3, 10, 0, 0, 0), true);
 
         Coin coinTemp;
         BOOST_CHECK_MESSAGE(coins.GetCoin(outpoint, coinTemp), "Failed to get coin 1");
@@ -310,7 +310,7 @@ BOOST_FIXTURE_TEST_SUITE(token_tx_tests, BasicTestingSetup)
         for (int i = 0; i < 10; i++)
         {
             // Add the first token
-            CTokenTransfer outToken("ALPHACON", 100);
+            CTokenTransfer outToken("ALPHACON", 100, 0);
             CScript outScript = GetScriptForDestination(DecodeDestination(Params().GlobalBurnAddress()));
             outToken.ConstructTransaction(outScript);
 
@@ -321,7 +321,7 @@ BOOST_FIXTURE_TEST_SUITE(token_tx_tests, BasicTestingSetup)
             mutTx.vout.emplace_back(txOutNew);
 
             // Add the second token
-            CTokenTransfer outToken2("ALPHACONTEST", 100);
+            CTokenTransfer outToken2("ALPHACONTEST", 100, 0);
             CScript outScript2 = GetScriptForDestination(DecodeDestination(Params().GlobalBurnAddress()));
             outToken2.ConstructTransaction(outScript2);
 
@@ -332,7 +332,7 @@ BOOST_FIXTURE_TEST_SUITE(token_tx_tests, BasicTestingSetup)
             mutTx.vout.emplace_back(txOutNew2);
 
             // Add the third token
-            CTokenTransfer outToken3("ALPHACONTESTTEST", 100);
+            CTokenTransfer outToken3("ALPHACONTESTTEST", 100, 0);
             CScript outScript3 = GetScriptForDestination(DecodeDestination(Params().GlobalBurnAddress()));
             outToken3.ConstructTransaction(outScript3);
 
@@ -365,7 +365,7 @@ BOOST_FIXTURE_TEST_SUITE(token_tx_tests, BasicTestingSetup)
         for (int i = 0; i < 9; i++)
         {
             // Add the first token
-            CTokenTransfer outToken("ALPHACON", 100);
+            CTokenTransfer outToken("ALPHACON", 100, 0);
             CScript outScript = GetScriptForDestination(DecodeDestination(Params().GlobalBurnAddress()));
             outToken.ConstructTransaction(outScript);
 
@@ -376,7 +376,7 @@ BOOST_FIXTURE_TEST_SUITE(token_tx_tests, BasicTestingSetup)
             mutTx2.vout.emplace_back(txOutNew);
 
             // Add the second token
-            CTokenTransfer outToken2("ALPHACONTEST", 100);
+            CTokenTransfer outToken2("ALPHACONTEST", 100, 0);
             CScript outScript2 = GetScriptForDestination(DecodeDestination(Params().GlobalBurnAddress()));
             outToken2.ConstructTransaction(outScript2);
 
@@ -387,7 +387,7 @@ BOOST_FIXTURE_TEST_SUITE(token_tx_tests, BasicTestingSetup)
             mutTx2.vout.emplace_back(txOutNew2);
 
             // Add the third token
-            CTokenTransfer outToken3("ALPHACONTESTTEST", 100);
+            CTokenTransfer outToken3("ALPHACONTESTTEST", 100, 0);
             CScript outScript3 = GetScriptForDestination(DecodeDestination(Params().GlobalBurnAddress()));
             outToken3.ConstructTransaction(outScript3);
 

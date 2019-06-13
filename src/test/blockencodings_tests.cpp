@@ -108,7 +108,7 @@ BOOST_FIXTURE_TEST_SUITE(blockencodings_tests, RegtestingSetup)
             BOOST_CHECK(block.hashMerkleRoot != BlockMerkleRoot(block2, &mutated));
             CBlock block3;
             BOOST_CHECK(partialBlock.FillBlock(block3, {block.vtx[1]}) == READ_STATUS_OK);
-            BOOST_CHECK_EQUAL(block.GetBlockHash().ToString(), block3.GetHash().ToString());
+            BOOST_CHECK_EQUAL(block.GetBlockHash().ToString(), block3.GetBlockHash().ToString());
             BOOST_CHECK_EQUAL(block.hashMerkleRoot.ToString(), BlockMerkleRoot(block3, &mutated).ToString());
             BOOST_CHECK(!mutated);
         }
@@ -220,7 +220,7 @@ BOOST_FIXTURE_TEST_SUITE(blockencodings_tests, RegtestingSetup)
             CBlock block3;
             PartiallyDownloadedBlock partialBlockCopy = partialBlock;
             BOOST_CHECK(partialBlock.FillBlock(block3, {block.vtx[0]}) == READ_STATUS_OK);
-            BOOST_CHECK_EQUAL(block.GetBlockHash().ToString(), block3.GetHash().ToString());
+            BOOST_CHECK_EQUAL(block.GetBlockHash().ToString(), block3.GetBlockHash().ToString());
             BOOST_CHECK_EQUAL(block.hashMerkleRoot.ToString(), BlockMerkleRoot(block3, &mutated).ToString());
             BOOST_CHECK(!mutated);
 
@@ -272,7 +272,7 @@ BOOST_FIXTURE_TEST_SUITE(blockencodings_tests, RegtestingSetup)
             CBlock block2;
             PartiallyDownloadedBlock partialBlockCopy = partialBlock;
             BOOST_CHECK(partialBlock.FillBlock(block2, {}) == READ_STATUS_OK);
-            BOOST_CHECK_EQUAL(block.GetBlockHash().ToString(), block2.GetHash().ToString());
+            BOOST_CHECK_EQUAL(block.GetBlockHash().ToString(), block2.GetBlockHash().ToString());
             bool mutated;
             BOOST_CHECK_EQUAL(block.hashMerkleRoot.ToString(), BlockMerkleRoot(block2, &mutated).ToString());
             BOOST_CHECK(!mutated);
@@ -325,7 +325,7 @@ BOOST_FIXTURE_TEST_SUITE(blockencodings_tests, RegtestingSetup)
             CBlock block2;
             std::vector<CTransactionRef> vtx_missing;
             BOOST_CHECK(partialBlock.FillBlock(block2, vtx_missing) == READ_STATUS_OK);
-            BOOST_CHECK_EQUAL(block.GetBlockHash().ToString(), block2.GetHash().ToString());
+            BOOST_CHECK_EQUAL(block.GetBlockHash().ToString(), block2.GetBlockHash().ToString());
             BOOST_CHECK_EQUAL(block.hashMerkleRoot.ToString(), BlockMerkleRoot(block2, &mutated).ToString());
             BOOST_CHECK(!mutated);
         }

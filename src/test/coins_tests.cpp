@@ -424,7 +424,7 @@ BOOST_FIXTURE_TEST_SUITE(coins_tests, BasicTestingSetup)
                 // Update the expected result to know about the new output coins
                 assert(tx.vout.size() == 1);
                 const COutPoint outpoint(tx.GetHash(), 0);
-                result[outpoint] = Coin(tx.vout[0], height, CTransaction(tx).IsCoinBase());
+                result[outpoint] = Coin(tx.vout[0], height, CTransaction(tx).IsCoinBase(), 0, 0);
 
                 // Call UpdateCoins on the top cache
                 CTxUndo undo;
@@ -800,7 +800,7 @@ BOOST_FIXTURE_TEST_SUITE(coins_tests, BasicTestingSetup)
         {
             CTxOut output;
             output.nValue = modify_value;
-            test.cache.AddCoin(OUTPOINT, Coin(std::move(output), 1, coinbase), coinbase);
+            test.cache.AddCoin(OUTPOINT, Coin(std::move(output), 1, coinbase, false, 0), coinbase);
             test.cache.SelfTest();
             GetCoinsMapEntry(test.cache.map(), result_value, result_flags);
         } catch (std::logic_error &e)

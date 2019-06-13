@@ -184,7 +184,7 @@ BOOST_FIXTURE_TEST_SUITE(token_tests, BasicTestingSetup)
         SelectParams(CBaseChainParams::MAIN);
 
         // Create the token scriptPubKey
-        CTokenTransfer token("ALPHACON", 1000);
+        CTokenTransfer token("ALPHACON", 1000, 0);
         CScript scriptPubKey = GetScriptForDestination(DecodeDestination(Params().GlobalBurnAddress()));
         token.ConstructTransaction(scriptPubKey);
 
@@ -193,7 +193,7 @@ BOOST_FIXTURE_TEST_SUITE(token_tests, BasicTestingSetup)
         txOut.scriptPubKey = scriptPubKey;
 
 
-        Coin coin(txOut, 0, 0);
+        Coin coin(txOut, 0, 0, 0, 0);
 
         BOOST_CHECK_MESSAGE(coin.IsToken(), "Transfer Token Coin isn't as token");
     }
@@ -213,7 +213,7 @@ BOOST_FIXTURE_TEST_SUITE(token_tests, BasicTestingSetup)
         txOut.nValue = 0;
         txOut.scriptPubKey = scriptPubKey;
 
-        Coin coin(txOut, 0, 0);
+        Coin coin(txOut, 0, 0, 0, 0);
 
         BOOST_CHECK_MESSAGE(coin.IsToken(), "New Token Coin isn't as token");
     }
