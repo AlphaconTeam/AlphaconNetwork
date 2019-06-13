@@ -396,7 +396,7 @@ void AlphaconApplication::createOptionsModel(bool resetSettings)
 void AlphaconApplication::createWindow(const NetworkStyle *networkStyle)
 {
     window = new AlphaconGUI(platformStyle, networkStyle, 0);
-    window->setMinimumSize(200,200);
+    window->setMinimumSize(640,640);
     window->setBaseSize(640,640);
 
     pollShutdownTimer = new QTimer(window);

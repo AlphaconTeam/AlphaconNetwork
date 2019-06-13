@@ -21,9 +21,9 @@ class SendCoinsRecipient;
 class TransactionView;
 class WalletModel;
 class AddressBookPage;
-class AssetsDialog;
-class CreateAssetDialog;
-class ReissueAssetDialog;
+class TokensDialog;
+class CreateTokenDialog;
+class ReissueTokenDialog;
 
 QT_BEGIN_NAMESPACE
 class QModelIndex;
@@ -76,11 +76,11 @@ private:
     const PlatformStyle *platformStyle;
 
 
-    /** RVN START */
-    AssetsDialog *assetsPage;
-    CreateAssetDialog *createAssetsPage;
-    ReissueAssetDialog *manageAssetsPage;
-    /** RVN END */
+    /** TOKENS START */
+    TokensDialog *tokensPage;
+    CreateTokenDialog *createTokensPage;
+    ReissueTokenDialog *manageTokensPage;
+    /** TOKENS END */
 
 public Q_SLOTS:
     /** Switch to overview (home) page */
@@ -122,16 +122,18 @@ public Q_SLOTS:
     /** Show progress dialog e.g. for rescan */
     void showProgress(const QString &title, int nProgress);
 
+    unsigned long long updateWeight();
+
     /** User has requested more information about the out of sync state */
     void requestedSyncWarningInfo();
 
 
-    /** RVN START */
-    /** Switch to assets page */
-    void gotoAssetsPage();
-    void gotoCreateAssetsPage();
-    void gotoManageAssetsPage();
-    /** RVN END */
+    /** TOKENS START */
+    /** Switch to tokens page */
+    void gotoTokensPage();
+    void gotoCreateTokensPage();
+    void gotoManageTokensPage();
+    /** TOKENS END */
 
 Q_SIGNALS:
     /** Signal that we want to show the main window */
@@ -143,11 +145,11 @@ Q_SIGNALS:
     /** HD-Enabled status of wallet changed (only possible during startup) */
     void hdEnabledStatusChanged(int hdEnabled);
     /** Notify that a new transaction appeared */
-    void incomingTransaction(const QString& date, int unit, const CAmount& amount, const QString& type, const QString& address, const QString& label, const QString& assetName);
+    void incomingTransaction(const QString& date, int unit, const CAmount& amount, const QString& type, const QString& address, const QString& label, const QString& tokenName);
     /** Notify that the out of sync warning icon has been pressed */
     void outOfSyncWarningClicked();
-    /** Show the assets GUI */
-    void checkAssets();
+    /** Show the tokens GUI */
+    void checkTokens();
 };
 
 #endif // ALPHACON_QT_WALLETVIEW_H

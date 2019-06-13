@@ -39,6 +39,7 @@
 #include "util.h"
 #include "core_io.h"
 #include "darkstyle.h"
+#include "wallet/wallet.h"
 
 #include <iostream>
 
@@ -93,6 +94,8 @@ const std::string AlphaconGUI::DEFAULT_UIPLATFORM =
  * collisions in the future with additional wallets */
 const QString AlphaconGUI::DEFAULT_WALLET = "~Default";
 
+double GetPoSKernelPS();
+
 AlphaconGUI::AlphaconGUI(const PlatformStyle *_platformStyle, const NetworkStyle *networkStyle, QWidget *parent) :
     QMainWindow(parent),
     enableWallet(false),
@@ -104,6 +107,7 @@ AlphaconGUI::AlphaconGUI(const PlatformStyle *_platformStyle, const NetworkStyle
     connectionsControl(0),
     labelBlocksIcon(0),
     progressBarLabel(0),
+    labelStakingIcon(0),
     progressBar(0),
     progressDialog(0),
     appMenuBar(0),
@@ -124,21 +128,15 @@ AlphaconGUI::AlphaconGUI(const PlatformStyle *_platformStyle, const NetworkStyle
     encryptWalletAction(0),
     backupWalletAction(0),
     changePassphraseAction(0),
+    unlockWalletAction(0),
+    lockWalletAction(0),
     aboutQtAction(0),
     openRPCConsoleAction(0),
     openAction(0),
     showHelpMessageAction(0),
-    transferAssetAction(0),
-    createAssetAction(0),
-    manageAssetAction(0),
-    messagingAction(0),
-    votingAction(0),
-    headerWidget(0),
-    labelCurrentMarket(0),
-    labelCurrentPrice(0),
-    pricingTimer(0),
-    networkManager(0),
-    request(0),
+    transferTokenAction(0),
+    createTokenAction(0),
+    manageTokenAction(0),
     trayIcon(0),
     trayIconMenu(0),
     notificator(0),
@@ -199,22 +197,13 @@ AlphaconGUI::AlphaconGUI(const PlatformStyle *_platformStyle, const NetworkStyle
         setCentralWidget(rpcConsole);
     }
 
-    /** RVN START */
-    labelCurrentMarket = new QLabel();
-    labelCurrentPrice = new QLabel();
-    // headerWidget = new QWidget();
-    pricingTimer = new QTimer();
-    networkManager = new QNetworkAccessManager();
-    request = new QNetworkRequest();
-    /** RVN END */
-
     // Accept D&D of URIs
     setAcceptDrops(true);
 
     loadFonts();
 
 #if !defined(Q_OS_MAC)
-    this->setFont(QFont("Open Sans"));
+    this->setFont(QFont("Montserrat"));
 #endif
 
     // Create actions for the toolbar, menu bar and tray/dock icon
@@ -248,6 +237,14 @@ AlphaconGUI::AlphaconGUI(const PlatformStyle *_platformStyle, const NetworkStyle
     labelWalletHDStatusIcon = new QLabel();
     connectionsControl = new GUIUtil::ClickableLabel();
     labelBlocksIcon = new GUIUtil::ClickableLabel();
+    labelStakingIcon = new GUIUtil::ClickableLabel();
+
+    QTimer *timerStakingIcon = new QTimer(labelStakingIcon);
+    connect(timerStakingIcon, SIGNAL(timeout()), this, SLOT(updateStakingIcon()));
+    timerStakingIcon->start(30 * 1000);
+    updateStakingIcon();
+    this->nStaking = gArgs.GetBoolArg("-staking", false);
+
     if(enableWallet)
     {
         frameBlocksLayout->addStretch();
@@ -256,6 +253,8 @@ AlphaconGUI::AlphaconGUI(const PlatformStyle *_platformStyle, const NetworkStyle
         frameBlocksLayout->addWidget(labelWalletEncryptionIcon);
         frameBlocksLayout->addWidget(labelWalletHDStatusIcon);
     }
+    frameBlocksLayout->addStretch();
+    frameBlocksLayout->addWidget(labelStakingIcon);
     frameBlocksLayout->addStretch();
     frameBlocksLayout->addWidget(connectionsControl);
     frameBlocksLayout->addStretch();
@@ -296,6 +295,7 @@ AlphaconGUI::AlphaconGUI(const PlatformStyle *_platformStyle, const NetworkStyle
     subscribeToCoreSignals();
 
     connect(connectionsControl, SIGNAL(clicked(QPoint)), this, SLOT(toggleNetworkActive()));
+    connect(labelStakingIcon, SIGNAL(clicked(QPoint)), this, SLOT(toggleStakingActive()));
 
     modalOverlay = new ModalOverlay(this->centralWidget());
 #ifdef ENABLE_WALLET
@@ -326,16 +326,10 @@ AlphaconGUI::~AlphaconGUI()
 
 void AlphaconGUI::loadFonts()
 {
-    QFontDatabase::addApplicationFont(":/fonts/opensans-bold");
-    QFontDatabase::addApplicationFont(":/fonts/opensans-bolditalic");
-    QFontDatabase::addApplicationFont(":/fonts/opensans-extrabold");
-    QFontDatabase::addApplicationFont(":/fonts/opensans-extrabolditalic");
-    QFontDatabase::addApplicationFont(":/fonts/opensans-italic");
-    QFontDatabase::addApplicationFont(":/fonts/opensans-light");
-    QFontDatabase::addApplicationFont(":/fonts/opensans-lightitalic");
-    QFontDatabase::addApplicationFont(":/fonts/opensans-regular");
-    QFontDatabase::addApplicationFont(":/fonts/opensans-semibold");
-    QFontDatabase::addApplicationFont(":/fonts/opensans-semibolditalic");
+    QFontDatabase::addApplicationFont(":/fonts/montserrat-bold");
+    QFontDatabase::addApplicationFont(":/fonts/montserrat-reqular");
+    QFontDatabase::addApplicationFont(":/fonts/montserrat-semibold");
+    QFontDatabase::addApplicationFont(":/fonts/montserrat-light");
 }
 
 
@@ -391,48 +385,32 @@ void AlphaconGUI::createActions()
     historyAction->setFont(font);
     tabGroup->addAction(historyAction);
 
-    /** RVN START */
-    transferAssetAction = new QAction(platformStyle->SingleColorIconOnOff(":/icons/asset_transfer", ":/icons/asset_transfer"), tr("&Transfer Assets"), this);
-    transferAssetAction->setStatusTip(tr("Transfer assets to ALP addresses"));
-    transferAssetAction->setToolTip(transferAssetAction->statusTip());
-    transferAssetAction->setCheckable(true);
-    transferAssetAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_5));
-    transferAssetAction->setFont(font);
-    tabGroup->addAction(transferAssetAction);
+    /** TOKENS START */
+    transferTokenAction = new QAction(platformStyle->SingleColorIconOnOff(":/icons/token_transfer", ":/icons/token_transfer"), tr("&Transfer Tokens"), this);
+    transferTokenAction->setStatusTip(tr("Transfer tokens to ALP addresses"));
+    transferTokenAction->setToolTip(transferTokenAction->statusTip());
+    transferTokenAction->setCheckable(true);
+    transferTokenAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_5));
+    transferTokenAction->setFont(font);
+    tabGroup->addAction(transferTokenAction);
 
-    createAssetAction = new QAction(platformStyle->SingleColorIconOnOff(":/icons/asset_create", ":/icons/asset_create"), tr("&Create Assets"), this);
-    createAssetAction->setStatusTip(tr("Create new main/sub/unique assets"));
-    createAssetAction->setToolTip(createAssetAction->statusTip());
-    createAssetAction->setCheckable(true);
-    createAssetAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_6));
-    createAssetAction->setFont(font);
-    tabGroup->addAction(createAssetAction);
+    createTokenAction = new QAction(platformStyle->SingleColorIconOnOff(":/icons/token_create", ":/icons/token_create"), tr("&Create Tokens"), this);
+    createTokenAction->setStatusTip(tr("Create new main/sub/unique tokens"));
+    createTokenAction->setToolTip(createTokenAction->statusTip());
+    createTokenAction->setCheckable(true);
+    createTokenAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_6));
+    createTokenAction->setFont(font);
+    tabGroup->addAction(createTokenAction);
 
-    manageAssetAction = new QAction(platformStyle->SingleColorIconOnOff(":/icons/asset_manage", ":/icons/asset_manage"), tr("&Manage Assets"), this);
-    manageAssetAction->setStatusTip(tr("Manage assets you are the administrator of"));
-    manageAssetAction->setToolTip(manageAssetAction->statusTip());
-    manageAssetAction->setCheckable(true);
-    manageAssetAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_7));
-    manageAssetAction->setFont(font);
-    tabGroup->addAction(manageAssetAction);
+    manageTokenAction = new QAction(platformStyle->SingleColorIconOnOff(":/icons/token_manage", ":/icons/token_manage"), tr("&Manage Tokens"), this);
+    manageTokenAction->setStatusTip(tr("Manage tokens you are the administrator of"));
+    manageTokenAction->setToolTip(manageTokenAction->statusTip());
+    manageTokenAction->setCheckable(true);
+    manageTokenAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_7));
+    manageTokenAction->setFont(font);
+    tabGroup->addAction(manageTokenAction);
 
-    messagingAction = new QAction(platformStyle->SingleColorIcon(":/icons/editcopy"), tr("&Messaging"), this);
-    messagingAction->setStatusTip(tr("Coming Soon"));
-    messagingAction->setToolTip(messagingAction->statusTip());
-    messagingAction->setCheckable(true);
-    messagingAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_8));
-    messagingAction->setFont(font);
-    tabGroup->addAction(messagingAction);
-
-    votingAction = new QAction(platformStyle->SingleColorIcon(":/icons/edit"), tr("&Voting"), this);
-    votingAction->setStatusTip(tr("Coming Soon"));
-    votingAction->setToolTip(votingAction->statusTip());
-    votingAction->setCheckable(true);
-    votingAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_9));
-    votingAction->setFont(font);
-    tabGroup->addAction(votingAction);
-
-    /** RVN END */
+    /** TOKENS END */
 
 #ifdef ENABLE_WALLET
     // These showNormalIfMinimized are needed because Send Coins and Receive Coins
@@ -449,12 +427,12 @@ void AlphaconGUI::createActions()
     connect(receiveCoinsMenuAction, SIGNAL(triggered()), this, SLOT(gotoReceiveCoinsPage()));
     connect(historyAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
     connect(historyAction, SIGNAL(triggered()), this, SLOT(gotoHistoryPage()));
-    connect(transferAssetAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
-    connect(transferAssetAction, SIGNAL(triggered()), this, SLOT(gotoAssetsPage()));
-    connect(createAssetAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
-    connect(createAssetAction, SIGNAL(triggered()), this, SLOT(gotoCreateAssetsPage()));
-    connect(manageAssetAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
-    connect(manageAssetAction, SIGNAL(triggered()), this, SLOT(gotoManageAssetsPage()));
+    connect(transferTokenAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
+    connect(transferTokenAction, SIGNAL(triggered()), this, SLOT(gotoTokensPage()));
+    connect(createTokenAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
+    connect(createTokenAction, SIGNAL(triggered()), this, SLOT(gotoCreateTokensPage()));
+    connect(manageTokenAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
+    connect(manageTokenAction, SIGNAL(triggered()), this, SLOT(gotoManageTokensPage()));
     // TODO add messaging actions to go to messaging page when clicked
     // TODO add voting actions to go to voting page when clicked
 #endif // ENABLE_WALLET
@@ -484,6 +462,12 @@ void AlphaconGUI::createActions()
     backupWalletAction->setStatusTip(tr("Backup wallet to another location"));
     changePassphraseAction = new QAction(platformStyle->TextColorIcon(":/icons/key"), tr("&Change Passphrase..."), this);
     changePassphraseAction->setStatusTip(tr("Change the passphrase used for wallet encryption"));
+
+    unlockWalletAction = new QAction(platformStyle->TextColorIcon(":/icons/lock_open"), tr("&Unlock Wallet..."), this);
+    unlockWalletAction->setStatusTip(tr("Unlock wallet with passphrase used for wallet encryption"));
+    lockWalletAction = new QAction(platformStyle->TextColorIcon(":/icons/lock_closed"),  tr("&Lock Wallet"), this);
+    lockWalletAction->setToolTip(tr("Lock wallet"));
+
     signMessageAction = new QAction(platformStyle->TextColorIcon(":/icons/edit"), tr("Sign &message..."), this);
     signMessageAction->setStatusTip(tr("Sign messages with your Alphacon addresses to prove you own them"));
     verifyMessageAction = new QAction(platformStyle->TextColorIcon(":/icons/verify"), tr("&Verify message..."), this);
@@ -522,6 +506,8 @@ void AlphaconGUI::createActions()
         connect(encryptWalletAction, SIGNAL(triggered(bool)), walletFrame, SLOT(encryptWallet(bool)));
         connect(backupWalletAction, SIGNAL(triggered()), walletFrame, SLOT(backupWallet()));
         connect(changePassphraseAction, SIGNAL(triggered()), walletFrame, SLOT(changePassphrase()));
+        connect(unlockWalletAction, SIGNAL(triggered()), walletFrame, SLOT(unlockWallet()));
+        connect(lockWalletAction, SIGNAL(triggered()), walletFrame, SLOT(lockWallet()));
         connect(signMessageAction, SIGNAL(triggered()), this, SLOT(gotoSignMessageTab()));
         connect(verifyMessageAction, SIGNAL(triggered()), this, SLOT(gotoVerifyMessageTab()));
         connect(usedSendingAddressesAction, SIGNAL(triggered()), walletFrame, SLOT(usedSendingAddresses()));
@@ -564,6 +550,8 @@ void AlphaconGUI::createMenuBar()
         settings->addAction(encryptWalletAction);
         settings->addAction(backupWalletAction);
         settings->addAction(changePassphraseAction);
+        settings->addAction(unlockWalletAction);
+        settings->addAction(lockWalletAction);
         settings->addSeparator();
     }
     settings->addAction(optionsAction);
@@ -581,6 +569,7 @@ void AlphaconGUI::createMenuBar()
 
 void AlphaconGUI::createToolBars()
 {
+    bool displayAdvanced = gArgs.GetBoolArg("-advancedui", false);
     if(walletFrame)
     {
         QToolBar *toolbar = addToolBar(tr("Tabs toolbar"));
@@ -598,9 +587,13 @@ void AlphaconGUI::createToolBars()
         toolbar->addAction(sendCoinsAction);
         toolbar->addAction(receiveCoinsAction);
         toolbar->addAction(historyAction);
-        toolbar->addAction(createAssetAction);
-        toolbar->addAction(transferAssetAction);
-        toolbar->addAction(manageAssetAction);
+        toolbar->addAction(transferTokenAction);
+
+        if (displayAdvanced) {
+            toolbar->addAction(createTokenAction);
+            toolbar->addAction(manageTokenAction);
+        }
+        
         overviewAction->setChecked(true);
 
         QString mainWalletWidgetStyle = QString(".QWidget{background-color: %1}").arg(platformStyle->MainBackGroundColor().name());
@@ -611,7 +604,6 @@ void AlphaconGUI::createToolBars()
 
         // Create the layout for widget to the right of the tool bar
         QVBoxLayout* mainFrameLayout = new QVBoxLayout(mainWalletWidget);
-        // mainFrameLayout->addWidget(headerWidget);
         mainFrameLayout->addWidget(walletFrame);
         mainFrameLayout->setDirection(QBoxLayout::TopToBottom);
         mainFrameLayout->setContentsMargins(QMargins());
@@ -624,108 +616,9 @@ void AlphaconGUI::createToolBars()
         QWidget* containerWidget = new QWidget();
         containerWidget->setLayout(layout);
         setCentralWidget(containerWidget);
-        /** RVN END */
+        /** TOKENS END */
     }
 }
-
-// void AlphaconGUI::createToolBars()
-// {
-//     if(walletFrame)
-//     {
-//         /** RVN START */
-//         // Create the orange background and the vertical tool bar
-//         QWidget* toolbarWidget = new QWidget();
-
-//         toolbarWidget->setStyleSheet(QString(".QWidget{background-color: %1}").arg(platformStyle->LightDarkColor().name()));
-
-//         // QLabel* label = new QLabel();
-//         // label->setContentsMargins(0,0,0,0);
-//         // label->setStyleSheet(".QLabel{background-color: transparent;}");
-//         /** RVN END */
-
-//         QToolBar *toolbar = new QToolBar();
-//         // toolbar->setStyle(style());
-//         // toolbar->setMinimumWidth(label->width());
-//         toolbar->setContextMenuPolicy(Qt::PreventContextMenu);
-//         toolbar->setMovable(false);
-//         toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-//         toolbar->addAction(overviewAction);
-//         toolbar->addAction(sendCoinsAction);
-//         toolbar->addAction(receiveCoinsAction);
-//         toolbar->addAction(historyAction);
-//         toolbar->addAction(createAssetAction);
-//         toolbar->addAction(transferAssetAction);
-//         toolbar->addAction(manageAssetAction);
-// //        toolbar->addAction(messagingAction);
-// //        toolbar->addAction(votingAction);
-
-//         QString openSansFontString = "font: normal 22pt \"Open Sans\";";
-//         QString normalString = "font: normal 22pt \"Arial\";";
-//         QString stringToUse = "";
-
-// #if !defined(Q_OS_MAC)
-//         stringToUse = openSansFontString;
-// #else
-//         stringToUse = normalString;
-// #endif
-
-//         /** RVN START */
-//         QString tbStyleSheet = ".QToolBar {background-color : transparent; border-color: transparent; }  "
-//                                ".QToolButton {background-color: transparent; border-color: transparent; width: 180px; color: %1; border: none;} "
-//                                ".QToolButton:checked {background: none; background-color: none; selection-background-color: none; color: %2; border: none; font: %4;} "
-//                                ".QToolButton:hover {background: none; background-color: none; border: none; color: %3;} "
-//                                ".QToolButton:disabled {color: gray;}";
-
-//         toolbar->setStyleSheet(tbStyleSheet.arg(platformStyle->ToolBarNotSelectedTextColor().name(),
-//                                                 platformStyle->ToolBarSelectedTextColor().name(),
-//                                                 platformStyle->DarkOrangeColor().name(), stringToUse));
-
-//         toolbar->setOrientation(Qt::Vertical);
-//         toolbar->setIconSize(QSize(25, 25));
-
-//         // QLayout* lay = toolbar->layout();
-//         // for(int i = 0; i < lay->count(); ++i)
-//         //     lay->itemAt(i)->setAlignment(Qt::AlignLeft);
-
-//         overviewAction->setChecked(true);
-
-//         QVBoxLayout* alphaconLabelLayout = new QVBoxLayout(toolbarWidget);
-//         // alphaconLabelLayout->addWidget(label);
-//         alphaconLabelLayout->addWidget(toolbar);
-//         // alphaconLabelLayout->setDirection(QBoxLayout::TopToBottom);
-//         // alphaconLabelLayout->addStretch(1);
-
-//         QString mainWalletWidgetStyle = QString(".QWidget{background-color: %1}").arg(platformStyle->MainBackGroundColor().name());
-//         QWidget* mainWalletWidget = new QWidget();
-//         mainWalletWidget->setStyleSheet(mainWalletWidgetStyle);
-
-//         QString widgetBackgroundSytleSheet = QString(".QWidget{background-color: %1}").arg(platformStyle->TopWidgetBackGroundColor().name());
-
-//         QFont currentMarketFont;
-//         currentMarketFont.setFamily("Open Sans");
-//         currentMarketFont.setWeight(QFont::Weight::Normal);
-//         currentMarketFont.setLetterSpacing(QFont::SpacingType::AbsoluteSpacing, -0.6);
-//         currentMarketFont.setPixelSize(18);
-
-//         // Create the layout for widget to the right of the tool bar
-//         QVBoxLayout* mainFrameLayout = new QVBoxLayout(mainWalletWidget);
-//         // mainFrameLayout->addWidget(headerWidget);
-//         mainFrameLayout->addWidget(walletFrame);
-//         mainFrameLayout->setDirection(QBoxLayout::TopToBottom);
-//         mainFrameLayout->setContentsMargins(QMargins());
-
-//         QHBoxLayout* layout = new QHBoxLayout();
-//         layout->addWidget(toolbarWidget);
-//         layout->addWidget(mainWalletWidget);
-//         // layout->setSpacing(0);
-//         // layout->setContentsMargins(QMargins());
-//         // layout->setDirection(QBoxLayout::LeftToRight);
-//         // QWidget* containerWidget = new QWidget();
-//         // containerWidget->setLayout(layout);
-//         // setCentralWidget(containerWidget);
-//         /** RVN END */
-//     }
-// }
 
 void AlphaconGUI::setClientModel(ClientModel *_clientModel)
 {
@@ -825,19 +718,18 @@ void AlphaconGUI::setWalletActionsEnabled(bool enabled)
     encryptWalletAction->setEnabled(enabled);
     backupWalletAction->setEnabled(enabled);
     changePassphraseAction->setEnabled(enabled);
+    unlockWalletAction->setEnabled(enabled);
     signMessageAction->setEnabled(enabled);
     verifyMessageAction->setEnabled(enabled);
     usedSendingAddressesAction->setEnabled(enabled);
     usedReceivingAddressesAction->setEnabled(enabled);
     openAction->setEnabled(enabled);
 
-    /** RVN START */
-    transferAssetAction->setEnabled(false);
-    createAssetAction->setEnabled(false);
-    manageAssetAction->setEnabled(false);
-    messagingAction->setEnabled(false);
-    votingAction->setEnabled(false);
-    /** RVN END */
+    /** TOKENS START */
+    transferTokenAction->setEnabled(false);
+    createTokenAction->setEnabled(false);
+    manageTokenAction->setEnabled(false);
+    /** TOKENS END */
 }
 
 void AlphaconGUI::createTrayIcon(const NetworkStyle *networkStyle)
@@ -982,25 +874,25 @@ void AlphaconGUI::gotoVerifyMessageTab(QString addr)
     if (walletFrame) walletFrame->gotoVerifyMessageTab(addr);
 }
 
-/** RVN START */
-void AlphaconGUI::gotoAssetsPage()
+/** TOKENS START */
+void AlphaconGUI::gotoTokensPage()
 {
-    transferAssetAction->setChecked(true);
-    if (walletFrame) walletFrame->gotoAssetsPage();
+    transferTokenAction->setChecked(true);
+    if (walletFrame) walletFrame->gotoTokensPage();
 };
 
-void AlphaconGUI::gotoCreateAssetsPage()
+void AlphaconGUI::gotoCreateTokensPage()
 {
-    createAssetAction->setChecked(true);
-    if (walletFrame) walletFrame->gotoCreateAssetsPage();
+    createTokenAction->setChecked(true);
+    if (walletFrame) walletFrame->gotoCreateTokensPage();
 };
 
-void AlphaconGUI::gotoManageAssetsPage()
+void AlphaconGUI::gotoManageTokensPage()
 {
-    manageAssetAction->setChecked(true);
-    if (walletFrame) walletFrame->gotoManageAssetsPage();
+    manageTokenAction->setChecked(true);
+    if (walletFrame) walletFrame->gotoManageTokensPage();
 };
-/** RVN END */
+/** TOKENS END */
 #endif // ENABLE_WALLET
 
 void AlphaconGUI::updateNetworkState()
@@ -1272,14 +1164,14 @@ void AlphaconGUI::showEvent(QShowEvent *event)
 }
 
 #ifdef ENABLE_WALLET
-void AlphaconGUI::incomingTransaction(const QString& date, int unit, const CAmount& amount, const QString& type, const QString& address, const QString& label, const QString& assetName)
+void AlphaconGUI::incomingTransaction(const QString& date, int unit, const CAmount& amount, const QString& type, const QString& address, const QString& label, const QString& tokenName)
 {
     // On new transaction, make an info balloon
     QString msg = tr("Date: %1\n").arg(date);
-    if (assetName == "ALP")
+    if (tokenName == "ALP")
         msg += tr("Amount: %1\n").arg(AlphaconUnits::formatWithUnit(unit, amount, true));
     else
-        msg += tr("Amount: %1\n").arg(AlphaconUnits::formatWithCustomName(assetName, amount, MAX_ASSET_UNITS, true));
+        msg += tr("Amount: %1\n").arg(AlphaconUnits::formatWithCustomName(tokenName, amount, MAX_TOKEN_UNITS, true));
 
     msg += tr("Type: %1\n").arg(type);
     
@@ -1291,23 +1183,22 @@ void AlphaconGUI::incomingTransaction(const QString& date, int unit, const CAmou
              msg, CClientUIInterface::MSG_INFORMATION);
 }
 
-void AlphaconGUI::checkAssets()
+void AlphaconGUI::checkTokens()
 {
-    // Check that status of RIP2 and activate the assets icon if it is active
-    if(AreAssetsDeployed()) {
-        transferAssetAction->setDisabled(false);
-        transferAssetAction->setToolTip(tr("Transfer assets to ALP addresses"));
-        createAssetAction->setDisabled(false);
-        createAssetAction->setToolTip(tr("Create new main/sub/unique assets"));
-        manageAssetAction->setDisabled(false);
-        }
-    else {
-        transferAssetAction->setDisabled(true);
-        transferAssetAction->setToolTip(tr("Assets not yet active"));
-        createAssetAction->setDisabled(true);
-        createAssetAction->setToolTip(tr("Assets not yet active"));
-        manageAssetAction->setDisabled(true);
-        }
+    // Check that status of RIP2 and activate the tokens icon if it is active
+    if(AreTokensDeployed()) {
+        transferTokenAction->setDisabled(false);
+        transferTokenAction->setToolTip(tr("Transfer tokens to ALP addresses"));
+        createTokenAction->setDisabled(false);
+        createTokenAction->setToolTip(tr("Create new main/sub/unique tokens"));
+        manageTokenAction->setDisabled(false);
+    } else {
+        transferTokenAction->setDisabled(true);
+        transferTokenAction->setToolTip(tr("Tokens not yet active"));
+        createTokenAction->setDisabled(true);
+        createTokenAction->setToolTip(tr("Tokens not yet active"));
+        manageTokenAction->setDisabled(true);
+    }
 }
 #endif // ENABLE_WALLET
 
@@ -1373,6 +1264,8 @@ void AlphaconGUI::setEncryptionStatus(int status)
         encryptWalletAction->setChecked(false);
         changePassphraseAction->setEnabled(false);
         encryptWalletAction->setEnabled(true);
+        unlockWalletAction->setVisible(false);
+        lockWalletAction->setVisible(false);
         break;
     case WalletModel::Unlocked:
         labelWalletEncryptionIcon->show();
@@ -1381,6 +1274,8 @@ void AlphaconGUI::setEncryptionStatus(int status)
         encryptWalletAction->setChecked(true);
         changePassphraseAction->setEnabled(true);
         encryptWalletAction->setEnabled(false); // TODO: decrypt currently not supported
+        unlockWalletAction->setVisible(false);
+        lockWalletAction->setVisible(true);
         break;
     case WalletModel::Locked:
         labelWalletEncryptionIcon->show();
@@ -1389,6 +1284,8 @@ void AlphaconGUI::setEncryptionStatus(int status)
         encryptWalletAction->setChecked(true);
         changePassphraseAction->setEnabled(true);
         encryptWalletAction->setEnabled(false); // TODO: decrypt currently not supported
+        unlockWalletAction->setVisible(false);
+        lockWalletAction->setVisible(true);
         break;
     }
 }
@@ -1422,6 +1319,44 @@ void AlphaconGUI::showNormalIfMinimized(bool fToggleHidden)
 void AlphaconGUI::toggleHidden()
 {
     showNormalIfMinimized(true);
+}
+
+void AlphaconGUI::updateStakingIcon()
+{
+    if (walletFrame) {
+        nWeight = walletFrame->updateWeight();
+    }
+
+    if (this->nStaking && nWeight) {
+        uint64_t nWeight = this->nWeight;
+        uint64_t nNetworkWeight = 1.1429 * GetPoSKernelPS();
+        unsigned nEstimateTime = 1.0455 * 64 * nNetworkWeight / nWeight;
+
+        QString text;
+        if (nEstimateTime < 60) {
+            text = tr("%n second(s)", "", nEstimateTime);
+        } else if (nEstimateTime < 60 * 60) {
+            text = tr("%n minute(s)", "", nEstimateTime / 60);
+        } else if (nEstimateTime < 24 * 60 * 60) {
+            text = tr("%n hour(s)", "", nEstimateTime / (60 * 60));
+        } else {
+            text = tr("%n day(s)", "", nEstimateTime / (60 * 60 * 24));
+        }
+
+        nWeight /= COIN;
+        nNetworkWeight /= COIN;
+        labelStakingIcon->setPixmap(platformStyle->SingleColorIcon(":/icons/staking_on").pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
+        labelStakingIcon->setToolTip(tr("Staking.<br>Your weight is %1<br>Network weight is %2<br>Expected time to earn reward is %3").arg(nWeight).arg(nNetworkWeight).arg(text));
+    } else {
+        labelStakingIcon->setPixmap(platformStyle->SingleColorIcon(":/icons/staking_off").pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
+        if (IsInitialBlockDownload()) {
+            labelStakingIcon->setToolTip(tr("Not staking because wallet is syncing"));
+        } else if (!nWeight) {
+            labelStakingIcon->setToolTip(tr("Not staking because you don't have mature coins"));
+        } else {
+            labelStakingIcon->setToolTip(tr("Not staking"));
+        }
+    }
 }
 
 void AlphaconGUI::detectShutdown()
@@ -1509,6 +1444,23 @@ void AlphaconGUI::toggleNetworkActive()
     }
 }
 
+void AlphaconGUI::toggleStakingActive()
+{
+    this->nStaking = !this->nStaking;
+
+    if (this->nStaking) {
+        for (CWalletRef pwallet : vpwallets) {
+            pwallet->StartStake();
+        }
+    } else {
+        for (CWalletRef pwallet : vpwallets) {
+            pwallet->StopStake();
+        }
+    }
+
+    updateStakingIcon();
+}
+
 UnitDisplayStatusBarControl::UnitDisplayStatusBarControl(const PlatformStyle *platformStyle) :
     optionsModel(0),
     menu(0)
@@ -1582,10 +1534,4 @@ void UnitDisplayStatusBarControl::onMenuSelection(QAction* action)
     {
         optionsModel->setDisplayUnit(action->data());
     }
-}
-
-void AlphaconGUI::getPriceInfo()
-{
-    request->setUrl(QUrl("https://api.binance.com/api/v1/ticker/price?symbol=RVNBTC"));
-    networkManager->get(*request);
 }

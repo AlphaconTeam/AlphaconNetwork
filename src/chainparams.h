@@ -90,22 +90,20 @@ public:
     bool BIP66();
     bool CSVEnabled() const;
 
-    /** ALP Start **/
-    const CAmount& IssueAssetBurnAmount() const { return nIssueAssetBurnAmount; }
-    const CAmount& ReissueAssetBurnAmount() const { return nReissueAssetBurnAmount; }
-    const CAmount& IssueSubAssetBurnAmount() const { return nIssueSubAssetBurnAmount; }
-    const CAmount& IssueUniqueAssetBurnAmount() const { return nIssueUniqueAssetBurnAmount; }
+    /** TOKENS START **/
+    const CAmount& MainFeeAmount() const { return nFeeAmountMain; }
+    const CAmount& SecondaryFeeAmount() const { return nFeeAmountSecondary; }
 
-    const std::string& IssueAssetBurnAddress() const { return strIssueAssetBurnAddress; }
-    const std::string& ReissueAssetBurnAddress() const { return strReissueAssetBurnAddress; }
-    const std::string& IssueSubAssetBurnAddress() const { return strIssueSubAssetBurnAddress; }
-    const std::string& IssueUniqueAssetBurnAddress() const { return strIssueUniqueAssetBurnAddress; }
-    const std::string& GlobalBurnAddress() const { return strGlobalBurnAddress; }
+    const std::string& IssueTokenBurnAddress() const { return strTokenFeeAddress; }
+    const std::string& ReissueTokenBurnAddress() const { return strTokenFeeAddress; }
+    const std::string& IssueSubTokenBurnAddress() const { return strTokenFeeAddress; }
+    const std::string& IssueUniqueTokenBurnAddress() const { return strTokenFeeAddress; }
+    const std::string& GlobalBurnAddress() const { return strBurnAddress; }
 
     int MaxReorganizationDepth() const { return nMaxReorganizationDepth; }
     int MinReorganizationPeers() const { return nMinReorganizationPeers; }
     int MinReorganizationAge() const { return nMinReorganizationAge; }
-    /** ALP End **/
+    /** TOKENS END **/
 
 protected:
     CChainParams() {}
@@ -126,26 +124,21 @@ protected:
     CCheckpointData checkpointData;
     ChainTxData chainTxData;
 
-    /** ALP Start **/
+    /** TOKENS START **/
     // Burn Amounts
-    CAmount nIssueAssetBurnAmount;
-    CAmount nReissueAssetBurnAmount;
-    CAmount nIssueSubAssetBurnAmount;
-    CAmount nIssueUniqueAssetBurnAmount;
+    CAmount nFeeAmountMain;
+    CAmount nFeeAmountSecondary;
 
     // Burn Addresses
-    std::string strIssueAssetBurnAddress;
-    std::string strReissueAssetBurnAddress;
-    std::string strIssueSubAssetBurnAddress;
-    std::string strIssueUniqueAssetBurnAddress;
+    std::string strTokenFeeAddress;
 
     // Global Burn Address
-    std::string strGlobalBurnAddress;
+    std::string strBurnAddress;
 
     int nMaxReorganizationDepth;
     int nMinReorganizationPeers;
     int nMinReorganizationAge;
-    /** ALP End **/
+    /** TOKENS END **/
 };
 
 /**
@@ -160,6 +153,7 @@ std::unique_ptr<CChainParams> CreateChainParams(const std::string& chain);
  * startup, except for unit tests.
  */
 const CChainParams &Params();
+const CChainParams &CParams();
 
 /**
  * Sets the params returned by Params() to those for the given BIP70 chain name.

@@ -41,9 +41,9 @@ const char *SENDCMPCT="sendcmpct";
 const char *CMPCTBLOCK="cmpctblock";
 const char *GETBLOCKTXN="getblocktxn";
 const char *BLOCKTXN="blocktxn";
-const char *GETASSETDATA="getassetdata";
-const char *ASSETDATA="assetdata";
-const char *ASSETNOTFOUND ="asstnotfound";
+const char *GETTOKENDATA="gettokendata";
+const char *TOKENDATA="tokendata";
+const char *TOKENNOTFOUND ="asstnotfound";
 } // namespace NetMsgType
 
 /** All known message types. Keep this in the same order as the list of
@@ -76,9 +76,9 @@ const static std::string allNetMessageTypes[] = {
     NetMsgType::CMPCTBLOCK,
     NetMsgType::GETBLOCKTXN,
     NetMsgType::BLOCKTXN,
-    NetMsgType::GETASSETDATA,
-    NetMsgType::ASSETDATA,
-    NetMsgType::ASSETNOTFOUND
+    NetMsgType::GETTOKENDATA,
+    NetMsgType::TOKENDATA,
+    NetMsgType::TOKENNOTFOUND
 };
 const static std::vector<std::string> allNetMessageTypesVec(allNetMessageTypes, allNetMessageTypes+ARRAYLEN(allNetMessageTypes));
 
@@ -197,20 +197,20 @@ const std::vector<std::string> &getAllNetMessageTypes()
     return allNetMessageTypesVec;
 }
 
-CInvAsset::CInvAsset()
+CInvToken::CInvToken()
 {
     name = "";
 }
 
-CInvAsset::CInvAsset(std::string strName) : name(strName){}
+CInvToken::CInvToken(std::string strName) : name(strName){}
 
-bool operator<(const CInvAsset& a, const CInvAsset& b)
+bool operator<(const CInvToken& a, const CInvToken& b)
 {
     return a.name < b.name;
 }
 
-std::string CInvAsset::ToString() const
+std::string CInvToken::ToString() const
 {
-    return strprintf("%s %s", "CInvAsset for asset: ", name);
+    return strprintf("%s %s", "CInvToken for token: ", name);
 }
 

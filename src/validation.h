@@ -35,8 +35,8 @@
 #include <vector>
 
 #include <atomic>
-#include <assets/assets.h>
-#include <assets/assetdb.h>
+#include <tokens/tokens.h>
+#include <tokens/tokendb.h>
 
 class CBlockIndex;
 class CBlockTreeDB;
@@ -54,8 +54,8 @@ struct ChainTxData;
 struct CDiskTxPos;
 class CWallet;
 
-class CAssetsDB;
-class CAssets;
+class CTokensDB;
+class CTokens;
 
 struct PrecomputedTransactionData;
 struct LockPoints;
@@ -147,7 +147,7 @@ static const int64_t MAX_FEE_ESTIMATION_TIP_AGE = 3 * 60 * 60;
 static const bool DEFAULT_PERMIT_BAREMULTISIG = true;
 static const bool DEFAULT_CHECKPOINTS_ENABLED = true;
 static const bool DEFAULT_TXINDEX = true;
-static const bool DEFAULT_ASSETINDEX = true;
+static const bool DEFAULT_TOKENINDEX = true;
 static const bool DEFAULT_ADDRESSINDEX = false;
 static const bool DEFAULT_TIMESTAMPINDEX = false;
 static const bool DEFAULT_SPENTINDEX = false;
@@ -193,7 +193,7 @@ extern std::atomic_bool fImporting;
 extern std::atomic_bool fReindex;
 extern int nScriptCheckThreads;
 extern bool fTxIndex;
-extern bool fAssetIndex;
+extern bool fTokenIndex;
 extern bool fAddressIndex;
 extern bool fSpentIndex;
 extern bool fTimestampIndex;
@@ -209,7 +209,6 @@ extern CAmount maxTxFee;
 /** If the tip is older than this (in seconds), the node is considered to be in initial block download. */
 extern int64_t nMaxTipAge;
 extern bool fEnableReplacement;
-extern int64_t nLastCoinStakeSearchInterval;
 
 /** Block hash whose ancestors we will assume to have valid scripts without checking them. */
 extern uint256 hashAssumeValid;
@@ -354,7 +353,7 @@ int VersionBitsTipStateSinceHeight(const Consensus::Params& params, Consensus::D
 /** Apply the effects of this transaction on the UTXO set represented by view */
 void UpdateCoins(const CTransaction& tx, CCoinsViewCache& inputs, int nHeight);
 
-void UpdateCoins(const CTransaction& tx, CCoinsViewCache& inputs, CTxUndo& txundo, int nHeight, uint256 blockHash, CAssetsCache* assetCache = nullptr, std::pair<std::string, CBlockAssetUndo>* undoAssetData = nullptr);
+void UpdateCoins(const CTransaction& tx, CCoinsViewCache& inputs, CTxUndo& txundo, int nHeight, uint256 blockHash, CTokensCache* tokenCache = nullptr, std::pair<std::string, CBlockTokenUndo>* undoTokenData = nullptr);
 
 /** Transaction validation functions */
 
@@ -426,13 +425,13 @@ void InitScriptExecutionCache();
 bool GetTimestampIndex(const unsigned int &high, const unsigned int &low, const bool fActiveOnly, std::vector<std::pair<uint256, unsigned int> > &hashes);
 bool GetSpentIndex(CSpentIndexKey &key, CSpentIndexValue &value);
 bool HashOnchainActive(const uint256 &hash);
-bool GetAddressIndex(uint160 addressHash, int type, std::string assetName,
+bool GetAddressIndex(uint160 addressHash, int type, std::string tokenName,
                      std::vector<std::pair<CAddressIndexKey, CAmount> > &addressIndex,
                      int start = 0, int end = 0);
 bool GetAddressIndex(uint160 addressHash, int type,
                      std::vector<std::pair<CAddressIndexKey, CAmount> > &addressIndex,
                      int start = 0, int end = 0);
-bool GetAddressUnspent(uint160 addressHash, int type, std::string assetName,
+bool GetAddressUnspent(uint160 addressHash, int type, std::string tokenName,
                        std::vector<std::pair<CAddressUnspentKey, CAddressUnspentValue> > &unspentOutputs);
 bool GetAddressUnspent(uint160 addressHash, int type,
                        std::vector<std::pair<CAddressUnspentKey, CAddressUnspentValue> > &unspentOutputs);
@@ -444,7 +443,7 @@ bool ReadBlockFromDisk(CBlock& block, const CBlockIndex* pindex, const Consensus
 /** Functions for validating blocks and updating the block tree */
 
 /** Context-independent validity checks */
-bool CheckBlock(const CBlock& block, CValidationState& state, const uint256& hash, const Consensus::Params& consensusParams, bool fCheckPOW = false, bool fCheckMerkleRoot = true, bool fCheckAssetDuplicate = true, bool fForceDuplicateCheck = true, bool fCheckSig = true);
+bool CheckBlock(const CBlock& block, CValidationState& state, const uint256& hash, const Consensus::Params& consensusParams, bool fCheckPOW = false, bool fCheckMerkleRoot = true, bool fCheckTokenDuplicate = true, bool fForceDuplicateCheck = true, bool fCheckSig = true);
 
 /** Check a block is completely valid from start to finish (only works on top of our current best block, with cs_main held) */
 bool TestBlockValidity(CValidationState& state, const CChainParams& chainparams, const CBlock& block, CBlockIndex* pindexPrev, bool fCheckPOW = false, bool fCheckMerkleRoot = true, bool fCheckSig = true);
@@ -496,14 +495,14 @@ extern CCoinsViewCache *pcoinsTip;
 /** Global variable that points to the active block tree (protected by cs_main) */
 extern CBlockTreeDB *pblocktree;
 
-/** RVN START */
-/** Global variable that point to the active assets database (protexted by cs_main) */
-extern CAssetsDB *passetsdb;
-/** Global variable that point to the active assets (protexted by cs_main) */
-extern CAssetsCache *passets;
-/** Global variable that point to the assets LRU Cache (protexted by cs_main) */
-extern CLRUCache<std::string, CDatabasedAssetData> *passetsCache;
-/** RVN END */
+/** TOKENS START */
+/** Global variable that point to the active tokens database (protexted by cs_main) */
+extern CTokensDB *ptokensdb;
+/** Global variable that point to the active tokens (protexted by cs_main) */
+extern CTokensCache *ptokens;
+/** Global variable that point to the tokens LRU Cache (protexted by cs_main) */
+extern CLRUCache<std::string, CDatabasedTokenData> *ptokensCache;
+/** TOKENS END */
 
 /**
  * Return the spend height, which is one more than the inputs.GetBestBlock().
@@ -511,6 +510,13 @@ extern CLRUCache<std::string, CDatabasedAssetData> *passetsCache;
  * This is also true for mempool checks.
  */
 int GetSpendHeight(const CCoinsViewCache& inputs);
+
+/**
+ * Return the spend time, which is one more than the inputs.GetBestBlock().
+ * While checking, GetBestBlock() refers to the parent block. (protected by cs_main)
+ * This is also true for mempool checks.
+ */
+int GetSpendTime(const CCoinsViewCache& inputs);
 
 extern VersionBitsCache versionbitscache;
 
@@ -536,10 +542,10 @@ bool DumpMempool();
 /** Load the mempool from disk. */
 bool LoadMempool();
 
-/** RVN START */
-bool AreAssetsDeployed();
+/** TOKENS START */
+bool AreTokensDeployed();
 
-CAssetsCache* GetCurrentAssetCache();
-/** RVN END */
+CTokensCache* GetCurrentTokenCache();
+/** TOKENS END */
 
 #endif // ALPHACON_VALIDATION_H

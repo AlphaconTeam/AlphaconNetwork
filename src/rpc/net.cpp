@@ -68,23 +68,23 @@ UniValue ping(const JSONRPCRequest& request)
 }
 
 //// Used for testing only
-//UniValue testgetassetdata(const JSONRPCRequest& request)
+//UniValue testgettokendata(const JSONRPCRequest& request)
 //{
 //    if (request.fHelp || request.params.size() != 1)
 //        throw std::runtime_error(
-//                "testgetassetdata\n"
+//                "testgettokendata\n"
 //                "\nHelper RPC CALL, dont use\n"
 //        );
 //
 //    if(!g_connman)
 //        throw JSONRPCError(RPC_CLIENT_P2P_DISABLED, "Error: Peer-to-peer functionality missing or disabled");
 //
-//    std::string assetName = request.params[0].get_str();
+//    std::string tokenName = request.params[0].get_str();
 //
 //    // Request that each node send a ping during next message processing pass
-//    g_connman->ForEachNode([assetName](CNode* pnode) {
-//        pnode->setInventoryAssetsSend.insert(assetName);
-//        pnode->fGetAssetData = true;
+//    g_connman->ForEachNode([tokenName](CNode* pnode) {
+//        pnode->setInventoryTokensSend.insert(tokenName);
+//        pnode->fGetTokenData = true;
 //    });
 //    return NullUniValue;
 //}
@@ -664,7 +664,7 @@ static const CRPCCommand commands[] =
     { "network",            "listbanned",             &listbanned,             {} },
     { "network",            "clearbanned",            &clearbanned,            {} },
     { "network",            "setnetworkactive",       &setnetworkactive,       {"state"} },
-//    { "network",            "testgetassetdata",       &testgetassetdata,       {"assetName"} }, // Used for testing only
+//    { "network",            "testgettokendata",       &testgettokendata,       {"tokenName"} }, // Used for testing only
 };
 
 void RegisterNetRPCCommands(CRPCTable &t)

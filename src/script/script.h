@@ -186,9 +186,9 @@ enum opcodetype
     OP_NOP9 = 0xb8,
     OP_NOP10 = 0xb9,
 
-    /** RVN START */
-    OP_ALP_ASSET = 0xc0,
-    /** RVN END */
+    /** TOKENS START */
+    OP_ALP_TOKEN = 0xc0,
+    /** TOKENS END */
 
 
     // template matching params
@@ -655,17 +655,17 @@ public:
     bool IsPayToWitnessScriptHash() const;
     bool IsWitnessProgram(int& version, std::vector<unsigned char>& program) const;
 
-    /** RVN START */
+    /** TOKENS START */
     enum class txnouttype;
-    bool IsAssetScript(int& nType, bool& fIsOwner, int& nStartingIndex) const;
-    bool IsAssetScript(int& nType, bool& fIsOwner) const;
-    bool IsAssetScript() const;
-    bool IsNewAsset() const;
-    bool IsOwnerAsset() const;
-    bool IsReissueAsset() const;
-    bool IsTransferAsset() const;
-    bool IsAsset() const;
-    /** RVN END */
+    bool IsTokenScript(int& nType, bool& fIsOwner, int& nStartingIndex) const;
+    bool IsTokenScript(int& nType, bool& fIsOwner) const;
+    bool IsTokenScript() const;
+    bool IsNewToken() const;
+    bool IsOwnerToken() const;
+    bool IsReissueToken() const;
+    bool IsTransferToken() const;
+    bool IsToken() const;
+    /** TOKENS END */
 
     /** Used for obsolete pay-to-pubkey addresses indexing. */
     bool IsPayToPublicKey() const;
@@ -717,15 +717,15 @@ public:
     virtual ~CReserveScript() {}
 };
 
-//! These are needed because script.h and script.cpp do not have access to asset.h and asset.cpp functions. This is
+//! These are needed because script.h and script.cpp do not have access to token.h and token.cpp functions. This is
 //! because the make file compiles them at different times. This is becauses script files are compiled with other
-//! consensus files, and asset files are compiled with core files
-bool GetAssetAmountFromScript(const CScript& script, CAmount& nAmount);
-bool AmountFromNewAssetScript(const CScript& scriptPubKey, CAmount& nAmount);
+//! consensus files, and token files are compiled with core files
+bool GetTokenAmountFromScript(const CScript& script, CAmount& nAmount);
+bool AmountFromNewTokenScript(const CScript& scriptPubKey, CAmount& nAmount);
 bool AmountFromTransferScript(const CScript& scriptPubKey, CAmount& nAmount);
 bool AmountFromReissueScript(const CScript& scriptPubKey, CAmount& nAmount);
-bool ScriptNewAsset(const CScript& scriptPubKey, int& nStartingIndex);
-bool ScriptTransferAsset(const CScript& scriptPubKey, int& nStartingIndex);
-bool ScriptReissueAsset(const CScript& scriptPubKey, int& nStartingIndex);
+bool ScriptNewToken(const CScript& scriptPubKey, int& nStartingIndex);
+bool ScriptTransferToken(const CScript& scriptPubKey, int& nStartingIndex);
+bool ScriptReissueToken(const CScript& scriptPubKey, int& nStartingIndex);
 
 #endif // ALPHACON_SCRIPT_SCRIPT_H

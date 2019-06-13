@@ -7,7 +7,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 #include "streams.h"
 #include "version.h"
-#include "assets/assets.h"
+#include "tokens/tokens.h"
 #include "script.h"
 
 #include "tinyformat.h"
@@ -145,9 +145,9 @@ const char* GetOpName(opcodetype opcode)
     case OP_NOP9                   : return "OP_NOP9";
     case OP_NOP10                  : return "OP_NOP10";
 
-    /** RVN START */
-    case OP_ALP_ASSET              : return "OP_ALP_ASSET";
-    /** RVN END */
+    /** TOKENS START */
+    case OP_ALP_TOKEN              : return "OP_ALP_TOKEN";
+    /** TOKENS END */
 
     case OP_INVALIDOPCODE          : return "OP_INVALIDOPCODE";
 
@@ -229,52 +229,52 @@ bool CScript::IsPayToScriptHash() const
             (*this)[22] == OP_EQUAL);
 }
 
-/** RVN START */
-bool CScript::IsAssetScript() const
+/** TOKENS START */
+bool CScript::IsTokenScript() const
 {
     int nType = 0;
     bool isOwner = false;
     int start = 0;
-    return IsAssetScript(nType, isOwner, start);
+    return IsTokenScript(nType, isOwner, start);
 }
 
-bool CScript::IsAssetScript(int& nType, bool& isOwner) const
+bool CScript::IsTokenScript(int& nType, bool& isOwner) const
 {
     int start = 0;
-    return IsAssetScript(nType, isOwner, start);
+    return IsTokenScript(nType, isOwner, start);
 }
 
-bool CScript::IsAssetScript(int& nType, bool& fIsOwner, int& nStartingIndex) const
+bool CScript::IsTokenScript(int& nType, bool& fIsOwner, int& nStartingIndex) const
 {
     if (this->size() > 30) {
-        if ((*this)[25] == OP_ALP_ASSET) { // OP_ALP_ASSET is always in the 25 index of the script if it exists
+        if ((*this)[25] == OP_ALP_TOKEN) { // OP_ALP_TOKEN is always in the 25 index of the script if it exists
             int index = -1;
-            if ((*this)[27] == ALP_R) { // Check to see if ALP starts at 27 ( this->size() < 105)
-                if ((*this)[28] == ALP_V)
-                    if ((*this)[29] == ALP_N)
+            if ((*this)[27] == ALP_A) { // Check to see if ALP starts at 27 ( this->size() < 105)
+                if ((*this)[28] == ALP_L)
+                    if ((*this)[29] == ALP_P)
                         index = 30;
             } else {
-                if ((*this)[28] == ALP_R) // Check to see if ALP starts at 28 ( this->size() >= 105)
-                    if ((*this)[29] == ALP_V)
-                        if ((*this)[30] == ALP_N)
+                if ((*this)[28] == ALP_A) // Check to see if ALP starts at 28 ( this->size() >= 105)
+                    if ((*this)[29] == ALP_L)
+                        if ((*this)[30] == ALP_P)
                             index = 31;
             }
 
             if (index > 0) {
-                nStartingIndex = index + 1; // Set the index where the asset data begins. Use to serialize the asset data into asset objects
-                if ((*this)[index] == ALP_T) { // Transfer first anticipating more transfers than other assets operations
-                    nType = TX_TRANSFER_ASSET;
+                nStartingIndex = index + 1; // Set the index where the token data begins. Use to serialize the token data into token objects
+                if ((*this)[index] == ALP_T) { // Transfer first anticipating more transfers than other tokens operations
+                    nType = TX_TRANSFER_TOKEN;
                     return true;
                 } else if ((*this)[index] == ALP_Q && this->size() > 39) {
-                    nType = TX_NEW_ASSET;
+                    nType = TX_NEW_TOKEN;
                     fIsOwner = false;
                     return true;
                 } else if ((*this)[index] == ALP_O) {
-                    nType = TX_NEW_ASSET;
+                    nType = TX_NEW_TOKEN;
                     fIsOwner = true;
                     return true;
-                } else if ((*this)[index] == ALP_R) {
-                    nType = TX_REISSUE_ASSET;
+                } else if ((*this)[index] == ALP_A) {
+                    nType = TX_REISSUE_TOKEN;
                     return true;
                 }
             }
@@ -284,47 +284,47 @@ bool CScript::IsAssetScript(int& nType, bool& fIsOwner, int& nStartingIndex) con
 }
 
 
-bool CScript::IsNewAsset() const
+bool CScript::IsNewToken() const
 {
 
     int nType = 0;
     bool fIsOwner = false;
-    if (IsAssetScript(nType, fIsOwner))
-        return !fIsOwner && nType == TX_NEW_ASSET;
+    if (IsTokenScript(nType, fIsOwner))
+        return !fIsOwner && nType == TX_NEW_TOKEN;
 
     return false;
 }
 
-bool CScript::IsOwnerAsset() const
+bool CScript::IsOwnerToken() const
 {
     int nType = 0;
     bool fIsOwner = false;
-    if (IsAssetScript(nType, fIsOwner))
-        return fIsOwner && nType == TX_NEW_ASSET;
+    if (IsTokenScript(nType, fIsOwner))
+        return fIsOwner && nType == TX_NEW_TOKEN;
 
     return false;
 }
 
-bool CScript::IsReissueAsset() const
+bool CScript::IsReissueToken() const
 {
     int nType = 0;
     bool fIsOwner = false;
-    if (IsAssetScript(nType, fIsOwner))
-        return nType == TX_REISSUE_ASSET;
+    if (IsTokenScript(nType, fIsOwner))
+        return nType == TX_REISSUE_TOKEN;
 
     return false;
 }
 
-bool CScript::IsTransferAsset() const
+bool CScript::IsTransferToken() const
 {
     int nType = 0;
     bool fIsOwner = false;
-    if (IsAssetScript(nType, fIsOwner))
-        return nType == TX_TRANSFER_ASSET;
+    if (IsTokenScript(nType, fIsOwner))
+        return nType == TX_TRANSFER_TOKEN;
 
     return false;
 }
-/** RVN END */
+/** TOKENS END */
 
 bool CScript::IsPayToWitnessScriptHash() const
 {
@@ -417,42 +417,42 @@ bool CScript::HasValidOps() const
 bool CScript::IsUnspendable() const
 {
     CAmount nAmount;
-    return (size() > 0 && *begin() == OP_RETURN) || (size() > MAX_SCRIPT_SIZE) || (GetAssetAmountFromScript(*this, nAmount) && nAmount == 0);
+    return (size() > 0 && *begin() == OP_RETURN) || (size() > MAX_SCRIPT_SIZE) || (GetTokenAmountFromScript(*this, nAmount) && nAmount == 0);
 }
 
 //!--------------------------------------------------------------------------------------------------------------------------!//
-//! These are needed because script.h and script.cpp do not have access to asset.h and asset.cpp functions. This is
+//! These are needed because script.h and script.cpp do not have access to token.h and token.cpp functions. This is
 //! because the make file compiles them at different times. The script files are compiled with other
-//! consensus files, and asset files are compiled with core files.
+//! consensus files, and token files are compiled with core files.
 
-//! Used to check if an asset script contains zero assets. Is so, it should be unspendable
-bool GetAssetAmountFromScript(const CScript& script, CAmount& nAmount)
+//! Used to check if an token script contains zero tokens. Is so, it should be unspendable
+bool GetTokenAmountFromScript(const CScript& script, CAmount& nAmount)
 {
-    // Placeholder strings that will get set if you successfully get the transfer or asset from the script
+    // Placeholder strings that will get set if you successfully get the transfer or token from the script
     std::string address = "";
-    std::string assetName = "";
+    std::string tokenName = "";
 
     int nType = 0;
     bool fIsOwner = false;
-    if (!script.IsAssetScript(nType, fIsOwner)) {
+    if (!script.IsTokenScript(nType, fIsOwner)) {
         return false;
     }
 
     txnouttype type = txnouttype(nType);
 
-    // Get the New Asset or Transfer Asset from the scriptPubKey
-    if (type == TX_NEW_ASSET && !fIsOwner) {
-        if (AmountFromNewAssetScript(script, nAmount)) {
+    // Get the New Token or Transfer Token from the scriptPubKey
+    if (type == TX_NEW_TOKEN && !fIsOwner) {
+        if (AmountFromNewTokenScript(script, nAmount)) {
             return true;
         }
-    } else if (type == TX_TRANSFER_ASSET) {
+    } else if (type == TX_TRANSFER_TOKEN) {
         if (AmountFromTransferScript(script, nAmount)) {
             return true;
         }
-    } else if (type == TX_NEW_ASSET && fIsOwner) {
-            nAmount = OWNER_ASSET_AMOUNT;
+    } else if (type == TX_NEW_TOKEN && fIsOwner) {
+            nAmount = OWNER_TOKEN_AMOUNT;
             return true;
-    } else if (type == TX_REISSUE_ASSET) {
+    } else if (type == TX_REISSUE_TOKEN) {
         if (AmountFromReissueScript(script, nAmount)) {
             return true;
         }
@@ -461,103 +461,103 @@ bool GetAssetAmountFromScript(const CScript& script, CAmount& nAmount)
     return false;
 }
 
-bool ScriptNewAsset(const CScript& scriptPubKey, int& nStartingIndex)
+bool ScriptNewToken(const CScript& scriptPubKey, int& nStartingIndex)
 {
     int nType = 0;
     bool fIsOwner =false;
-    if (scriptPubKey.IsAssetScript(nType, fIsOwner, nStartingIndex)) {
-        return nType == TX_NEW_ASSET && !fIsOwner;
+    if (scriptPubKey.IsTokenScript(nType, fIsOwner, nStartingIndex)) {
+        return nType == TX_NEW_TOKEN && !fIsOwner;
     }
 
     return false;
 }
 
-bool ScriptTransferAsset(const CScript& scriptPubKey, int& nStartingIndex)
+bool ScriptTransferToken(const CScript& scriptPubKey, int& nStartingIndex)
 {
     int nType = 0;
     bool fIsOwner =false;
-    if (scriptPubKey.IsAssetScript(nType, fIsOwner, nStartingIndex)) {
-        return nType == TX_TRANSFER_ASSET;
+    if (scriptPubKey.IsTokenScript(nType, fIsOwner, nStartingIndex)) {
+        return nType == TX_TRANSFER_TOKEN;
     }
 
     return false;
 }
 
-bool ScriptReissueAsset(const CScript& scriptPubKey, int& nStartingIndex)
+bool ScriptReissueToken(const CScript& scriptPubKey, int& nStartingIndex)
 {
     int nType = 0;
     bool fIsOwner =false;
-    if (scriptPubKey.IsAssetScript(nType, fIsOwner, nStartingIndex)) {
-        return nType == TX_REISSUE_ASSET;
+    if (scriptPubKey.IsTokenScript(nType, fIsOwner, nStartingIndex)) {
+        return nType == TX_REISSUE_TOKEN;
     }
 
     return false;
 }
 
 
-bool AmountFromNewAssetScript(const CScript& scriptPubKey, CAmount& nAmount)
+bool AmountFromNewTokenScript(const CScript& scriptPubKey, CAmount& nAmount)
 {
     int nStartingIndex = 0;
-    if (!ScriptNewAsset(scriptPubKey, nStartingIndex))
+    if (!ScriptNewToken(scriptPubKey, nStartingIndex))
         return false;
 
-    std::vector<unsigned char> vchNewAsset;
-    vchNewAsset.insert(vchNewAsset.end(), scriptPubKey.begin() + nStartingIndex, scriptPubKey.end());
-    CDataStream ssAsset(vchNewAsset, SER_NETWORK, PROTOCOL_VERSION);
+    std::vector<unsigned char> vchNewToken;
+    vchNewToken.insert(vchNewToken.end(), scriptPubKey.begin() + nStartingIndex, scriptPubKey.end());
+    CDataStream ssToken(vchNewToken, SER_NETWORK, PROTOCOL_VERSION);
 
-    CNewAsset assetNew;
+    CNewToken tokenNew;
     try {
-        ssAsset >> assetNew;
+        ssToken >> tokenNew;
     } catch(std::exception& e) {
-        std::cout << "Failed to get the asset from the stream: " << e.what() << std::endl;
+        std::cout << "Failed to get the token from the stream: " << e.what() << std::endl;
         return false;
     }
 
-    nAmount = assetNew.nAmount;
+    nAmount = tokenNew.nAmount;
     return true;
 }
 
 bool AmountFromTransferScript(const CScript& scriptPubKey, CAmount& nAmount)
 {
     int nStartingIndex = 0;
-    if (!ScriptTransferAsset(scriptPubKey, nStartingIndex))
+    if (!ScriptTransferToken(scriptPubKey, nStartingIndex))
         return false;
 
-    std::vector<unsigned char> vchAsset;
-    vchAsset.insert(vchAsset.end(), scriptPubKey.begin() + nStartingIndex, scriptPubKey.end());
-    CDataStream ssAsset(vchAsset, SER_NETWORK, PROTOCOL_VERSION);
+    std::vector<unsigned char> vchToken;
+    vchToken.insert(vchToken.end(), scriptPubKey.begin() + nStartingIndex, scriptPubKey.end());
+    CDataStream ssToken(vchToken, SER_NETWORK, PROTOCOL_VERSION);
 
-    CAssetTransfer asset;
+    CTokenTransfer token;
     try {
-        ssAsset >> asset;
+        ssToken >> token;
     } catch(std::exception& e) {
-        std::cout << "Failed to get the asset from the stream: " << e.what() << std::endl;
+        std::cout << "Failed to get the token from the stream: " << e.what() << std::endl;
         return false;
     }
 
-    nAmount = asset.nAmount;
+    nAmount = token.nAmount;
     return true;
 }
 
 bool AmountFromReissueScript(const CScript& scriptPubKey, CAmount& nAmount)
 {
     int nStartingIndex = 0;
-    if (!ScriptReissueAsset(scriptPubKey, nStartingIndex))
+    if (!ScriptReissueToken(scriptPubKey, nStartingIndex))
         return false;
 
-    std::vector<unsigned char> vchNewAsset;
-    vchNewAsset.insert(vchNewAsset.end(), scriptPubKey.begin() + nStartingIndex, scriptPubKey.end());
-    CDataStream ssAsset(vchNewAsset, SER_NETWORK, PROTOCOL_VERSION);
+    std::vector<unsigned char> vchNewToken;
+    vchNewToken.insert(vchNewToken.end(), scriptPubKey.begin() + nStartingIndex, scriptPubKey.end());
+    CDataStream ssToken(vchNewToken, SER_NETWORK, PROTOCOL_VERSION);
 
-    CReissueAsset asset;
+    CReissueToken token;
     try {
-        ssAsset >> asset;
+        ssToken >> token;
     } catch(std::exception& e) {
-        std::cout << "Failed to get the asset from the stream: " << e.what() << std::endl;
+        std::cout << "Failed to get the token from the stream: " << e.what() << std::endl;
         return false;
     }
 
-    nAmount = asset.nAmount;
+    nAmount = token.nAmount;
     return true;
 }
 //!--------------------------------------------------------------------------------------------------------------------------!//

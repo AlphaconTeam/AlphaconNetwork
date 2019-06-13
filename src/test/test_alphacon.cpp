@@ -1,5 +1,6 @@
 // Copyright (c) 2011-2016 The Bitcoin Core developers
-// Copyright (c) 2017-2018 The Alphacon Core developers
+// Copyright (c) 2017-2019 The Raven Core developers
+// Copyright (c) 2019 The Alphacon Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -78,7 +79,7 @@ TestingSetup::TestingSetup(const std::string &chainName) : BasicTestingSetup(cha
         throw std::runtime_error("LoadGenesisBlock failed.");
     }
 
-    passets = new CAssetsCache();
+    ptokens = new CTokensCache();
     {
         CValidationState state;
         if (!ActivateBestChain(state, chainparams))
@@ -106,7 +107,7 @@ TestingSetup::~TestingSetup()
     delete pcoinsTip;
     delete pcoinsdbview;
     delete pblocktree;
-    delete passets;
+    delete ptokens;
     fs::remove_all(pathTemp);
 }
 
@@ -115,7 +116,7 @@ TestChain100Setup::TestChain100Setup() : TestingSetup(CBaseChainParams::REGTEST)
     // Generate a 100-block chain:
     coinbaseKey.MakeNewKey(true);
     CScript scriptPubKey = CScript() << ToByteVector(coinbaseKey.GetPubKey()) << OP_CHECKSIG;
-    for (int i = 0; i < COINBASE_MATURITY; i++)
+    for (int i = 0; i < 100; i++)
     {
         std::vector<CMutableTransaction> noTxns;
         CBlock b = CreateAndProcessBlock(noTxns, scriptPubKey);
@@ -142,7 +143,7 @@ TestChain100Setup::CreateAndProcessBlock(const std::vector<CMutableTransaction> 
     unsigned int extraNonce = 0;
     IncrementExtraNonce(&block, chainActive.Tip(), extraNonce);
 
-    while (!CheckProofOfWork(block.GetHash(), block.nBits, chainparams.GetConsensus())) ++block.nNonce;
+    while (!CheckProofOfWork(block.GetBlockHash(), block.nBits, chainparams.GetConsensus())) ++block.nNonce;
 
     std::shared_ptr<const CBlock> shared_pblock = std::make_shared<const CBlock>(block);
     ProcessNewBlock(chainparams, shared_pblock, true, nullptr);

@@ -46,8 +46,8 @@
 #include "util.h"
 #include "utilmoneystr.h"
 #include "validationinterface.h"
-#include "assets/assets.h"
-#include "assets/assetdb.h"
+#include "tokens/tokens.h"
+#include "tokens/tokendb.h"
 #ifdef ENABLE_WALLET
 #include "wallet/init.h"
 #endif
@@ -250,12 +250,12 @@ void Shutdown()
         pcoinsdbview = nullptr;
         delete pblocktree;
         pblocktree = nullptr;
-        delete passets;
-        passets = nullptr;
-        delete passetsdb;
-        passetsdb = nullptr;
-        delete passetsCache;
-        passetsCache = nullptr;
+        delete ptokens;
+        ptokens = nullptr;
+        delete ptokensdb;
+        ptokensdb = nullptr;
+        delete ptokensCache;
+        ptokensCache = nullptr;
     }
 #ifdef ENABLE_WALLET
     StopWallets();
@@ -534,7 +534,7 @@ std::string LicenseInfo()
     const std::string URL_SOURCE_CODE = "<https://github.com/AlphaconNetwork/AlphaconNetwork>";
     const std::string URL_WEBSITE = "<https://alphacon.io>";
 
-    return CopyrightHolders(strprintf(_("Copyright (C) %i-%i"), 2009, COPYRIGHT_YEAR) + " ") + "\n" +
+    return CopyrightHolders(strprintf(_("Copyright (C) %i"), COPYRIGHT_YEAR) + " ") + "\n" +
            "\n" +
            strprintf(_("Please contribute if you find %s useful. "
                        "Visit %s for further information about the software."),
@@ -1443,25 +1443,25 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
                 pblocktree = new CBlockTreeDB(nBlockTreeDBCache, false, fReset, dbMaxFileSize);
 
 
-                delete passets;
-                delete passetsdb;
-                delete passetsCache;
-                passetsdb = new CAssetsDB(nBlockTreeDBCache, false, fReset);
-                passets = new CAssetsCache();
-                passetsCache = new CLRUCache<std::string, CDatabasedAssetData>(MAX_CACHE_ASSETS_SIZE);
+                delete ptokens;
+                delete ptokensdb;
+                delete ptokensCache;
+                ptokensdb = new CTokensDB(nBlockTreeDBCache, false, fReset);
+                ptokens = new CTokensCache();
+                ptokensCache = new CLRUCache<std::string, CDatabasedTokenData>(MAX_CACHE_TOKENS_SIZE);
 
-                // Read for fAssetIndex to make sure that we only load asset address balances if it if true
-                pblocktree->ReadFlag("assetindex", fAssetIndex);
-                // Need to load assets before we verify the database
-                if (!passetsdb->LoadAssets()) {
-                    strLoadError = _("Failed to load Assets Database");
+                // Read for fTokenIndex to make sure that we only load token address balances if it if true
+                pblocktree->ReadFlag("tokenindex", fTokenIndex);
+                // Need to load tokens before we verify the database
+                if (!ptokensdb->LoadTokens()) {
+                    strLoadError = _("Failed to load Tokens Database");
                     break;
                 }
 
-                if (!passetsdb->ReadReissuedMempoolState())
+                if (!ptokensdb->ReadReissuedMempoolState())
                     LogPrintf("Database failed to load last Reissued Mempool State. Will have to start from empty state");
 
-                LogPrintf("Loaded Assets from database without error\nCache of assets size: %d\n", passetsCache->Size());
+                LogPrintf("Loaded Tokens from database without error\nCache of tokens size: %d\n", ptokensCache->Size());
 
                 if (fReset) {
                     pblocktree->WriteReindexing(true);
@@ -1493,9 +1493,9 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
                     break;
                 }
 
-                // Check for changed -assetindex state
-                if (fAssetIndex != gArgs.GetBoolArg("-assetindex", DEFAULT_ASSETINDEX)) {
-                    strLoadError = _("You need to rebuild the database using -reindex to change -assetIndex");
+                // Check for changed -tokenindex state
+                if (fTokenIndex != gArgs.GetBoolArg("-tokenindex", DEFAULT_TOKENINDEX)) {
+                    strLoadError = _("You need to rebuild the database using -reindex to change -tokenIndex");
                     break;
                 }
 

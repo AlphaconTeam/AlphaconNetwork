@@ -17,9 +17,6 @@
 #include "version.h"
 
 #include "crypto/sph_groestl.h"
-extern "C" {
-#include "crypto/sph_sha2.h"
-}
 #include <vector>
 
 typedef uint256 ChainCode;

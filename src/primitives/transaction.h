@@ -348,14 +348,14 @@ public:
     // GetValueIn() is a method on CCoinsViewCache, because
     // inputs must be known to compute value in.
 
-    /** RVN START */
-    bool IsNewAsset() const;
-    bool VerifyNewAsset(std::string& strError) const;
-    bool IsNewUniqueAsset() const;
-    bool VerifyNewUniqueAsset(std::string& strError) const;
-    bool IsReissueAsset() const;
-    bool VerifyReissueAsset(std::string& strError) const;
-    /** RVN END */
+    /** TOKENS START */
+    bool IsNewToken() const;
+    bool VerifyNewToken(std::string& strError) const;
+    bool IsNewUniqueToken() const;
+    bool VerifyNewUniqueToken(std::string& strError) const;
+    bool IsReissueToken() const;
+    bool VerifyReissueToken(std::string& strError) const;
+    /** TOKENS END */
 
     /**
      * Get the total transaction size in bytes, including witness data.

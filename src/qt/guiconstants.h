@@ -54,14 +54,19 @@ static const bool DEFAULT_SPLASHSCREEN = true;
 #define COLOR_DARK_BLUE QColor("#475eaa")
 /* Alphacon light blue */
 #define COLOR_LIGHT_BLUE QColor("#5874cf")
-/* Alphacon asset text */
-#define COLOR_ASSET_TEXT QColor(255, 255, 255)
+/* Alphacon dark grar */
+#define COLOR_DARK_GRAY QColor("#5d5d5d")
+/* Alphacon light gray */
+#define COLOR_LIGHT_GRAY QColor("#777777")
+/* Alphacon token text */
+#define COLOR_TOKEN_TEXT QColor(255, 255, 255)
 /* Alphacon shadow color - light mode */
 #define COLOR_SHADOW_LIGHT QColor("#e1e6f3")
 /* Toolbar not selected text color */
 #define COLOR_TOOLBAR_NOT_SELECTED_TEXT QColor("#ffffff")
 /* Toolbar selected text color */
 #define COLOR_TOOLBAR_SELECTED_TEXT COLOR_WHITE
+
 
 /** DARK MODE */
 /* Widget background color, dark mode */
@@ -76,9 +81,9 @@ static const bool DEFAULT_SPLASHSCREEN = true;
 #define COLOR_PRICING_WIDGET QColor("#161e2d")
 /* Alphacon dark mode administrator background color */
 #define COLOR_ADMIN_CARD_DARK COLOR_BLACK
-/* Alphacon dark mode regular asset background color */
+/* Alphacon dark mode regular token background color */
 #define COLOR_REGULAR_CARD_DARK_BLUE_DARK_MODE QColor("#06132a")
-/* Alphacon dark mode regular asset background color */
+/* Alphacon dark mode regular token background color */
 #define COLOR_REGULAR_CARD_LIGHT_BLUE_DARK_MODE QColor("#0e1b3b")
 /* Toolbar not selected text color */
 #define COLOR_TOOLBAR_NOT_SELECTED_TEXT_DARK_MODE QColor("#6c80c5")

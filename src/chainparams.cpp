@@ -114,7 +114,6 @@ class CMainParams : public CChainParams {
 public:
     CMainParams() {
         strNetworkID = "main";
-        consensus.nSubsidyHalvingInterval = 2100000;  //~ 4 yrs at 1 min block time
         consensus.nBIP34Enabled = true;
         consensus.nBIP65Enabled = true; // 000000000000000004c2b624ed5d7756c508d90fd0da2c7c679febfa6c4735f0
         consensus.nBIP66Enabled = true;
@@ -129,9 +128,9 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 1199145601; // January 1, 2008
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1230767999; // December 31, 2008
-        consensus.vDeployments[Consensus::DEPLOYMENT_ASSETS].bit = 6;  //Assets (RIP2)
-        consensus.vDeployments[Consensus::DEPLOYMENT_ASSETS].nStartTime = 1540944000; // Oct 31, 2018
-        consensus.vDeployments[Consensus::DEPLOYMENT_ASSETS].nTimeout = 1572480000; // Oct 31, 2019
+        consensus.vDeployments[Consensus::DEPLOYMENT_TOKENS].bit = 6;  //Tokens (RIP2)
+        consensus.vDeployments[Consensus::DEPLOYMENT_TOKENS].nStartTime = 1540944000; // Oct 31, 2018
+        consensus.vDeployments[Consensus::DEPLOYMENT_TOKENS].nTimeout = 1572480000; // Oct 31, 2019
 
         // The best chain should have at least this much work.
         consensus.nMinimumChainWork = uint256S("0x00");
@@ -142,15 +141,14 @@ public:
         // Proof-of-Stake
         consensus.nLastPOWBlock = 1440;
         consensus.nStakeTimestampMask = 0xf; // 15
-        // consensus.nCoinbaseMaturity = 100;
-        consensus.nStakeMinConfirmations = 450;
-        // consensus.nStakeMinAge = 1 * 60 * 60; // 1 hour
-        // consensus.nGenesisTimestamp = 1548853998;
+        consensus.nCoinbaseMaturity = 100;
+        consensus.nStakeMaturity = 450;
         consensus.nBlockRewardHalvingsWindow = 262980;
         consensus.nBlockRewardHalvings = 2;
         consensus.nBlockReward = 120 * COIN;
         consensus.nBlockRewardALP = 25000000000 * COIN;
         consensus.nRewardHeighALP = 1;
+        consensus.nTokensDeploymentHeight = 177777;
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -179,7 +177,7 @@ public:
         genesis.nBits    = 0x1e0fffff;
         genesis.nNonce   = 2004344;
         genesis.hashMerkleRoot = BlockMerkleRoot(genesis);
-        consensus.hashGenesisBlock = genesis.GetHash();
+        consensus.hashGenesisBlock = genesis.GetBlockHash();
 
         assert(consensus.hashGenesisBlock == uint256S("00000bd194e16e8dc4bb9d3b6684c7757b203b3eec769e14e1492796736f304d"));
         assert(genesis.hashMerkleRoot == uint256S("d40bfd444aa3049d8aaf3a212f4653ea81f5ad44b7d2fb94d3fc56b133b641f2"));
@@ -212,26 +210,21 @@ public:
             0         // * estimated number of transactions per second after that timestamp
         };
 
-        /** ALP Start **/
-        // Burn Amounts
-        nIssueAssetBurnAmount = 1 * COIN;
-        nReissueAssetBurnAmount = 1 * COIN;
-        nIssueSubAssetBurnAmount = 1 * COIN;
-        nIssueUniqueAssetBurnAmount = 1 * COIN;
+        /** TOKENS START **/
+        // Fee Amounts
+        nFeeAmountMain = 1000000 * COIN;
+        nFeeAmountSecondary = 1000 * COIN;
 
-        // Burn Addresses
-        strIssueAssetBurnAddress = "Aa9Hndczn2dcffJqcky4qxeCUXDW39viNL";
-        strReissueAssetBurnAddress = "Aa9Hndczn2dcffJqcky4qxeCUXDW39viNL";
-        strIssueSubAssetBurnAddress = "Aa9Hndczn2dcffJqcky4qxeCUXDW39viNL";
-        strIssueUniqueAssetBurnAddress = "Aa9Hndczn2dcffJqcky4qxeCUXDW39viNL";
+        // Fee Addresse
+        strTokenFeeAddress = "ALvFNLgZj6HPP55XMvFm4qqAZhV64bgaLW";
 
-        //Global Burn Address
-        strGlobalBurnAddress = "Aa9Hndczn2dcffJqcky4qxeCUXDW39viNL";
+        // Global Burn Address
+        strBurnAddress = "ALPBurnnnnnnnnnnnnnnnnnnnnnXXhzfSw";
 
         nMaxReorganizationDepth = 60; // 60 at 1 minute block timespan is +/- 60 minutes.
         nMinReorganizationPeers = 4;
         nMinReorganizationAge = 60 * 60 * 12; // 12 hours
-        /** ALP End **/
+        /** TOKENS END **/
     }
 };
 
@@ -242,7 +235,6 @@ class CTestNetParams : public CChainParams {
 public:
     CTestNetParams() {
         strNetworkID = "test";
-        consensus.nSubsidyHalvingInterval = 2100000;  //~ 4 yrs at 1 min block time
         consensus.nBIP34Enabled = true;
         consensus.nBIP65Enabled = true; // 000000000000000004c2b624ed5d7756c508d90fd0da2c7c679febfa6c4735f0
         consensus.nBIP66Enabled = true;
@@ -257,9 +249,9 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 1199145601; // January 1, 2008
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1230767999; // December 31, 2008
-        consensus.vDeployments[Consensus::DEPLOYMENT_ASSETS].bit = 6;  //Assets (RIP2)
-        consensus.vDeployments[Consensus::DEPLOYMENT_ASSETS].nStartTime = 1540944000; // Oct 31, 2018
-        consensus.vDeployments[Consensus::DEPLOYMENT_ASSETS].nTimeout = 1572480000; // Oct 31, 2019
+        consensus.vDeployments[Consensus::DEPLOYMENT_TOKENS].bit = 6;  //Tokens (RIP2)
+        consensus.vDeployments[Consensus::DEPLOYMENT_TOKENS].nStartTime = 1540944000; // Oct 31, 2018
+        consensus.vDeployments[Consensus::DEPLOYMENT_TOKENS].nTimeout = 1572480000; // Oct 31, 2019
 
         // The best chain should have at least this much work.
         consensus.nMinimumChainWork = uint256S("0x00");
@@ -270,25 +262,24 @@ public:
         // Proof-of-Stake
         consensus.nLastPOWBlock = 1440;
         consensus.nStakeTimestampMask = 0xf; // 15
-        // consensus.nCoinbaseMaturity = 100;
-        consensus.nStakeMinConfirmations = 10;
-        // consensus.nStakeMinAge = 1 * 60 * 60; // 1 hour
-        // consensus.nGenesisTimestamp = 1548853998;
+        consensus.nCoinbaseMaturity = 10;
+        consensus.nStakeMaturity = 10;
         consensus.nBlockRewardHalvingsWindow = 262980;
         consensus.nBlockRewardHalvings = 2;
         consensus.nBlockReward = 120 * COIN;
         consensus.nBlockRewardALP = 25000000000 * COIN;
         consensus.nRewardHeighALP = 1;
+        consensus.nTokensDeploymentHeight = 70;
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
          * The characters are rarely used upper ASCII, not valid as UTF-8, and produce
          * a large 32-bit integer with any alignment.
          */
-        pchMessageStart[0] = 0x42;
-        pchMessageStart[1] = 0x4d;
+        pchMessageStart[0] = 0x43;
+        pchMessageStart[1] = 0x4a;
         pchMessageStart[2] = 0x51;
-        pchMessageStart[3] = 0x02;
+        pchMessageStart[3] = 0x03;
         nDefaultPort = 29427;
         nPruneAfterHeight = 100000;
 
@@ -307,7 +298,7 @@ public:
         genesis.nBits    = 0x1e0fffff;
         genesis.nNonce   = 2004344;
         genesis.hashMerkleRoot = BlockMerkleRoot(genesis);
-        consensus.hashGenesisBlock = genesis.GetHash();
+        consensus.hashGenesisBlock = genesis.GetBlockHash();
 
         assert(consensus.hashGenesisBlock == uint256S("00000bd194e16e8dc4bb9d3b6684c7757b203b3eec769e14e1492796736f304d"));
         assert(genesis.hashMerkleRoot == uint256S("d40bfd444aa3049d8aaf3a212f4653ea81f5ad44b7d2fb94d3fc56b133b641f2"));
@@ -340,26 +331,21 @@ public:
             0         // * estimated number of transactions per second after that timestamp
         };
 
-        /** ALP Start **/
-        // Burn Amounts
-        nIssueAssetBurnAmount = 1 * COIN;
-        nReissueAssetBurnAmount = 1 * COIN;
-        nIssueSubAssetBurnAmount = 1 * COIN;
-        nIssueUniqueAssetBurnAmount = 1 * COIN;
+        /** TOKENS START **/
+        // Fee Amounts
+        nFeeAmountMain = 1 * COIN;
+        nFeeAmountSecondary = 1 * COIN;
 
-        // Burn Addresses
-        strIssueAssetBurnAddress = "akVYsghe466DedT5ufADMN9HCB6CCqLAGR";
-        strReissueAssetBurnAddress = "akVYsghe466DedT5ufADMN9HCB6CCqLAGR";
-        strIssueSubAssetBurnAddress = "akVYsghe466DedT5ufADMN9HCB6CCqLAGR";
-        strIssueUniqueAssetBurnAddress = "akVYsghe466DedT5ufADMN9HCB6CCqLAGR";
+        // Fee Addresse
+        strTokenFeeAddress = "aXLtKh7ytiiAsWfoLY5MLhSVM6N33E2GiV";
 
-        //Global Burn Address
-        strGlobalBurnAddress = "akVYsghe466DedT5ufADMN9HCB6CCqLAGR";
+        // Global Burn Address
+        strBurnAddress = "aZBurnnnnnnnnnnnnnnnnnnnnnnXZx4ZRY";
 
         nMaxReorganizationDepth = 60; // 60 at 1 minute block timespan is +/- 60 minutes.
         nMinReorganizationPeers = 4;
         nMinReorganizationAge = 60 * 60 * 12; // 12 hours
-        /** ALP End **/
+        /** TOKENS END **/
     }
 };
 
@@ -375,7 +361,6 @@ public:
         consensus.nBIP66Enabled = true;
         consensus.nSegwitEnabled = true;
         consensus.nCSVEnabled = true;
-        consensus.nSubsidyHalvingInterval = 150;
         consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nTargetTimespan = 2016 * 60; // 1.4 days
         consensus.nTargetSpacing = 1 * 60;
@@ -384,9 +369,9 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 0;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 999999999999ULL;
-        consensus.vDeployments[Consensus::DEPLOYMENT_ASSETS].bit = 6;
-        consensus.vDeployments[Consensus::DEPLOYMENT_ASSETS].nStartTime = 0;
-        consensus.vDeployments[Consensus::DEPLOYMENT_ASSETS].nTimeout = 999999999999ULL;
+        consensus.vDeployments[Consensus::DEPLOYMENT_TOKENS].bit = 6;
+        consensus.vDeployments[Consensus::DEPLOYMENT_TOKENS].nStartTime = 0;
+        consensus.vDeployments[Consensus::DEPLOYMENT_TOKENS].nTimeout = 999999999999ULL;
 
         // The best chain should have at least this much work.
         consensus.nMinimumChainWork = uint256S("0x00");
@@ -402,7 +387,7 @@ public:
         nPruneAfterHeight = 1000;
 
         genesis = CreateGenesisBlock(1524179366, 1, 0x207fffff, 4, 5000 * COIN);
-        consensus.hashGenesisBlock = genesis.GetHash();
+        consensus.hashGenesisBlock = genesis.GetBlockHash();
 
         assert(consensus.hashGenesisBlock == uint256S("0x0b2c703dc93bb63a36c4e33b85be4855ddbca2ac951a7a0a29b8de0408200a3c "));
         assert(genesis.hashMerkleRoot == uint256S("0x28ff00a867739a352523808d301f504bc4547699398d70faf2266a8bae5f3516"));
@@ -432,26 +417,21 @@ public:
         base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x35, 0x83, 0x94};
 
 
-        /** ALP Start **/
-        // Burn Amounts
-        nIssueAssetBurnAmount = 500 * COIN;
-        nReissueAssetBurnAmount = 100 * COIN;
-        nIssueSubAssetBurnAmount = 100 * COIN;
-        nIssueUniqueAssetBurnAmount = 5 * COIN;
+        /** TOKENS START **/
+        // Fee Amounts
+        nFeeAmountMain = 1 * COIN;
+        nFeeAmountSecondary = 1 * COIN;
 
-        // Burn Addresses
-        strIssueAssetBurnAddress = "n1issueAssetXXXXXXXXXXXXXXXXWdnemQ";
-        strReissueAssetBurnAddress = "n1ReissueAssetXXXXXXXXXXXXXXWG9NLd";
-        strIssueSubAssetBurnAddress = "n1issueSubAssetXXXXXXXXXXXXXbNiH6v";
-        strIssueUniqueAssetBurnAddress = "n1issueUniqueAssetXXXXXXXXXXS4695i";
+        // Fee Addresses
+        strTokenFeeAddress = "n1BurnXXXXXXXXXXXXXXXXXXXXXXU1qejP";
 
         // Global Burn Address
-        strGlobalBurnAddress = "n1BurnXXXXXXXXXXXXXXXXXXXXXXU1qejP";
+        strBurnAddress = "n1BurnXXXXXXXXXXXXXXXXXXXXXXU1qejP";
 
         nMaxReorganizationDepth = 60; // 60 at 1 minute block timespan is +/- 60 minutes.
         nMinReorganizationPeers = 4;
         nMinReorganizationAge = 60 * 60 * 12; // 12 hours
-        /** ALP End **/
+        /** TOKENS END **/
     }
 };
 
@@ -460,6 +440,10 @@ static std::unique_ptr<CChainParams> globalChainParams;
 const CChainParams &Params() {
     assert(globalChainParams);
     return *globalChainParams;
+}
+
+const CChainParams &CParams() {
+    return Params();
 }
 
 std::unique_ptr<CChainParams> CreateChainParams(const std::string& chain)

@@ -244,25 +244,25 @@ extern const char *GETBLOCKTXN;
 extern const char *BLOCKTXN;
 
 /**
- * Contains a AssetDataRequest.
- * Peer should respond with assetdata
+ * Contains a TokenDataRequest.
+ * Peer should respond with tokendata
  * @since protocol version 70017
  */
-extern const char *GETASSETDATA;
+extern const char *GETTOKENDATA;
 
 /**
- * Contains a AssetData
- * Sent in response to a "getassetdata" message.
+ * Contains a TokenData
+ * Sent in response to a "gettokendata" message.
  * @since protocol version 70017
  */
-extern const char *ASSETDATA;
+extern const char *TOKENDATA;
 
 /**
- * The asstnotfound message is a reply to a getassetdata message which requested an
+ * The asstnotfound message is a reply to a gettokendata message which requested an
  * object the receiving node does not have available for relay.
  * @since protocol version 70018.
  */
-    extern const char *ASSETNOTFOUND;
+    extern const char *TOKENNOTFOUND;
 };
 
 /* Get a vector of all valid message types (see above) */
@@ -422,11 +422,11 @@ public:
 };
 
 /** inv message data */
-class CInvAsset
+class CInvToken
 {
 public:
-    CInvAsset();
-    CInvAsset(std::string name);
+    CInvToken();
+    CInvToken(std::string name);
 
     ADD_SERIALIZE_METHODS;
 
@@ -436,12 +436,12 @@ public:
         READWRITE(name);
     }
 
-    friend bool operator<(const CInvAsset& a, const CInvAsset& b);
+    friend bool operator<(const CInvToken& a, const CInvToken& b);
 
     std::string ToString() const;
 
 public:
-    std::string name; // block height that asset data should come from
+    std::string name; // block height that token data should come from
 };
 
 #endif // ALPHACON_PROTOCOL_H

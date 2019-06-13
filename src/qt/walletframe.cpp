@@ -182,6 +182,14 @@ void WalletFrame::unlockWallet()
         walletView->unlockWallet();
 }
 
+unsigned long long WalletFrame::updateWeight()
+{
+    WalletView *walletView = currentWalletView();
+    if (walletView)
+        return walletView->updateWeight();
+    return 0;
+}
+
 void WalletFrame::usedSendingAddresses()
 {
     WalletView *walletView = currentWalletView();
@@ -206,24 +214,24 @@ void WalletFrame::outOfSyncWarningClicked()
     Q_EMIT requestedSyncWarningInfo();
 }
 
-/** RVN START */
-void WalletFrame::gotoAssetsPage()
+/** TOKENS START */
+void WalletFrame::gotoTokensPage()
 {
     QMap<QString, WalletView*>::const_iterator i;
     for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
-        i.value()->gotoAssetsPage();
+        i.value()->gotoTokensPage();
 }
 
-void WalletFrame::gotoCreateAssetsPage()
+void WalletFrame::gotoCreateTokensPage()
 {
     QMap<QString, WalletView*>::const_iterator i;
     for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
-        i.value()->gotoCreateAssetsPage();
+        i.value()->gotoCreateTokensPage();
 }
 
-void WalletFrame::gotoManageAssetsPage()
+void WalletFrame::gotoManageTokensPage()
 {
     QMap<QString, WalletView*>::const_iterator i;
     for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
-        i.value()->gotoManageAssetsPage();
+        i.value()->gotoManageTokensPage();
 }

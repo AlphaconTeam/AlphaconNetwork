@@ -21,7 +21,7 @@
 #include "wallet/crypter.h"
 #include "wallet/walletdb.h"
 #include "wallet/rpcwallet.h"
-#include "assets/assettypes.h"
+#include "tokens/tokentypes.h"
 #include "pos.h"
 
 #include <algorithm>
@@ -195,16 +195,17 @@ struct COutputEntry
     int vout;
 };
 
-/** RVN START */
-struct CAssetOutputEntry
+/** TOKENS START */
+struct CTokenOutputEntry
 {
     txnouttype type;
-    std::string assetName;
+    std::string tokenName;
     CTxDestination destination;
     CAmount nAmount;
+    uint32_t nTokenLockTime;
     int vout;
 };
-/** RVN END */
+/** TOKENS END */
 
 /** A transaction with a merkle branch linking it to the block chain. */
 class CMerkleTx
@@ -486,7 +487,7 @@ public:
                     std::list<COutputEntry>& listSent, CAmount& nFee, std::string& strSentAccount, const isminefilter& filter) const;
 
     void GetAmounts(std::list<COutputEntry>& listReceived,
-                    std::list<COutputEntry>& listSent, CAmount& nFee, std::string& strSentAccount, const isminefilter& filter, std::list<CAssetOutputEntry>& assetsReceived, std::list<CAssetOutputEntry>& assetsSent) const;
+                    std::list<COutputEntry>& listSent, CAmount& nFee, std::string& strSentAccount, const isminefilter& filter, std::list<CTokenOutputEntry>& tokensReceived, std::list<CTokenOutputEntry>& tokensSent) const;
 
     bool IsFromMe(const isminefilter& filter) const
     {
@@ -697,7 +698,7 @@ private:
      */
     bool SelectCoins(const std::vector<COutput>& vAvailableCoins, const CAmount& nTargetValue, std::set<CInputCoin>& setCoinsRet, CAmount& nValueRet, const CCoinControl *coinControl = nullptr) const;
 
-    bool SelectAssets(const std::map<std::string, std::vector<COutput> >& mapAvailableAssets, const std::map<std::string, CAmount>& mapAssetTargetValue, std::set<CInputCoin>& setCoinsRet, std::map<std::string, CAmount>& nValueRet) const;
+    bool SelectTokens(const std::map<std::string, std::vector<COutput> >& mapAvailableTokens, const std::map<std::string, CAmount>& mapTokenTargetValue, std::set<CInputCoin>& setCoinsRet, std::map<std::string, CAmount>& nValueRet) const;
 
     CWalletDB *pwalletdbEncryption;
 
@@ -759,7 +760,7 @@ private:
     std::map<COutPoint, CStakeCache> stakeCache;
 
     boost::thread_group* stakeThread = nullptr;
-    void StakeCoins(bool fStake, CConnman* connman);
+    void StakeCoins(bool fStake);
 
 public:
     /*
@@ -854,27 +855,35 @@ public:
     bool CanSupportFeature(enum WalletFeature wf) const { AssertLockHeld(cs_wallet); return nWalletMaxVersion >= wf; }
 
     /**
-     * populate vCoins with vector of available COutputs, and populates vAssetCoins in fWithAssets is set to true.
+     * populate vCoins with vector of available COutputs, and populates vTokenCoins in fWithTokens is set to true.
      */
-    void AvailableCoinsAll(std::vector<COutput>& vCoins, std::map<std::string, std::vector<COutput> >& mapAssetCoins,
-                            bool fGetALP = true, bool fOnlyAssets = false,
+    void AvailableCoinsAll(std::vector<COutput>& vCoins, std::map<std::string, std::vector<COutput> >& mapTokenCoins,
+                            bool fGetALP = true, bool fOnlyTokens = false,
                             bool fOnlySafe = true, const CCoinControl *coinControl = nullptr,
                             const CAmount& nMinimumAmount = 1, const CAmount& nMaximumAmount = MAX_MONEY,
                             const CAmount& nMinimumSumAmount = MAX_MONEY, const uint64_t& nMaximumCount = 0,
-                            const int& nMinDepth = 0, const int& nMaxDepth = 9999999) const;
+                            const int& nMinDepth = 0, const int& nMaxDepth = 9999999, bool fLockedTokens = false) const;
 
     /**
-     * Helper function that calls AvailableCoinsAll, used for transfering assets
+     * Helper function that calls AvailableCoinsAll, used for transfering tokens
      */
-    void AvailableAssets(std::map<std::string, std::vector<COutput> > &mapAssetCoins, bool fOnlySafe = true,
+    void AvailableTokens(std::map<std::string, std::vector<COutput> > &mapTokenCoins, bool fOnlySafe = true,
                          const CCoinControl *coinControl = nullptr, const CAmount &nMinimumAmount = 1,
                          const CAmount &nMaximumAmount = MAX_MONEY, const CAmount &nMinimumSumAmount = MAX_MONEY,
                          const uint64_t &nMaximumCount = 0, const int &nMinDepth = 0, const int &nMaxDepth = 9999999) const;
 
     /**
-     * Helper function that calls AvailableCoinsAll, used to receive all coins, Assets and ALP
+     * Helper function that calls AvailableCoinsAll, used for fetching time locked token utxo set 
      */
-    void AvailableCoinsWithAssets(std::vector<COutput> &vCoins, std::map<std::string, std::vector<COutput> > &mapAssetCoins,
+    void LockedTokens(std::map<std::string, std::vector<COutput> > &mapTokenCoins, bool fOnlySafe = true,
+                         const CCoinControl *coinControl = nullptr, const CAmount &nMinimumAmount = 1,
+                         const CAmount &nMaximumAmount = MAX_MONEY, const CAmount &nMinimumSumAmount = MAX_MONEY,
+                         const uint64_t &nMaximumCount = 0, const int &nMinDepth = 0, const int &nMaxDepth = 9999999) const;
+
+    /**
+     * Helper function that calls AvailableCoinsAll, used to receive all coins, Tokens and ALP
+     */
+    void AvailableCoinsWithTokens(std::vector<COutput> &vCoins, std::map<std::string, std::vector<COutput> > &mapTokenCoins,
                                   bool fOnlySafe = true, const CCoinControl *coinControl = nullptr, const CAmount &nMinimumAmount = 1,
                                   const CAmount &nMaximumAmount = MAX_MONEY, const CAmount &nMinimumSumAmount = MAX_MONEY,
                                   const uint64_t &nMaximumCount = 0, const int &nMinDepth = 0, const int &nMaxDepth = 9999999) const;
@@ -900,9 +909,9 @@ public:
     std::map<CTxDestination, std::vector<COutput>> ListCoins() const;
 
     /**
-     * Return list of available assets and locked assets grouped by non-change output address.
+     * Return list of available tokens and locked tokens grouped by non-change output address.
      */
-    std::map<CTxDestination, std::vector<COutput>> ListAssets() const;
+    std::map<CTxDestination, std::vector<COutput>> ListTokens() const;
 
 
     /**
@@ -917,7 +926,7 @@ public:
      * assembled
      */
     bool SelectCoinsMinConf(const CAmount& nTargetValue, int nConfMine, int nConfTheirs, uint64_t nMaxAncestors, std::vector<COutput> vCoins, std::set<CInputCoin>& setCoinsRet, CAmount& nValueRet) const;
-    bool SelectAssetsMinConf(const CAmount& nTargetValue, const int nConfMine, const int nConfTheirs, const uint64_t nMaxAncestors, const std::string& strAssetName, std::vector<COutput> vCoins, std::set<CInputCoin>& setCoinsRet, CAmount& nValueRet) const;
+    bool SelectTokensMinConf(const CAmount& nTargetValue, const int nConfMine, const int nConfTheirs, const uint64_t nMaxAncestors, const std::string& strTokenName, std::vector<COutput> vCoins, std::set<CInputCoin>& setCoinsRet, CAmount& nValueRet) const;
 
     bool IsSpent(const uint256& hash, unsigned int n) const;
 
@@ -1024,15 +1033,15 @@ public:
     bool FundTransaction(CMutableTransaction& tx, CAmount& nFeeRet, int& nChangePosInOut, std::string& strFailReason, bool lockUnspents, const std::set<int>& setSubtractFeeFromOutputs, CCoinControl);
     bool SignTransaction(CMutableTransaction& tx);
 
-    /** RVN START */
-    bool CreateTransactionWithAssets(const std::vector<CRecipient>& vecSend, CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet, int& nChangePosInOut,
-                                   std::string& strFailReason, const CCoinControl& coin_control, const std::vector<CNewAsset> assets, const CTxDestination dest, const AssetType& assetType, bool sign = true);
+    /** TOKENS START */
+    bool CreateTransactionWithTokens(const std::vector<CRecipient>& vecSend, CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet, int& nChangePosInOut,
+                                   std::string& strFailReason, const CCoinControl& coin_control, const std::vector<CNewToken> tokens, const CTxDestination dest, const TokenType& tokenType, bool sign = true);
 
-    bool CreateTransactionWithTransferAsset(const std::vector<CRecipient>& vecSend, CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet, int& nChangePosInOut,
+    bool CreateTransactionWithTransferToken(const std::vector<CRecipient>& vecSend, CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet, int& nChangePosInOut,
                                                      std::string& strFailReason, const CCoinControl& coin_control, bool sign = true);
 
-    bool CreateTransactionWithReissueAsset(const std::vector<CRecipient>& vecSend, CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet, int& nChangePosInOut,
-                                                    std::string& strFailReason, const CCoinControl& coin_control, const CReissueAsset& reissueAsset, const CTxDestination destination, bool sign = true);
+    bool CreateTransactionWithReissueToken(const std::vector<CRecipient>& vecSend, CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet, int& nChangePosInOut,
+                                                    std::string& strFailReason, const CCoinControl& coin_control, const CReissueToken& reissueToken, const CTxDestination destination, bool sign = true);
 
     bool CreateTransaction(const std::vector<CRecipient>& vecSend, CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet, int& nChangePosInOut,
                            std::string& strFailReason, const CCoinControl& coin_control, bool sign = true);
@@ -1044,14 +1053,14 @@ public:
      */
     bool CreateCoinStake(const CKeyStore &keystore, unsigned int nBits, const CAmount& nTotalFees, uint32_t nTimeBlock, CMutableTransaction& tx, CKey& key);
     bool CreateTransactionAll(const std::vector<CRecipient>& vecSend, CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet, int& nChangePosInOut,
-                           std::string& strFailReason, const CCoinControl& coin_control, bool fNewAsset, const CNewAsset& asset, const CTxDestination dest, bool fTransferAsset, bool fReissueAsset, const CReissueAsset& reissueAsset, const AssetType& assetType, bool sign = true);
+                           std::string& strFailReason, const CCoinControl& coin_control, bool fNewToken, const CNewToken& token, const CTxDestination dest, bool fTransferToken, bool fReissueToken, const CReissueToken& reissueToken, const TokenType& tokenType, bool sign = true);
 
     bool CreateTransactionAll(const std::vector<CRecipient>& vecSend, CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet,
-                              int& nChangePosInOut, std::string& strFailReason, const CCoinControl& coin_control, bool fNewAsset, const std::vector<CNewAsset> assets, const CTxDestination destination, bool fTransferAsset, bool fReissueAsset, const CReissueAsset& reissueAsset, const AssetType& assetType, bool sign);
+                              int& nChangePosInOut, std::string& strFailReason, const CCoinControl& coin_control, bool fNewToken, const std::vector<CNewToken> tokens, const CTxDestination destination, bool fTransferToken, bool fReissueToken, const CReissueToken& reissueToken, const TokenType& tokenType, bool sign);
 
     bool CreateNewChangeAddress(CReserveKey& reservekey, CKeyID& keyID, std::string& strFailReason);
 
-    /** RVN END */
+    /** TOKENS END */
 
     bool CommitTransaction(CWalletTx& wtxNew, CReserveKey& reservekey, CConnman* connman, CValidationState& state);
 
@@ -1090,7 +1099,7 @@ public:
      * filter, otherwise returns 0
      */
     CAmount GetDebit(const CTxIn& txin, const isminefilter& filter) const;
-    CAmount GetDebit(const CTxIn& txin, const isminefilter& filter, CAssetOutputEntry& assetData) const;
+    CAmount GetDebit(const CTxIn& txin, const isminefilter& filter, CTokenOutputEntry& tokenData) const;
     isminetype IsMine(const CTxOut& txout) const;
     CAmount GetCredit(const CTxOut& txout, const isminefilter& filter) const;
     bool IsChange(const CTxOut& txout) const;
@@ -1218,10 +1227,10 @@ public:
     bool SetHDSeed(const CPubKey& key);
 
     /* Start staking coins */
-    void StartStake(CConnman* connman) { StakeCoins(true, connman); }
+    void StartStake() { StakeCoins(true); }
 
     /* Stop staking coins */
-    void StopStake() { StakeCoins(false, 0); }
+    void StopStake() { StakeCoins(false); }
 
     int64_t m_last_coin_stake_search_time{0};
     int64_t m_last_coin_stake_search_interval{0};

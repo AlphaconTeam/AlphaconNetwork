@@ -1489,17 +1489,17 @@ static void MaybePushAddress(UniValue & entry, const CTxDestination &dest)
  * @param  ret        The UniValue into which the result is stored.
  * @param  filter     The "is mine" filter bool.
  */
-void ListTransactions(CWallet* const pwallet, const CWalletTx& wtx, const std::string& strAccount, int nMinDepth, bool fLong, UniValue& ret, UniValue& retAssets, const isminefilter& filter)
+void ListTransactions(CWallet* const pwallet, const CWalletTx& wtx, const std::string& strAccount, int nMinDepth, bool fLong, UniValue& ret, UniValue& retTokens, const isminefilter& filter)
 {
     CAmount nFee;
     std::string strSentAccount;
     std::list<COutputEntry> listReceived;
     std::list<COutputEntry> listSent;
 
-    std::list<CAssetOutputEntry> listAssetsReceived;
-    std::list<CAssetOutputEntry> listAssetsSent;
+    std::list<CTokenOutputEntry> listTokensReceived;
+    std::list<CTokenOutputEntry> listTokensSent;
 
-    wtx.GetAmounts(listReceived, listSent, nFee, strSentAccount, filter, listAssetsReceived, listAssetsSent);
+    wtx.GetAmounts(listReceived, listSent, nFee, strSentAccount, filter, listTokensReceived, listTokensSent);
 
     bool fAllAccounts = (strAccount == std::string("*"));
     bool involvesWatchonly = wtx.IsFromMe(ISMINE_WATCH_ONLY);
@@ -1571,45 +1571,45 @@ void ListTransactions(CWallet* const pwallet, const CWalletTx& wtx, const std::s
         }
     }
 
-    /** RVN START */
-    if (AreAssetsDeployed()) {
-        if (listAssetsReceived.size() > 0 && wtx.GetDepthInMainChain() >= nMinDepth) {
-            for (const CAssetOutputEntry &data : listAssetsReceived) {
+    /** TOKENS START */
+    if (AreTokensDeployed()) {
+        if (listTokensReceived.size() > 0 && wtx.GetDepthInMainChain() >= nMinDepth) {
+            for (const CTokenOutputEntry &data : listTokensReceived) {
                 UniValue entry(UniValue::VOBJ);
 
-                entry.push_back(Pair("asset_type", GetTxnOutputType(data.type)));
-                entry.push_back(Pair("asset_name", data.assetName));
+                entry.push_back(Pair("token_type", GetTxnOutputType(data.type)));
+                entry.push_back(Pair("token_name", data.tokenName));
                 entry.push_back(Pair("amount", ValueFromAmount(data.nAmount)));
                 entry.push_back(Pair("destination", EncodeDestination(data.destination)));
                 entry.push_back(Pair("vout", data.vout));
                 entry.push_back(Pair("category", "receive"));
-                retAssets.push_back(entry);
+                retTokens.push_back(entry);
             }
         }
 
-        if ((!listAssetsSent.empty() || nFee != 0) && (fAllAccounts || strAccount == strSentAccount)) {
-            for (const CAssetOutputEntry &data : listAssetsSent) {
+        if ((!listTokensSent.empty() || nFee != 0) && (fAllAccounts || strAccount == strSentAccount)) {
+            for (const CTokenOutputEntry &data : listTokensSent) {
                 UniValue entry(UniValue::VOBJ);
 
-                entry.push_back(Pair("asset_type", GetTxnOutputType(data.type)));
-                entry.push_back(Pair("asset_name", data.assetName));
+                entry.push_back(Pair("token_type", GetTxnOutputType(data.type)));
+                entry.push_back(Pair("token_name", data.tokenName));
                 entry.push_back(Pair("amount", ValueFromAmount(data.nAmount)));
                 entry.push_back(Pair("destination", EncodeDestination(data.destination)));
                 entry.push_back(Pair("vout", data.vout));
                 entry.push_back(Pair("category", "send"));
-                retAssets.push_back(entry);
+                retTokens.push_back(entry);
             }
         }
 
     }
-    /** RVN END */
+    /** TOKENS END */
 }
 
 void ListTransactions(CWallet* const pwallet, const CWalletTx& wtx, const std::string& strAccount, int nMinDepth, bool fLong, UniValue& ret, const isminefilter& filter)
 {
-    UniValue assetDetails(UniValue::VARR);
+    UniValue tokenDetails(UniValue::VARR);
 
-    ListTransactions(pwallet, wtx, strAccount, nMinDepth, fLong, ret, assetDetails, filter);
+    ListTransactions(pwallet, wtx, strAccount, nMinDepth, fLong, ret, tokenDetails, filter);
 }
 
 void AcentryToJSON(const CAccountingEntry& acentry, const std::string& strAccount, UniValue& ret)
@@ -2022,10 +2022,10 @@ UniValue gettransaction(const JSONRPCRequest& request)
             "    }\n"
             "    ,...\n"
             "  ],\n"
-            "  \"asset_details\" : [\n"
+            "  \"token_details\" : [\n"
             "    {\n"
-            "      \"asset_type\" : \"new_asset|transfer_asset|reissue_asset\", (string) The type of asset transaction\n"
-            "      \"asset_name\" : \"asset_name\",          (string) The name of the asset\n"
+            "      \"token_type\" : \"new_token|transfer_token|reissue_token\", (string) The type of token transaction\n"
+            "      \"token_name\" : \"token_name\",          (string) The name of the token\n"
             "      \"amount\" : x.xxx,                 (numeric) The amount in " + CURRENCY_UNIT + "\n"
             "      \"address\" : \"address\",          (string) The alphacon address involved in the transaction\n"
             "      \"vout\" : n,                       (numeric) the vout value\n"
@@ -2073,10 +2073,10 @@ UniValue gettransaction(const JSONRPCRequest& request)
     WalletTxToJSON(wtx, entry);
 
     UniValue details(UniValue::VARR);
-    UniValue assetDetails(UniValue::VARR);
-    ListTransactions(pwallet, wtx, "*", 0, false, details, assetDetails, filter);
+    UniValue tokenDetails(UniValue::VARR);
+    ListTransactions(pwallet, wtx, "*", 0, false, details, tokenDetails, filter);
     entry.push_back(Pair("details", details));
-    entry.push_back(Pair("asset_details", assetDetails));
+    entry.push_back(Pair("token_details", tokenDetails));
 
     std::string strHex = EncodeHexTx(static_cast<CTransaction>(wtx), RPCSerializationFlags());
     entry.push_back(Pair("hex", strHex));

@@ -7,7 +7,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <base58.h>
-#include <assets/assets.h>
+#include <tokens/tokens.h>
 #include <validation.h>
 #include "script/standard.h"
 
@@ -36,11 +36,11 @@ const char* GetTxnOutputType(txnouttype t)
     case TX_WITNESS_V0_KEYHASH: return "witness_v0_keyhash";
     case TX_WITNESS_V0_SCRIPTHASH: return "witness_v0_scripthash";
 
-    /** RVN START */
-    case TX_NEW_ASSET: return ASSET_NEW_STRING;
-    case TX_TRANSFER_ASSET: return ASSET_TRANSFER_STRING;
-    case TX_REISSUE_ASSET: return ASSET_REISSUE_STRING;
-    /** RVN END */
+    /** TOKENS START */
+    case TX_NEW_TOKEN: return TOKEN_NEW_STRING;
+    case TX_TRANSFER_TOKEN: return TOKEN_TRANSFER_STRING;
+    case TX_REISSUE_TOKEN: return TOKEN_REISSUE_STRING;
+    /** TOKENS END */
     }
     return nullptr;
 }
@@ -72,16 +72,16 @@ bool Solver(const CScript& scriptPubKey, txnouttype& typeRet, std::vector<std::v
         vSolutionsRet.push_back(hashBytes);
         return true;
     }
-    /** RVN START */
+    /** TOKENS START */
     int nType = 0;
     bool fIsOwner = false;
-    if (scriptPubKey.IsAssetScript(nType, fIsOwner)) {
+    if (scriptPubKey.IsTokenScript(nType, fIsOwner)) {
         typeRet = (txnouttype)nType;
         std::vector<unsigned char> hashBytes(scriptPubKey.begin()+3, scriptPubKey.begin()+23);
         vSolutionsRet.push_back(hashBytes);
         return true;
     }
-    /** RVN END */
+    /** TOKENS END */
 
     int witnessversion;
     std::vector<unsigned char> witnessprogram;
@@ -220,12 +220,12 @@ bool ExtractDestination(const CScript& scriptPubKey, CTxDestination& addressRet)
     {
         addressRet = CScriptID(uint160(vSolutions[0]));
         return true;
-    /** RVN START */
-    } else if (whichType == TX_NEW_ASSET || whichType == TX_REISSUE_ASSET || whichType == TX_TRANSFER_ASSET) {
+    /** TOKENS START */
+    } else if (whichType == TX_NEW_TOKEN || whichType == TX_REISSUE_TOKEN || whichType == TX_TRANSFER_TOKEN) {
         addressRet = CKeyID(uint160(vSolutions[0]));
         return true;
     }
-     /** RVN END */
+     /** TOKENS END */
     // Multisig txns have more than one address...
     return false;
 }
@@ -302,6 +302,15 @@ CScript GetScriptForDestination(const CTxDestination& dest)
 {
     CScript script;
 
+    boost::apply_visitor(CScriptVisitor(&script), dest);
+    return script;
+}
+
+CScript GetTimeLockScriptForDestination(const CTxDestination& dest, const int64_t lockHeight)
+{
+    CScript script;
+    script.clear();
+    script << CScriptNum(lockHeight) << OP_CHECKLOCKTIMEVERIFY << OP_DROP;
     boost::apply_visitor(CScriptVisitor(&script), dest);
     return script;
 }

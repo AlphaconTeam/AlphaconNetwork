@@ -15,7 +15,7 @@
 #include "recentrequeststablemodel.h"
 #include "sendcoinsdialog.h"
 #include "transactiontablemodel.h"
-#include "assettablemodel.h"
+#include "tokentablemodel.h"
 
 #include "base58.h"
 #include "chain.h"
@@ -43,7 +43,7 @@
 WalletModel::WalletModel(const PlatformStyle *platformStyle, CWallet *_wallet, OptionsModel *_optionsModel, QObject *parent) :
     QObject(parent), wallet(_wallet), optionsModel(_optionsModel), addressTableModel(0),
     transactionTableModel(0),
-    assetTableModel(0),
+    tokenTableModel(0),
     recentRequestsTableModel(0),
     cachedBalance(0),
     cachedUnconfirmedBalance(0),
@@ -61,7 +61,7 @@ WalletModel::WalletModel(const PlatformStyle *platformStyle, CWallet *_wallet, O
 
     addressTableModel = new AddressTableModel(wallet, this);
     transactionTableModel = new TransactionTableModel(platformStyle, wallet, this);
-    assetTableModel = new AssetTableModel(this);
+    tokenTableModel = new TokenTableModel(this);
     recentRequestsTableModel = new RecentRequestsTableModel(wallet, this);
 
     // This timer will be fired repeatedly to update the balance
@@ -157,8 +157,8 @@ void WalletModel::pollBalanceChanged()
         checkBalanceChanged();
         if(transactionTableModel)
             transactionTableModel->updateConfirmations();
-        if(assetTableModel)
-            assetTableModel->checkBalanceChanged();
+        if(tokenTableModel)
+            tokenTableModel->checkBalanceChanged();
     }
 }
 
@@ -401,7 +401,7 @@ WalletModel::SendCoinsReturn WalletModel::sendCoins(WalletModelTransaction &tran
     return SendCoinsReturn(OK);
 }
 
-WalletModel::SendCoinsReturn WalletModel::sendAssets(CWalletTx& tx, QList<SendAssetsRecipient>& recipients, CReserveKey& reservekey)
+WalletModel::SendCoinsReturn WalletModel::sendTokens(CWalletTx& tx, QList<SendTokensRecipient>& recipients, CReserveKey& reservekey)
 {
     QByteArray transaction_array; /* store serialized transaction */
 
@@ -410,7 +410,7 @@ WalletModel::SendCoinsReturn WalletModel::sendAssets(CWalletTx& tx, QList<SendAs
 
         std::pair<int, std::string> error;
         std::string txid;
-        if (!SendAssetTransaction(this->wallet, tx, reservekey, error, txid))
+        if (!SendTokenTransaction(this->wallet, tx, reservekey, error, txid))
             return SendCoinsReturn(TransactionCommitFailed, QString::fromStdString(error.second));
 
         CDataStream ssTx(SER_NETWORK, PROTOCOL_VERSION);
@@ -420,7 +420,7 @@ WalletModel::SendCoinsReturn WalletModel::sendAssets(CWalletTx& tx, QList<SendAs
 
     // Add addresses / update labels that we've sent to the address book,
     // and emit coinsSent signal for each recipient
-    for (const SendAssetsRecipient &rcp : recipients)
+    for (const SendTokensRecipient &rcp : recipients)
     {
         // Don't touch the address book when we have a payment request
         if (!rcp.paymentRequest.IsInitialized())
@@ -444,7 +444,7 @@ WalletModel::SendCoinsReturn WalletModel::sendAssets(CWalletTx& tx, QList<SendAs
                 }
             }
         }
-        Q_EMIT assetsSent(wallet, rcp, transaction_array);
+        Q_EMIT tokensSent(wallet, rcp, transaction_array);
     }
     checkBalanceChanged(); // update balance immediately, otherwise there could be a short noticeable delay until pollBalanceChanged hits
 
@@ -466,9 +466,9 @@ TransactionTableModel *WalletModel::getTransactionTableModel()
     return transactionTableModel;
 }
 
-AssetTableModel *WalletModel::getAssetTableModel()
+TokenTableModel *WalletModel::getTokenTableModel()
 {
-    return assetTableModel;
+    return tokenTableModel;
 }
 
 RecentRequestsTableModel *WalletModel::getRecentRequestsTableModel()
@@ -606,6 +606,7 @@ void WalletModel::unsubscribeFromCoreSignals()
 WalletModel::UnlockContext WalletModel::requestUnlock()
 {
     bool was_locked = getEncryptionStatus() == Locked;
+
     if(was_locked)
     {
         // Request UI to unlock wallet
@@ -686,33 +687,34 @@ void WalletModel::listCoins(std::map<QString, std::vector<COutput> >& mapCoins) 
     }
 }
 
-/** RVN START */
+/** TOKENS START */
 // AvailableCoins + LockedCoins grouped by wallet address (put change in one group with wallet address)
-void WalletModel::listAssets(std::map<QString, std::map<QString, std::vector<COutput> > >& mapCoins) const
+void WalletModel::listTokens(std::map<QString, std::map<QString, std::vector<COutput> > >& mapCoins) const
 {
-    std::map<QString, std::map<QString, std::vector<COutput> > > mapSortedByAssetName;
-    auto list = wallet->ListAssets();
+    std::map<QString, std::map<QString, std::vector<COutput> > > mapSortedByTokenName;
+    auto list = wallet->ListTokens();
 
     for (auto& group : list) {
         auto address = QString::fromStdString(EncodeDestination(group.first));
 
         for (auto& coin : group.second) {
             auto out = coin.tx->tx->vout[coin.i];
-            std::string strAssetName;
+            std::string strTokenName;
             CAmount nAmount;
-            if (!GetAssetInfoFromScript(out.scriptPubKey, strAssetName, nAmount))
+            uint32_t nTokenLockTime;
+            if (!GetTokenInfoFromScript(out.scriptPubKey, strTokenName, nAmount, nTokenLockTime))
                 continue;
 
             if (nAmount == 0)
                 continue;
 
-            QString assetName = QString::fromStdString(strAssetName);
-            auto& assetMap = mapCoins[assetName];
-            assetMap[address].emplace_back(coin);
+            QString tokenName = QString::fromStdString(strTokenName);
+            auto& tokenMap = mapCoins[tokenName];
+            tokenMap[address].emplace_back(coin);
         }
     }
 }
-/** RVN END */
+/** TOKENS END */
 
 bool WalletModel::isLockedCoin(uint256 hash, unsigned int n) const
 {
@@ -756,6 +758,22 @@ bool WalletModel::saveReceiveRequest(const std::string &sAddress, const int64_t 
         return wallet->EraseDestData(dest, key);
     else
         return wallet->AddDestData(dest, key, sRequest);
+}
+
+unsigned long long WalletModel::updateWeight()
+{
+    if (!wallet)
+        return 0;
+
+    TRY_LOCK(cs_main, lockMain);
+    if (!lockMain)
+        return 0;
+
+    TRY_LOCK(wallet->cs_wallet, lockWallet);
+    if (!lockWallet)
+        return 0;
+
+    return wallet->GetStakeWeight();
 }
 
 bool WalletModel::transactionCanBeAbandoned(uint256 hash) const

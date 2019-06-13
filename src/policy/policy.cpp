@@ -55,7 +55,7 @@ CAmount GetDustThreshold(const CTxOut& txout, const CFeeRate& dustRelayFeeIn)
 bool IsDust(const CTxOut& txout, const CFeeRate& dustRelayFeeIn)
 {
 
-    if (txout.scriptPubKey.IsAssetScript())
+    if (txout.scriptPubKey.IsTokenScript())
         return false;
     else
         return (txout.nValue < GetDustThreshold(txout, dustRelayFeeIn));
@@ -81,7 +81,7 @@ bool IsStandard(const CScript& scriptPubKey, txnouttype& whichType, const bool w
           return false;
     else if (!witnessEnabled && (whichType == TX_WITNESS_V0_KEYHASH || whichType == TX_WITNESS_V0_SCRIPTHASH))
         return false;
-    else if (whichType == TX_TRANSFER_ASSET || whichType == TX_REISSUE_ASSET || whichType == TX_NEW_ASSET)
+    else if (whichType == TX_TRANSFER_TOKEN || whichType == TX_REISSUE_TOKEN || whichType == TX_NEW_TOKEN)
         return true;
 
     return whichType != TX_NONSTANDARD ;

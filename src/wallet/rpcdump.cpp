@@ -323,7 +323,7 @@ UniValue importprunedfunds(const JSONRPCRequest& request)
 
         LOCK(cs_main);
 
-        if (!mapBlockIndex.count(merkleBlock.header.GetHash()) || !chainActive.Contains(mapBlockIndex[merkleBlock.header.GetHash()]))
+        if (!mapBlockIndex.count(merkleBlock.header.GetBlockHash()) || !chainActive.Contains(mapBlockIndex[merkleBlock.header.GetBlockHash()]))
             throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Block not found in chain");
 
         std::vector<uint256>::const_iterator it;
@@ -338,7 +338,7 @@ UniValue importprunedfunds(const JSONRPCRequest& request)
     }
 
     wtx.nIndex = txnIndex;
-    wtx.hashBlock = merkleBlock.header.GetHash();
+    wtx.hashBlock = merkleBlock.header.GetBlockHash();
 
     LOCK2(cs_main, pwallet->cs_wallet);
 
@@ -580,6 +580,7 @@ UniValue dumpprivkey(const JSONRPCRequest& request)
     if (!IsValidDestination(dest)) {
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Alphacon address");
     }
+
     const CKeyID *keyID = boost::get<CKeyID>(&dest);
     if (!keyID) {
         throw JSONRPCError(RPC_TYPE_ERROR, "Address does not refer to a key");

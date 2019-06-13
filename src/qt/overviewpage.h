@@ -19,9 +19,9 @@ class TransactionFilterProxy;
 class TxViewDelegate;
 class PlatformStyle;
 class WalletModel;
-class AssetFilterProxy;
+class TokenFilterProxy;
 
-class AssetViewDelegate;
+class TokenViewDelegate;
 
 namespace Ui {
     class OverviewPage;
@@ -43,7 +43,7 @@ public:
     void setClientModel(ClientModel *clientModel);
     void setWalletModel(WalletModel *walletModel);
     void showOutOfSyncWarning(bool fShow);
-    void showAssets();
+    void showTokens();
 
 public Q_SLOTS:
     void setBalance(const CAmount& balance, const CAmount& unconfirmedBalance, const CAmount& immatureBalance, const CAmount& stake,
@@ -51,10 +51,10 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void transactionClicked(const QModelIndex &index);
-    void assetSendClicked(const QModelIndex &index);
-    void assetIssueSubClicked(const QModelIndex &index);
-    void assetIssueUniqueClicked(const QModelIndex &index);
-    void assetReissueClicked(const QModelIndex &index);
+    void tokenSendClicked(const QModelIndex &index);
+    void tokenIssueSubClicked(const QModelIndex &index);
+    void tokenIssueUniqueClicked(const QModelIndex &index);
+    void tokenReissueClicked(const QModelIndex &index);
     void outOfSyncWarningClicked();
 
 private:
@@ -72,9 +72,9 @@ private:
 
     TxViewDelegate *txdelegate;
     std::unique_ptr<TransactionFilterProxy> filter;
-    std::unique_ptr<AssetFilterProxy> assetFilter;
+    std::unique_ptr<TokenFilterProxy> tokenFilter;
 
-    AssetViewDelegate *assetdelegate;
+    TokenViewDelegate *tokendelegate;
     QMenu *contextMenu;
     QAction *sendAction;
     QAction *issueSub;
@@ -85,11 +85,11 @@ private:
 private Q_SLOTS:
     void updateDisplayUnit();
     void handleTransactionClicked(const QModelIndex &index);
-    void handleAssetClicked(const QModelIndex &index);
+    void handleTokenClicked(const QModelIndex &index);
     void updateAlerts(const QString &warnings);
     void updateWatchOnlyLabels(bool showWatchOnly);
     void handleOutOfSyncWarningClicks();
-    void assetSearchChanged();
+    void tokenSearchChanged();
 };
 
 #endif // ALPHACON_QT_OVERVIEWPAGE_H

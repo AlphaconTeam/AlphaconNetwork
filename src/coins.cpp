@@ -15,7 +15,7 @@
 #include "tinyformat.h"
 
 #include <assert.h>
-#include <assets/assets.h>
+#include <tokens/tokens.h>
 #include <wallet/wallet.h>
 
 bool CCoinsView::GetCoin(const COutPoint &outpoint, Coin &coin) const { return false; }
@@ -95,77 +95,77 @@ void CCoinsViewCache::AddCoin(const COutPoint &outpoint, Coin&& coin, bool possi
     cachedCoinsUsage += it->second.coin.DynamicMemoryUsage();
 }
 
-void AddCoins(CCoinsViewCache& cache, const CTransaction &tx, int nHeight, uint256 blockHash, bool check, CAssetsCache* assetsCache, std::pair<std::string, CBlockAssetUndo>* undoAssetData) {
+void AddCoins(CCoinsViewCache& cache, const CTransaction &tx, int nHeight, uint256 blockHash, bool check, CTokensCache* tokensCache, std::pair<std::string, CBlockTokenUndo>* undoTokenData) {
     bool fCoinbase = tx.IsCoinBase();
     bool fCoinstake = tx.IsCoinStake();
     const uint256& txid = tx.GetHash();
 
-    /** RVN START */
-    if (AreAssetsDeployed()) {
-        if (assetsCache) {
-            if (tx.IsNewAsset()) {
-                CNewAsset asset;
+    /** TOKENS START */
+    if (AreTokensDeployed()) {
+        if (tokensCache) {
+            if (tx.IsNewToken()) {
+                CNewToken token;
                 std::string strAddress;
-                AssetFromTransaction(tx, asset, strAddress);
+                TokenFromTransaction(tx, token, strAddress);
 
                 std::string ownerName;
                 std::string ownerAddress;
                 OwnerFromTransaction(tx, ownerName, ownerAddress);
 
-                // Add the new asset to cache
-                if (!assetsCache->AddNewAsset(asset, strAddress, nHeight, blockHash))
-                    error("%s : Failed at adding a new asset to our cache. asset: %s", __func__,
-                          asset.strName);
+                // Add the new token to cache
+                if (!tokensCache->AddNewToken(token, strAddress, nHeight, blockHash))
+                    error("%s : Failed at adding a new token to our cache. token: %s", __func__,
+                          token.strName);
 
-                // Add the owner asset to cache
-                if (!assetsCache->AddOwnerAsset(ownerName, ownerAddress))
-                    error("%s : Failed at adding a new asset to our cache. asset: %s", __func__,
-                          asset.strName);
+                // Add the owner token to cache
+                if (!tokensCache->AddOwnerToken(ownerName, ownerAddress))
+                    error("%s : Failed at adding a new token to our cache. token: %s", __func__,
+                          token.strName);
 
-            } else if (tx.IsReissueAsset()) {
-                CReissueAsset reissue;
+            } else if (tx.IsReissueToken()) {
+                CReissueToken reissue;
                 std::string strAddress;
-                ReissueAssetFromTransaction(tx, reissue, strAddress);
+                ReissueTokenFromTransaction(tx, reissue, strAddress);
 
                 int reissueIndex = tx.vout.size() - 1;
 
 
-                // Get the asset before we change it
-                CNewAsset asset;
-                if (!assetsCache->GetAssetMetaDataIfExists(reissue.strName, asset))
-                    error("%s: Failed to get the original asset that is getting reissued. Asset Name : %s",
+                // Get the token before we change it
+                CNewToken token;
+                if (!tokensCache->GetTokenMetaDataIfExists(reissue.strName, token))
+                    error("%s: Failed to get the original token that is getting reissued. Token Name : %s",
                           __func__, reissue.strName);
 
-                if (!assetsCache->AddReissueAsset(reissue, strAddress, COutPoint(txid, reissueIndex)))
-                    error("%s: Failed to reissue an asset. Asset Name : %s", __func__, reissue.strName);
+                if (!tokensCache->AddReissueToken(reissue, strAddress, COutPoint(txid, reissueIndex)))
+                    error("%s: Failed to reissue an token. Token Name : %s", __func__, reissue.strName);
 
                 // Set the old IPFSHash for the blockundo
                 bool fIPFSChanged = !reissue.strIPFSHash.empty();
                 bool fUnitsChanged = reissue.nUnits != -1;
                 if (fIPFSChanged || fUnitsChanged) {
-                    undoAssetData->first = reissue.strName; // Asset Name
-                    undoAssetData->second = CBlockAssetUndo {fIPFSChanged, fUnitsChanged, asset.strIPFSHash, asset.units}; // ipfschanged, unitchanged, Old Assets IPFSHash, old units
+                    undoTokenData->first = reissue.strName; // Token Name
+                    undoTokenData->second = CBlockTokenUndo {fIPFSChanged, fUnitsChanged, token.strIPFSHash, token.units}; // ipfschanged, unitchanged, Old Tokens IPFSHash, old units
                 }
-            } else if (tx.IsNewUniqueAsset()) {
+            } else if (tx.IsNewUniqueToken()) {
                 for (int n = 0; n < (int)tx.vout.size(); n++) {
                     auto out = tx.vout[n];
 
-                    CNewAsset asset;
+                    CNewToken token;
                     std::string strAddress;
 
-                    if (IsScriptNewUniqueAsset(out.scriptPubKey)) {
-                        AssetFromScript(out.scriptPubKey, asset, strAddress);
+                    if (IsScriptNewUniqueToken(out.scriptPubKey)) {
+                        TokenFromScript(out.scriptPubKey, token, strAddress);
 
-                        // Add the new asset to cache
-                        if (!assetsCache->AddNewAsset(asset, strAddress, nHeight, blockHash))
-                            error("%s : Failed at adding a new asset to our cache. asset: %s", __func__,
-                                  asset.strName);
+                        // Add the new token to cache
+                        if (!tokensCache->AddNewToken(token, strAddress, nHeight, blockHash))
+                            error("%s : Failed at adding a new token to our cache. token: %s", __func__,
+                                  token.strName);
                     }
                 }
             }
         }
     }
-    /** RVN END */
+    /** TOKENS END */
 
     for (size_t i = 0; i < tx.vout.size(); ++i) {
         bool overwrite = check ? cache.HaveCoin(COutPoint(txid, i)) : fCoinbase;
@@ -173,37 +173,37 @@ void AddCoins(CCoinsViewCache& cache, const CTransaction &tx, int nHeight, uint2
         // deal with the pre-BIP30 occurrences of duplicate coinbase transactions.
         cache.AddCoin(COutPoint(txid, i), Coin(tx.vout[i], nHeight, fCoinbase, fCoinstake, tx.nTime), overwrite);
 
-        /** RVN START */
-        if (AreAssetsDeployed()) {
-            if (assetsCache) {
-                if (tx.vout[i].scriptPubKey.IsTransferAsset() && !tx.vout[i].scriptPubKey.IsUnspendable()) {
-                    CAssetTransfer assetTransfer;
+        /** TOKENS START */
+        if (AreTokensDeployed()) {
+            if (tokensCache) {
+                if (tx.vout[i].scriptPubKey.IsTransferToken() && !tx.vout[i].scriptPubKey.IsUnspendable()) {
+                    CTokenTransfer tokenTransfer;
                     std::string address;
-                    if (!TransferAssetFromScript(tx.vout[i].scriptPubKey, assetTransfer, address))
+                    if (!TransferTokenFromScript(tx.vout[i].scriptPubKey, tokenTransfer, address))
                         LogPrintf(
-                                "%s : ERROR - Received a coin that was a Transfer Asset but failed to get the transfer object from the scriptPubKey. CTxOut: %s\n",
+                                "%s : ERROR - Received a coin that was a Transfer Token but failed to get the transfer object from the scriptPubKey. CTxOut: %s\n",
                                 __func__, tx.vout[i].ToString());
 
-                    if (!assetsCache->AddTransferAsset(assetTransfer, address, COutPoint(txid, i), tx.vout[i]))
-                        LogPrintf("%s : ERROR - Failed to add transfer asset CTxOut: %s\n", __func__,
+                    if (!tokensCache->AddTransferToken(tokenTransfer, address, COutPoint(txid, i), tx.vout[i]))
+                        LogPrintf("%s : ERROR - Failed to add transfer token CTxOut: %s\n", __func__,
                                   tx.vout[i].ToString());
                 }
             }
         }
-        /** RVN END */
+        /** TOKENS END */
     }
 }
 
-bool CCoinsViewCache::SpendCoin(const COutPoint &outpoint, Coin* moveout, CAssetsCache* assetsCache) {
+bool CCoinsViewCache::SpendCoin(const COutPoint &outpoint, Coin* moveout, CTokensCache* tokensCache) {
 
     CCoinsMap::iterator it = FetchCoin(outpoint);
     if (it == cacheCoins.end())
         return false;
     cachedCoinsUsage -= it->second.coin.DynamicMemoryUsage();
 
-    /** RVN START */
+    /** TOKENS START */
     Coin tempCoin = it->second.coin;
-    /** RVN END */
+    /** TOKENS END */
 
     if (moveout) {
         *moveout = std::move(it->second.coin);
@@ -215,15 +215,15 @@ bool CCoinsViewCache::SpendCoin(const COutPoint &outpoint, Coin* moveout, CAsset
         it->second.coin.Clear();
     }
 
-    /** RVN START */
-    if (AreAssetsDeployed()) {
-        if (assetsCache) {
-            if (!assetsCache->TrySpendCoin(outpoint, tempCoin.out)) {
-                return error("%s : Failed to try and spend the asset. COutPoint : %s", __func__, outpoint.ToString());
+    /** TOKENS START */
+    if (AreTokensDeployed()) {
+        if (tokensCache) {
+            if (!tokensCache->TrySpendCoin(outpoint, tempCoin.out)) {
+                return error("%s : Failed to try and spend the token. COutPoint : %s", __func__, outpoint.ToString());
             }
         }
     }
-    /** RVN END */
+    /** TOKENS END */
 
     return true;
 }

@@ -265,9 +265,8 @@ void StartWallets(CScheduler& scheduler) {
     if (!gArgs.GetBoolArg("-staking", DEFAULT_STAKE)) {
         LogPrintf("Staking disabled\n");
     } else {
-        CConnman& connman = *g_connman;
         for (CWalletRef pwallet : vpwallets) {
-            pwallet->StartStake(&connman);
+            pwallet->StartStake();
         }
     }
 }

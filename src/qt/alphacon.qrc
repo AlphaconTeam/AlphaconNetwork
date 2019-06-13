@@ -35,8 +35,8 @@
         <file alias="tx_input">res/icons/tx_input.png</file>
         <file alias="tx_output">res/icons/tx_output.png</file>
         <file alias="tx_inout">res/icons/tx_inout.png</file>
-        <file alias="tx_asset_input">res/icons/tx_asset_input.png</file>
-        <file alias="tx_asset_output">res/icons/tx_asset_output.png</file>
+        <file alias="tx_token_input">res/icons/tx_token_input.png</file>
+        <file alias="tx_token_output">res/icons/tx_token_output.png</file>
         <file alias="lock_closed">res/icons/lock_closed.png</file>
         <file alias="lock_open">res/icons/lock_open.png</file>
         <file alias="key">res/icons/key.png</file>
@@ -56,10 +56,13 @@
         <file alias="hd_disabled">res/icons/hd_disabled.png</file>
         <file alias="network_disabled">res/icons/network_disabled.png</file>
         <file alias="refresh">res/icons/refresh.png</file>
-        <file alias="asset_administrator">res/icons/asset_administrator.png</file>
-        <file alias="asset_create">res/icons/asset_create.png</file>
-        <file alias="asset_manage">res/icons/asset_manage.png</file>
-        <file alias="asset_transfer">res/icons/asset_transfer.png</file>
+        <file alias="token_administrator">res/icons/token_administrator.png</file>
+        <file alias="token_locked">res/icons/token_locked.png</file>
+        <file alias="token_create">res/icons/token_create.png</file>
+        <file alias="token_manage">res/icons/token_manage.png</file>
+        <file alias="token_transfer">res/icons/token_transfer.png</file>
+        <file alias="staking_on">res/icons/staking_on.png</file>
+        <file alias="staking_off">res/icons/staking_off.png</file>
     </qresource>
     <qresource prefix="/movies">
         <file alias="spinner-000">res/movies/spinner-000.png</file>
@@ -126,15 +129,9 @@
         <file alias="radio-unchecked-disabled">res/darkstyle/icon_radiobutton_unchecked_disabled.png</file>
     </qresource>
     <qresource prefix="/fonts">
-        <file alias="opensans-bold">res/fonts/OpenSans-Bold.ttf</file>
-        <file alias="opensans-bolditalic">res/fonts/OpenSans-BoldItalic.ttf</file>
-        <file alias="opensans-extrabold">res/fonts/OpenSans-ExtraBold.ttf</file>
-        <file alias="opensans-extrabolditalic">res/fonts/OpenSans-ExtraBoldItalic.ttf</file>
-        <file alias="opensans-italic">res/fonts/OpenSans-Italic.ttf</file>
-        <file alias="opensans-light">res/fonts/OpenSans-Light.ttf</file>
-        <file alias="opensans-lightitalic">res/fonts/OpenSans-LightItalic.ttf</file>
-        <file alias="opensans-regular">res/fonts/OpenSans-Regular.ttf</file>
-        <file alias="opensans-semibold">res/fonts/OpenSans-SemiBold.ttf</file>
-        <file alias="opensans-semibolditalic">res/fonts/OpenSans-SemiBoldItalic.ttf</file>
+        <file alias="montserrat-bold">res/fonts/Montserrat-Bold.otf</file>
+        <file alias="montserrat-reqular">res/fonts/Montserrat-Regular.otf</file>
+        <file alias="montserrat-semibold">res/fonts/Montserrat-SemiBold.otf</file>
+        <file alias="montserrat-light">res/fonts/Montserrat-Light.otf</file>
     </qresource>
 </RCC>

@@ -483,7 +483,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QWidget" name="assetVerticalSpaceWidget2" native="true">
+          <widget class="QWidget" name="tokenVerticalSpaceWidget2" native="true">
            <property name="autoFillBackground">
             <bool>false</bool>
            </property>
@@ -505,7 +505,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QFrame" name="assetFrame">
+          <widget class="QFrame" name="tokenFrame">
            <property name="autoFillBackground">
             <bool>true</bool>
            </property>
@@ -523,9 +523,9 @@
              <number>12</number>
             </property>
             <item>
-             <layout class="QHBoxLayout" name="assetBalanceHorizontalLayout">
+             <layout class="QHBoxLayout" name="tokenBalanceHorizontalLayout">
               <item alignment="Qt::AlignVCenter">
-               <widget class="QLabel" name="assetBalanceLabel">
+               <widget class="QLabel" name="tokenBalanceLabel">
                 <property name="font">
                  <font>
                   <weight>75</weight>
@@ -533,12 +533,12 @@
                  </font>
                 </property>
                 <property name="text">
-                 <string>Asset Balances</string>
+                 <string>Token Balances</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="labelAssetStatus">
+               <widget class="QPushButton" name="labelTokenStatus">
                 <property name="enabled">
                  <bool>true</bool>
                 </property>
@@ -571,7 +571,7 @@
                </widget>
               </item>
               <item alignment="Qt::AlignBottom">
-               <widget class="QLineEdit" name="assetSearch">
+               <widget class="QLineEdit" name="tokenSearch">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                   <horstretch>0</horstretch>
@@ -627,14 +627,14 @@
              </layout>
             </item>
             <item>
-             <widget class="Line" name="assetBalanceLine">
+             <widget class="Line" name="tokenBalanceLine">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QListView" name="listAssets">
+             <widget class="QListView" name="listTokens">
               <property name="frameShape">
                <enum>QFrame::NoFrame</enum>
               </property>
@@ -647,7 +647,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QWidget" name="assetVerticalSpaceWidget" native="true">
+             <widget class="QWidget" name="tokenVerticalSpaceWidget" native="true">
               <property name="autoFillBackground">
                <bool>false</bool>
               </property>

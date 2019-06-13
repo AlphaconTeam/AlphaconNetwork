@@ -19,7 +19,7 @@ namespace Consensus {
 enum DeploymentPos
 {
     DEPLOYMENT_TESTDUMMY,
-    DEPLOYMENT_ASSETS, // Deployment of RIP2
+    DEPLOYMENT_TOKENS, // Deployment of RIP2
     // DEPLOYMENT_CSV, // Deployment of BIP68, BIP112, and BIP113.
 //    DEPLOYMENT_SEGWIT, // Deployment of BIP141, BIP143, and BIP147.
     // NOTE: Also add new deployments to VersionBitsDeploymentInfo in versionbits.cpp
@@ -43,7 +43,6 @@ struct BIP9Deployment {
  */
 struct Params {
     uint256 hashGenesisBlock;
-    int nSubsidyHalvingInterval;
     /** Block height and hash at which BIP34 becomes active */
     bool nBIP34Enabled;
     bool nBIP65Enabled;
@@ -79,9 +78,11 @@ struct Params {
     CAmount nBlockReward;
     int nBlockRewardHalvings;
     int nBlockRewardHalvingsWindow;
+    int nTokensDeploymentHeight;
 
     int nStakeTimestampMask;
-    int nStakeMinConfirmations;
+    int nCoinbaseMaturity;
+    int nStakeMaturity;
 };
 } // namespace Consensus
 

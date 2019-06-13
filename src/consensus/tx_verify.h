@@ -17,14 +17,14 @@ class CBlockIndex;
 class CCoinsViewCache;
 class CTransaction;
 class CValidationState;
-class CAssetsCache;
+class CTokensCache;
 class CTxOut;
 class uint256;
 
 /** Transaction validation functions */
 
 /** Context-independent validity checks */
-bool CheckTransaction(const CTransaction& tx, CValidationState& state, CAssetsCache* assetCache = nullptr, bool fCheckDuplicateInputs=true, bool fMemPoolCheck=false, bool fCheckAssetDuplicate = true, bool fForceDuplicateCheck = true);
+bool CheckTransaction(const CTransaction& tx, CValidationState& state, CTokensCache* tokenCache = nullptr, bool fCheckDuplicateInputs=true, bool fMemPoolCheck=false, bool fCheckTokenDuplicate = true, bool fForceDuplicateCheck = true);
 
 namespace Consensus {
 /**
@@ -35,9 +35,9 @@ namespace Consensus {
  */
 bool CheckTxInputs(const CTransaction& tx, CValidationState& state, const CCoinsViewCache& inputs, int nSpendHeight, CAmount& txfee);
 
-/** RVN START */
-bool CheckTxAssets(const CTransaction& tx, CValidationState& state, const CCoinsViewCache& inputs, std::vector<std::pair<std::string, uint256> >& vPairReissueAssets, const bool fRunningUnitTests = false);
-/** RVN END */
+/** TOKENS START */
+bool CheckTxTokens(const CTransaction& tx, CValidationState& state, const CCoinsViewCache& inputs, int nSpendHeight, int64_t nSpendTime, std::vector<std::pair<std::string, uint256> >& vPairReissueTokens, const bool fRunningUnitTests = false);
+/** TOKENS END */
 } // namespace Consensus
 
 /** Auxiliary functions for transaction validation (ideally should not be exposed) */

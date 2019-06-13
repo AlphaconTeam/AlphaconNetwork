@@ -48,10 +48,10 @@ static const int SHORT_IDS_BLOCKS_VERSION = 70014;
 //! not banning for invalid compact blocks starts with this version
 static const int INVALID_CB_NO_BAN_VERSION = 70015;
 
-//! assetdata network request is allowed for this version
-static const int ASSETDATA_VERSION = 70017;
+//! tokendata network request is allowed for this version
+static const int TOKENDATA_VERSION = 70017;
 
-//! getassetdata reutrn asstnotfound, and assetdata doesn't have blockhash in the data
-static const int ASSETDATA_VERSION_UPDATED = 70020;
+//! gettokendata reutrn asstnotfound, and tokendata doesn't have blockhash in the data
+static const int TOKENDATA_VERSION_UPDATED = 70020;
 
 #endif // ALPHACON_VERSION_H

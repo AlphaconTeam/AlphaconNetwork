@@ -71,7 +71,7 @@ qint64 AlphaconUnits::factor(int unit)
     }
 }
 
-qint64 AlphaconUnits::factorAsset(int unit)
+qint64 AlphaconUnits::factorToken(int unit)
 {
     switch(unit)
     {
@@ -99,15 +99,15 @@ int AlphaconUnits::decimals(int unit)
     }
 }
 
-QString AlphaconUnits::format(int unit, const CAmount& nIn, bool fPlus, SeparatorStyle separators, const int nAssetUnit)
+QString AlphaconUnits::format(int unit, const CAmount& nIn, bool fPlus, SeparatorStyle separators, const int nTokenUnit)
 {
     // Note: not using straight sprintf here because we do NOT want
     // localized number formatting.
-    if((nAssetUnit < 0 || nAssetUnit > 8) && !valid(unit))
+    if((nTokenUnit < 0 || nTokenUnit > 8) && !valid(unit))
         return QString(); // Refuse to format invalid unit
     qint64 n = (qint64)nIn;
-    qint64 coin = nAssetUnit >= 0 ? factorAsset(nAssetUnit) : factor(unit);
-    int num_decimals = nAssetUnit >= 0 ? nAssetUnit : decimals(unit);
+    qint64 coin = nTokenUnit >= 0 ? factorToken(nTokenUnit) : factor(unit);
+    int num_decimals = nTokenUnit >= 0 ? nTokenUnit : decimals(unit);
     qint64 n_abs = (n > 0 ? n : -n);
     qint64 quotient = n_abs / coin;
     qint64 remainder = n_abs % coin;
@@ -128,7 +128,7 @@ QString AlphaconUnits::format(int unit, const CAmount& nIn, bool fPlus, Separato
     else if (fPlus && n > 0)
         quotient_str.insert(0, '+');
 
-    if (nAssetUnit == MIN_ASSET_UNITS)
+    if (nTokenUnit == MIN_TOKEN_UNITS)
         return quotient_str;
 
 
@@ -151,7 +151,7 @@ QString AlphaconUnits::formatWithUnit(int unit, const CAmount& amount, bool plus
 
 QString AlphaconUnits::formatWithCustomName(QString customName, const CAmount& amount, int unit, bool plussign, SeparatorStyle separators)
 {
-    return format(ALP, amount / factorAsset(MAX_ASSET_UNITS - unit), plussign, separators, unit) + QString(" ") + customName;
+    return format(ALP, amount / factorToken(MAX_TOKEN_UNITS - unit), plussign, separators, unit) + QString(" ") + customName;
 }
 
 QString AlphaconUnits::formatHtmlWithUnit(int unit, const CAmount& amount, bool plussign, SeparatorStyle separators)
@@ -201,11 +201,11 @@ bool AlphaconUnits::parse(int unit, const QString &value, CAmount *val_out)
     return ok;
 }
 
-bool AlphaconUnits::assetParse(int assetUnit, const QString &value, CAmount *val_out)
+bool AlphaconUnits::tokenParse(int tokenUnit, const QString &value, CAmount *val_out)
 {
-    if(!(assetUnit >= 0 && assetUnit <= 8) || value.isEmpty())
+    if(!(tokenUnit >= 0 && tokenUnit <= 8) || value.isEmpty())
         return false; // Refuse to parse invalid unit or empty string
-    int num_decimals = assetUnit;
+    int num_decimals = tokenUnit;
 
     // Ignore spaces and thin spaces when parsing
     QStringList parts = removeSpaces(value).split(".");

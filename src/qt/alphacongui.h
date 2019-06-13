@@ -90,6 +90,7 @@ private:
     QLabel *connectionsControl;
     QLabel *labelBlocksIcon;
     QLabel *progressBarLabel;
+    QLabel *labelStakingIcon;
     QProgressBar *progressBar;
     QProgressDialog *progressDialog;
 
@@ -111,24 +112,18 @@ private:
     QAction *encryptWalletAction;
     QAction *backupWalletAction;
     QAction *changePassphraseAction;
+    QAction *unlockWalletAction;
+    QAction *lockWalletAction;
     QAction *aboutQtAction;
     QAction *openRPCConsoleAction;
     QAction *openAction;
     QAction *showHelpMessageAction;
 
-    /** RVN START */
-    QAction *transferAssetAction;
-    QAction *createAssetAction;
-    QAction *manageAssetAction;
-    QAction *messagingAction;
-    QAction *votingAction;
-    QWidget *headerWidget;
-    QLabel *labelCurrentMarket;
-    QLabel *labelCurrentPrice;
-    QTimer *pricingTimer;
-    QNetworkAccessManager* networkManager;
-    QNetworkRequest* request;
-    /** RVN END */
+    /** TOKENS START */
+    QAction *transferTokenAction;
+    QAction *createTokenAction;
+    QAction *manageTokenAction;
+    /** TOKENS END */
 
     QSystemTrayIcon *trayIcon;
     QMenu *trayIconMenu;
@@ -140,6 +135,9 @@ private:
     /** Keep track of previous number of blocks, to detect progress */
     int prevBlocks;
     int spinnerFrame;
+
+    uint64_t nWeight;
+    bool nStaking;
 
     const PlatformStyle *platformStyle;
 
@@ -190,8 +188,6 @@ public Q_SLOTS:
     */
     void message(const QString &title, const QString &message, unsigned int style, bool *ret = nullptr);
 
-    void getPriceInfo();
-
 #ifdef ENABLE_WALLET
     /** Set the encryption status as shown in the UI.
        @param[in] status            current encryption status
@@ -208,10 +204,10 @@ public Q_SLOTS:
     bool handlePaymentRequest(const SendCoinsRecipient& recipient);
 
     /** Show incoming transaction notification for new transactions. */
-    void incomingTransaction(const QString& date, int unit, const CAmount& amount, const QString& type, const QString& address, const QString& label, const QString& assetName);
+    void incomingTransaction(const QString& date, int unit, const CAmount& amount, const QString& type, const QString& address, const QString& label, const QString& tokenName);
 
-    /** Show the assets button if assets are active */
-    void checkAssets();
+    /** Show the tokens button if tokens are active */
+    void checkTokens();
 #endif // ENABLE_WALLET
 
 private Q_SLOTS:
@@ -233,12 +229,12 @@ private Q_SLOTS:
     /** Show open dialog */
     void openClicked();
 
-    /** RVN START */
-    /** Switch to assets page */
-    void gotoAssetsPage();
-    void gotoCreateAssetsPage();
-    void gotoManageAssetsPage();
-    /** RVN END */
+    /** TOKENS START */
+    /** Switch to tokens page */
+    void gotoTokensPage();
+    void gotoCreateTokensPage();
+    void gotoManageTokensPage();
+    /** TOKENS END */
 
 #endif // ENABLE_WALLET
     /** Show configuration dialog */
@@ -261,6 +257,8 @@ private Q_SLOTS:
     /** Simply calls showNormalIfMinimized(true) for use in SLOT() macro */
     void toggleHidden();
 
+    void updateStakingIcon();
+
     /** called by a timer to check if fRequestShutdown has been set **/
     void detectShutdown();
 
@@ -272,6 +270,9 @@ private Q_SLOTS:
 
     /** Toggle networking */
     void toggleNetworkActive();
+
+    /** Toggle stacking */
+    void toggleStakingActive();
 
     void showModalOverlay();
 };

@@ -18,12 +18,12 @@
 #include "sendcoinsdialog.h"
 #include "signverifymessagedialog.h"
 #include "transactiontablemodel.h"
-#include "assettablemodel.h"
+#include "tokentablemodel.h"
 #include "transactionview.h"
 #include "walletmodel.h"
-#include "assetsdialog.h"
-#include "createassetdialog.h"
-#include "reissueassetdialog.h"
+#include "tokensdialog.h"
+#include "createtokendialog.h"
+#include "reissuetokendialog.h"
 #include <validation.h>
 
 #include "ui_interface.h"
@@ -63,9 +63,9 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     receiveCoinsPage = new ReceiveCoinsDialog(platformStyle);
     sendCoinsPage = new SendCoinsDialog(platformStyle);
 
-    assetsPage = new AssetsDialog(platformStyle);
-    createAssetsPage = new CreateAssetDialog(platformStyle);
-    manageAssetsPage = new ReissueAssetDialog(platformStyle);
+    tokensPage = new TokensDialog(platformStyle);
+    createTokensPage = new CreateTokenDialog(platformStyle);
+    manageTokensPage = new ReissueTokenDialog(platformStyle);
 
     usedSendingAddressesPage = new AddressBookPage(platformStyle, AddressBookPage::ForEditing, AddressBookPage::SendingTab, this);
     usedReceivingAddressesPage = new AddressBookPage(platformStyle, AddressBookPage::ForEditing, AddressBookPage::ReceivingTab, this);
@@ -75,11 +75,11 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     addWidget(receiveCoinsPage);
     addWidget(sendCoinsPage);
 
-    /** RVN START */
-    addWidget(assetsPage);
-    addWidget(createAssetsPage);
-    addWidget(manageAssetsPage);
-    /** RVN END */
+    /** TOKENS START */
+    addWidget(tokensPage);
+    addWidget(createTokensPage);
+    addWidget(manageTokensPage);
+    /** TOKENS END */
 
     // Clicking on a transaction on the overview pre-selects the transaction on the transaction history page
     connect(overviewPage, SIGNAL(transactionClicked(QModelIndex)), transactionView, SLOT(focusTransaction(QModelIndex)));
@@ -96,14 +96,14 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     // Pass through messages from transactionView
     connect(transactionView, SIGNAL(message(QString,QString,unsigned int)), this, SIGNAL(message(QString,QString,unsigned int)));
 
-    /** RVN START */
-    connect(assetsPage, SIGNAL(message(QString,QString,unsigned int)), this, SIGNAL(message(QString,QString,unsigned int)));
-    connect(createAssetsPage, SIGNAL(message(QString,QString,unsigned int)), this, SIGNAL(message(QString,QString,unsigned int)));
-    connect(manageAssetsPage, SIGNAL(message(QString,QString,unsigned int)), this, SIGNAL(message(QString,QString,unsigned int)));
-    connect(overviewPage, SIGNAL(assetSendClicked(QModelIndex)), assetsPage, SLOT(focusAsset(QModelIndex)));
-    connect(overviewPage, SIGNAL(assetIssueSubClicked(QModelIndex)), createAssetsPage, SLOT(focusSubAsset(QModelIndex)));
-    connect(overviewPage, SIGNAL(assetIssueUniqueClicked(QModelIndex)), createAssetsPage, SLOT(focusUniqueAsset(QModelIndex)));
-    connect(overviewPage, SIGNAL(assetReissueClicked(QModelIndex)), manageAssetsPage, SLOT(focusReissueAsset(QModelIndex)));
+    /** TOKENS START */
+    connect(tokensPage, SIGNAL(message(QString,QString,unsigned int)), this, SIGNAL(message(QString,QString,unsigned int)));
+    connect(createTokensPage, SIGNAL(message(QString,QString,unsigned int)), this, SIGNAL(message(QString,QString,unsigned int)));
+    connect(manageTokensPage, SIGNAL(message(QString,QString,unsigned int)), this, SIGNAL(message(QString,QString,unsigned int)));
+    connect(overviewPage, SIGNAL(tokenSendClicked(QModelIndex)), tokensPage, SLOT(focusToken(QModelIndex)));
+    connect(overviewPage, SIGNAL(tokenIssueSubClicked(QModelIndex)), createTokensPage, SLOT(focusSubToken(QModelIndex)));
+    connect(overviewPage, SIGNAL(tokenIssueUniqueClicked(QModelIndex)), createTokensPage, SLOT(focusUniqueToken(QModelIndex)));
+    connect(overviewPage, SIGNAL(tokenReissueClicked(QModelIndex)), manageTokensPage, SLOT(focusReissueToken(QModelIndex)));
     /** RNV END */
 }
 
@@ -118,17 +118,17 @@ void WalletView::setAlphaconGUI(AlphaconGUI *gui)
         // Clicking on a transaction on the overview page simply sends you to transaction history page
         connect(overviewPage, SIGNAL(transactionClicked(QModelIndex)), gui, SLOT(gotoHistoryPage()));
 
-        // Clicking on a asset menu item Send
-        connect(overviewPage, SIGNAL(assetSendClicked(QModelIndex)), gui, SLOT(gotoAssetsPage()));
+        // Clicking on a token menu item Send
+        connect(overviewPage, SIGNAL(tokenSendClicked(QModelIndex)), gui, SLOT(gotoTokensPage()));
 
-        // Clicking on a asset menu item Issue Sub
-        connect(overviewPage, SIGNAL(assetIssueSubClicked(QModelIndex)), gui, SLOT(gotoCreateAssetsPage()));
+        // Clicking on a token menu item Issue Sub
+        connect(overviewPage, SIGNAL(tokenIssueSubClicked(QModelIndex)), gui, SLOT(gotoCreateTokensPage()));
 
-        // Clicking on a asset menu item Issue Unique
-        connect(overviewPage, SIGNAL(assetIssueUniqueClicked(QModelIndex)), gui, SLOT(gotoCreateAssetsPage()));
+        // Clicking on a token menu item Issue Unique
+        connect(overviewPage, SIGNAL(tokenIssueUniqueClicked(QModelIndex)), gui, SLOT(gotoCreateTokensPage()));
 
-        // Clicking on a asset menu item Reissue
-        connect(overviewPage, SIGNAL(assetReissueClicked(QModelIndex)), gui, SLOT(gotoManageAssetsPage()));
+        // Clicking on a token menu item Reissue
+        connect(overviewPage, SIGNAL(tokenReissueClicked(QModelIndex)), gui, SLOT(gotoManageTokensPage()));
 
         // Receive and report messages
         connect(this, SIGNAL(message(QString,QString,unsigned int)), gui, SLOT(message(QString,QString,unsigned int)));
@@ -142,8 +142,8 @@ void WalletView::setAlphaconGUI(AlphaconGUI *gui)
         // Connect HD enabled state signal 
         connect(this, SIGNAL(hdEnabledStatusChanged(int)), gui, SLOT(setHDStatus(int)));
 
-        // Pass through checkAssets calls to the GUI
-        connect(this, SIGNAL(checkAssets()), gui, SLOT(checkAssets()));
+        // Pass through checkTokens calls to the GUI
+        connect(this, SIGNAL(checkTokens()), gui, SLOT(checkTokens()));
     }
 }
 
@@ -167,10 +167,10 @@ void WalletView::setWalletModel(WalletModel *_walletModel)
     usedReceivingAddressesPage->setModel(_walletModel ? _walletModel->getAddressTableModel() : nullptr);
     usedSendingAddressesPage->setModel(_walletModel ? _walletModel->getAddressTableModel() : nullptr);
 
-    /** RVN START */
-    assetsPage->setModel(_walletModel);
-    createAssetsPage->setModel(_walletModel);
-    manageAssetsPage->setModel(_walletModel);
+    /** TOKENS START */
+    tokensPage->setModel(_walletModel);
+    createTokensPage->setModel(_walletModel);
+    manageTokensPage->setModel(_walletModel);
 
     if (_walletModel)
     {
@@ -198,6 +198,9 @@ void WalletView::setWalletModel(WalletModel *_walletModel)
 
 void WalletView::processNewTransaction(const QModelIndex& parent, int start, int end)
 {
+    /** Everytime we get an new transaction. We should check to see if tokens are enabled or not */
+    overviewPage->showTokens();
+    
     // Prevent balloon-spam when initial block download is in progress
     if (!walletModel || !clientModel || clientModel->inInitialBlockDownload())
         return;
@@ -206,11 +209,11 @@ void WalletView::processNewTransaction(const QModelIndex& parent, int start, int
     if (!ttm || ttm->processingQueuedTransactions())
         return;
 
-    /** RVN START */
-    // With the addition of asset transactions, there can be multiple transaction that need notifications
+    /** TOKENS START */
+    // With the addition of token transactions, there can be multiple transaction that need notifications
     // so we need to loop through all new transaction that were added to the transaction table and display
     // notifications for each individual transaction
-    QString assetName = "";
+    QString tokenName = "";
     for (int i = start; i <= end; i++) {
         QString date = ttm->index(i, TransactionTableModel::Date, parent).data().toString();
         qint64 amount = ttm->index(i, TransactionTableModel::Amount, parent).data(Qt::EditRole).toULongLong();
@@ -218,28 +221,27 @@ void WalletView::processNewTransaction(const QModelIndex& parent, int start, int
         QModelIndex index = ttm->index(i, 0, parent);
         QString address = ttm->data(index, TransactionTableModel::AddressRole).toString();
         QString label = ttm->data(index, TransactionTableModel::LabelRole).toString();
-        assetName = ttm->data(index, TransactionTableModel::AssetNameRole).toString();
+        tokenName = ttm->data(index, TransactionTableModel::TokenNameRole).toString();
 
         Q_EMIT incomingTransaction(date, walletModel->getOptionsModel()->getDisplayUnit(), amount, type, address, label,
-                                   assetName);
+                                   tokenName);
     }
-    /** RVN END */
+    /** TOKENS END */
 
-    /** Everytime we get an new transaction. We should check to see if assets are enabled or not */
-    overviewPage->showAssets();
-    transactionView->showAssets();
-    Q_EMIT checkAssets();
+    
+    transactionView->showTokens();
+    Q_EMIT checkTokens();
 
-    assetsPage->processNewTransaction();
-    createAssetsPage->updateAssetList();
-    manageAssetsPage->updateAssetsList();
+    tokensPage->processNewTransaction();
+    createTokensPage->updateTokenList();
+    manageTokensPage->updateTokensList();
 
 }
 
 void WalletView::gotoOverviewPage()
 {
     setCurrentWidget(overviewPage);
-    Q_EMIT checkAssets();
+    Q_EMIT checkTokens();
 }
 
 void WalletView::gotoHistoryPage()
@@ -349,6 +351,13 @@ void WalletView::unlockWallet()
     }
 }
 
+unsigned long long WalletView::updateWeight()
+{
+    if(!walletModel)
+        return 0;
+    return walletModel->updateWeight();
+}
+
 void WalletView::usedSendingAddresses()
 {
     if(!walletModel)
@@ -398,24 +407,24 @@ void WalletView::requestedSyncWarningInfo()
 }
 
 bool fFirstVisit = true;
-/** RVN START */
-void WalletView::gotoAssetsPage()
+/** TOKENS START */
+void WalletView::gotoTokensPage()
 {
     if (fFirstVisit){
         fFirstVisit = false;
-        assetsPage->handleFirstSelection();
+        tokensPage->handleFirstSelection();
     }
-    setCurrentWidget(assetsPage);
-    assetsPage->focusAssetListBox();
+    setCurrentWidget(tokensPage);
+    tokensPage->focusTokenListBox();
 }
 
-void WalletView::gotoCreateAssetsPage()
+void WalletView::gotoCreateTokensPage()
 {
-    setCurrentWidget(createAssetsPage);
+    setCurrentWidget(createTokensPage);
 }
 
-void WalletView::gotoManageAssetsPage()
+void WalletView::gotoManageTokensPage()
 {
-    setCurrentWidget(manageAssetsPage);
+    setCurrentWidget(manageTokensPage);
 }
-/** RVN END */
+/** TOKENS END */

@@ -17,9 +17,9 @@
 #include <map>
 
 #include <boost/test/unit_test.hpp>
-#include <assets/assets.h>
+#include <tokens/tokens.h>
 
-int ApplyTxInUndo(Coin &&undo, CCoinsViewCache &view, const COutPoint &out, CAssetsCache *assetsCache = nullptr);
+int ApplyTxInUndo(Coin &&undo, CCoinsViewCache &view, const COutPoint &out, CTokensCache *tokensCache = nullptr);
 
 namespace
 {

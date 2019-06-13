@@ -85,9 +85,9 @@ ALPHACON_CORE_H = \
   spentindex.h \
   timestampindex.h \
   addrman.h \
-  assets/assets.h \
-  assets/assetdb.h \
-  assets/assettypes.h \
+  tokens/tokens.h \
+  tokens/tokendb.h \
+  tokens/tokentypes.h \
   base58.h \
   bloom.h \
   blockencodings.h \
@@ -213,16 +213,16 @@ libalphacon_server_a_SOURCES = \
   net.cpp \
   net_processing.cpp \
   noui.cpp \
-  assets/assets.cpp \
-  assets/assetdb.cpp \
-  assets/assettypes.cpp \
+  tokens/tokens.cpp \
+  tokens/tokendb.cpp \
+  tokens/tokentypes.cpp \
   policy/fees.cpp \
   policy/policy.cpp \
   policy/rbf.cpp \
   pos.cpp \
   pow.cpp \
   rest.cpp \
-  rpc/assets.cpp \
+  rpc/tokens.cpp \
   rpc/blockchain.cpp \
   rpc/mining.cpp \
   rpc/misc.cpp \
@@ -282,10 +282,7 @@ crypto_libalphacon_crypto_a_SOURCES = \
   crypto/hmac_sha512.cpp \
   crypto/hmac_sha512.h \
   crypto/ripemd160.cpp \
-  crypto/aes_helper.c \
   crypto/groestl.c \
-  crypto/sph_sha2.c \
-  crypto/sph_sha512.c \
   crypto/ripemd160.h \
   crypto/sha1.cpp \
   crypto/sha1.h \
@@ -293,7 +290,6 @@ crypto_libalphacon_crypto_a_SOURCES = \
   crypto/sha256.h \
   crypto/sha512.h \
   crypto/sph_groestl.h \
-  crypto/sph_sha2.h \
   crypto/sph_types.h \
   crypto/sha512.cpp \
   crypto/sha512.h

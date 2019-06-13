@@ -254,11 +254,7 @@ static void MutateTxAddInput(CMutableTransaction& tx, const std::string& strInpu
     //    static const unsigned int maxVout = MAX_BLOCK_WEIGHT / (WITNESS_SCALE_FACTOR * minTxOutSz);
 
     unsigned int maxVout = 0;
-    if (fAssetsIsActive) {
-        maxVout = MAX_BLOCK_WEIGHT_RIP2 / (WITNESS_SCALE_FACTOR * minTxOutSz);
-    } else {
-        maxVout = MAX_BLOCK_WEIGHT / (WITNESS_SCALE_FACTOR * minTxOutSz);
-    }
+    maxVout = MAX_BLOCK_WEIGHT / (WITNESS_SCALE_FACTOR * minTxOutSz);
 
     // extract and validate vout
     std::string strVout = vStrInputParts[1];

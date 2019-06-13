@@ -56,7 +56,6 @@ uint64_t nMiningTimeStart = 0;
 uint64_t nHashesPerSec = 0;
 uint64_t nHashesDone = 0;
 
-int64_t nLastCoinStakeSearchInterval = 0;
 
 unsigned int nMinerSleep = STAKER_POLLING_PERIOD;
 
@@ -96,6 +95,8 @@ bool SignBlock(std::shared_ptr<CBlock> pblock, CWallet& wallet, const CAmount& n
     CMutableTransaction txCoinStake(*pblock->vtx[1]);
     txCoinStake.nTime = pblock->nTime;
 
+    int64_t nSearchTime = txCoinStake.nTime; // search to current time
+
     if (wallet.CreateCoinStake(wallet, pblock->nBits, nTotalFees, pblock->nTime, txCoinStake, key))
     {
         if (txCoinStake.nTime >= chainActive.Tip()->GetMedianTimePast()+1)
@@ -113,7 +114,7 @@ bool SignBlock(std::shared_ptr<CBlock> pblock, CWallet& wallet, const CAmount& n
             }
 
             // append a signature to our block and ensure that is LowS
-            return key.Sign(pblock->GetHash(), pblock->vchBlockSig);
+            return key.Sign(pblock->GetBlockHash(), pblock->vchBlockSig);
         }
     }
 
@@ -195,8 +196,6 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
         pblock->nVersion = gArgs.GetArg("-blockversion", pblock->nVersion);
 
     pblock->nTime = GetAdjustedTime();
-
-    int64_t nLockTimeCutoff = pblock->GetBlockTime();
 
     // Decide whether to include witness transactions
     // This is only needed in case the witness softfork activation is reverted
@@ -526,7 +525,7 @@ void IncrementExtraNonce(CBlock* pblock, const CBlockIndex* pindexPrev, unsigned
 bool CheckStake(const std::shared_ptr<const CBlock> pblock, CWallet& wallet)
 {
     uint256 proofHash, hashTarget;
-    uint256 hashBlock = pblock->GetHash();
+    uint256 hashBlock = pblock->GetBlockHash();
 
     if(!pblock->IsProofOfStake())
         return error("CheckStake() : %s is not a proof-of-stake block", hashBlock.GetHex());
@@ -555,7 +554,7 @@ bool CheckStake(const std::shared_ptr<const CBlock> pblock, CWallet& wallet)
 
         // Process this block the same as if we had received it from another node
         bool fNewBlock = false;
-        uint256 hash = pblock->GetHash();
+        uint256 hash = pblock->GetBlockHash();
         if (!ProcessNewBlock(Params(), pblock, true, &fNewBlock, hash))
             return error("CheckStake() : ProcessBlock, block not accepted");
     }
@@ -740,8 +739,10 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlockAlp(const CScript&
     pblocktemplate->vchCoinbaseCommitment = GenerateCoinbaseCommitment(*pblock, pindexPrev, chainparams.GetConsensus());
     pblocktemplate->vTxFees[0] = -nFees;
 
-    LogPrintf("CreateNewBlockAlp(): block weight: %u txs: %u fees: %ld sigops %d\n", GetBlockWeight(*pblock), nBlockTx, nFees, nBlockSigOpsCost);
-
+    if (gArgs.GetBoolArg("-printstaking", false)) {
+        LogPrintf("CreateNewBlockAlp(): block weight: %u txs: %u fees: %ld sigops %d\n", GetBlockWeight(*pblock), nBlockTx, nFees, nBlockSigOpsCost);
+    }
+    
     // Fill in header
     pblock->hashPrevBlock  = pindexPrev->GetBlockHash();
     pblock->nNonce         = 0;
@@ -753,13 +754,15 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlockAlp(const CScript&
     }
     int64_t nTime2 = GetTimeMicros();
 
-    LogPrint(BCLog::BENCH, "CreateNewBlockAlp() packages: %.2fms (%d packages, %d updated descendants), validity: %.2fms (total %.2fms)\n", 0.001 * (nTime1 - nTimeStart), nPackagesSelected, nDescendantsUpdated, 0.001 * (nTime2 - nTime1), 0.001 * (nTime2 - nTimeStart));
+    if (gArgs.GetBoolArg("-printstaking", false)) {
+        LogPrint(BCLog::BENCH, "CreateNewBlockAlp() packages: %.2fms (%d packages, %d updated descendants), validity: %.2fms (total %.2fms)\n", 0.001 * (nTime1 - nTimeStart), nPackagesSelected, nDescendantsUpdated, 0.001 * (nTime2 - nTime1), 0.001 * (nTime2 - nTimeStart));
+    }
 
     return std::move(pblocktemplate);
 }
 
 
-void ThreadStakeMiner(CWallet *pwallet, CConnman* connman)
+void ThreadStakeMiner(CWallet *pwallet)
 {
     SetThreadPriority(THREAD_PRIORITY_LOWEST);
 
@@ -776,22 +779,23 @@ void ThreadStakeMiner(CWallet *pwallet, CConnman* connman)
     bool fTryToSync = false;
 
     while (true) {
-        while (pwallet->IsLocked())
+        // Since new core protocol is not compatible with old one,
+        // staking will be enabled after tokens activation
+        while (pwallet->IsLocked() || !AreTokensDeployed())
         {
-            nLastCoinStakeSearchInterval = 0;
             MilliSleep(10000);
         }
 
         // Don't disable PoS mining for no connections if in regtest mode
         if (!gArgs.GetBoolArg("-emergencystaking", false)) {
-            while (connman->GetNodeCount(CConnman::CONNECTIONS_ALL) == 0 || IsInitialBlockDownload()) {
+            while (g_connman->vNodes.size() == 0 || IsInitialBlockDownload()) {
                 fTryToSync = true;
                 MilliSleep(1000);
             }
 
             if (fTryToSync) {
                 fTryToSync = false;
-                if (connman->GetNodeCount(CConnman::CONNECTIONS_ALL) < 1 ||
+                if (g_connman->vNodes.size() < 1 ||
                     chainActive.Tip()->GetBlockTime() < GetTime() - 10 * 60) {
                     MilliSleep(60000);
                     continue;
@@ -816,7 +820,7 @@ void ThreadStakeMiner(CWallet *pwallet, CConnman* connman)
             std::shared_ptr<CBlock> pblock = std::make_shared<CBlock>(pblocktemplate->block);
             if (SignBlock(pblock, *pwallet, nTotalFees)) {
 
-                std::cout << "\n\nSuccessfully signed block, now trying to check it: " << pblock->GetHash().ToString() << "\n\n" << std::endl;
+                std::cout << "\n\nSuccessfully signed block, now trying to check it: " << pblock->GetBlockHash().ToString() << "\n\n" << std::endl;
 
                 // Another block was received while building ours, scrap progress
                 if (chainActive.Tip()->GetBlockHash() != pblock->hashPrevBlock) {
@@ -841,8 +845,14 @@ void ThreadStakeMiner(CWallet *pwallet, CConnman* connman)
     }
 }
 
-void StakeCoins(bool fStake, CWallet *pwallet, CConnman* connman, boost::thread_group*& stakeThread)
+void StakeCoins(bool fStake, CWallet *pwallet, boost::thread_group*& stakeThread)
 {
+    if (fStake) {
+        LogPrintf("Start staking thread\n");
+    } else {
+        LogPrintf("Stop staking thread\n");
+    }
+
     if (stakeThread != nullptr)
     {
         stakeThread->interrupt_all();
@@ -853,7 +863,7 @@ void StakeCoins(bool fStake, CWallet *pwallet, CConnman* connman, boost::thread_
     if(fStake)
     {
         stakeThread = new boost::thread_group();
-        stakeThread->create_thread(boost::bind(&ThreadStakeMiner, pwallet, connman));
+        stakeThread->create_thread(boost::bind(&ThreadStakeMiner, pwallet));
     }
 }
 

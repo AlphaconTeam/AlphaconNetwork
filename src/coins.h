@@ -21,8 +21,8 @@
 #include <stdint.h>
 
 #include <unordered_map>
-#include <assets/assets.h>
-#include <assets/assetdb.h>
+#include <tokens/tokens.h>
+#include <tokens/tokendb.h>
 
 /**
  * A UTXO entry.
@@ -94,8 +94,8 @@ public:
         return out.IsNull();
     }
 
-    bool IsAsset() const {
-        return out.scriptPubKey.IsAssetScript();
+    bool IsToken() const {
+        return out.scriptPubKey.IsTokenScript();
     }
 
     size_t DynamicMemoryUsage() const {
@@ -281,7 +281,7 @@ public:
      * If no unspent output exists for the passed outpoint, this call
      * has no effect.
      */
-    bool SpendCoin(const COutPoint &outpoint, Coin* moveto = nullptr, CAssetsCache* assetsCache = nullptr);
+    bool SpendCoin(const COutPoint &outpoint, Coin* moveto = nullptr, CTokensCache* tokensCache = nullptr);
 
     /**
      * Push the modifications applied to this cache to its base.
@@ -325,7 +325,7 @@ private:
 // an overwrite.
 // TODO: pass in a boolean to limit these possible overwrites to known
 // (pre-BIP34) cases.
-void AddCoins(CCoinsViewCache& cache, const CTransaction& tx, int nHeight, uint256 blockHash, bool check = false, CAssetsCache* assetsCache = nullptr, std::pair<std::string, CBlockAssetUndo>* undoAssetData = nullptr);
+void AddCoins(CCoinsViewCache& cache, const CTransaction& tx, int nHeight, uint256 blockHash, bool check = false, CTokensCache* tokensCache = nullptr, std::pair<std::string, CBlockTokenUndo>* undoTokenData = nullptr);
 
 //! Utility function to find any unspent output with a given txid.
 // This function can be quite expensive because in the event of a transaction

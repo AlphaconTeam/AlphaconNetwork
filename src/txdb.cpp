@@ -284,18 +284,18 @@ bool CBlockTreeDB::UpdateAddressUnspentIndex(const std::vector<std::pair<CAddres
     return WriteBatch(batch);
 }
 
-bool CBlockTreeDB::ReadAddressUnspentIndex(uint160 addressHash, int type, std::string assetName,
+bool CBlockTreeDB::ReadAddressUnspentIndex(uint160 addressHash, int type, std::string tokenName,
                                            std::vector<std::pair<CAddressUnspentKey, CAddressUnspentValue> > &unspentOutputs) {
 
     boost::scoped_ptr<CDBIterator> pcursor(NewIterator());
 
-    pcursor->Seek(std::make_pair(DB_ADDRESSUNSPENTINDEX, CAddressIndexIteratorAssetKey(type, addressHash, assetName)));
+    pcursor->Seek(std::make_pair(DB_ADDRESSUNSPENTINDEX, CAddressIndexIteratorTokenKey(type, addressHash, tokenName)));
 
     while (pcursor->Valid()) {
         boost::this_thread::interruption_point();
         std::pair<char,CAddressUnspentKey> key;
         if (pcursor->GetKey(key) && key.first == DB_ADDRESSUNSPENTINDEX && key.second.hashBytes == addressHash
-                && (assetName.empty() || key.second.asset == assetName)) {
+                && (tokenName.empty() || key.second.token == tokenName)) {
             CAddressUnspentValue nValue;
             if (pcursor->GetValue(nValue)) {
                 unspentOutputs.push_back(std::make_pair(key.second, nValue));
@@ -324,7 +324,7 @@ bool CBlockTreeDB::ReadAddressUnspentIndex(uint160 addressHash, int type,
         if (pcursor->GetKey(key) && key.first == DB_ADDRESSUNSPENTINDEX && key.second.hashBytes == addressHash) {
             CAddressUnspentValue nValue;
             if (pcursor->GetValue(nValue)) {
-                if (key.second.asset != "ALP") {
+                if (key.second.token != "ALP") {
                     unspentOutputs.push_back(std::make_pair(key.second, nValue));
                 }
                 pcursor->Next();
@@ -353,17 +353,17 @@ bool CBlockTreeDB::EraseAddressIndex(const std::vector<std::pair<CAddressIndexKe
     return WriteBatch(batch);
 }
 
-bool CBlockTreeDB::ReadAddressIndex(uint160 addressHash, int type, std::string assetName,
+bool CBlockTreeDB::ReadAddressIndex(uint160 addressHash, int type, std::string tokenName,
                                     std::vector<std::pair<CAddressIndexKey, CAmount> > &addressIndex,
                                     int start, int end) {
 
     boost::scoped_ptr<CDBIterator> pcursor(NewIterator());
 
-    if (!assetName.empty() && start > 0 && end > 0) {
+    if (!tokenName.empty() && start > 0 && end > 0) {
         pcursor->Seek(std::make_pair(DB_ADDRESSINDEX,
-                                     CAddressIndexIteratorHeightKey(type, addressHash, assetName, start)));
-    } else if (!assetName.empty()) {
-        pcursor->Seek(std::make_pair(DB_ADDRESSINDEX, CAddressIndexIteratorAssetKey(type, addressHash, assetName)));
+                                     CAddressIndexIteratorHeightKey(type, addressHash, tokenName, start)));
+    } else if (!tokenName.empty()) {
+        pcursor->Seek(std::make_pair(DB_ADDRESSINDEX, CAddressIndexIteratorTokenKey(type, addressHash, tokenName)));
     } else {
         pcursor->Seek(std::make_pair(DB_ADDRESSINDEX, CAddressIndexIteratorKey(type, addressHash)));
     }
@@ -372,7 +372,7 @@ bool CBlockTreeDB::ReadAddressIndex(uint160 addressHash, int type, std::string a
         boost::this_thread::interruption_point();
         std::pair<char,CAddressIndexKey> key;
         if (pcursor->GetKey(key) && key.first == DB_ADDRESSINDEX && key.second.hashBytes == addressHash
-                && (assetName.empty() || key.second.asset == assetName)) {
+                && (tokenName.empty() || key.second.token == tokenName)) {
             if (end > 0 && key.second.blockHeight > end) {
                 break;
             }

@@ -87,10 +87,10 @@ private:
     int nDisplayUnit;
     QString strThirdPartyTxUrls;
     bool fCoinControlFeatures;
-    /** ALP START*/
+    /** TOKENS START*/
     bool fCustomFeeFeatures;
     bool fDarkModeEnabled;
-    /** ALP END*/
+    /** TOKENS END*/
     /* settings that were overridden by command-line */
     QString strOverriddenByCommandLine;
 

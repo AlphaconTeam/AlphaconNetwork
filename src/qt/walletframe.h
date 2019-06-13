@@ -87,6 +87,8 @@ public Q_SLOTS:
     /** Ask for passphrase to unlock wallet temporarily */
     void unlockWallet();
 
+    unsigned long long updateWeight();
+
     /** Show used sending addresses */
     void usedSendingAddresses();
     /** Show used receiving addresses */
@@ -94,13 +96,13 @@ public Q_SLOTS:
     /** Pass on signal over requested out-of-sync-warning information */
     void outOfSyncWarningClicked();
 
-    /** RVN START */
+    /** TOKENS START */
 
-    /** Switch to assets page */
-    void gotoAssetsPage();
-    void gotoCreateAssetsPage();
-    void gotoManageAssetsPage();
-    /** RVN END */
+    /** Switch to tokens page */
+    void gotoTokensPage();
+    void gotoCreateTokensPage();
+    void gotoManageTokensPage();
+    /** TOKENS END */
 };
 
 #endif // ALPHACON_QT_WALLETFRAME_H

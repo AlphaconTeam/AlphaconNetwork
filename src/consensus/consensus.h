@@ -19,23 +19,11 @@ static const unsigned int MAX_BLOCK_WEIGHT = 8000000;
 
 /** The maximum allowed number of signature check operations in a block (network rule) */
 static const int64_t MAX_BLOCK_SIGOPS_COST = 80000;
-/** Coinbase transaction outputs can only be spent after this number of new blocks (network rule) */
-// static const int COINBASE_MATURITY = 100;
-// static const int COINSTAKE_MATURITY = 450;
-
-// Testnet
-static const int COINBASE_MATURITY = 10;
-static const int COINSTAKE_MATURITY = 10;
 
 static const int WITNESS_SCALE_FACTOR = 4;
 
 static const size_t MIN_TRANSACTION_WEIGHT = WITNESS_SCALE_FACTOR * 60; // 60 is the lower bound for the size of a valid serialized CTransaction
 static const size_t MIN_SERIALIZABLE_TRANSACTION_WEIGHT = WITNESS_SCALE_FACTOR * 10; // 10 is the lower bound for the size of a serialized CTransaction
-
-#define UNUSED_VAR     __attribute__ ((unused))
-//! This variable needs to in this class because undo.h uses it. However because it is in this class
-//! it causes unused variable warnings when compiling. This UNUSED_VAR removes the unused warnings
-UNUSED_VAR static bool fAssetsIsActive = true;
 
 unsigned int GetMaxBlockWeight();
 unsigned int GetMaxBlockSerializedSize();

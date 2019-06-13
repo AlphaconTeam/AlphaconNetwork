@@ -143,9 +143,9 @@ isminetype IsMine(const CKeyStore &keystore, const CScript& scriptPubKey, bool& 
                 return ISMINE_SPENDABLE;
             break;
         }
-            /** RVN START */
-        case TX_NEW_ASSET: {
-            if (!AreAssetsDeployed())
+            /** TOKENS START */
+        case TX_NEW_TOKEN: {
+            if (!AreTokensDeployed())
                 return ISMINE_NO;
             keyID = CKeyID(uint160(vSolutions[0]));
             if (sigversion != SIGVERSION_BASE) {
@@ -161,8 +161,8 @@ isminetype IsMine(const CKeyStore &keystore, const CScript& scriptPubKey, bool& 
 
         }
 
-        case TX_TRANSFER_ASSET: {
-            if (!AreAssetsDeployed())
+        case TX_TRANSFER_TOKEN: {
+            if (!AreTokensDeployed())
                 return ISMINE_NO;
             keyID = CKeyID(uint160(vSolutions[0]));
             if (sigversion != SIGVERSION_BASE) {
@@ -177,8 +177,8 @@ isminetype IsMine(const CKeyStore &keystore, const CScript& scriptPubKey, bool& 
             break;
         }
 
-        case TX_REISSUE_ASSET: {
-            if (!AreAssetsDeployed())
+        case TX_REISSUE_TOKEN: {
+            if (!AreTokensDeployed())
                 return ISMINE_NO;
             keyID = CKeyID(uint160(vSolutions[0]));
             if (sigversion != SIGVERSION_BASE) {
@@ -192,7 +192,7 @@ isminetype IsMine(const CKeyStore &keystore, const CScript& scriptPubKey, bool& 
                 return ISMINE_SPENDABLE;
             break;
         }
-            /** ALP END*/
+            /** TOKENS END*/
     }
 
     if (keystore.HaveWatchOnly(scriptPubKey)) {

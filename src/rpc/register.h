@@ -21,8 +21,8 @@ void RegisterMiscRPCCommands(CRPCTable &tableRPC);
 void RegisterMiningRPCCommands(CRPCTable &tableRPC);
 /** Register raw transaction RPC commands */
 void RegisterRawTransactionRPCCommands(CRPCTable &tableRPC);
-/** Register asset RPC commands */
-void RegisterAssetRPCCommands(CRPCTable &tableRPC);
+/** Register token RPC commands */
+void RegisterTokenRPCCommands(CRPCTable &tableRPC);
 
 static inline void RegisterAllCoreRPCCommands(CRPCTable &t)
 {
@@ -31,7 +31,7 @@ static inline void RegisterAllCoreRPCCommands(CRPCTable &t)
     RegisterMiscRPCCommands(t);
     RegisterMiningRPCCommands(t);
     RegisterRawTransactionRPCCommands(t);
-    RegisterAssetRPCCommands(t);
+    RegisterTokenRPCCommands(t);
 }
 
 #endif

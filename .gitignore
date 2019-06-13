@@ -13,6 +13,7 @@ src/test/test_alphacon_hash
 src/qt/test/test_alphacon-qt
 .vscode
 output.txt
+alphacon-qt.zip
 
 # autoreconf
 Makefile.in

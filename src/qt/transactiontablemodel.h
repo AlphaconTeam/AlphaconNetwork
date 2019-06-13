@@ -36,7 +36,7 @@ public:
         Type = 3,
         ToAddress = 4,
         Amount = 5,
-        AssetName = 6
+        TokenName = 6
     };
 
     /** Roles to get specific information from a transaction row.
@@ -75,8 +75,8 @@ public:
         StatusRole,
         /** Unprocessed icon */
         RawDecorationRole,
-        /** ALP or name of an asset */
-        AssetNameRole,
+        /** ALP or name of an token */
+        TokenNameRole,
     };
 
     int rowCount(const QModelIndex &parent) const;

@@ -28,7 +28,7 @@
 #include <memory> // for unique_ptr
 #include <unordered_map>
 
-#include "assets/assets.h"
+#include "tokens/tokens.h"
 
 static bool fRPCRunning = false;
 static bool fRPCInWarmup = true;

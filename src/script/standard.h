@@ -72,11 +72,11 @@ enum txnouttype
     TX_NULL_DATA = 5, //!< unspendable OP_RETURN script that carries data
     TX_WITNESS_V0_SCRIPTHASH = 6,
     TX_WITNESS_V0_KEYHASH = 7,
-    /** RVN START */
-    TX_NEW_ASSET = 8,
-    TX_REISSUE_ASSET = 9,
-    TX_TRANSFER_ASSET = 10
-    /** RVN END */
+    /** TOKENS START */
+    TX_NEW_TOKEN = 8,
+    TX_REISSUE_TOKEN = 9,
+    TX_TRANSFER_TOKEN = 10
+    /** TOKENS END */
 };
 
 class CNoDestination {
@@ -137,6 +137,13 @@ bool ExtractDestinations(const CScript& scriptPubKey, txnouttype& typeRet, std::
  * script for CNoDestination.
  */
 CScript GetScriptForDestination(const CTxDestination& dest);
+
+/**
+ * Generate a Alphacon scriptPubKey for the given CTxDestination and lockHeight. Returns a P2PKH
+ * script for a CKeyID destination, a P2SH script for a CScriptID, and an empty
+ * script for CNoDestination.
+ */
+CScript GetTimeLockScriptForDestination(const CTxDestination& dest, const int64_t lockHeight);
 
 /** Generate a P2PK script for the given pubkey. */
 CScript GetScriptForRawPubKey(const CPubKey& pubkey);

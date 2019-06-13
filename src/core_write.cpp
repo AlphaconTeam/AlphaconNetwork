@@ -18,7 +18,7 @@
 #include "util.h"
 #include "utilmoneystr.h"
 #include "utilstrencodings.h"
-#include "assets/assets.h"
+#include "tokens/tokens.h"
 
 std::string ValueFromAmountString(const CAmount& amount, const int8_t units)
 {
@@ -167,53 +167,55 @@ void ScriptPubKeyToUniv(const CScript& scriptPubKey,
     out.pushKV("reqSigs", nRequired);
     out.pushKV("type", GetTxnOutputType(type));
 
-    /** RVN START */
-    if (type == TX_NEW_ASSET || type == TX_TRANSFER_ASSET || type == TX_REISSUE_ASSET) {
-        UniValue assetInfo(UniValue::VOBJ);
+    /** TOKENS START */
+    if (type == TX_NEW_TOKEN || type == TX_TRANSFER_TOKEN || type == TX_REISSUE_TOKEN) {
+        UniValue tokenInfo(UniValue::VOBJ);
 
         std::string name;
         CAmount amount;
-        std::string _assetAddress;
+        std::string _tokenAddress;
+        uint32_t nTokenLockTime;
 
-        if (GetAssetInfoFromScript(scriptPubKey, name, amount)) {
-            assetInfo.pushKV("name", name);
-            assetInfo.pushKV("amount", ValueFromAmount(amount));
+        if (GetTokenInfoFromScript(scriptPubKey, name, amount, nTokenLockTime)) {
+            tokenInfo.pushKV("name", name);
+            tokenInfo.pushKV("amount", ValueFromAmount(amount));
+            tokenInfo.pushKV("token_lock_time", (int)nTokenLockTime);
 
             switch (type) {
-                case TX_NEW_ASSET:
-                    if (IsAssetNameAnOwner(name)) {
+                case TX_NEW_TOKEN:
+                    if (IsTokenNameAnOwner(name)) {
                         // pwnd n00b
                     } else {
-                        CNewAsset asset;
-                        if (AssetFromScript(scriptPubKey, asset, _assetAddress)) {
-                            assetInfo.pushKV("units", asset.units);
-                            assetInfo.pushKV("reissuable", asset.nReissuable > 0 ? true : false);
-                            if (asset.nHasIPFS > 0) {
-                                assetInfo.pushKV("ipfs_hash", EncodeIPFS(asset.strIPFSHash));
+                        CNewToken token;
+                        if (TokenFromScript(scriptPubKey, token, _tokenAddress)) {
+                            tokenInfo.pushKV("units", token.units);
+                            tokenInfo.pushKV("reissuable", token.nReissuable > 0 ? true : false);
+                            if (token.nHasIPFS > 0) {
+                                tokenInfo.pushKV("ipfs_hash", EncodeIPFS(token.strIPFSHash));
                             }
                         }
                     }
                     break;
-                case TX_TRANSFER_ASSET:
+                case TX_TRANSFER_TOKEN:
                     break;
-                case TX_REISSUE_ASSET:
-                    CReissueAsset asset;
-                    if (ReissueAssetFromScript(scriptPubKey, asset, _assetAddress)) {
-                        if (asset.nUnits >= 0) {
-                            assetInfo.pushKV("units", asset.nUnits);
+                case TX_REISSUE_TOKEN:
+                    CReissueToken token;
+                    if (ReissueTokenFromScript(scriptPubKey, token, _tokenAddress)) {
+                        if (token.nUnits >= 0) {
+                            tokenInfo.pushKV("units", token.nUnits);
                         }
-                        assetInfo.pushKV("reissuable", asset.nReissuable > 0 ? true : false);
-                        if (!asset.strIPFSHash.empty()) {
-                            assetInfo.pushKV("ipfs_hash", EncodeIPFS(asset.strIPFSHash));
+                        tokenInfo.pushKV("reissuable", token.nReissuable > 0 ? true : false);
+                        if (!token.strIPFSHash.empty()) {
+                            tokenInfo.pushKV("ipfs_hash", EncodeIPFS(token.strIPFSHash));
                         }
                     }
                     break;
             }
         }
 
-        out.pushKV("asset", assetInfo);
+        out.pushKV("token", tokenInfo);
     }
-     /** RVN END */
+     /** TOKENS END */
 
     UniValue a(UniValue::VARR);
     for (const CTxDestination& addr : addresses) {
@@ -227,6 +229,7 @@ void TxToUniv(const CTransaction& tx, const uint256& hashBlock, UniValue& entry,
     entry.pushKV("txid", tx.GetHash().GetHex());
     entry.pushKV("hash", tx.GetWitnessHash().GetHex());
     entry.pushKV("version", tx.nVersion);
+    entry.pushKV("timestamp", (int64_t)tx.nTime);
     entry.pushKV("size", (int)::GetSerializeSize(tx, SER_NETWORK, PROTOCOL_VERSION));
     entry.pushKV("vsize", (GetTransactionWeight(tx) + WITNESS_SCALE_FACTOR - 1) / WITNESS_SCALE_FACTOR);
     entry.pushKV("locktime", (int64_t)tx.nLockTime);

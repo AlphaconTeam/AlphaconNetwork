@@ -98,7 +98,7 @@ QT_TS = \
 QT_FORMS_UI = \
   qt/forms/addressbookpage.ui \
   qt/forms/askpassphrasedialog.ui \
-  qt/forms/assetcontroldialog.ui \
+  qt/forms/tokencontroldialog.ui \
   qt/forms/coincontroldialog.ui \
   qt/forms/editaddressdialog.ui \
   qt/forms/helpmessagedialog.ui \
@@ -114,18 +114,18 @@ QT_FORMS_UI = \
   qt/forms/sendcoinsentry.ui \
   qt/forms/signverifymessagedialog.ui \
   qt/forms/transactiondescdialog.ui \
-  qt/forms/assetsdialog.ui \
-  qt/forms/createassetdialog.ui \
-  qt/forms/reissueassetdialog.ui \
-  qt/forms/sendassetsentry.ui
+  qt/forms/tokensdialog.ui \
+  qt/forms/createtokendialog.ui \
+  qt/forms/reissuetokendialog.ui \
+  qt/forms/sendtokensentry.ui
 
 QT_MOC_CPP = \
   qt/moc_addressbookpage.cpp \
   qt/moc_addresstablemodel.cpp \
   qt/moc_askpassphrasedialog.cpp \
-  qt/moc_assetcontroldialog.cpp \
-  qt/moc_assetcontroltreewidget.cpp \
-  qt/moc_assetfilterproxy.cpp \
+  qt/moc_tokencontroldialog.cpp \
+  qt/moc_tokencontroltreewidget.cpp \
+  qt/moc_tokenfilterproxy.cpp \
   qt/moc_bantablemodel.cpp \
   qt/moc_alphaconaddressvalidator.cpp \
   qt/moc_alphaconamountfield.cpp \
@@ -147,7 +147,7 @@ QT_MOC_CPP = \
   qt/moc_openuridialog.cpp \
   qt/moc_optionsdialog.cpp \
   qt/moc_optionsmodel.cpp \
-  qt/moc_assettablemodel.cpp \
+  qt/moc_tokentablemodel.cpp \
   qt/moc_overviewpage.cpp \
   qt/moc_peertablemodel.cpp \
   qt/moc_paymentserver.cpp \
@@ -171,10 +171,10 @@ QT_MOC_CPP = \
   qt/moc_walletframe.cpp \
   qt/moc_walletmodel.cpp \
   qt/moc_walletview.cpp \
-  qt/moc_assetsdialog.cpp \
-  qt/moc_createassetdialog.cpp \
-  qt/moc_reissueassetdialog.cpp \
-  qt/moc_sendassetsentry.cpp
+  qt/moc_tokensdialog.cpp \
+  qt/moc_createtokendialog.cpp \
+  qt/moc_reissuetokendialog.cpp \
+  qt/moc_sendtokensentry.cpp
 
 ALPHACON_MM = \
   qt/macdockiconhandler.mm \
@@ -201,12 +201,12 @@ ALPHACON_QT_H = \
   qt/addressbookpage.h \
   qt/addresstablemodel.h \
   qt/askpassphrasedialog.h \
-  qt/assetcontroldialog.h \
-  qt/assetcontroltreewidget.h \
-  qt/assetfilterproxy.h \
-  qt/assetrecord.h \
-  qt/assetsdialog.h \
-  qt/createassetdialog.h \
+  qt/tokencontroldialog.h \
+  qt/tokencontroltreewidget.h \
+  qt/tokenfilterproxy.h \
+  qt/tokenrecord.h \
+  qt/tokensdialog.h \
+  qt/createtokendialog.h \
   qt/bantablemodel.h \
   qt/alphaconaddressvalidator.h \
   qt/alphaconamountfield.h \
@@ -230,7 +230,7 @@ ALPHACON_QT_H = \
   qt/openuridialog.h \
   qt/optionsdialog.h \
   qt/optionsmodel.h \
-  qt/assettablemodel.h \
+  qt/tokentablemodel.h \
   qt/overviewpage.h \
   qt/paymentrequestplus.h \
   qt/paymentserver.h \
@@ -241,9 +241,9 @@ ALPHACON_QT_H = \
   qt/receivecoinsdialog.h \
   qt/receiverequestdialog.h \
   qt/recentrequeststablemodel.h \
-  qt/reissueassetdialog.h \
+  qt/reissuetokendialog.h \
   qt/rpcconsole.h \
-  qt/sendassetsentry.h \
+  qt/sendtokensentry.h \
   qt/sendcoinsdialog.h \
   qt/sendcoinsentry.h \
   qt/signverifymessagedialog.h \
@@ -267,10 +267,10 @@ RES_ICONS = \
   qt/res/icons/address-book.png \
   qt/res/icons/about_alp.png \
   qt/res/icons/about_qt.png \
-  qt/res/icons/asset_administrator.png \
-  qt/res/icons/asset_create.png \
-  qt/res/icons/asset_manage.png \
-  qt/res/icons/asset_transfer.png \
+  qt/res/icons/token_administrator.png \
+  qt/res/icons/token_create.png \
+  qt/res/icons/token_manage.png \
+  qt/res/icons/token_transfer.png \
   qt/res/icons/alphacon.ico \
   qt/res/icons/alphacon_testnet.ico \
   qt/res/icons/alphacon.png \
@@ -321,8 +321,8 @@ RES_ICONS = \
   qt/res/icons/tx_input.png \
   qt/res/icons/tx_output.png \
   qt/res/icons/tx_mined.png \
-  qt/res/icons/tx_asset_input.png \
-  qt/res/icons/tx_asset_output.png \
+  qt/res/icons/tx_token_input.png \
+  qt/res/icons/tx_token_output.png \
   qt/res/icons/warning.png \
   qt/res/icons/verify.png \
   qt/res/darkstyle/icon_close.png \
@@ -348,16 +348,10 @@ RES_ICONS = \
   qt/res/darkstyle/icon_radiobutton_unchecked_pressed.png \
   qt/res/darkstyle/icon_radiobutton_checked_disabled.png \
   qt/res/darkstyle/icon_radiobutton_unchecked_disabled.png \
-  qt/res/fonts/OpenSans-Bold.ttf \
-  qt/res/fonts/OpenSans-BoldItalic.ttf \
-  qt/res/fonts/OpenSans-ExtraBold.ttf \
-  qt/res/fonts/OpenSans-ExtraBoldItalic.ttf \
-  qt/res/fonts/OpenSans-Italic.ttf \
-  qt/res/fonts/OpenSans-Light.ttf \
-  qt/res/fonts/OpenSans-LightItalic.ttf \
-  qt/res/fonts/OpenSans-Regular.ttf \
-  qt/res/fonts/OpenSans-SemiBold.ttf \
-  qt/res/fonts/OpenSans-SemiBoldItalic.ttf
+  qt/res/fonts/Montserrat-Bold.otf \
+  qt/res/fonts/Montserrat-Light.otf \
+  qt/res/fonts/Montserrat-Regular.otf \
+  qt/res/fonts/Montserrat-SemiBold.otf
 
 
 ALPHACON_QT_BASE_CPP = \
@@ -376,7 +370,7 @@ ALPHACON_QT_BASE_CPP = \
   qt/notificator.cpp \
   qt/optionsdialog.cpp \
   qt/optionsmodel.cpp \
-  qt/assettablemodel.cpp \
+  qt/tokentablemodel.cpp \
   qt/peertablemodel.cpp \
   qt/platformstyle.cpp \
   qt/qvalidatedlineedit.cpp \
@@ -392,11 +386,11 @@ ALPHACON_QT_WALLET_CPP = \
   qt/addressbookpage.cpp \
   qt/addresstablemodel.cpp \
   qt/askpassphrasedialog.cpp \
-  qt/assetcontroldialog.cpp \
-  qt/assetcontroltreewidget.cpp \
-  qt/assetfilterproxy.cpp \
-  qt/assetsdialog.cpp \
-  qt/createassetdialog.cpp \
+  qt/tokencontroldialog.cpp \
+  qt/tokencontroltreewidget.cpp \
+  qt/tokenfilterproxy.cpp \
+  qt/tokensdialog.cpp \
+  qt/createtokendialog.cpp \
   qt/coincontroldialog.cpp \
   qt/coincontroltreewidget.cpp \
   qt/editaddressdialog.cpp \
@@ -407,8 +401,8 @@ ALPHACON_QT_WALLET_CPP = \
   qt/receivecoinsdialog.cpp \
   qt/receiverequestdialog.cpp \
   qt/recentrequeststablemodel.cpp \
-  qt/reissueassetdialog.cpp \
-  qt/sendassetsentry.cpp \
+  qt/reissuetokendialog.cpp \
+  qt/sendtokensentry.cpp \
   qt/sendcoinsdialog.cpp \
   qt/sendcoinsentry.cpp \
   qt/signverifymessagedialog.cpp \

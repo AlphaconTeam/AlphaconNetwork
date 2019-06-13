@@ -117,13 +117,13 @@ TransactionView::TransactionView(const PlatformStyle *platformStyle, QWidget *pa
     amountWidget->setValidator(new QDoubleValidator(0, 1e20, 8, this));
     hlayout->addWidget(amountWidget);
 
-    assetNameWidget = new QLineEdit(this);
+    tokenNameWidget = new QLineEdit(this);
 #if QT_VERSION >= 0x040700
-    assetNameWidget->setPlaceholderText(tr("Asset name"));
+    tokenNameWidget->setPlaceholderText(tr("Token name"));
 #endif
-    assetNameWidget->setFixedWidth(200);
-    hlayout->addWidget(assetNameWidget);
-    assetNameWidget->hide();
+    tokenNameWidget->setFixedWidth(200);
+    hlayout->addWidget(tokenNameWidget);
+    tokenNameWidget->hide();
 
     // Delay before filtering transactions in ms
     static const int input_filter_delay = 200;
@@ -136,10 +136,10 @@ TransactionView::TransactionView(const PlatformStyle *platformStyle, QWidget *pa
     prefix_typing_delay->setSingleShot(true);
     prefix_typing_delay->setInterval(input_filter_delay);
 
-    QTimer *asset_typing_delay;
-    asset_typing_delay = new QTimer(this);
-    asset_typing_delay->setSingleShot(true);
-    asset_typing_delay->setInterval(input_filter_delay);
+    QTimer *token_typing_delay;
+    token_typing_delay = new QTimer(this);
+    token_typing_delay->setSingleShot(true);
+    token_typing_delay->setInterval(input_filter_delay);
 
     QVBoxLayout *vlayout = new QVBoxLayout(this);
     vlayout->setContentsMargins(0,0,0,0);
@@ -206,8 +206,8 @@ TransactionView::TransactionView(const PlatformStyle *platformStyle, QWidget *pa
     connect(watchOnlyWidget, SIGNAL(activated(int)), this, SLOT(chooseWatchonly(int)));
     connect(amountWidget, SIGNAL(textChanged(QString)), amount_typing_delay, SLOT(start()));
     connect(amount_typing_delay, SIGNAL(timeout()), this, SLOT(changedAmount()));
-    connect(assetNameWidget, SIGNAL(textChanged(QString)), asset_typing_delay, SLOT(start()));
-    connect(asset_typing_delay, SIGNAL(timeout()), this, SLOT(changedAssetName()));
+    connect(tokenNameWidget, SIGNAL(textChanged(QString)), token_typing_delay, SLOT(start()));
+    connect(token_typing_delay, SIGNAL(timeout()), this, SLOT(changedTokenName()));
     connect(addressWidget, SIGNAL(textChanged(QString)), prefix_typing_delay, SLOT(start()));
     connect(prefix_typing_delay, SIGNAL(timeout()), this, SLOT(changedPrefix()));
 
@@ -225,15 +225,15 @@ TransactionView::TransactionView(const PlatformStyle *platformStyle, QWidget *pa
     connect(editLabelAction, SIGNAL(triggered()), this, SLOT(editLabel()));
     connect(showDetailsAction, SIGNAL(triggered()), this, SLOT(showDetails()));
 
-    // Trigger the call to show the assets table if assets are active
-    showingAssets = false;
-    showAssets();
+    // Trigger the call to show the tokens table if tokens are active
+    showingTokens = false;
+    showTokens();
 
     dateWidget->setFont(GUIUtil::getSubLabelFont());
     typeWidget->setFont(GUIUtil::getSubLabelFont());
     addressWidget->setFont(GUIUtil::getSubLabelFont());
     amountWidget->setFont(GUIUtil::getSubLabelFont());
-    assetNameWidget->setFont(GUIUtil::getSubLabelFont());
+    tokenNameWidget->setFont(GUIUtil::getSubLabelFont());
     contextMenu->setFont(GUIUtil::getSubLabelFont());
     transactionView->setFont(GUIUtil::getSubLabelFont());
 
@@ -266,7 +266,7 @@ void TransactionView::setModel(WalletModel *_model)
         transactionView->setColumnWidth(TransactionTableModel::Date, DATE_COLUMN_WIDTH);
         transactionView->setColumnWidth(TransactionTableModel::Type, TYPE_COLUMN_WIDTH);
         transactionView->setColumnWidth(TransactionTableModel::Amount, AMOUNT_MINIMUM_COLUMN_WIDTH);
-        transactionView->setColumnWidth(TransactionTableModel::AssetName, AMOUNT_MINIMUM_COLUMN_WIDTH);
+        transactionView->setColumnWidth(TransactionTableModel::TokenName, AMOUNT_MINIMUM_COLUMN_WIDTH);
 
         columnResizingFixer = new GUIUtil::TableViewLastColumnResizingFixer(transactionView, AMOUNT_MINIMUM_COLUMN_WIDTH, MINIMUM_COLUMN_WIDTH, this);
 
@@ -382,11 +382,11 @@ void TransactionView::changedAmount()
     }
 }
 
-void TransactionView::changedAssetName()
+void TransactionView::changedTokenName()
 {
     if (!transactionProxyModel)
         return;
-    transactionProxyModel->setAssetNamePrefix(assetNameWidget->text());
+    transactionProxyModel->setTokenNamePrefix(tokenNameWidget->text());
 }
 
 void TransactionView::exportClicked()
@@ -415,8 +415,8 @@ void TransactionView::exportClicked()
     writer.addColumn(tr("Label"), 0, TransactionTableModel::LabelRole);
     writer.addColumn(tr("Address"), 0, TransactionTableModel::AddressRole);
     writer.addColumn(AlphaconUnits::getAmountColumnTitle(model->getOptionsModel()->getDisplayUnit()), 0, TransactionTableModel::FormattedAmountRole);
-    if (AreAssetsDeployed()) {
-        writer.addColumn(tr("Asset"), 0, TransactionTableModel::AssetNameRole);
+    if (AreTokensDeployed()) {
+        writer.addColumn(tr("Token"), 0, TransactionTableModel::TokenNameRole);
     }
     writer.addColumn(tr("ID"), 0, TransactionTableModel::TxIDRole);
 
@@ -430,26 +430,26 @@ void TransactionView::exportClicked()
     }
 }
 
-void TransactionView::showAssets()
+void TransactionView::showTokens()
 {
-    if (AreAssetsDeployed() && !showingAssets) {
-        typeWidget->addItem(tr("Asset Issued"), TransactionFilterProxy::TYPE(TransactionRecord::Issue));
-        typeWidget->addItem(tr("Asset Reissued"), TransactionFilterProxy::TYPE(TransactionRecord::Reissue));
-        typeWidget->addItem(tr("Asset Received"), TransactionFilterProxy::TYPE(TransactionRecord::TransferFrom));
-        typeWidget->addItem(tr("Asset Sent"), TransactionFilterProxy::TYPE(TransactionRecord::TransferTo));
+    if (AreTokensDeployed() && !showingTokens) {
+        typeWidget->addItem(tr("Token Issued"), TransactionFilterProxy::TYPE(TransactionRecord::Issue));
+        typeWidget->addItem(tr("Token Reissued"), TransactionFilterProxy::TYPE(TransactionRecord::Reissue));
+        typeWidget->addItem(tr("Token Received"), TransactionFilterProxy::TYPE(TransactionRecord::TransferFrom));
+        typeWidget->addItem(tr("Token Sent"), TransactionFilterProxy::TYPE(TransactionRecord::TransferTo));
 
-        assetNameWidget->show();
+        tokenNameWidget->show();
 
-        QAction *copyAssetNameAction = new QAction(tr("Copy asset name"), this);
-        contextMenu->addAction(copyAssetNameAction);
-        connect(copyAssetNameAction, SIGNAL(triggered()), this, SLOT(copyAssetName()));
+        QAction *copyTokenNameAction = new QAction(tr("Copy token name"), this);
+        contextMenu->addAction(copyTokenNameAction);
+        connect(copyTokenNameAction, SIGNAL(triggered()), this, SLOT(copyTokenName()));
 
-        showingAssets = true;
+        showingTokens = true;
     }
 
-    if (!AreAssetsDeployed())
+    if (!AreTokensDeployed())
     {
-        assetNameWidget->hide();
+        tokenNameWidget->hide();
     }
 }
 
@@ -518,9 +518,9 @@ void TransactionView::copyLabel()
     GUIUtil::copyEntryData(transactionView, 0, TransactionTableModel::LabelRole);
 }
 
-void TransactionView::copyAssetName()
+void TransactionView::copyTokenName()
 {
-    GUIUtil::copyEntryData(transactionView, 0, TransactionTableModel::AssetNameRole);
+    GUIUtil::copyEntryData(transactionView, 0, TransactionTableModel::TokenNameRole);
 }
 
 void TransactionView::copyAmount()

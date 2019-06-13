@@ -23,8 +23,9 @@ using namespace std;
 // must hash with a future stake modifier to generate the proof.
 uint256 ComputeStakeModifier(const CBlockIndex* pindexPrev, const uint256& kernel)
 {
-    if (!pindexPrev)
+    if (!pindexPrev) {
         return uint256();  // genesis block's modifier is 0
+    }
 
     CDataStream ss(SER_GETHASH, 0);
     ss << kernel << pindexPrev->nStakeModifier;
@@ -71,17 +72,6 @@ bool CheckStakeKernelHash(const CBlockIndex* pindexPrev, unsigned int nBits, CAm
         result = false;
     }
 
-    // If something bad happens, we should receive debug about it
-    // if (result == false)
-    // {
-    //     std::cout << "\n ---------- DEBUG CheckStakeKernelHash START ---------- \n" << std::endl;
-    //     std::cout << "pindexPrev->nStakeModifier: " << pindexPrev->nStakeModifier.ToString() << std::endl;
-    //     std::cout << "nTimeTxPoS: " << nTimeTxPoS << std::endl;
-    //     std::cout << "prevout.n: " << prevout.n << std::endl;
-    //     std::cout << "nTimeTx: " << nTimeTx << std::endl;
-    //     std::cout << "\n ----------  DEBUG CheckStakeKernelHash END  ---------- \n" << std::endl;
-    // }
-
     return result;
 }
 
@@ -110,11 +100,11 @@ bool CheckKernel(CBlockIndex* pindexPrev, unsigned int nBits, uint32_t nTimeBloc
     if (it == cache.end()) {
         //not found in cache (shouldn't happen during staking, only during verification which does not use cache)
         Coin coinPrev;
-        if(!view.GetCoin(prevout, coinPrev)){
+        if (!view.GetCoin(prevout, coinPrev)) {
             return false;
         }
 
-        if(pindexPrev->nHeight + 1 - coinPrev.nHeight < COINSTAKE_MATURITY){
+        if (pindexPrev->nHeight + 1 - coinPrev.nHeight < Params().GetConsensus().nStakeMaturity) {
             return false;
         }
 
@@ -122,6 +112,7 @@ bool CheckKernel(CBlockIndex* pindexPrev, unsigned int nBits, uint32_t nTimeBloc
         if(!blockFrom) {
             return false;
         }
+        
         if(coinPrev.IsSpent()){
             return false;
         }
@@ -149,32 +140,35 @@ bool CheckKernel(CBlockIndex* pindexPrev, unsigned int nBits, uint32_t nTimeBloc
 // Check kernel hash target and coinstake signature
 bool CheckProofOfStake(CBlockIndex* pindexPrev, CValidationState& state, const CTransaction& tx, unsigned int nBits, uint32_t nTimeBlock, uint256& hashProofOfStake, uint256& targetProofOfStake, CCoinsViewCache& view)
 {
-    if (!tx.IsCoinStake())
+    if (!tx.IsCoinStake()) {
         return error("CheckProofOfStake() : called on non-coinstake %s", tx.GetHash().ToString());
+    }
 
     // Kernel (input 0) must match the stake hash target (nBits)
     const CTxIn& txin = tx.vin[0];
 
     Coin coinPrev;
-
-    if(!view.GetCoin(txin.prevout, coinPrev)){
+    if (!view.GetCoin(txin.prevout, coinPrev)) {
         return state.DoS(100, error("CheckProofOfStake() : Stake prevout does not exist %s", txin.prevout.hash.ToString()));
     }
 
-    if(pindexPrev->nHeight + 1 - coinPrev.nHeight < COINBASE_MATURITY){
-        return state.DoS(100, error("CheckProofOfStake() : Stake prevout is not mature, expecting %i and only matured to %i", COINBASE_MATURITY, pindexPrev->nHeight + 1 - coinPrev.nHeight));
+    if (pindexPrev->nHeight + 1 - coinPrev.nHeight < Params().GetConsensus().nStakeMaturity) {
+        return state.DoS(100, error("CheckProofOfStake() : Stake prevout is not mature, expecting %i and only matured to %i", Params().GetConsensus().nStakeMaturity, pindexPrev->nHeight + 1 - coinPrev.nHeight));
     }
+
     CBlockIndex* blockFrom = pindexPrev->GetAncestor(coinPrev.nHeight);
-    if(!blockFrom) {
+    if (!blockFrom) {
         return state.DoS(100, error("CheckProofOfStake() : Block at height %i for prevout can not be loaded", coinPrev.nHeight));
     }
 
     // Verify signature
-    if (!VerifySignature(coinPrev, txin.prevout.hash, tx, 0, SCRIPT_VERIFY_NONE))
+    if (!VerifySignature(coinPrev, txin.prevout.hash, tx, 0, SCRIPT_VERIFY_NONE)) {
         return state.DoS(100, error("CheckProofOfStake() : VerifySignature failed on coinstake %s", tx.GetHash().ToString()));
+    }
 
-    if (!CheckStakeKernelHash(pindexPrev, nBits, coinPrev.out.nValue, txin.prevout, nTimeBlock, coinPrev.nTime))
+    if (!CheckStakeKernelHash(pindexPrev, nBits, coinPrev.out.nValue, txin.prevout, nTimeBlock, coinPrev.nTime)) {
         return state.DoS(1, error("CheckProofOfStake() : INFO: check kernel failed on coinstake %s, hashProof=%s", tx.GetHash().ToString(), hashProofOfStake.ToString())); // may occur during initial download or if behind on block chain sync
+    }
 
     return true;
 }

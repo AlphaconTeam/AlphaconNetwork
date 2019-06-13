@@ -53,8 +53,8 @@ QString TransactionDesc::toHTML(CWallet *wallet, CWalletTx &wtx, TransactionReco
 {
     QString strHTML;
 
-    if (rec->assetName != "ALP") {
-        return toAssetHTML(wallet, wtx, rec, unit);
+    if (rec->tokenName != "ALP") {
+        return toTokenHTML(wallet, wtx, rec, unit);
     }
 
     LOCK2(cs_main, wallet->cs_wallet);
@@ -82,7 +82,7 @@ QString TransactionDesc::toHTML(CWallet *wallet, CWalletTx &wtx, TransactionReco
     //
     // From
     //
-    if (wtx.IsCoinBase())
+    if (wtx.IsCoinBase() || wtx.IsCoinStake())
     {
         strHTML += "<b>" + tr("Source") + ":</b> " + tr("Generated") + "<br>";
     }
@@ -132,7 +132,7 @@ QString TransactionDesc::toHTML(CWallet *wallet, CWalletTx &wtx, TransactionReco
     //
     // Amount
     //
-    if (wtx.IsCoinBase() && nCredit == 0)
+    if ((wtx.IsCoinBase() || wtx.IsCoinStake()) && nCredit == 0)
     {
         //
         // Coinbase
@@ -269,9 +269,9 @@ QString TransactionDesc::toHTML(CWallet *wallet, CWalletTx &wtx, TransactionReco
         }
     }
 
-    if (wtx.IsCoinBase())
+    if (wtx.IsCoinBase() || wtx.IsCoinStake())
     {
-        quint32 numBlocksToMaturity = COINBASE_MATURITY +  1;
+        quint32 numBlocksToMaturity = Params().GetConsensus().nCoinbaseMaturity + 1;
         strHTML += "<br>" + tr("Generated coins must mature %1 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to \"not accepted\" and it won't be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.").arg(QString::number(numBlocksToMaturity)) + "<br>";
     }
 
@@ -287,7 +287,7 @@ QString TransactionDesc::toHTML(CWallet *wallet, CWalletTx &wtx, TransactionReco
     return strHTML;
 }
 
-QString TransactionDesc::toAssetHTML(CWallet *wallet, CWalletTx &wtx, TransactionRecord *rec, int unit)
+QString TransactionDesc::toTokenHTML(CWallet *wallet, CWalletTx &wtx, TransactionRecord *rec, int unit)
 {
     QString strHTML;
 
@@ -295,21 +295,21 @@ QString TransactionDesc::toAssetHTML(CWallet *wallet, CWalletTx &wtx, Transactio
     strHTML.reserve(4000);
     strHTML += "<html><font face='verdana, arial, helvetica, sans-serif'>";
 
-    CNewAsset asset;
-    auto currentActiveAssetCache = GetCurrentAssetCache();
-    if (IsAssetNameAnOwner(rec->assetName))
+    CNewToken token;
+    auto currentActiveTokenCache = GetCurrentTokenCache();
+    if (IsTokenNameAnOwner(rec->tokenName))
         rec->units = OWNER_UNITS;
-    else if (currentActiveAssetCache && currentActiveAssetCache->GetAssetMetaDataIfExists(rec->assetName, asset))
-        rec->units = asset.units;
+    else if (currentActiveTokenCache && currentActiveTokenCache->GetTokenMetaDataIfExists(rec->tokenName, token))
+        rec->units = token.units;
     else
-        rec->units = MAX_ASSET_UNITS;
+        rec->units = MAX_TOKEN_UNITS;
 
     int64_t nTime = wtx.GetTxTime();
     CAmount nCredit = wtx.GetCredit(ISMINE_ALL);
     CAmount nDebit = wtx.GetDebit(ISMINE_ALL);
     CAmount nNet = nCredit - nDebit;
 
-    CAmount nAssetsRec = rec->credit;
+    CAmount nTokensRec = rec->credit;
 
     // Status
     strHTML += "<b>" + tr("Status") + ":</b> " + FormatTxStatus(wtx);
@@ -336,7 +336,7 @@ QString TransactionDesc::toAssetHTML(CWallet *wallet, CWalletTx &wtx, Transactio
     else
     {
         // Offline transaction
-        if (nAssetsRec > 0)
+        if (nTokensRec > 0)
         {
             // Credit
             CTxDestination address = DecodeDestination(rec->address);
@@ -374,14 +374,14 @@ QString TransactionDesc::toAssetHTML(CWallet *wallet, CWalletTx &wtx, Transactio
     //
     // Amount
     //
-    if (nAssetsRec > 0)
+    if (nTokensRec > 0)
     {
         //
         // Credit
         //
-        strHTML += "<b>" + tr("Credit") + ":</b> " + AlphaconUnits::formatWithCustomName(QString::fromStdString(rec->assetName), nAssetsRec, rec->units) + "<br>";
+        strHTML += "<b>" + tr("Credit") + ":</b> " + AlphaconUnits::formatWithCustomName(QString::fromStdString(rec->tokenName), nTokensRec, rec->units) + "<br>";
     } else {
-        strHTML += "<b>" + tr("Debit") + ":</b> " + AlphaconUnits::formatWithCustomName(QString::fromStdString(rec->assetName), nAssetsRec, rec->units, true) + "<br>";
+        strHTML += "<b>" + tr("Debit") + ":</b> " + AlphaconUnits::formatWithCustomName(QString::fromStdString(rec->tokenName), nTokensRec, rec->units, true) + "<br>";
     }
 
     strHTML += "<b>" + tr("Net ALP amount") + ":</b> " + AlphaconUnits::formatHtmlWithUnit(unit, nNet, true) + "<br>";
@@ -418,9 +418,9 @@ QString TransactionDesc::toAssetHTML(CWallet *wallet, CWalletTx &wtx, Transactio
         }
     }
 
-    if (wtx.IsCoinBase())
+    if (wtx.IsCoinBase() || wtx.IsCoinStake())
     {
-        quint32 numBlocksToMaturity = COINBASE_MATURITY +  1;
+        quint32 numBlocksToMaturity = Params().GetConsensus().nCoinbaseMaturity +  1;
         strHTML += "<br>" + tr("Generated coins must mature %1 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to \"not accepted\" and it won't be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.").arg(QString::number(numBlocksToMaturity)) + "<br>";
     }
 
@@ -441,11 +441,11 @@ void TransactionDesc::CreateDebugString(QString& strHTML, CWallet *wallet, CWall
     strHTML += "<hr><br>" + tr("Debug information") + "<br><br>";
     for (const CTxIn& txin : wtx.tx->vin)
         if (wallet->IsMine(txin)) {
-            CAssetOutputEntry assetData;
-            CAmount debit = wallet->GetDebit(txin, ISMINE_ALL, assetData);
-            if (assetData.nAmount > 0) {
+            CTokenOutputEntry tokenData;
+            CAmount debit = wallet->GetDebit(txin, ISMINE_ALL, tokenData);
+            if (tokenData.nAmount > 0) {
                 strHTML += "<b>" + tr("Debit") + ":</b> " +
-                           AlphaconUnits::formatWithCustomName(QString::fromStdString(assetData.assetName), -assetData.nAmount) + "<br>";
+                           AlphaconUnits::formatWithCustomName(QString::fromStdString(tokenData.tokenName), -tokenData.nAmount) + "<br>";
             }
             strHTML += "<b>" + tr("Debit") + ":</b> " +
                        AlphaconUnits::formatHtmlWithUnit(unit, -debit) + "<br>";
@@ -453,11 +453,11 @@ void TransactionDesc::CreateDebugString(QString& strHTML, CWallet *wallet, CWall
 
     for (const CTxOut& txout : wtx.tx->vout)
         if (wallet->IsMine(txout)) {
-            if (txout.scriptPubKey.IsAssetScript()) {
-                CAssetOutputEntry assetData;
-                GetAssetData(txout.scriptPubKey, assetData);
+            if (txout.scriptPubKey.IsTokenScript()) {
+                CTokenOutputEntry tokenData;
+                GetTokenData(txout.scriptPubKey, tokenData);
                 strHTML += "<b>" + tr("Credit") + ":</b> " +
-                           AlphaconUnits::formatWithCustomName(QString::fromStdString(assetData.assetName), assetData.nAmount) + "<br>";
+                           AlphaconUnits::formatWithCustomName(QString::fromStdString(tokenData.tokenName), tokenData.nAmount) + "<br>";
             } else
                 strHTML += "<b>" + tr("Credit") + ":</b> " +
                            AlphaconUnits::formatHtmlWithUnit(unit, wallet->GetCredit(txout, ISMINE_ALL)) + "<br>";

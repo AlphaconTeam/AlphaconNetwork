@@ -4,13 +4,14 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <assets/assets.h>
+#include <tokens/tokens.h>
 #include <script/standard.h>
 #include <util.h>
 #include <validation.h>
 #include "tx_verify.h"
 
 #include "consensus.h"
+#include "chainparams.h"
 #include "primitives/transaction.h"
 #include "script/interpreter.h"
 #include "validation.h"
@@ -162,7 +163,7 @@ int64_t GetTransactionSigOpCost(const CTransaction& tx, const CCoinsViewCache& i
     return nSigOps;
 }
 
-bool CheckTransaction(const CTransaction& tx, CValidationState &state, CAssetsCache* assetCache, bool fCheckDuplicateInputs, bool fMemPoolCheck, bool fCheckAssetDuplicate, bool fForceDuplicateCheck)
+bool CheckTransaction(const CTransaction& tx, CValidationState &state, CTokensCache* tokenCache, bool fCheckDuplicateInputs, bool fMemPoolCheck, bool fCheckTokenDuplicate, bool fForceDuplicateCheck)
 {
     // Basic checks that don't depend on any context
     if (tx.vin.empty())
@@ -190,57 +191,57 @@ bool CheckTransaction(const CTransaction& tx, CValidationState &state, CAssetsCa
         if (!MoneyRange(nValueOut))
             return state.DoS(100, false, REJECT_INVALID, "bad-txns-txouttotal-toolarge");
 
-        /** RVN START */
-        bool isAsset = false;
+        /** TOKENS START */
+        bool isToken = false;
         int nType;
         bool fIsOwner;
-        if (txout.scriptPubKey.IsAssetScript(nType, fIsOwner))
-            isAsset = true;
+        if (txout.scriptPubKey.IsTokenScript(nType, fIsOwner))
+            isToken = true;
 
-        // Make sure that all asset tx have a nValue of zero ALP
-        if (isAsset && txout.nValue != 0)
-            return state.DoS(100, false, REJECT_INVALID, "bad-txns-asset-tx-amount-isn't-zero");
+        // Make sure that all token tx have a nValue of zero ALP
+        if (isToken && txout.nValue != 0)
+            return state.DoS(100, false, REJECT_INVALID, "bad-txns-token-tx-amount-isn't-zero");
 
-        if (!AreAssetsDeployed() && isAsset && !fReindex)
-            return state.DoS(100, false, REJECT_INVALID, "bad-txns-is-asset-and-asset-not-active");
+        if (!AreTokensDeployed() && isToken && !fReindex)
+            return state.DoS(100, false, REJECT_INVALID, "bad-txns-is-token-and-token-not-active");
 
-        // Check for transfers that don't meet the assets units only if the assetCache is not null
-        if (AreAssetsDeployed() && isAsset) {
-            if (assetCache) {
+        // Check for transfers that don't meet the tokens units only if the tokenCache is not null
+        if (AreTokensDeployed() && isToken) {
+            if (tokenCache) {
                 // Get the transfer transaction data from the scriptPubKey
-                if ( nType == TX_TRANSFER_ASSET) {
-                    CAssetTransfer transfer;
+                if ( nType == TX_TRANSFER_TOKEN) {
+                    CTokenTransfer transfer;
                     std::string address;
-                    if (!TransferAssetFromScript(txout.scriptPubKey, transfer, address))
-                        return state.DoS(100, false, REJECT_INVALID, "bad-txns-transfer-asset-bad-deserialize");
+                    if (!TransferTokenFromScript(txout.scriptPubKey, transfer, address))
+                        return state.DoS(100, false, REJECT_INVALID, "bad-txns-transfer-token-bad-deserialize");
 
-                    // Check asset name validity and get type
-                    AssetType assetType;
-                    if (!IsAssetNameValid(transfer.strName, assetType)) {
-                        return state.DoS(100, false, REJECT_INVALID, "bad-txns-transfer-asset-name-invalid");
+                    // Check token name validity and get type
+                    TokenType tokenType;
+                    if (!IsTokenNameValid(transfer.strName, tokenType)) {
+                        return state.DoS(100, false, REJECT_INVALID, "bad-txns-transfer-token-name-invalid");
                     }
 
-                    // If the transfer is an ownership asset. Check to make sure that it is OWNER_ASSET_AMOUNT
-                    if (IsAssetNameAnOwner(transfer.strName)) {
-                        if (transfer.nAmount != OWNER_ASSET_AMOUNT)
+                    // If the transfer is an ownership token. Check to make sure that it is OWNER_TOKEN_AMOUNT
+                    if (IsTokenNameAnOwner(transfer.strName)) {
+                        if (transfer.nAmount != OWNER_TOKEN_AMOUNT)
                             return state.DoS(100, false, REJECT_INVALID, "bad-txns-transfer-owner-amount-was-not-1");
                     }
 
-                    // If the transfer is a unique asset. Check to make sure that it is UNIQUE_ASSET_AMOUNT
-                    if (assetType == AssetType::UNIQUE) {
-                        if (transfer.nAmount != UNIQUE_ASSET_AMOUNT)
+                    // If the transfer is a unique token. Check to make sure that it is UNIQUE_TOKEN_AMOUNT
+                    if (tokenType == TokenType::UNIQUE) {
+                        if (transfer.nAmount != UNIQUE_TOKEN_AMOUNT)
                             return state.DoS(100, false, REJECT_INVALID, "bad-txns-transfer-unique-amount-was-not-1");
                     }
 
-                    // ToDo: Add lock by height here
-
-                    // ToDo: Disable voting and broadcast system
+                    if (tokenType == TokenType::MSGCHANNEL || tokenType == TokenType::VOTE) {
+                        return state.DoS(100, false, REJECT_INVALID, "disabled-token-type");
+                    }
 
                 }
             }
         }
     }
-    /** RVN END */
+    /** TOKENS END */
 
     if (fCheckDuplicateInputs) {
         std::set<COutPoint> vInOutPoints;
@@ -263,84 +264,84 @@ bool CheckTransaction(const CTransaction& tx, CValidationState &state, CAssetsCa
                 return state.DoS(10, false, REJECT_INVALID, "bad-txns-prevout-null");
     }
 
-    /** RVN START */
-    if (AreAssetsDeployed()) {
-        if (assetCache) {
-            if (tx.IsNewAsset()) {
+    /** TOKENS START */
+    if (AreTokensDeployed()) {
+        if (tokenCache) {
+            if (tx.IsNewToken()) {
 
-                /** Verify the reissue assets data */
+                /** Verify the reissue tokens data */
                 std::string strError = "";
-                if(!tx.VerifyNewAsset(strError))
+                if(!tx.VerifyNewToken(strError))
                     return state.DoS(100, false, REJECT_INVALID, strError);
 
-                CNewAsset asset;
+                CNewToken token;
                 std::string strAddress;
-                if (!AssetFromTransaction(tx, asset, strAddress))
-                    return state.DoS(100, false, REJECT_INVALID, "bad-txns-issue-asset-from-transaction");
+                if (!TokenFromTransaction(tx, token, strAddress))
+                    return state.DoS(100, false, REJECT_INVALID, "bad-txns-issue-token-from-transaction");
 
-                // Validate the new assets information
-                if (!IsNewOwnerTxValid(tx, asset.strName, strAddress, strError))
+                // Validate the new tokens information
+                if (!IsNewOwnerTxValid(tx, token.strName, strAddress, strError))
                     return state.DoS(100, false, REJECT_INVALID, strError);
 
-                if (!asset.IsValid(strError, *assetCache, fMemPoolCheck, fCheckAssetDuplicate, fForceDuplicateCheck))
+                if (!token.IsValid(strError, *tokenCache, fMemPoolCheck, fCheckTokenDuplicate, fForceDuplicateCheck))
                     return state.DoS(100, error("%s: %s", __func__, strError), REJECT_INVALID, "bad-txns-issue-" + strError);
 
-            } else if (tx.IsReissueAsset()) {
-                /** Verify the reissue assets data */
+            } else if (tx.IsReissueToken()) {
+                /** Verify the reissue tokens data */
                 std::string strError;
-                if (!tx.VerifyReissueAsset(strError))
+                if (!tx.VerifyReissueToken(strError))
                     return state.DoS(100, false, REJECT_INVALID, strError);
 
-                CReissueAsset reissue;
+                CReissueToken reissue;
                 std::string strAddress;
-                if (!ReissueAssetFromTransaction(tx, reissue, strAddress))
-                    return state.DoS(100, false, REJECT_INVALID, "bad-txns-reissue-asset");
+                if (!ReissueTokenFromTransaction(tx, reissue, strAddress))
+                    return state.DoS(100, false, REJECT_INVALID, "bad-txns-reissue-token");
 
-                if (!reissue.IsValid(strError, *assetCache, false)) {
+                if (!reissue.IsValid(strError, *tokenCache, false)) {
                     return state.DoS(100, false, REJECT_INVALID, "bad-txns-reissue-" + strError);
                 }
 
-            } else if (tx.IsNewUniqueAsset()) {
+            } else if (tx.IsNewUniqueToken()) {
 
-                /** Verify the unique assets data */
+                /** Verify the unique tokens data */
                 std::string strError = "";
-                if (!tx.VerifyNewUniqueAsset(strError)) {
+                if (!tx.VerifyNewUniqueToken(strError)) {
                     return state.DoS(100, false, REJECT_INVALID, strError);
                 }
 
                 for (auto out : tx.vout)
                 {
-                    if (IsScriptNewUniqueAsset(out.scriptPubKey))
+                    if (IsScriptNewUniqueToken(out.scriptPubKey))
                     {
-                        CNewAsset asset;
+                        CNewToken token;
                         std::string strAddress;
-                        if (!AssetFromScript(out.scriptPubKey, asset, strAddress))
-                            return state.DoS(100, false, REJECT_INVALID, "bad-txns-check-transaction-issue-unique-asset-serialization");
+                        if (!TokenFromScript(out.scriptPubKey, token, strAddress))
+                            return state.DoS(100, false, REJECT_INVALID, "bad-txns-check-transaction-issue-unique-token-serialization");
 
-                        if (!asset.IsValid(strError, *assetCache, fMemPoolCheck, fCheckAssetDuplicate, fForceDuplicateCheck))
+                        if (!token.IsValid(strError, *tokenCache, fMemPoolCheck, fCheckTokenDuplicate, fForceDuplicateCheck))
                             return state.DoS(100, false, REJECT_INVALID, "bad-txns-" + strError);
                     }
                 }
             } else {
-                // Fail if transaction contains any non-transfer asset scripts and hasn't conformed to one of the
-                // above transaction types.  Also fail if it contains OP_ALP_ASSET opcode but wasn't a valid script.
+                // Fail if transaction contains any non-transfer token scripts and hasn't conformed to one of the
+                // above transaction types.  Also fail if it contains OP_ALP_TOKEN opcode but wasn't a valid script.
                 for (auto out : tx.vout) {
                     int nType;
                     bool _isOwner;
-                    if (out.scriptPubKey.IsAssetScript(nType, _isOwner)) {
-                        if (nType != TX_TRANSFER_ASSET) {
-                            return state.DoS(100, false, REJECT_INVALID, "bad-txns-bad-asset-transaction");
+                    if (out.scriptPubKey.IsTokenScript(nType, _isOwner)) {
+                        if (nType != TX_TRANSFER_TOKEN) {
+                            return state.DoS(100, false, REJECT_INVALID, "bad-txns-bad-token-transaction");
                         }
                     } else {
-                        if (out.scriptPubKey.Find(OP_ALP_ASSET) > 0) {
-                            return state.DoS(100, false, REJECT_INVALID, "bad-txns-bad-asset-script");
+                        if (out.scriptPubKey.Find(OP_ALP_TOKEN) > 0) {
+                            return state.DoS(100, false, REJECT_INVALID, "bad-txns-bad-token-script");
                         }
                     }
                 }
             }
         }
     }
-    /** RVN END */
+    /** TOKENS END */
 
     return true;
 }
@@ -360,15 +361,15 @@ bool Consensus::CheckTxInputs(const CTransaction& tx, CValidationState& state, c
         assert(!coin.IsSpent());
 
         // If prev is coinbase, check that it's matured
-        if (coin.IsCoinBase() && nSpendHeight - coin.nHeight < COINBASE_MATURITY) {
+        if (coin.IsCoinBase() && nSpendHeight - coin.nHeight < CParams().GetConsensus().nCoinbaseMaturity) {
             return state.Invalid(false,
                 REJECT_INVALID, "bad-txns-premature-spend-of-coinbase",
                 strprintf("tried to spend coinbase at depth %d", nSpendHeight - coin.nHeight));
         }
 
         // If prev is coinstake, check that it's matured
-        // ToDo: Fix stake maturity
-        if (coin.IsCoinStake() && nSpendHeight - coin.nHeight < COINBASE_MATURITY) {
+        // Will be fixed after tokens deployed
+        if (coin.IsCoinStake() && nSpendHeight - coin.nHeight < (coin.nHeight >= CParams().GetConsensus().nTokensDeploymentHeight ? CParams().GetConsensus().nStakeMaturity : CParams().GetConsensus().nCoinbaseMaturity)) {
             return state.Invalid(false,
                 REJECT_INVALID, "bad-txns-premature-spend-of-coinstake",
                 strprintf("tried to spend coinstake at depth %d, %d, %d", nSpendHeight, coin.nHeight, nSpendHeight - coin.nHeight));
@@ -411,7 +412,7 @@ bool Consensus::CheckTxInputs(const CTransaction& tx, CValidationState& state, c
 }
 
 //! Check to make sure that the inputs and outputs CAmount match exactly.
-bool Consensus::CheckTxAssets(const CTransaction& tx, CValidationState& state, const CCoinsViewCache& inputs, std::vector<std::pair<std::string, uint256> >& vPairReissueAssets, const bool fRunningUnitTests)
+bool Consensus::CheckTxTokens(const CTransaction& tx, CValidationState& state, const CCoinsViewCache& inputs, int nSpendHeight, int64_t nSpendTime, std::vector<std::pair<std::string, uint256> >& vPairReissueTokens, const bool fRunningUnitTests)
 {
     // are the actual inputs available?
     if (!inputs.HaveInputs(tx)) {
@@ -419,7 +420,7 @@ bool Consensus::CheckTxAssets(const CTransaction& tx, CValidationState& state, c
                          strprintf("%s: inputs missing/spent", __func__));
     }
 
-    // Create map that stores the amount of an asset transaction input. Used to verify no assets are burned
+    // Create map that stores the amount of an token transaction input. Used to verify no tokens are burned
     std::map<std::string, CAmount> totalInputs;
 
     for (unsigned int i = 0; i < tx.vin.size(); ++i) {
@@ -427,75 +428,82 @@ bool Consensus::CheckTxAssets(const CTransaction& tx, CValidationState& state, c
         const Coin& coin = inputs.AccessCoin(prevout);
         assert(!coin.IsSpent());
 
-        if (coin.IsAsset()) {
+        if (coin.IsToken()) {
             std::string strName;
             CAmount nAmount;
+            uint32_t nTokenLockTime;
 
-            if (!GetAssetInfoFromCoin(coin, strName, nAmount))
-                return state.DoS(100, false, REJECT_INVALID, "bad-txns-failed-to-get-asset-from-script");
+            if (!GetTokenInfoFromCoin(coin, strName, nAmount, nTokenLockTime))
+                return state.DoS(100, false, REJECT_INVALID, "bad-txns-failed-to-get-token-from-script");
 
-            // Add to the total value of assets in the inputs
+            // Add to the total value of tokens in the inputs
             if (totalInputs.count(strName))
                 totalInputs.at(strName) += nAmount;
             else
                 totalInputs.insert(make_pair(strName, nAmount));
+
+            if ((int64_t)nTokenLockTime > ((int64_t)nTokenLockTime < LOCKTIME_THRESHOLD ? (int64_t)nSpendHeight : nSpendTime)) {
+                std::string errorMsg = strprintf("Tried to spend token before %d", nTokenLockTime);
+                return state.DoS(100, false,
+                    REJECT_INVALID, "bad-tx-token-premature-spend-of-token " + errorMsg);
+            }
         }
     }
 
-    // Create map that stores the amount of an asset transaction output. Used to verify no assets are burned
+    // Create map that stores the amount of an token transaction output. Used to verify no tokens are burned
     std::map<std::string, CAmount> totalOutputs;
 
     for (const auto& txout : tx.vout) {
-        if (txout.scriptPubKey.IsTransferAsset()) {
-            CAssetTransfer transfer;
+        if (txout.scriptPubKey.IsTransferToken()) {
+            CTokenTransfer transfer;
             std::string address;
-            if (!TransferAssetFromScript(txout.scriptPubKey, transfer, address))
-                return state.DoS(100, false, REJECT_INVALID, "bad-tx-asset-transfer-bad-deserialize");
+            if (!TransferTokenFromScript(txout.scriptPubKey, transfer, address))
+                return state.DoS(100, false, REJECT_INVALID, "bad-tx-token-transfer-bad-deserialize");
 
-            // Add to the total value of assets in the outputs
+            // Add to the total value of tokens in the outputs
             if (totalOutputs.count(transfer.strName))
                 totalOutputs.at(transfer.strName) += transfer.nAmount;
             else
                 totalOutputs.insert(make_pair(transfer.strName, transfer.nAmount));
 
-            auto currentActiveAssetCache = GetCurrentAssetCache();
+            auto currentActiveTokenCache = GetCurrentTokenCache();
             if (!fRunningUnitTests) {
-                if (IsAssetNameAnOwner(transfer.strName)) {
-                    if (transfer.nAmount != OWNER_ASSET_AMOUNT)
+                if (IsTokenNameAnOwner(transfer.strName)) {
+                    if (transfer.nAmount != OWNER_TOKEN_AMOUNT)
                         return state.DoS(100, false, REJECT_INVALID, "bad-txns-transfer-owner-amount-was-not-1");
                 } else {
-                    // For all other types of assets, make sure they are sending the right type of units
-                    CNewAsset asset;
-                    if (!currentActiveAssetCache->GetAssetMetaDataIfExists(transfer.strName, asset))
-                        return state.DoS(100, false, REJECT_INVALID, "bad-txns-transfer-asset-not-exist");
+                    // For all other types of tokens, make sure they are sending the right type of units
+                    CNewToken token;
+                    if (!currentActiveTokenCache->GetTokenMetaDataIfExists(transfer.strName, token))
+                        return state.DoS(100, false, REJECT_INVALID, "bad-txns-transfer-token-not-exist");
 
-                    if (asset.strName != transfer.strName)
-                        return state.DoS(100, false, REJECT_INVALID, "bad-txns-asset-database-corrupted");
+                    if (token.strName != transfer.strName)
+                        return state.DoS(100, false, REJECT_INVALID, "bad-txns-token-database-corrupted");
 
-                    if (!CheckAmountWithUnits(transfer.nAmount, asset.units))
-                        return state.DoS(100, false, REJECT_INVALID, "bad-txns-transfer-asset-amount-not-match-units");
+                    if (!CheckAmountWithUnits(transfer.nAmount, token.units))
+                        return state.DoS(100, false, REJECT_INVALID, "bad-txns-transfer-token-amount-not-match-units");
                 }
             }
-        } else if (txout.scriptPubKey.IsReissueAsset()) {
-            CReissueAsset reissue;
+        } else if (txout.scriptPubKey.IsReissueToken()) {
+            CReissueToken reissue;
             std::string address;
-            if (!ReissueAssetFromScript(txout.scriptPubKey, reissue, address))
-                return state.DoS(100, false, REJECT_INVALID, "bad-tx-asset-reissue-bad-deserialize");
+            if (!ReissueTokenFromScript(txout.scriptPubKey, reissue, address))
+                return state.DoS(100, false, REJECT_INVALID, "bad-tx-token-reissue-bad-deserialize");
 
             if (!fRunningUnitTests) {
-                auto currentActiveAssetCache = GetCurrentAssetCache();
+                auto currentActiveTokenCache = GetCurrentTokenCache();
                 std::string strError;
-                if (!reissue.IsValid(strError, *currentActiveAssetCache)) {
+                if (!reissue.IsValid(strError, *currentActiveTokenCache)) {
                     return state.DoS(100, false, REJECT_INVALID,
                                      "bad-txns" + strError);
                 }
             }
 
-            if (mapReissuedAssets.count(reissue.strName)) {
-                if (mapReissuedAssets.at(reissue.strName) != tx.GetHash())
+            if (mapReissuedTokens.count(reissue.strName)) {
+                if (mapReissuedTokens.at(reissue.strName) != tx.GetHash())
                     return state.DoS(100, false, REJECT_INVALID, "bad-tx-reissue-chaining-not-allowed");
             } else {
-                vPairReissueAssets.emplace_back(std::make_pair(reissue.strName, tx.GetHash()));
+                vPairReissueTokens.emplace_back(std::make_pair(reissue.strName, tx.GetHash()));
             }
         }
     }
@@ -503,20 +511,20 @@ bool Consensus::CheckTxAssets(const CTransaction& tx, CValidationState& state, c
     for (const auto& outValue : totalOutputs) {
         if (!totalInputs.count(outValue.first)) {
             std::string errorMsg;
-            errorMsg = strprintf("Bad Transaction - Trying to create outpoint for asset that you don't have: %s", outValue.first);
+            errorMsg = strprintf("Bad Transaction - Trying to create outpoint for token that you don't have: %s", outValue.first);
             return state.DoS(100, false, REJECT_INVALID, "bad-tx-inputs-outputs-mismatch " + errorMsg);
         }
 
         if (totalInputs.at(outValue.first) != outValue.second) {
             std::string errorMsg;
-            errorMsg = strprintf("Bad Transaction - Assets would be burnt %s", outValue.first);
+            errorMsg = strprintf("Bad Transaction - Tokens would be burnt %s", outValue.first);
             return state.DoS(100, false, REJECT_INVALID, "bad-tx-inputs-outputs-mismatch " + errorMsg);
         }
     }
 
     // Check the input size and the output size
     if (totalOutputs.size() != totalInputs.size()) {
-        return state.DoS(100, false, REJECT_INVALID, "bad-tx-asset-inputs-size-does-not-match-outputs-size");
+        return state.DoS(100, false, REJECT_INVALID, "bad-tx-token-inputs-size-does-not-match-outputs-size");
     }
 
     return true;

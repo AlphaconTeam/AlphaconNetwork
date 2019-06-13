@@ -152,25 +152,25 @@ BOOST_FIXTURE_TEST_SUITE(rpc_tests, TestingSetup)
         BOOST_CHECK_NO_THROW(CallRPC("createrawtransaction [{\"txid\":\"a3b807410df0b60fcb9736768df5823938b2f838694939ba45f3c0a1bff150ed\",\"vout\":0}] {\"data\":\"010203040506070809101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081\"}"));
     }
 
-    BOOST_AUTO_TEST_CASE(rpc_createraw_assets_test)
+    BOOST_AUTO_TEST_CASE(rpc_createraw_tokens_test)
     {
-        BOOST_TEST_MESSAGE("Running RPC CreateRaw Assets Test");
+        BOOST_TEST_MESSAGE("Running RPC CreateRaw Tokens Test");
 
         BOOST_CHECK_NO_THROW(CallRPC("createrawtransaction [{\"txid\":\"a3b807410df0b60fcb9736768df5823938b2f838694939ba45f3c0a1bff150ed\",\"vout\":0}] {\"rNNjqrDbSHxJZNfC54WsF8dxqbcue9SoiB\":20000}"));
-        BOOST_CHECK_NO_THROW(CallRPC("createrawtransaction [{\"txid\":\"a3b807410df0b60fcb9736768df5823938b2f838694939ba45f3c0a1bff150ed\",\"vout\":0}] {\"rNNjqrDbSHxJZNfC54WsF8dxqbcue9SoiB\":{\"transfer\":{\"ALPHACON_ASSET\":20000}}}"));
-        BOOST_CHECK_NO_THROW(CallRPC("createrawtransaction [{\"txid\":\"a3b807410df0b60fcb9736768df5823938b2f838694939ba45f3c0a1bff150ed\",\"vout\":0}] {\"rNNjqrDbSHxJZNfC54WsF8dxqbcue9SoiB\":{\"issue\":{\"name_length\":1,\"asset_name\":\"ALPHACON_ASSET\",\"asset_quantity\":20000,\"units\":0,\"reissuable\":1,\"has_ipfs\":0}}}"));
+        BOOST_CHECK_NO_THROW(CallRPC("createrawtransaction [{\"txid\":\"a3b807410df0b60fcb9736768df5823938b2f838694939ba45f3c0a1bff150ed\",\"vout\":0}] {\"rNNjqrDbSHxJZNfC54WsF8dxqbcue9SoiB\":{\"transfer\":{\"ALPHACON_TOKEN\":20000}}}"));
+        BOOST_CHECK_NO_THROW(CallRPC("createrawtransaction [{\"txid\":\"a3b807410df0b60fcb9736768df5823938b2f838694939ba45f3c0a1bff150ed\",\"vout\":0}] {\"rNNjqrDbSHxJZNfC54WsF8dxqbcue9SoiB\":{\"issue\":{\"name_length\":1,\"token_name\":\"ALPHACON_TOKEN\",\"token_quantity\":20000,\"units\":0,\"reissuable\":1,\"has_ipfs\":0}}}"));
 
-        // one address multiple asset outs
-        BOOST_CHECK_NO_THROW(CallRPC("createrawtransaction [{\"txid\":\"a3b807410df0b60fcb9736768df5823938b2f838694939ba45f3c0a1bff150ed\",\"vout\":0}] {\"rNNjqrDbSHxJZNfC54WsF8dxqbcue9SoiB\":{\"transfer\":{\"ALPHACON_ASSET\":20000,\"ALPHACON_ASSET_2\":20000}}}"));
+        // one address multiple token outs
+        BOOST_CHECK_NO_THROW(CallRPC("createrawtransaction [{\"txid\":\"a3b807410df0b60fcb9736768df5823938b2f838694939ba45f3c0a1bff150ed\",\"vout\":0}] {\"rNNjqrDbSHxJZNfC54WsF8dxqbcue9SoiB\":{\"transfer\":{\"ALPHACON_TOKEN\":20000,\"ALPHACON_TOKEN_2\":20000}}}"));
 
         // multiple coin outs
         BOOST_CHECK_NO_THROW(CallRPC("createrawtransaction [{\"txid\":\"a3b807410df0b60fcb9736768df5823938b2f838694939ba45f3c0a1bff150ed\",\"vout\":0}] {\"rNNjqrDbSHxJZNfC54WsF8dxqbcue9SoiB\":20000,\"RUrmBNPvWemcczvE9uWMmkaVxHik753vKm\":20000}"));
 
-        // coin and asset out
-        BOOST_CHECK_NO_THROW(CallRPC("createrawtransaction [{\"txid\":\"a3b807410df0b60fcb9736768df5823938b2f838694939ba45f3c0a1bff150ed\",\"vout\":0}] {\"rNNjqrDbSHxJZNfC54WsF8dxqbcue9SoiB\":20000,\"RUrmBNPvWemcczvE9uWMmkaVxHik753vKm\":{\"transfer\":{\"ALPHACON_ASSET\":20000}}}"));
+        // coin and token out
+        BOOST_CHECK_NO_THROW(CallRPC("createrawtransaction [{\"txid\":\"a3b807410df0b60fcb9736768df5823938b2f838694939ba45f3c0a1bff150ed\",\"vout\":0}] {\"rNNjqrDbSHxJZNfC54WsF8dxqbcue9SoiB\":20000,\"RUrmBNPvWemcczvE9uWMmkaVxHik753vKm\":{\"transfer\":{\"ALPHACON_TOKEN\":20000}}}"));
 
         // bad command
-        BOOST_CHECK_THROW(CallRPC("createrawtransaction [{\"txid\":\"a3b807410df0b60fcb9736768df5823938b2f838694939ba45f3c0a1bff150ed\",\"vout\":0}] {\"rNNjqrDbSHxJZNfC54WsF8dxqbcue9SoiB\":{\"badcommand\":{\"ALPHACON_ASSET\":20000}}}"), std::runtime_error);
+        BOOST_CHECK_THROW(CallRPC("createrawtransaction [{\"txid\":\"a3b807410df0b60fcb9736768df5823938b2f838694939ba45f3c0a1bff150ed\",\"vout\":0}] {\"rNNjqrDbSHxJZNfC54WsF8dxqbcue9SoiB\":{\"badcommand\":{\"ALPHACON_TOKEN\":20000}}}"), std::runtime_error);
     }
 
     BOOST_AUTO_TEST_CASE(rpc_format_monetary_values_test)

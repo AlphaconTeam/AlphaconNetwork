@@ -6,7 +6,7 @@
 
 #include "transactionrecord.h"
 
-#include "assets/assets.h"
+#include "tokens/tokens.h"
 #include "base58.h"
 #include "consensus/consensus.h"
 #include "validation.h"
@@ -36,10 +36,10 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
     CAmount nCredit = wtx.GetCredit(ISMINE_ALL);
     CAmount nDebit = wtx.GetDebit(ISMINE_ALL);
     CAmount nNet = nCredit - nDebit;
-    uint256 hash = wtx.GetHash();
+    uint256 hash = wtx.GetHash(), hashPrev;
     std::map<std::string, std::string> mapValue = wtx.mapValue;
 
-    if (nNet > 0 || wtx.IsCoinBase())
+    if (nNet > 0 || wtx.IsCoinBase() || wtx.IsCoinStake())
     {
         //
         // Credit
@@ -49,10 +49,10 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
             const CTxOut& txout = wtx.tx->vout[i];
             isminetype mine = wallet->IsMine(txout);
 
-            /** RVN START */
-            if (txout.scriptPubKey.IsAssetScript())
+            /** TOKENS START */
+            if (txout.scriptPubKey.IsTokenScript())
                 continue;
-            /** RVN START */
+            /** TOKENS START */
 
             if(mine)
             {
@@ -73,10 +73,18 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
                     sub.type = TransactionRecord::RecvFromOther;
                     sub.address = mapValue["from"];
                 }
-                if (wtx.IsCoinBase())
+                if (wtx.IsCoinBase() || wtx.IsCoinStake())
                 {
                     // Generated
                     sub.type = TransactionRecord::Generated;
+                }
+
+                if (wtx.IsCoinStake())
+                {
+                    if (hashPrev == hash)
+                        continue; // last coinstake output
+                    sub.credit = nNet > 0 ? nNet : wtx.tx->GetValueOut() - nDebit;
+                    hashPrev = hash;
                 }
 
                 parts.append(sub);
@@ -97,10 +105,10 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
         isminetype fAllToMe = ISMINE_SPENDABLE;
         for (const CTxOut& txout : wtx.tx->vout)
         {
-            /** RVN START */
-            if (txout.scriptPubKey.IsAssetScript())
+            /** TOKENS START */
+            if (txout.scriptPubKey.IsTokenScript())
                 continue;
-            /** RVN START */
+            /** TOKENS START */
 
             isminetype mine = wallet->IsMine(txout);
             if(mine & ISMINE_WATCH_ONLY) involvesWatchAddress = true;
@@ -127,10 +135,10 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
             {
                 const CTxOut& txout = wtx.tx->vout[nOut];
 
-                /** RVN START */
-                if (txout.scriptPubKey.IsAssetScript())
+                /** TOKENS START */
+                if (txout.scriptPubKey.IsTokenScript())
                     continue;
-                /** RVN START */
+                /** TOKENS START */
 
                 TransactionRecord sub(hash, nTime);
                 sub.idx = nOut;
@@ -176,16 +184,16 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
             //
 
 
-            /** RVN START */
+            /** TOKENS START */
             // We will only show mixed debit transactions that are nNet < 0 or if they are nNet == 0 and
-            // they do not contain assets. This is so the list of transaction doesn't add 0 amount transactions to the
+            // they do not contain tokens. This is so the list of transaction doesn't add 0 amount transactions to the
             // list.
             bool fIsMixedDebit = true;
             if (nNet == 0) {
                 for (unsigned int nOut = 0; nOut < wtx.tx->vout.size(); nOut++) {
                     const CTxOut &txout = wtx.tx->vout[nOut];
 
-                    if (txout.scriptPubKey.IsAssetScript()) {
+                    if (txout.scriptPubKey.IsTokenScript()) {
                         fIsMixedDebit = false;
                         break;
                     }
@@ -196,26 +204,26 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
                 parts.append(TransactionRecord(hash, nTime, TransactionRecord::Other, "", nNet, 0));
                 parts.last().involvesWatchAddress = involvesWatchAddress;
             }
-            /** RVN START */
+            /** TOKENS START */
         }
     }
 
 
-    /** RVN START */
-    if (AreAssetsDeployed()) {
+    /** TOKENS START */
+    if (AreTokensDeployed()) {
         CAmount nFee;
         std::string strSentAccount;
         std::list<COutputEntry> listReceived;
         std::list<COutputEntry> listSent;
 
-        std::list<CAssetOutputEntry> listAssetsReceived;
-        std::list<CAssetOutputEntry> listAssetsSent;
+        std::list<CTokenOutputEntry> listTokensReceived;
+        std::list<CTokenOutputEntry> listTokensSent;
 
-        wtx.GetAmounts(listReceived, listSent, nFee, strSentAccount, ISMINE_ALL, listAssetsReceived, listAssetsSent);
+        wtx.GetAmounts(listReceived, listSent, nFee, strSentAccount, ISMINE_ALL, listTokensReceived, listTokensSent);
 
-        if (listAssetsReceived.size() > 0)
+        if (listTokensReceived.size() > 0)
         {
-            for (const CAssetOutputEntry &data : listAssetsReceived)
+            for (const CTokenOutputEntry &data : listTokensReceived)
             {
                 TransactionRecord sub(hash, nTime);
                 sub.idx = data.vout;
@@ -224,15 +232,15 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
                 isminetype mine = wallet->IsMine(txout);
 
                 sub.address = EncodeDestination(data.destination);
-                sub.assetName = data.assetName;
+                sub.tokenName = data.tokenName;
                 sub.credit = data.nAmount;
                 sub.involvesWatchAddress = mine & ISMINE_WATCH_ONLY;
 
-                if (data.type == TX_NEW_ASSET)
+                if (data.type == TX_NEW_TOKEN)
                     sub.type = TransactionRecord::Issue;
-                else if (data.type == TX_REISSUE_ASSET)
+                else if (data.type == TX_REISSUE_TOKEN)
                     sub.type = TransactionRecord::Reissue;
-                else if (data.type == TX_TRANSFER_ASSET)
+                else if (data.type == TX_TRANSFER_TOKEN)
                     sub.type = TransactionRecord::TransferFrom;
                 else {
                     sub.type = TransactionRecord::Other;
@@ -240,63 +248,63 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
 
                 sub.units = DEFAULT_UNITS;
 
-                if (IsAssetNameAnOwner(sub.assetName))
+                if (IsTokenNameAnOwner(sub.tokenName))
                     sub.units = OWNER_UNITS;
                 else if (CheckIssueDataTx(wtx.tx->vout[sub.idx]))
                 {
-                    CNewAsset asset;
+                    CNewToken token;
                     std::string strAddress;
-                    if (AssetFromTransaction(wtx, asset, strAddress))
-                        sub.units = asset.units;
+                    if (TokenFromTransaction(wtx, token, strAddress))
+                        sub.units = token.units;
                 }
                 else
                 {
-                    CNewAsset asset;
-                    if (passets->GetAssetMetaDataIfExists(sub.assetName, asset))
-                        sub.units = asset.units;
+                    CNewToken token;
+                    if (ptokens->GetTokenMetaDataIfExists(sub.tokenName, token))
+                        sub.units = token.units;
                 }
 
                 parts.append(sub);
             }
         }
 
-        if (listAssetsSent.size() > 0)
+        if (listTokensSent.size() > 0)
         {
-            for (const CAssetOutputEntry &data : listAssetsSent)
+            for (const CTokenOutputEntry &data : listTokensSent)
             {
                 TransactionRecord sub(hash, nTime);
                 sub.idx = data.vout;
                 sub.address = EncodeDestination(data.destination);
-                sub.assetName = data.assetName;
+                sub.tokenName = data.tokenName;
                 sub.credit = -data.nAmount;
                 sub.involvesWatchAddress = false;
 
-                if (data.type == TX_TRANSFER_ASSET)
+                if (data.type == TX_TRANSFER_TOKEN)
                     sub.type = TransactionRecord::TransferTo;
                 else
                     sub.type = TransactionRecord::Other;
 
-                if (IsAssetNameAnOwner(sub.assetName))
+                if (IsTokenNameAnOwner(sub.tokenName))
                     sub.units = OWNER_UNITS;
                 else if (CheckIssueDataTx(wtx.tx->vout[sub.idx]))
                 {
-                    CNewAsset asset;
+                    CNewToken token;
                     std::string strAddress;
-                    if (AssetFromTransaction(wtx, asset, strAddress))
-                        sub.units = asset.units;
+                    if (TokenFromTransaction(wtx, token, strAddress))
+                        sub.units = token.units;
                 }
                 else
                 {
-                    CNewAsset asset;
-                    if (passets->GetAssetMetaDataIfExists(sub.assetName, asset))
-                        sub.units = asset.units;
+                    CNewToken token;
+                    if (ptokens->GetTokenMetaDataIfExists(sub.tokenName, token))
+                        sub.units = token.units;
                 }
 
                 parts.append(sub);
             }
         }
     }
-    /** RVN END */
+    /** TOKENS END */
 
     return parts;
 }
@@ -315,7 +323,7 @@ void TransactionRecord::updateStatus(const CWalletTx &wtx)
     // Sort order, unrecorded transactions sort to the top
     status.sortKey = strprintf("%010d-%01d-%010u-%03d",
         (pindex ? pindex->nHeight : std::numeric_limits<int>::max()),
-        (wtx.IsCoinBase() ? 1 : 0),
+        ((wtx.IsCoinBase() || wtx.IsCoinStake()) ? 1 : 0),
         wtx.nTimeReceived,
         idx);
     status.countsForBalance = wtx.IsTrusted() && !(wtx.GetBlocksToMaturity() > 0);

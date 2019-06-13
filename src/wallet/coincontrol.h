@@ -34,10 +34,10 @@ public:
     //! Fee estimation mode to control arguments to estimateSmartFee
     FeeEstimateMode m_fee_mode;
 
-    /** RVN START */
-    //! Name of the asset that is selected, used when sending assets with coincontrol
-    std::string strAssetSelected;
-    /** RVN END */
+    /** TOKENS START */
+    //! Name of the token that is selected, used when sending tokens with coincontrol
+    std::string strTokenSelected;
+    /** TOKENS END */
 
     CCoinControl()
     {
@@ -55,8 +55,8 @@ public:
         m_confirm_target.reset();
         signalRbf = fWalletRbf;
         m_fee_mode = FeeEstimateMode::UNSET;
-        strAssetSelected = "";
-        setAssetsSelected.clear();
+        strTokenSelected = "";
+        setTokensSelected.clear();
     }
 
     bool HasSelected() const
@@ -64,9 +64,9 @@ public:
         return (setSelected.size() > 0);
     }
 
-    bool HasAssetSelected() const
+    bool HasTokenSelected() const
     {
-        return (setAssetsSelected.size() > 0);
+        return (setTokensSelected.size() > 0);
     }
 
     bool IsSelected(const COutPoint& output) const
@@ -74,9 +74,9 @@ public:
         return (setSelected.count(output) > 0);
     }
 
-    bool IsAssetSelected(const COutPoint& output) const
+    bool IsTokenSelected(const COutPoint& output) const
     {
-        return (setAssetsSelected.count(output) > 0);
+        return (setTokensSelected.count(output) > 0);
     }
 
     void Select(const COutPoint& output)
@@ -84,9 +84,9 @@ public:
         setSelected.insert(output);
     }
 
-    void SelectAsset(const COutPoint& output)
+    void SelectToken(const COutPoint& output)
     {
-        setAssetsSelected.insert(output);
+        setTokensSelected.insert(output);
     }
 
 
@@ -94,21 +94,21 @@ public:
     {
         setSelected.erase(output);
         if (!setSelected.size())
-            strAssetSelected = "";
+            strTokenSelected = "";
     }
 
-    void UnSelectAsset(const COutPoint& output)
+    void UnSelectToken(const COutPoint& output)
     {
-        setAssetsSelected.erase(output);
+        setTokensSelected.erase(output);
         if (!setSelected.size())
-            strAssetSelected = "";
+            strTokenSelected = "";
     }
 
     void UnSelectAll()
     {
         setSelected.clear();
-        strAssetSelected = "";
-        setAssetsSelected.clear();
+        strTokenSelected = "";
+        setTokensSelected.clear();
     }
 
     void ListSelected(std::vector<COutPoint>& vOutpoints) const
@@ -116,14 +116,14 @@ public:
         vOutpoints.assign(setSelected.begin(), setSelected.end());
     }
 
-    void ListSelectedAssets(std::vector<COutPoint>& vOutpoints) const
+    void ListSelectedTokens(std::vector<COutPoint>& vOutpoints) const
     {
-        vOutpoints.assign(setAssetsSelected.begin(), setAssetsSelected.end());
+        vOutpoints.assign(setTokensSelected.begin(), setTokensSelected.end());
     }
 
 private:
     std::set<COutPoint> setSelected;
-    std::set<COutPoint> setAssetsSelected;
+    std::set<COutPoint> setTokensSelected;
 };
 
 #endif // ALPHACON_WALLET_COINCONTROL_H

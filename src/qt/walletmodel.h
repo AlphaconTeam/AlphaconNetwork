@@ -22,7 +22,7 @@ class OptionsModel;
 class PlatformStyle;
 class RecentRequestsTableModel;
 class TransactionTableModel;
-class AssetTableModel;
+class TokenTableModel;
 class WalletModelTransaction;
 
 class CCoinControl;
@@ -99,12 +99,12 @@ public:
     }
 };
 
-class SendAssetsRecipient
+class SendTokensRecipient
 {
 public:
-    explicit SendAssetsRecipient() : amount(0), nVersion(SendCoinsRecipient::CURRENT_VERSION) { }
-    explicit SendAssetsRecipient(const QString& assetName, const QString &addr, const QString &_label, const CAmount& _amount, const QString &_message):
-            assetName(assetName), address(addr), label(_label), amount(_amount), message(_message), nVersion(SendAssetsRecipient::CURRENT_VERSION) {}
+    explicit SendTokensRecipient() : amount(0), nVersion(SendCoinsRecipient::CURRENT_VERSION) { }
+    explicit SendTokensRecipient(const QString& tokenName, const QString &addr, const QString &_label, const CAmount& _amount, const QString &_message):
+            tokenName(tokenName), address(addr), label(_label), amount(_amount), message(_message), nVersion(SendTokensRecipient::CURRENT_VERSION) {}
 
     // If from an unauthenticated payment request, this is used for storing
     // the addresses, e.g. address-A<br />address-B<br />address-C.
@@ -112,10 +112,11 @@ public:
     // payment requests, we can abuse it for displaying an address list.
     // Todo: This is a hack, should be replaced with a cleaner solution!
 
-    QString assetName;
+    QString tokenName;
     QString address;
     QString label;
     CAmount amount;
+    uint32_t tokenLockTime;
     // If from a payment request, this is used for storing the memo
     QString message;
 
@@ -135,23 +136,24 @@ public:
         std::string sLabel = label.toStdString();
         std::string sMessage = message.toStdString();
         std::string sPaymentRequest;
-        std::string sAssetName = assetName.toStdString();
+        std::string sTokenName = tokenName.toStdString();
         if (!ser_action.ForRead() && paymentRequest.IsInitialized())
             paymentRequest.SerializeToString(&sPaymentRequest);
         std::string sAuthenticatedMerchant = authenticatedMerchant.toStdString();
 
         READWRITE(this->nVersion);
-        READWRITE(sAssetName);
+        READWRITE(sTokenName);
         READWRITE(sAddress);
         READWRITE(sLabel);
         READWRITE(amount);
+        READWRITE(tokenLockTime);
         READWRITE(sMessage);
         READWRITE(sPaymentRequest);
         READWRITE(sAuthenticatedMerchant);
 
         if (ser_action.ForRead())
         {
-            assetName = QString::fromStdString(sAssetName);
+            tokenName = QString::fromStdString(sTokenName);
             address = QString::fromStdString(sAddress);
             label = QString::fromStdString(sLabel);
             message = QString::fromStdString(sMessage);
@@ -195,7 +197,7 @@ public:
     OptionsModel *getOptionsModel();
     AddressTableModel *getAddressTableModel();
     TransactionTableModel *getTransactionTableModel();
-    AssetTableModel *getAssetTableModel();
+    TokenTableModel *getTokenTableModel();
     RecentRequestsTableModel *getRecentRequestsTableModel();
 
     CAmount getBalance(const CCoinControl *coinControl = nullptr) const;
@@ -230,7 +232,7 @@ public:
     // Send coins to a list of recipients
     SendCoinsReturn sendCoins(WalletModelTransaction &transaction);
 
-    SendCoinsReturn sendAssets(CWalletTx& tx, QList<SendAssetsRecipient>& recipients, CReserveKey& reservekey);
+    SendCoinsReturn sendTokens(CWalletTx& tx, QList<SendTokensRecipient>& recipients, CReserveKey& reservekey);
 
     // Wallet encryption
     bool setWalletEncrypted(bool encrypted, const SecureString &passphrase);
@@ -268,10 +270,10 @@ public:
     void getOutputs(const std::vector<COutPoint>& vOutpoints, std::vector<COutput>& vOutputs);
     bool isSpent(const COutPoint& outpoint) const;
     void listCoins(std::map<QString, std::vector<COutput> >& mapCoins) const;
-    /** RVN START */
-    // Map of asset name to map of address to CTxOut
-    void listAssets(std::map<QString, std::map<QString, std::vector<COutput> > >& mapCoins) const;
-    /** RVN END */
+    /** TOKENS START */
+    // Map of token name to map of address to CTxOut
+    void listTokens(std::map<QString, std::map<QString, std::vector<COutput> > >& mapCoins) const;
+    /** TOKENS END */
     bool isLockedCoin(uint256 hash, unsigned int n) const;
     void lockCoin(COutPoint& output);
     void unlockCoin(COutPoint& output);
@@ -279,6 +281,8 @@ public:
 
     void loadReceiveRequests(std::vector<std::string>& vReceiveRequests);
     bool saveReceiveRequest(const std::string &sAddress, const int64_t nId, const std::string &sRequest);
+
+    unsigned long long updateWeight();
 
     bool transactionCanBeAbandoned(uint256 hash) const;
     bool abandonTransaction(uint256 hash) const;
@@ -307,7 +311,7 @@ private:
 
     AddressTableModel *addressTableModel;
     TransactionTableModel *transactionTableModel;
-    AssetTableModel *assetTableModel;
+    TokenTableModel *tokenTableModel;
     RecentRequestsTableModel *recentRequestsTableModel;
 
     // Cache some values to be able to detect changes
@@ -347,8 +351,8 @@ Q_SIGNALS:
     // Coins sent: from wallet, to recipient, in (serialized) transaction:
     void coinsSent(CWallet* wallet, SendCoinsRecipient recipient, QByteArray transaction);
 
-    // Asset sent: from wallet, to recipient, in (serialized) transaction:
-    void assetsSent(CWallet* wallet, SendAssetsRecipient recipient, QByteArray transaction);
+    // Token sent: from wallet, to recipient, in (serialized) transaction:
+    void tokensSent(CWallet* wallet, SendTokensRecipient recipient, QByteArray transaction);
 
     // Show progress dialog e.g. for rescan
     void showProgress(const QString &title, int nProgress);
